@@ -238,6 +238,58 @@ Sectors · Educational Solutions · Staffing/Recruiting
 6. Customer logos, testimonials, or case studies — none on the current site, and
    these carry real weight in B2B telecom.
 7. Founding year, team size, customer count — no company history is published.
-8. Logo, brand colors, and typeface. The site currently has no defined palette;
-   the build uses the shadcn neutral theme until brand assets are provided.
+8. Typeface — no brand font is specified. Build uses Geist until told otherwise.
+   (Logo and colors are now resolved — see section 13.)
 9. Whether Blog, Support, and the galleries carry over.
+
+---
+
+## 13. Brand Assets
+
+### Logo
+`public/siplink-logo.webp` — wordmark, 4.7 KB.
+
+"sip" reversed out in white on a pink-to-crimson teardrop/leaf mark, followed by
+"link" in near-black. Lowercase throughout; the two halves are distinguished by
+color and weight, not by a space.
+
+Usage notes:
+- The mark is light-on-dark inside a saturated shape, so it sits well on white
+  and light backgrounds as-is. On a dark background the "link" half will
+  disappear — **[TO CONFIRM]** whether a reversed/all-white variant exists. If
+  not, one is needed before dark mode ships.
+- WebP has no transparent-vector fallback. **[TO CONFIRM]** — request the SVG
+  from the client for crisp scaling and print.
+- Always render as an image; never re-typeset "siplink" in a system font.
+
+### Palette
+
+Derived from the logo. These replace the shadcn neutral defaults in
+`app/globals.css`.
+
+| Token | Value | Use |
+| --- | --- | --- |
+| Primary | Pink/crimson from the logo mark | CTAs, links, active states, accents |
+| Primary foreground | White | Text on primary |
+| Foreground | Near-black from "link" | Body text and headings |
+
+**[TO CONFIRM]** — exact hex values sampled from the logo need sign-off, plus
+any secondary or accent color the client already uses in print or on social.
+The pink is highly saturated: correct for buttons and highlights, but it should
+not become a large background field.
+
+### Other assets on the current site
+
+Available at `https://www.siplink.in/assets/images/` if wanted:
+
+- `favicon.webp` — current favicon
+- `DoT-Logo-390x220-1.webp` — DoT certification badge
+- `HIPAA-Website-Verified-Seal.webp` — HIPAA verified seal
+- Six feature icons (SVG): Clear-Reliable-and-Resilient,
+  Clever-Entreprise-Collaboration, Network-Call-Quality-Monitoring,
+  Network-Security-Services, Personalized-Service-Support,
+  Unified-Communications
+
+The two certification badges carry real trust weight and should appear on the
+new site. The feature icons can be dropped — lucide-react covers the same
+concepts consistently with the shadcn build.
