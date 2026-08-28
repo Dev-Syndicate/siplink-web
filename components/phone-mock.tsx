@@ -65,7 +65,7 @@ function ControlButton({
   );
 }
 
-function CallScreen() {
+export function CallScreen() {
   return (
     <div className="flex h-full flex-col bg-background">
       <StatusBar />
@@ -108,7 +108,7 @@ const activity = [
   { name: "Priya Nair", meta: "Outbound · 3:38", icon: PhoneOutgoing },
 ];
 
-function ActivityScreen() {
+export function ActivityScreen() {
   return (
     <div className="flex h-full flex-col bg-background">
       <StatusBar />
@@ -153,6 +153,31 @@ function ActivityScreen() {
   );
 }
 
+/** Device chrome on its own, so a single persistent phone can hold whatever
+ *  screen (or cross-fade of screens) a section needs. */
+export function PhoneFrame({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={cn(
+        "relative aspect-[9/19] w-full rounded-[2.5rem] bg-foreground p-[3px] shadow-[0_40px_80px_-20px_rgb(18_20_23/0.45)]",
+        className
+      )}
+    >
+      <div className="relative h-full w-full overflow-hidden rounded-[2.35rem] bg-background">
+        {/* Dynamic island */}
+        <div className="absolute top-2 left-1/2 z-10 h-4 w-[26%] -translate-x-1/2 rounded-full bg-foreground" />
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export function PhoneMock({
   screen = "call",
   src,
@@ -167,30 +192,21 @@ export function PhoneMock({
   priority?: boolean;
 }) {
   return (
-    <div
-      className={cn(
-        "relative aspect-[9/19] w-full rounded-[2.5rem] bg-foreground p-[3px] shadow-[0_40px_80px_-20px_rgb(18_20_23/0.45)]",
-        className
+    <PhoneFrame className={className}>
+      {src ? (
+        <Image
+          src={src}
+          alt={alt ?? ""}
+          fill
+          priority={priority}
+          sizes="(max-width: 768px) 60vw, 340px"
+          className="object-cover"
+        />
+      ) : screen === "call" ? (
+        <CallScreen />
+      ) : (
+        <ActivityScreen />
       )}
-    >
-      <div className="relative h-full w-full overflow-hidden rounded-[2.35rem] bg-background">
-        {/* Dynamic island */}
-        <div className="absolute top-2 left-1/2 z-10 h-4 w-[26%] -translate-x-1/2 rounded-full bg-foreground" />
-        {src ? (
-          <Image
-            src={src}
-            alt={alt ?? ""}
-            fill
-            priority={priority}
-            sizes="(max-width: 768px) 60vw, 340px"
-            className="object-cover"
-          />
-        ) : screen === "call" ? (
-          <CallScreen />
-        ) : (
-          <ActivityScreen />
-        )}
-      </div>
-    </div>
+    </PhoneFrame>
   );
 }

@@ -1,6 +1,6 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { Hero } from "@/components/sections/hero";
+import { HeroJourney } from "@/components/sections/hero-journey";
 import { Platform } from "@/components/sections/platform";
 import { TrustArc } from "@/components/sections/trust-arc";
 import { Pricing } from "@/components/sections/pricing";
@@ -12,7 +12,7 @@ export default function Home() {
     <>
       <SiteHeader />
       <main className="flex-1">
-        <Hero />
+        <HeroJourney />
         <Platform />
         <TrustArc />
         <Pricing />
