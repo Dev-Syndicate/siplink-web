@@ -238,6 +238,66 @@ export const industries: Industry[] = [
   },
 ];
 
+export type Plan = {
+  name: string;
+  price: string;
+  blurb: string;
+  featured?: boolean;
+  /** Features unique to this tier, on top of the previous one. */
+  adds: string[];
+};
+
+/** Shared by every tier — rendered under the Value plan. */
+export const planBaseFeatures = [
+  "Unlimited calling within the USA",
+  "Free local number",
+  "IP-phone free lease",
+  "Business SMS",
+  "Audio conferencing",
+  "Video calling (peer-to-peer)",
+  "Voicemail-to-email",
+  "iOS and Android app",
+  "Call recording",
+  "Virtual fax",
+  "Salesforce and Ceipal integration",
+  "24/7 support",
+];
+
+/**
+ * Prices and the 10-line minimum are as published on siplink.in.
+ * Do not add an uptime SLA, HubSpot, or API access — none are offered.
+ * See content.md.
+ */
+export const plans: Plan[] = [
+  {
+    name: "Value",
+    price: "$18.95",
+    blurb: "Essential cloud telephony for small teams.",
+    adds: [],
+  },
+  {
+    name: "Business",
+    price: "$20.95",
+    blurb: "Adds the integrations most growing teams run on.",
+    featured: true,
+    adds: ["Microsoft Teams, Outlook and Google integration"],
+  },
+  {
+    name: "Enterprise",
+    price: "$24.95",
+    blurb: "Full collaboration suite for larger organisations.",
+    adds: [
+      "Microsoft Teams, Outlook and Google integration",
+      "Unlimited video calling (peer-to-peer)",
+      "Screen sharing",
+      "Team messaging",
+    ],
+  },
+];
+
+export const planNote =
+  "All plans are priced per user, per month and require a minimum of 10 lines. Taxes and regulatory fees are not included.";
+
 export const nav = [
   { label: "Home", href: "/" },
   { label: "Solutions", href: "/solutions" },
