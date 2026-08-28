@@ -52,7 +52,7 @@ export default function SolutionsPage() {
           </div>
 
           <Image
-            src="/images/communication.png"
+            src="/images/cloud-communications.png"
             alt="Cloud telephony connecting desk phones, mobile apps, messaging and analytics"
             width={1536}
             height={1024}

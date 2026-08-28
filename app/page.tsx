@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 
@@ -18,12 +19,6 @@ const heroHighlights = [
   "Salesforce, Teams & Google integrations",
 ];
 
-const planTeaser = [
-  { tier: "Value", price: "$18.95" },
-  { tier: "Business", price: "$20.95" },
-  { tier: "Enterprise", price: "$24.95" },
-];
-
 export default function Home() {
   return (
     <>
@@ -38,7 +33,7 @@ export default function Home() {
           className="pointer-events-none absolute -bottom-52 -left-40 size-[420px] rounded-full bg-brand-from/10 blur-3xl"
         />
 
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-10 lg:py-28">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 pt-10 pb-20 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-10 lg:pt-12 lg:pb-24">
           <div>
             <Badge variant="secondary" className="mb-6 rounded-full">
               <ShieldCheck className="size-3.5" aria-hidden />
@@ -86,38 +81,17 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Pricing teaser — figures from the published plans */}
-          <Card className="relative lg:ml-auto lg:max-w-md">
-            <CardHeader>
-              <CardDescription>Plans start from</CardDescription>
-              <CardTitle className="text-4xl font-semibold tracking-tight">
-                $18.95
-                <span className="ml-1 text-base font-normal text-muted-foreground">
-                  /user/month
-                </span>
-              </CardTitle>
-              <CardDescription>
-                Minimum 10 lines. Three tiers available.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {planTeaser.map(({ tier, price }) => (
-                <div
-                  key={tier}
-                  className="flex items-center justify-between border-b border-border pb-3 last:border-0 last:pb-0"
-                >
-                  <span className="text-sm font-medium">{tier}</span>
-                  <span className="text-sm text-muted-foreground">
-                    {price} /user/mo
-                  </span>
-                </div>
-              ))}
-              <Button asChild variant="secondary" className="w-full">
-                <Link href="/pricing">Compare all plans</Link>
-              </Button>
-            </CardContent>
-          </Card>
+          <Image
+            src="/images/agent-cloud-telephony.png"
+            alt="Support agent on a headset with cloud telephony, live chat and call analytics around her"
+            width={1536}
+            height={1024}
+            priority
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="h-auto w-full lg:ml-auto"
+          />
         </div>
+
       </section>
 
       {/* Trust bar */}
