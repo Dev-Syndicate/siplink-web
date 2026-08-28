@@ -11,7 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { certifications, solutions, trustPoints } from "@/lib/site";
+import {
+  capabilities,
+  certifications,
+  mobility,
+  solutions,
+  trustPoints,
+} from "@/lib/site";
 
 const heroHighlights = [
   "Unlimited calling within the USA",
@@ -157,6 +163,75 @@ export default function Home() {
               </CardContent>
             </Card>
           ))}
+        </div>
+      </section>
+
+      {/* Capabilities */}
+      <section className="border-t border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-sm font-medium tracking-widest text-primary uppercase">
+              Quality &amp; efficiency
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Built for the way business actually communicates
+            </h2>
+          </div>
+
+          <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {capabilities.map(({ title, description, icon: Icon }) => (
+              <div key={title} className="flex gap-4">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-background text-primary shadow-sm">
+                  <Icon className="size-5" aria-hidden />
+                </span>
+                <div>
+                  <h3 className="font-medium">{title}</h3>
+                  <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
+                    {description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mobility */}
+      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Your work goes where you go
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Voice and communication services that make distributed teams feel
+              like they are in the same office.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Button asChild size="lg">
+                <Link href="/contact">Book a demo</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/pricing">See pricing and plans</Link>
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-8">
+            {mobility.map(({ title, description, icon: Icon }) => (
+              <div key={title} className="flex gap-4">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Icon className="size-5" aria-hidden />
+                </span>
+                <div>
+                  <h3 className="font-medium">{title}</h3>
+                  <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
+                    {description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

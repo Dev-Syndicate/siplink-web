@@ -1,6 +1,13 @@
 import {
   AudioLines,
+  Activity,
   Banknote,
+  Boxes,
+  Building,
+  HeartHandshake,
+  Laptop,
+  Rocket,
+  Waves,
   Building2,
   Clock,
   Cloud,
@@ -534,6 +541,77 @@ export const reliability: Simple[] = [
     description:
       "Centralised management and billing at any scale. Add users and sites quickly and securely from a standard browser.",
     icon: LayoutGrid,
+  },
+];
+
+/**
+ * The six capability blocks from the homepage. Typos in the source
+ * ("Efficience", "Entreprise", "Hippia") are corrected here.
+ */
+export const capabilities: Simple[] = [
+  {
+    title: "Unified communications",
+    description:
+      "Integrates multiple communication methods within a business — voice, video, messaging and presence on one system.",
+    icon: Boxes,
+  },
+  {
+    title: "Clear, reliable and resilient",
+    description:
+      "VoIP digitises voice communication and holds call quality from anywhere, at any time.",
+    icon: Waves,
+  },
+  {
+    title: "Enterprise collaboration",
+    description:
+      "Enterprise communication services integrated into a single cloud-based phone system.",
+    icon: Building,
+  },
+  {
+    title: "Network security",
+    description:
+      "Preserving optimal communication and performance within your business network.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Call quality monitoring",
+    description:
+      "IP-based voice features adding value to data and video, with quality of service guaranteed.",
+    icon: Activity,
+  },
+  {
+    title: "Personalised service and support",
+    description:
+      "Meeting customer expectations and resolving issues expediently, around the clock.",
+    icon: HeartHandshake,
+  },
+];
+
+/** "Your work goes where you go" — the homepage mobility block. */
+export const mobility: Simple[] = [
+  {
+    title: "Your business goes where you go",
+    description:
+      "Tools that keep business communication seamless by phone, video and text from anywhere — managed entirely off-site.",
+    icon: Laptop,
+  },
+  {
+    title: "A cloud phone system",
+    description:
+      "No large box in the telecom closet. Voice runs over your internet connection, and we handle every update and all maintenance.",
+    icon: ServerCog,
+  },
+  {
+    title: "Everyone on one phone system",
+    description:
+      "Employees and staff share the same virtual PBX, so distributed teams work as though they are in the same office.",
+    icon: Users,
+  },
+  {
+    title: "Get started with cloud",
+    description:
+      "Still running an on-premise phone system? Moving to the cloud removes the hardware and the maintenance that come with it.",
+    icon: Rocket,
   },
 ];
 
