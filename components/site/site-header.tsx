@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 
+import { NavLink } from "@/components/site/nav-link";
 import { Button } from "@/components/ui/button";
 import { nav, site } from "@/lib/site";
 
@@ -22,13 +23,7 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-8 lg:flex">
           {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {item.label}
-            </Link>
+            <NavLink key={item.href} href={item.href} label={item.label} />
           ))}
         </nav>
 

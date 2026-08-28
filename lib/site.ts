@@ -1,5 +1,13 @@
 import {
+  Building2,
   CloudCog,
+  GraduationCap,
+  HeartPulse,
+  Banknote,
+  Landmark,
+  Store,
+  Users,
+  Cpu,
   Router,
   Headset,
   MessagesSquare,
@@ -91,6 +99,77 @@ export const trustPoints: Trust[] = [
  * an uptime SLA here until they are verified — see content.md open questions.
  */
 export const certifications = ["HIPAA COMPLIANT", "DoT CERTIFIED"] as const;
+
+export type Segment = {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  href: string;
+};
+
+/**
+ * The six verticals named on siplink.in, plus the two business sizes.
+ * Descriptions are written from the capabilities the site documents — the
+ * source site lists these by name only. See content.md.
+ */
+export const segments: Segment[] = [
+  {
+    title: "Small & Medium Business",
+    description:
+      "Employees and staff share the same virtual PBX, with a plan that scales as you grow.",
+    icon: Store,
+    href: "/solutions/smb",
+  },
+  {
+    title: "Enterprise",
+    description:
+      "All-in-one enterprise cloud telephony across multiple sites and teams.",
+    icon: Building2,
+    href: "/solutions/enterprise",
+  },
+  {
+    title: "Healthcare",
+    description:
+      "HIPAA-compliant communications for practices handling patient information.",
+    icon: HeartPulse,
+    href: "/industries/healthcare",
+  },
+  {
+    title: "Financial Services",
+    description:
+      "Call recording and secure voice for regulated financial workflows.",
+    icon: Banknote,
+    href: "/industries/financial-services",
+  },
+  {
+    title: "Government",
+    description:
+      "DoT-certified telephony for public sector departments and agencies.",
+    icon: Landmark,
+    href: "/industries/government",
+  },
+  {
+    title: "Education",
+    description:
+      "Campus-wide connectivity linking departments, staff and remote learning.",
+    icon: GraduationCap,
+    href: "/industries/education",
+  },
+  {
+    title: "Tech Solutions",
+    description:
+      "Integrations with Salesforce, Ceipal, Microsoft Teams, Outlook and Google.",
+    icon: Cpu,
+    href: "/industries/tech",
+  },
+  {
+    title: "Staffing & Recruiting",
+    description:
+      "High-volume outbound calling with Ceipal integration for recruiting teams.",
+    icon: Users,
+    href: "/industries/staffing",
+  },
+];
 
 export const nav = [
   { label: "Home", href: "/" },
