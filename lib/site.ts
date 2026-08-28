@@ -925,6 +925,22 @@ export const explainerVideo = {
   title: "SIPLINK UCPBX",
 } as const;
 
+/**
+ * Integrations, from the plan comparison matrix supplied by SipLink.
+ * The brochure additionally lists Zoho, Odoo and HubSpot; those are not
+ * included until confirmed live. See details-content.md §20.6.
+ */
+export const integrations = [
+  "Salesforce",
+  "Microsoft Teams",
+  "MS Outlook",
+  "Microsoft Dynamics 365",
+  "Google Workspace",
+  "Zendesk",
+  "Sugar CRM",
+  "CEIPAL",
+] as const;
+
 export const nav = [
   { label: "Home", href: "/" },
   { label: "Solutions", href: "/solutions" },

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, ShieldCheck } from "lucide-react";
+import { ArrowRight, Check, ShieldCheck, Smartphone } from "lucide-react";
 
 import { ReviewsMarquee } from "@/components/site/reviews-marquee";
 import { VideoEmbed } from "@/components/site/video-embed";
@@ -13,10 +13,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import {
   capabilities,
   certifications,
+  industries,
+  integrations,
+  mobileApps,
   mobility,
+  plans,
   solutions,
   trustPoints,
 } from "@/lib/site";
@@ -168,6 +173,50 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Industries */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-sm font-medium tracking-widest text-primary uppercase">
+              Industries
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Configured for how your sector works
+            </h2>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              From medical billing desks to recruiting teams, the platform is
+              set up around the way you actually work.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {industries.map(({ title, description, icon: Icon, href }) => (
+              <Link
+                key={title}
+                href={href}
+                className="group flex gap-4 rounded-xl border border-border p-5 transition-colors hover:bg-muted/50"
+              >
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Icon className="size-5" aria-hidden />
+                </span>
+                <span>
+                  <span className="block font-medium">{title}</span>
+                  <span className="mt-1 block text-sm text-pretty text-muted-foreground">
+                    {description}
+                  </span>
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Button asChild variant="outline" size="lg">
+              <Link href="/industries">View all industries</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Capabilities */}
       <section className="border-t border-border bg-muted/30">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
@@ -287,6 +336,127 @@ export default function Home() {
                 {cert}
               </span>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Integrations */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-sm font-medium tracking-widest text-primary uppercase">
+              Integrations
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Works with the tools you already run
+            </h2>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              Connect your CRM and productivity stack so calls, contacts and
+              records stay in one place.
+            </p>
+          </div>
+
+          <ul className="mx-auto mt-12 flex max-w-4xl flex-wrap justify-center gap-3">
+            {integrations.map((name) => (
+              <li
+                key={name}
+                className="rounded-full border border-border px-5 py-2.5 text-sm font-medium"
+              >
+                {name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Pricing teaser */}
+      <section className="border-t border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-sm font-medium tracking-widest text-primary uppercase">
+              Pricing
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Simple per-user pricing
+            </h2>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              Three plans, all with unlimited calling across the US and Canada.
+              Minimum 10 lines.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {plans.map((plan) => (
+              <Card
+                key={plan.name}
+                className={cn("h-full", plan.featured && "ring-2 ring-primary")}
+              >
+                <CardHeader>
+                  <div className="flex items-center justify-between gap-2">
+                    <CardTitle className="text-xl">{plan.name}</CardTitle>
+                    {plan.featured ? (
+                      <Badge className="rounded-full">Most popular</Badge>
+                    ) : null}
+                  </div>
+                  <p className="mt-3 flex items-end gap-1.5">
+                    <span className="text-3xl font-semibold tracking-tight">
+                      {plan.price}
+                    </span>
+                    <span className="pb-0.5 text-sm text-muted-foreground">
+                      / user / month
+                    </span>
+                  </p>
+                  <CardDescription className="mt-2 text-pretty">
+                    {plan.blurb}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Button asChild size="lg">
+              <Link href="/pricing">Compare all plans</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Mobile apps */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="mx-auto flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Smartphone className="size-6" aria-hidden />
+            </span>
+            <h2 className="mt-6 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Take your extension anywhere
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              The SipLink UC app puts your business line on your phone and
+              desktop — calls, video, messaging and voicemail, wherever you are.
+            </p>
+
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <Button asChild variant="outline" size="lg">
+                <a
+                  href={mobileApps.ios}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Download for iOS
+                </a>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <a
+                  href={mobileApps.android}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Download for Android
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
