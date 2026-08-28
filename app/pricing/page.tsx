@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, CircleCheck } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -44,18 +44,27 @@ export default function PricingPage() {
             <Card
               key={plan.name}
               className={cn(
-                "flex h-full flex-col",
-                plan.featured && "ring-2 ring-primary lg:-mt-4 lg:shadow-lg"
+                "relative flex h-full flex-col",
+                plan.featured &&
+                  "overflow-hidden bg-primary text-primary-foreground ring-0 lg:-mt-4 lg:shadow-xl"
               )}
             >
+              {plan.featured ? (
+                <span className="absolute top-0 right-0 z-10 rounded-tr-xl rounded-bl-lg bg-primary-foreground/20 px-4 py-1.5 text-xs font-medium tracking-wider text-primary-foreground uppercase">
+                  Most popular
+                </span>
+              ) : null}
+
               <CardHeader>
-                <div className="flex items-center justify-between gap-2">
-                  <h2 className="text-2xl font-semibold">{plan.name}</h2>
-                  {plan.featured ? (
-                    <Badge className="rounded-full">Most popular</Badge>
-                  ) : null}
-                </div>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <h2 className="text-2xl font-semibold">{plan.name}</h2>
+                <p
+                  className={cn(
+                    "mt-2 text-sm",
+                    plan.featured
+                      ? "text-primary-foreground/80"
+                      : "text-muted-foreground"
+                  )}
+                >
                   {plan.blurb}
                 </p>
 
@@ -63,7 +72,14 @@ export default function PricingPage() {
                   <span className="text-4xl font-semibold tracking-tight">
                     {plan.price}
                   </span>
-                  <span className="pb-1 text-sm text-muted-foreground">
+                  <span
+                    className={cn(
+                      "pb-1 text-sm",
+                      plan.featured
+                        ? "text-primary-foreground/80"
+                        : "text-muted-foreground"
+                    )}
+                  >
                     / user / month
                   </span>
                 </p>
@@ -71,8 +87,12 @@ export default function PricingPage() {
                 <Button
                   asChild
                   size="lg"
-                  variant={plan.featured ? "default" : "secondary"}
-                  className="mt-6 w-full"
+                  variant="secondary"
+                  className={cn(
+                    "mt-6 w-full",
+                    plan.featured &&
+                      "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                  )}
                 >
                   <Link href="/contact">Choose {plan.name}</Link>
                 </Button>
@@ -87,8 +107,13 @@ export default function PricingPage() {
                 <ul className="mt-3 space-y-3">
                   {plan.adds.map((feature) => (
                     <li key={feature} className="flex gap-2.5 text-sm">
-                      <Check
-                        className="mt-0.5 size-4 shrink-0 text-primary"
+                      <CircleCheck
+                        className={cn(
+                          "mt-0.5 size-4 shrink-0",
+                          plan.featured
+                            ? "text-primary-foreground"
+                            : "text-primary"
+                        )}
                         aria-hidden
                       />
                       <span className="font-medium">{feature}</span>
@@ -96,11 +121,24 @@ export default function PricingPage() {
                   ))}
                   {planBaseFeatures.map((feature) => (
                     <li key={feature} className="flex gap-2.5 text-sm">
-                      <Check
-                        className="mt-0.5 size-4 shrink-0 text-primary/60"
+                      <CircleCheck
+                        className={cn(
+                          "mt-0.5 size-4 shrink-0",
+                          plan.featured
+                            ? "text-primary-foreground/70"
+                            : "text-primary/60"
+                        )}
                         aria-hidden
                       />
-                      <span className="text-muted-foreground">{feature}</span>
+                      <span
+                        className={cn(
+                          plan.featured
+                            ? "text-primary-foreground/85"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>
