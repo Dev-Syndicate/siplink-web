@@ -615,6 +615,33 @@ export const mobility: Simple[] = [
   },
 ];
 
+export type Review = {
+  /** Reviewer's name exactly as published. */
+  name: string;
+  /** Their role/company, if stated. Optional. */
+  role?: string;
+  /** Star rating out of 5. */
+  rating: number;
+  /** Review text, verbatim. */
+  quote: string;
+};
+
+/**
+ * Customer reviews.
+ *
+ * EMPTY BY DESIGN. The reviews section renders nothing while this is empty,
+ * so the page stays correct until real reviews are added.
+ *
+ * Only add reviews that were actually written by real customers — copy the
+ * name, rating and text exactly as published, and only where SipLink has the
+ * right to reproduce them. Never write placeholder testimonials here: an
+ * invented quote attributed to a named person is a fabricated endorsement.
+ *
+ * Google Business Profile reviews can be exported from the profile itself, or
+ * pulled via the Google Business Profile API.
+ */
+export const reviews: Review[] = [];
+
 export const nav = [
   { label: "Home", href: "/" },
   { label: "Solutions", href: "/solutions" },

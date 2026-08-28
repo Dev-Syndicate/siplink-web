@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 
+import { ReviewsMarquee } from "@/components/site/reviews-marquee";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -262,6 +263,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <ReviewsMarquee />
 
       {/* Closing CTA */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">

@@ -166,3 +166,38 @@
     background: transparent;
   }
 }
+
+@layer components {
+  /* Endless review marquee. The track holds the list twice, so translating
+     it by -50% lands exactly on the duplicate and loops seamlessly. */
+  @keyframes marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .marquee-track {
+    animation: marquee-scroll var(--marquee-duration, 60s) linear infinite;
+    width: max-content;
+  }
+
+  /* Second row travels the other way, so the two rows counter-scroll. */
+  .marquee-track-reverse {
+    animation-direction: reverse;
+  }
+
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+      transform: none;
+    }
+  }
+}
