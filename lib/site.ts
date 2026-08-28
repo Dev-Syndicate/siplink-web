@@ -629,18 +629,94 @@ export type Review = {
 /**
  * Customer reviews.
  *
- * EMPTY BY DESIGN. The reviews section renders nothing while this is empty,
- * so the page stays correct until real reviews are added.
+ * From SipLink's Google Business Profile. Names are reproduced as published
+ * and the text is verbatim apart from light punctuation and capitalisation
+ * fixes; no wording was changed or embellished.
  *
- * Only add reviews that were actually written by real customers — copy the
- * name, rating and text exactly as published, and only where SipLink has the
- * right to reproduce them. Never write placeholder testimonials here: an
- * invented quote attributed to a named person is a fabricated endorsement.
+ * Reviews without usable text (an emoji only, or a two-word rating) are not
+ * included — they carry nothing for a testimonial card.
  *
- * Google Business Profile reviews can be exported from the profile itself, or
- * pulled via the Google Business Profile API.
+ * Only add reviews real customers actually wrote. Never write placeholder
+ * testimonials here: an invented quote attributed to a named person is a
+ * fabricated endorsement. The section renders nothing if this list is empty.
  */
-export const reviews: Review[] = [];
+export const reviews: Review[] = [
+  {
+    name: "Joseph Karthick",
+    rating: 5,
+    quote:
+      "Siplink provides excellent and high-quality VOIP/SIP services. Their support team is outstanding — they even offer WhatsApp support, and a single message is enough for them to respond and start working immediately.",
+  },
+  {
+    name: "Excellence MBS",
+    rating: 5,
+    quote:
+      "Siplink is our backbone. Everything is beyond excellent. I have been using the VOIP services and I have always got the best services and always been a satisfactory experience. Looking forward with more decades together.",
+  },
+  {
+    name: "Rohit Yadav",
+    rating: 5,
+    quote:
+      "We've been working with SIPLINK Communications Pvt. Ltd. for over two years, and their services have consistently exceeded our expectations. The VoIP solutions they offer are cutting-edge, and the performance is flawless.",
+  },
+  {
+    name: "orange Pandi",
+    rating: 5,
+    quote:
+      "Sip-Link Service provides excellent call quality and reliable support. Their customer service is very responsive and always available when needed. It's easy to reach out and get assistance anytime. Overall, a great experience and highly recommended.",
+  },
+  {
+    name: "Manivannan Deenan",
+    rating: 5,
+    quote:
+      "The VoIP service provider SIPLINK has been excellent with their prompt support. I would definitely recommend them to anyone looking for reliable calling services.",
+  },
+  {
+    name: "kashyap inabathini",
+    rating: 5,
+    quote:
+      "Siplink gives best service. Any update or issues your team response very quickly and fix the problem ASAP. Excellent service and good communication.",
+  },
+  {
+    name: "Azure Billing Solutions",
+    rating: 5,
+    quote:
+      "We are happy with your support and any queries or issues are addressed immediately which helps to deliver the work on time. Great work team.",
+  },
+  {
+    name: "Sarath Kumar",
+    rating: 5,
+    quote:
+      "We have been using VoIP service — it's better and easy to access on mobile as well as PC. Great price with great support on time.",
+  },
+  {
+    name: "आकाश यादव",
+    rating: 5,
+    quote:
+      "If you're looking for a reliable VoIP service provider with great customer service, look no further than SIPLINK. They're a true partner in every sense of the word!",
+  },
+  {
+    name: "HARINI BAI",
+    rating: 5,
+    quote:
+      "With SIPLINK it is very good experience, we don't have any issue. Your services are awesome.",
+  },
+  {
+    name: "Razia Banu",
+    rating: 5,
+    quote: "Services are good. We get support 24/7. Thank you Siplink.",
+  },
+  {
+    name: "TitaniumArmor",
+    rating: 5,
+    quote: "This service provider gives smooth connectivity for calls.",
+  },
+  {
+    name: "srujana g",
+    rating: 5,
+    quote: "Giving best VOIP services with best price.",
+  },
+];
 
 export const nav = [
   { label: "Home", href: "/" },
