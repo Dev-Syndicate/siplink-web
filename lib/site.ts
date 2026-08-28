@@ -1,25 +1,39 @@
 import {
-  Building2,
-  CloudCog,
-  GraduationCap,
-  HeartPulse,
+  AudioLines,
   Banknote,
-  Landmark,
-  Store,
-  Users,
+  Building2,
+  Clock,
   Cloud,
+  CloudCog,
   Code2,
   Cpu,
-  Megaphone,
-  Receipt,
-  Stethoscope,
-  UsersRound,
-  Router,
-  Headset,
-  MessagesSquare,
-  ShieldCheck,
+  FileSpreadsheet,
+  GitBranch,
+  GraduationCap,
   Headphones,
+  Headset,
+  HeartPulse,
+  Landmark,
+  LayoutGrid,
+  LifeBuoy,
   Lock,
+  Megaphone,
+  MessageCircle,
+  MessagesSquare,
+  Network,
+  PhoneCall,
+  PiggyBank,
+  Receipt,
+  Router,
+  ScrollText,
+  ServerCog,
+  ShieldCheck,
+  Stethoscope,
+  Store,
+  Ticket,
+  Users,
+  UsersRound,
+  Video,
   type LucideIcon,
 } from "lucide-react";
 
@@ -358,11 +372,177 @@ export const plans: Plan[] = [
 export const planNote =
   "All plans are priced per user, per month and require a minimum of 10 lines. Taxes and regulatory fees are not included.";
 
+export type Simple = { title: string; description: string; icon: LucideIcon };
+
+/**
+ * UCaaS benefits, from the UCaaS PBX page — the newest and best-written copy
+ * on the live site.
+ */
+export const ucaasBenefits: Simple[] = [
+  {
+    title: "One platform, total control",
+    description:
+      "All your communication — calls, video, chat and collaboration — in one powerful hub.",
+    icon: LayoutGrid,
+  },
+  {
+    title: "Cut costs, not quality",
+    description:
+      "Say goodbye to expensive hardware and maintenance. Save instantly and scale effortlessly.",
+    icon: PiggyBank,
+  },
+  {
+    title: "Crystal clear every time",
+    description:
+      "Enterprise-grade voice and HD video with zero compromise.",
+    icon: AudioLines,
+  },
+  {
+    title: "Support that never sleeps",
+    description: "Our experts are available 24x7, whenever you need help.",
+    icon: Clock,
+  },
+];
+
+/** Platform capabilities, from the UCaaS PBX and sales brochure feature lists. */
+export const platformFeatures: Simple[] = [
+  {
+    title: "IVR and call routing",
+    description:
+      "An automated menu guides callers to billing, support or sales by keypad, so queries route quickly and accurately without manual intervention.",
+    icon: GitBranch,
+  },
+  {
+    title: "Call queues and ring groups",
+    description:
+      "Intelligent call distribution and queue management balance agent workload and keep response times down at high volume.",
+    icon: PhoneCall,
+  },
+  {
+    title: "CDR and call history",
+    description:
+      "View, track and download detailed call records for any period in Excel or CSV, and filter call history by number and time range.",
+    icon: FileSpreadsheet,
+  },
+  {
+    title: "Supervisor monitoring",
+    description:
+      "Real-time agent monitoring with listen, whisper and barge, plus performance tracking and call quality reports.",
+    icon: Headset,
+  },
+  {
+    title: "Call recording",
+    description:
+      "Automatic and on-demand recording with secure access, playback, download and sharing.",
+    icon: AudioLines,
+  },
+  {
+    title: "Video and messaging",
+    description:
+      "Audio and video conferencing, screen sharing, business SMS and internal team chat on one platform.",
+    icon: Video,
+  },
+];
+
+/**
+ * The "Siplink Assure" commitments from the About page.
+ * The SLA commitment is quoted as written — it is asserted but never
+ * quantified anywhere on the source site. Do not add a percentage here.
+ */
+export const assurances: Simple[] = [
+  {
+    title: "Dedicated project managers",
+    description:
+      "Experts who oversee the design and delivery of your solution from concept through to installation.",
+    icon: Users,
+  },
+  {
+    title: "Resolution expertise",
+    description:
+      "An expert manages your issue from beginning to end, keeping you informed until it is resolved.",
+    icon: LifeBuoy,
+  },
+  {
+    title: "24x7 customer support",
+    description: "Dedicated customer support staff are always available to help.",
+    icon: Clock,
+  },
+  {
+    title: "Online account management",
+    description:
+      "A web portal that makes it easy to administer your account and support.",
+    icon: ScrollText,
+  },
+  {
+    title: "Service level agreement",
+    description:
+      "Covering SipLink equipment, the local access network and our IP network.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Service interruption credits",
+    description:
+      "We resolve interruptions as quickly as possible, and if the fault resides with us you receive a credit.",
+    icon: Network,
+  },
+];
+
+/** Support channels from the Support page. */
+export const supportChannels: Simple[] = [
+  {
+    title: "Email support",
+    description:
+      "Write to us for product information or the services we provide. Answered around the clock.",
+    icon: MessageCircle,
+  },
+  {
+    title: "Live chat",
+    description:
+      "Chat with our team for a quick answer or to arrange the service you need.",
+    icon: MessagesSquare,
+  },
+  {
+    title: "Support tickets",
+    description:
+      "Raise a ticket for your query and our expert team will be in touch.",
+    icon: Ticket,
+  },
+  {
+    title: "24x7 call centre",
+    description:
+      "Any issue with the product, or any question about the company — we are a call away.",
+    icon: Headset,
+  },
+];
+
+/** Network and infrastructure claims from the Why SipLink page. */
+export const reliability: Simple[] = [
+  {
+    title: "No single point of failure",
+    description:
+      "Failover, redundancy and replication throughout the network — redundant servers, routers and switches with real-time replication to a secondary data centre.",
+    icon: ServerCog,
+  },
+  {
+    title: "Multiple provider links",
+    description:
+      "Data and IP provider links from two data centres, each capable of carrying the entire network load if one or more links fail.",
+    icon: Network,
+  },
+  {
+    title: "Scales with you",
+    description:
+      "Centralised management and billing at any scale. Add users and sites quickly and securely from a standard browser.",
+    icon: LayoutGrid,
+  },
+];
+
 export const nav = [
   { label: "Home", href: "/" },
   { label: "Solutions", href: "/solutions" },
   { label: "Industries", href: "/industries" },
   { label: "Pricing", href: "/pricing" },
+  { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ] as const;
 

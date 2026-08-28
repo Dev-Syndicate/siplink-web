@@ -11,7 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { segments, solutions } from "@/lib/site";
+import {
+  platformFeatures,
+  segments,
+  solutions,
+  ucaasBenefits,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Solutions",
@@ -104,6 +109,69 @@ export default function SolutionsPage() {
                     />
                   </Link>
                 </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Platform features */}
+      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="text-sm font-medium tracking-widest text-primary uppercase">
+            Platform
+          </span>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance">
+            Everything your teams need on one platform
+          </h2>
+          <p className="mt-3 text-pretty text-muted-foreground">
+            Call management, supervision and reporting, delivered from the cloud
+            and accessible from any device.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {platformFeatures.map(({ title, description, icon: Icon }) => (
+            <div key={title} className="flex gap-4">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Icon className="size-5" aria-hidden />
+              </span>
+              <div>
+                <h3 className="font-medium">{title}</h3>
+                <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
+                  {description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* UCaaS benefits */}
+      <section className="border-y border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-semibold tracking-tight text-balance">
+              Why teams move to SipLink UCaaS
+            </h2>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              One cloud platform instead of separate systems for calls, video,
+              messaging and integrations.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {ucaasBenefits.map(({ title, description, icon: Icon }) => (
+              <Card key={title} className="h-full">
+                <CardHeader>
+                  <span className="mb-2 flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Icon className="size-5" aria-hidden />
+                  </span>
+                  <CardTitle className="text-base">{title}</CardTitle>
+                  <CardDescription className="text-pretty">
+                    {description}
+                  </CardDescription>
+                </CardHeader>
               </Card>
             ))}
           </div>

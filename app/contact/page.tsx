@@ -2,9 +2,15 @@ import type { Metadata } from "next";
 import { Building2, Mail, MapPin, Phone } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ContactForm } from "@/components/site/contact-form";
-import { offices, site } from "@/lib/site";
+import { offices, site, supportChannels } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -90,8 +96,38 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Offices */}
+      {/* Support channels */}
       <section className="border-t border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-semibold tracking-tight text-balance">
+              Support, however you prefer to reach us
+            </h2>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              We support our customers around the clock, across every channel.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {supportChannels.map(({ title, description, icon: Icon }) => (
+              <Card key={title} className="h-full">
+                <CardHeader>
+                  <span className="mb-2 flex size-11 items-center justify-center rounded-lg bg-background text-primary shadow-sm">
+                    <Icon className="size-5" aria-hidden />
+                  </span>
+                  <CardTitle className="text-base">{title}</CardTitle>
+                  <CardDescription className="text-pretty">
+                    {description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Offices */}
+      <section className="border-t border-border">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <h2 className="text-3xl font-semibold tracking-tight text-balance">
             Our offices
