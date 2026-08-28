@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 
 import { ReviewsMarquee } from "@/components/site/reviews-marquee";
+import { VideoEmbed } from "@/components/site/video-embed";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -194,6 +195,32 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Bring your team together */}
+      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <span className="text-sm font-medium tracking-widest text-primary uppercase">
+              Quality &amp; efficiency
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Bring your team together
+            </h2>
+            <p className="mt-6 text-pretty text-muted-foreground">
+              Voice and collaboration services that give your teams the feeling
+              of being in the same office — on a secure network, from a
+              HIPAA-compliant cloud phone system.
+            </p>
+            <div className="mt-8">
+              <Button asChild size="lg" variant="outline">
+                <Link href="/solutions">Explore solutions</Link>
+              </Button>
+            </div>
+          </div>
+
+          <VideoEmbed />
         </div>
       </section>
 

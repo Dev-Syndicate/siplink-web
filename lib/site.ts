@@ -125,7 +125,11 @@ export const trustPoints: Trust[] = [
  * Only credentials SipLink actually holds. Do not add SOC 2, PCI DSS, GDPR or
  * an uptime SLA here until they are verified — see content.md open questions.
  */
-export const certifications = ["HIPAA COMPLIANT", "DoT CERTIFIED"] as const;
+export const certifications = [
+  "HIPAA COMPLIANT",
+  "DoT CERTIFIED",
+  "D-U-N-S REGISTERED",
+] as const;
 
 export type Segment = {
   title: string;
@@ -914,6 +918,12 @@ export const whyChoose: Simple[] = [
     icon: LayoutGrid,
   },
 ];
+
+/** The company's own explainer video, from the homepage "See How" button. */
+export const explainerVideo = {
+  id: "4e6X2xEdzY4",
+  title: "SIPLINK UCPBX",
+} as const;
 
 export const nav = [
   { label: "Home", href: "/" },
