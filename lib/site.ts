@@ -330,7 +330,7 @@ export type Plan = {
 
 /** Shared by every tier — rendered under the Value plan. */
 export const planBaseFeatures = [
-  "Unlimited calling within the USA",
+  "Unlimited calling within the US and Canada",
   "Free local number",
   "IP-phone free lease",
   "Business SMS",
@@ -373,6 +373,135 @@ export const plans: Plan[] = [
       "Screen sharing",
       "Team messaging",
     ],
+  },
+];
+
+
+/**
+ * The full plan comparison, as supplied by SipLink.
+ *
+ * `tiers` is [Value, Business, Enterprise]. A boolean marks inclusion; a
+ * string is shown as its own label (used for the 24/7 support rows).
+ */
+export type FeatureRow = {
+  label: string;
+  tiers: [boolean | string, boolean | string, boolean | string];
+};
+
+export type FeatureGroup = { heading: string; rows: FeatureRow[] };
+
+const y = true;
+const n = false;
+
+export const planMatrix: FeatureGroup[] = [
+  {
+    heading: "SipLink essentials",
+    rows: [
+      { label: "Unlimited calling within the US/CAN", tiers: [y, y, y] },
+      { label: "Free local number", tiers: [y, y, y] },
+      { label: "Keep your current number", tiers: [y, y, y] },
+      { label: "HD video & HD voice", tiers: [y, y, y] },
+      { label: "Customizable hold music", tiers: [y, y, y] },
+      { label: "Multi-level auto attendant", tiers: [n, y, y] },
+      { label: "CLI", tiers: [y, y, y] },
+      { label: "Dial by directory", tiers: [n, y, y] },
+      { label: "C Name", tiers: [n, y, y] },
+      { label: "Call controls (transfer, hold, mute)", tiers: [n, y, y] },
+      { label: "Simultaneous ring", tiers: [n, y, y] },
+      { label: "Call forwarding", tiers: [y, y, y] },
+      { label: "Call waiting", tiers: [n, y, y] },
+      { label: "Call queues", tiers: [n, y, y] },
+      { label: "Do not disturb", tiers: [n, y, y] },
+      { label: "Voicemail to email", tiers: [y, y, y] },
+      { label: "Voicemail transcription", tiers: [n, n, y] },
+      { label: "Team presence", tiers: [n, n, y] },
+      { label: "Shared line appearance", tiers: [n, n, y] },
+      { label: "Call groups", tiers: [n, y, y] },
+      { label: "WebRTC", tiers: [n, y, y] },
+    ],
+  },
+  {
+    heading: "Mobility",
+    rows: [
+      { label: "SipLink app for Mac", tiers: [y, y, y] },
+      { label: "SipLink app for Windows", tiers: [y, y, y] },
+      { label: "SipLink app for iOS", tiers: [y, y, y] },
+      { label: "SipLink app for Android", tiers: [y, y, y] },
+    ],
+  },
+  {
+    heading: "Meetings",
+    rows: [
+      { label: "Unlimited conference calls", tiers: [n, y, y] },
+      { label: "Unlimited video calling (peer-to-peer)", tiers: [n, y, y] },
+      { label: "HD video calling", tiers: [n, y, y] },
+    ],
+  },
+  {
+    heading: "Team collaboration & messaging",
+    rows: [
+      { label: "Team messaging and collaboration", tiers: [n, y, y] },
+      { label: "Private group messaging", tiers: [n, n, y] },
+      { label: "Business SMS", tiers: [n, y, y] },
+    ],
+  },
+  {
+    heading: "Analytics & reports",
+    rows: [
+      { label: "Call history", tiers: [y, y, y] },
+      { label: "Call log reports", tiers: [y, y, y] },
+      { label: "Voice analytics", tiers: [n, y, y] },
+    ],
+  },
+  {
+    heading: "Administration",
+    rows: [
+      { label: "Admin portal", tiers: [y, y, y] },
+      { label: "User portal", tiers: [y, y, y] },
+      { label: "Dashboard", tiers: [y, y, y] },
+      { label: "Real-time system status alerts", tiers: [y, y, y] },
+      { label: "Call recording", tiers: [y, y, y] },
+    ],
+  },
+  {
+    heading: "Integrations",
+    rows: [
+      { label: "Salesforce", tiers: [n, y, y] },
+      { label: "MS Outlook", tiers: [n, y, y] },
+      { label: "Zendesk", tiers: [n, y, y] },
+      { label: "Microsoft Dynamics 365", tiers: [n, y, y] },
+      { label: "Sugar CRM", tiers: [n, y, y] },
+      { label: "CEIPAL", tiers: [n, y, y] },
+    ],
+  },
+  {
+    heading: "IP phones",
+    rows: [
+      { label: "Bring your own device", tiers: [y, y, y] },
+      { label: "Phone lease: desk and conference phones", tiers: [y, y, y] },
+      { label: "Desk IP phone", tiers: [y, y, y] },
+      { label: "Conference IP phone", tiers: [y, y, y] },
+    ],
+  },
+  {
+    heading: "Support",
+    rows: [
+      { label: "Email support", tiers: ["24/7", "24/7", "24/7"] },
+      { label: "Chat support", tiers: ["24/7", "24/7", "24/7"] },
+      { label: "Phone support", tiers: ["24/7", "24/7", "24/7"] },
+    ],
+  },
+];
+
+/** Quote-only unlimited calling plans. No published rate. */
+export const unlimitedPlans = [
+  {
+    title: "Unlimited USA",
+    description: "Unlimited calling across the United States.",
+  },
+  {
+    title: "Unlimited Canada",
+    description: "Unlimited calling across Canada.",
   },
 ];
 

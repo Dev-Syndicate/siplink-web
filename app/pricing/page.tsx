@@ -1,12 +1,24 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import Link from "next/link";
-import { ArrowRight, CircleCheck } from "lucide-react";
+import { ArrowRight, Check, CircleCheck } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { planBaseFeatures, planNote, plans } from "@/lib/site";
+import {
+  planBaseFeatures,
+  planMatrix,
+  planNote,
+  plans,
+  unlimitedPlans,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -150,6 +162,134 @@ export default function PricingPage() {
         <p className="mt-10 text-center text-sm text-muted-foreground">
           {planNote}
         </p>
+      </section>
+
+      {/* Full comparison */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-semibold tracking-tight text-balance">
+              Compare every feature
+            </h2>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              The full breakdown across all three plans.
+            </p>
+          </div>
+
+          <div className="mt-12 overflow-x-auto">
+            <table className="w-full min-w-3xl border-collapse text-sm">
+              <thead className="bg-background">
+                <tr>
+                  <th
+                    scope="col"
+                    className="border border-border px-4 py-4 text-center font-semibold"
+                  >
+                    Features
+                  </th>
+                  {plans.map((plan) => (
+                    <th
+                      key={plan.name}
+                      scope="col"
+                      className={cn(
+                        "w-44 border border-border px-4 py-4 text-center font-semibold",
+                        plan.featured && "text-primary"
+                      )}
+                    >
+                      {plan.name}
+                      <span className="block text-xs font-normal text-muted-foreground">
+                        {plan.price} / user / mo
+                      </span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody>
+                {planMatrix.map((group) => (
+                  <Fragment key={group.heading}>
+                    <tr>
+                      <th
+                        scope="colgroup"
+                        colSpan={4}
+                        className="border border-border bg-primary/5 px-4 py-3 text-center text-base font-semibold text-primary"
+                      >
+                        {group.heading}
+                      </th>
+                    </tr>
+
+                    {group.rows.map((row, rowIndex) => (
+                      <tr
+                        key={row.label}
+                        className={cn(rowIndex % 2 === 1 && "bg-muted/40")}
+                      >
+                        <th
+                          scope="row"
+                          className="border border-border px-4 py-3 text-center font-normal"
+                        >
+                          {row.label}
+                        </th>
+                        {row.tiers.map((value, i) => (
+                          <td
+                            key={i}
+                            className="border border-border px-4 py-3 text-center"
+                          >
+                            {typeof value === "string" ? (
+                              <span className="text-xs font-medium">
+                                {value}
+                              </span>
+                            ) : value ? (
+                              <>
+                                <Check
+                                  className="mx-auto size-4 text-primary"
+                                  aria-hidden
+                                />
+                                <span className="sr-only">Included</span>
+                              </>
+                            ) : (
+                              <span className="sr-only">Not included</span>
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* Unlimited plans */}
+      <section className="border-t border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-semibold tracking-tight text-balance">
+              Our unlimited plans
+            </h2>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              Unlimited calling, priced to your usage.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
+            {unlimitedPlans.map(({ title, description }) => (
+              <Card key={title} className="text-center">
+                <CardHeader>
+                  <CardTitle className="text-xl">{title}</CardTitle>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {description}
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <Button asChild variant="secondary" className="w-full">
+                    <Link href="/contact">Get a quote</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Trial */}
