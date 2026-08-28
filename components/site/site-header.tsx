@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Menu } from "lucide-react";
-
+import { MobileNav } from "@/components/site/mobile-nav";
 import { NavLink } from "@/components/site/nav-link";
 import { Button } from "@/components/ui/button";
 import { nav, site } from "@/lib/site";
@@ -31,14 +30,7 @@ export function SiteHeader() {
           <Button asChild>
             <Link href="/contact">Book a demo</Link>
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden"
-            aria-label="Open menu"
-          >
-            <Menu />
-          </Button>
+          <MobileNav />
         </div>
       </div>
     </header>
