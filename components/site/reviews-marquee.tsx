@@ -62,12 +62,12 @@ function Row({
 }) {
   return (
     <div
-      className="marquee overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+      className="marquee -my-2 overflow-hidden py-2 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
       style={{ "--marquee-duration": duration } as React.CSSProperties}
     >
       <div
         className={cn(
-          "marquee-track flex gap-6",
+          "marquee-track flex items-stretch gap-6",
           reverse && "marquee-track-reverse"
         )}
       >
