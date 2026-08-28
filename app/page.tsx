@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Check, ShieldCheck, Smartphone } from "lucide-react";
 
 import { ReviewsMarquee } from "@/components/site/reviews-marquee";
+import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
 import { VideoEmbed } from "@/components/site/video-embed";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -508,6 +509,7 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer noopener"
                 >
+                  <AppleLogo className="size-5" />
                   Download for iOS
                 </a>
               </Button>
@@ -517,6 +519,7 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer noopener"
                 >
+                  <PlayStoreLogo className="size-5" />
                   Download for Android
                 </a>
               </Button>

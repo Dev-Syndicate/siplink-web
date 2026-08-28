@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
 
+import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
 import { Separator } from "@/components/ui/separator";
 import { footerNav, mobileApps, site, social } from "@/lib/site";
 
@@ -43,16 +44,18 @@ export function SiteFooter() {
                 href={mobileApps.ios}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
+                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
               >
+                <AppleLogo className="size-4" />
                 SipLink UC for iOS
               </a>
               <a
                 href={mobileApps.android}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
+                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
               >
+                <PlayStoreLogo className="size-4" />
                 SipLink UC for Android
               </a>
             </div>
