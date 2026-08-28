@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -27,26 +28,38 @@ export default function SolutionsPage() {
           aria-hidden
           className="pointer-events-none absolute -top-32 right-0 size-[520px] rounded-full bg-brand-to/10 blur-3xl"
         />
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-          <span className="text-sm font-medium tracking-widest text-primary uppercase">
-            Engineered connectivity
-          </span>
-          <h1 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-            Communication solutions
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg text-pretty text-muted-foreground">
-            Cloud voice infrastructure for modern business — fault tolerant,
-            scalable, and built to integrate with the tools your teams already
-            use.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Button asChild size="lg">
-              <Link href="/contact">Request a quote</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/pricing">View pricing</Link>
-            </Button>
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-24">
+          <div>
+            <span className="text-sm font-medium tracking-widest text-primary uppercase">
+              Engineered connectivity
+            </span>
+            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+              Communication solutions
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
+              Cloud voice infrastructure for modern business — fault tolerant,
+              scalable, and built to integrate with the tools your teams already
+              use.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Button asChild size="lg">
+                <Link href="/contact">Request a quote</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/pricing">View pricing</Link>
+              </Button>
+            </div>
           </div>
+
+          <Image
+            src="/images/communication.png"
+            alt="Cloud telephony connecting desk phones, mobile apps, messaging and analytics"
+            width={1536}
+            height={1024}
+            priority
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="h-auto w-full"
+          />
         </div>
       </section>
 
