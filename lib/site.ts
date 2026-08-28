@@ -7,7 +7,10 @@ import {
   Landmark,
   Store,
   Users,
+  Code2,
   Cpu,
+  Stethoscope,
+  UsersRound,
   Router,
   Headset,
   MessagesSquare,
@@ -167,6 +170,70 @@ export const segments: Segment[] = [
     description:
       "High-volume outbound calling with Ceipal integration for recruiting teams.",
     icon: Users,
+    href: "/industries/staffing",
+  },
+];
+
+export type Industry = {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  href: string;
+  /** Only badge a credential SipLink actually holds. */
+  badge?: string;
+};
+
+/**
+ * The six verticals named on siplink.in. The source site gives names only, so
+ * this copy describes capabilities SipLink documents elsewhere (call recording,
+ * HIPAA, DoT, Ceipal/Salesforce integrations, 24/7 support).
+ *
+ * Do NOT add regulatory claims here — FedRAMP, SEC/FINRA, SOC 2, PCI DSS —
+ * without written evidence. HIPAA and DoT are the only verified credentials.
+ */
+export const industries: Industry[] = [
+  {
+    title: "Healthcare",
+    description:
+      "Secure patient communication on a HIPAA-compliant cloud phone system. Handle appointment reminders, telehealth calls and clinic transfers without exposing patient information.",
+    icon: Stethoscope,
+    href: "/industries/healthcare",
+    badge: "HIPAA compliant",
+  },
+  {
+    title: "Financial Services",
+    description:
+      "Call recording, voicemail-to-email and Salesforce integration for client-facing teams — with the audit trail your internal compliance processes depend on.",
+    icon: Banknote,
+    href: "/industries/financial-services",
+  },
+  {
+    title: "Tech Solutions",
+    description:
+      "Cloud telephony that fits your existing stack, with integrations for Salesforce, Microsoft Teams, Outlook and Google, plus SIP trunking into your own IP-PBX.",
+    icon: Code2,
+    href: "/industries/tech",
+  },
+  {
+    title: "Government Sectors",
+    description:
+      "DoT-certified telephony for departments and agencies, with quality of service guaranteed across the network and 24/7 support for critical lines.",
+    icon: Landmark,
+    href: "/industries/government",
+    badge: "DoT certified",
+  },
+  {
+    title: "Educational Solutions",
+    description:
+      "Campus-wide unified communications connecting departments, staff and remote learning — audio and video conferencing, team messaging and mobile apps on one platform.",
+    icon: GraduationCap,
+    href: "/industries/education",
+  },
+  {
+    title: "Staffing & Recruiting",
+    description:
+      "High-volume outbound calling with Ceipal and Salesforce integration, call recording and mobile apps so recruiters can place candidates from anywhere.",
+    icon: UsersRound,
     href: "/industries/staffing",
   },
 ];
