@@ -131,18 +131,26 @@ export default function ContactPage() {
           </div>
 
           {registered.map((office) => (
-            <Card key={office.city} className="mt-6">
-              <CardContent className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-6">
-                <div className="flex items-center gap-2">
-                  <Building2 className="size-5 text-muted-foreground" aria-hidden />
-                  <span className="text-sm font-medium">{office.entity}</span>
-                  <Badge variant="secondary">US registered entity</Badge>
-                </div>
-                <span className="text-sm text-muted-foreground">
+            <div
+              key={office.city}
+              className="mt-6 flex items-start gap-3 rounded-lg border border-dashed border-border px-5 py-4"
+            >
+              <Building2
+                className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+                aria-hidden
+              />
+              <div className="text-sm">
+                <p className="font-medium">
+                  {office.entity}{" "}
+                  <Badge variant="secondary" className="ml-1 align-middle">
+                    US registered entity
+                  </Badge>
+                </p>
+                <p className="mt-1 text-muted-foreground">
                   {office.address.join(", ")}
-                </span>
-              </CardContent>
-            </Card>
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </section>
