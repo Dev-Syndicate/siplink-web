@@ -98,7 +98,7 @@ export default function IndustriesPage() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
-              <Link href="/contact">Talk to our team</Link>
+              <Link href="/contact">Book a demo</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
               <Link href="/solutions">Browse solutions</Link>

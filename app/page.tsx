@@ -67,7 +67,7 @@ export default function Home() {
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Button asChild size="lg">
-                <Link href="/contact">Start free trial</Link>
+                <Link href="/contact">Book a demo</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="group">
                 <Link href="/pricing">
@@ -195,15 +195,15 @@ export default function Home() {
             Ready to move your business to the cloud?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-            Try SipLink free for three days. Our team will help you plan the
+            See SipLink running on your own workflows. Our team will plan the
             migration and port your existing numbers.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
-              <Link href="/contact">Start free trial</Link>
+              <Link href="/contact">Book a demo</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href="/contact">Request a quote</Link>
+              <Link href="/pricing">See pricing</Link>
             </Button>
           </div>
         </div>

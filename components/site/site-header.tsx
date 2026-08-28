@@ -28,11 +28,8 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button asChild variant="ghost" className="hidden sm:inline-flex">
-            <Link href="/contact">Request a quote</Link>
-          </Button>
           <Button asChild>
-            <Link href="/contact">Start free trial</Link>
+            <Link href="/contact">Book a demo</Link>
           </Button>
           <Button
             variant="ghost"

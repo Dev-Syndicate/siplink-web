@@ -43,7 +43,7 @@ export default function SolutionsPage() {
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Button asChild size="lg">
-                <Link href="/contact">Request a quote</Link>
+                <Link href="/contact">Book a demo</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
                 <Link href="/pricing">View pricing</Link>
@@ -152,10 +152,10 @@ export default function SolutionsPage() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
-              <Link href="/contact">Talk to our team</Link>
+              <Link href="/contact">Book a demo</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href="/contact">Start free trial</Link>
+              <Link href="/pricing">View pricing</Link>
             </Button>
           </div>
         </div>

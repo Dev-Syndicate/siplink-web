@@ -156,14 +156,14 @@ export default function PricingPage() {
       <section className="border-y border-border bg-muted/30">
         <div className="mx-auto max-w-2xl px-6 py-20 text-center lg:px-10">
           <h2 className="text-3xl font-semibold tracking-tight text-balance">
-            Try SipLink free for three days
+            See SipLink on your own workflows
           </h2>
           <p className="mt-4 text-pretty text-muted-foreground">
-            Start on any plan and our team will help you port your existing
-            numbers and configure your extensions.
+            Book a walkthrough on any plan and our team will help you port your
+            existing numbers and configure your extensions.
           </p>
           <Button asChild size="lg" className="mt-8">
-            <Link href="/contact">Start free trial</Link>
+            <Link href="/contact">Book a demo</Link>
           </Button>
         </div>
       </section>
