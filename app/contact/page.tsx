@@ -66,24 +66,28 @@ export default function ContactPage() {
             <div className="mt-6 space-y-4">
               <a
                 href={`tel:${site.phone.replace(/\s/g, "")}`}
-                className="flex items-start gap-3 rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
+                className="flex items-center gap-4 rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
               >
-                <Phone className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />
-                <span>
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Phone className="size-5" aria-hidden />
+                </span>
+                <span className="min-w-0">
                   <span className="block text-sm font-medium">Sales</span>
-                  <span className="block text-sm text-muted-foreground">
+                  <span className="block truncate text-sm text-muted-foreground">
                     {site.phone}
                   </span>
                 </span>
               </a>
               <a
                 href={`mailto:${site.email}`}
-                className="flex items-start gap-3 rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
+                className="flex items-center gap-4 rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
               >
-                <Mail className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />
-                <span>
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Mail className="size-5" aria-hidden />
+                </span>
+                <span className="min-w-0">
                   <span className="block text-sm font-medium">Support</span>
-                  <span className="block text-sm text-muted-foreground">
+                  <span className="block truncate text-sm text-muted-foreground">
                     {site.email}
                   </span>
                 </span>
