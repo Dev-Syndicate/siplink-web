@@ -496,10 +496,12 @@ export const planMatrix: FeatureGroup[] = [
 /** Quote-only unlimited calling plans. No published rate. */
 export const unlimitedPlans = [
   {
+    country: "US" as const,
     title: "Unlimited USA",
     description: "Unlimited calling across the United States.",
   },
   {
+    country: "CA" as const,
     title: "Unlimited Canada",
     description: "Unlimited calling across Canada.",
   },

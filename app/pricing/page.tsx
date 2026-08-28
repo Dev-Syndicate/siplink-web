@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
+import { FlagCA, FlagUS } from "@/components/site/flags";
 import Link from "next/link";
 import { ArrowRight, Check, CircleCheck } from "lucide-react";
 
@@ -273,10 +274,14 @@ export default function PricingPage() {
           </div>
 
           <div className="mx-auto mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
-            {unlimitedPlans.map(({ title, description }) => (
+            {unlimitedPlans.map(({ country, title, description }) => {
+              const Flag = country === "US" ? FlagUS : FlagCA;
+
+              return (
               <Card key={title} className="text-center">
                 <CardHeader>
-                  <CardTitle className="text-xl">{title}</CardTitle>
+                  <Flag className="mx-auto h-8 w-12 rounded-sm shadow-sm" />
+                  <CardTitle className="mt-4 text-xl">{title}</CardTitle>
                   <p className="mt-2 text-sm text-muted-foreground">
                     {description}
                   </p>
@@ -287,7 +292,8 @@ export default function PricingPage() {
                   </Button>
                 </CardContent>
               </Card>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
