@@ -17,7 +17,7 @@ export function SiteHeader() {
             width={300}
             height={135}
             priority
-            className="h-8 w-auto object-contain"
+            className="h-11 w-auto object-contain"
           />
         </Link>
 

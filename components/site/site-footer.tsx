@@ -16,7 +16,7 @@ export function SiteFooter() {
               alt={site.legalName}
               width={300}
               height={135}
-              className="h-7 w-auto object-contain"
+              className="h-9 w-auto object-contain"
             />
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
               {site.description}
