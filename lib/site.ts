@@ -7,8 +7,11 @@ import {
   Landmark,
   Store,
   Users,
+  Cloud,
   Code2,
   Cpu,
+  Megaphone,
+  Receipt,
   Stethoscope,
   UsersRound,
   Router,
@@ -184,57 +187,114 @@ export type Industry = {
 };
 
 /**
- * The six verticals named on siplink.in. The source site gives names only, so
- * this copy describes capabilities SipLink documents elsewhere (call recording,
- * HIPAA, DoT, Ceipal/Salesforce integrations, 24/7 support).
+ * The six verticals from the 2026 sales brochure, which supersedes the older
+ * website set (Financial Services, Government and Education are retired).
+ * Medical Billing & RCM leads — matching the newest page on the live site.
+ * Copy follows the brochure, with its typos corrected.
  *
- * Do NOT add regulatory claims here — FedRAMP, SEC/FINRA, SOC 2, PCI DSS —
- * without written evidence. HIPAA and DoT are the only verified credentials.
+ * Do NOT add regulatory claims here — FedRAMP, SEC/FINRA, SOC 2, PCI DSS,
+ * SSAE-16 — without written evidence. See details-content.md §20.9.
  */
 export const industries: Industry[] = [
   {
-    title: "Healthcare",
+    title: "Medical Billing & RCM",
     description:
-      "Secure patient communication on a HIPAA-compliant cloud phone system. Handle appointment reminders, telehealth calls and clinic transfers without exposing patient information.",
+      "Streamline revenue cycle management with efficient call handling, automated workflows, and seamless communication for billing operations.",
+    icon: Receipt,
+    href: "/industries/medical-billing-rcm",
+  },
+  {
+    title: "Medical Care & Healthcare",
+    description:
+      "Enhance patient communication, appointment coordination, and support services with reliable and secure telephony solutions.",
     icon: Stethoscope,
     href: "/industries/healthcare",
     badge: "HIPAA compliant",
   },
   {
-    title: "Financial Services",
+    title: "Staffing & Recruitment",
     description:
-      "Call recording, voicemail-to-email and Salesforce integration for client-facing teams — with the audit trail your internal compliance processes depend on.",
-    icon: Banknote,
-    href: "/industries/financial-services",
-  },
-  {
-    title: "Tech Solutions",
-    description:
-      "Cloud telephony that fits your existing stack, with integrations for Salesforce, Microsoft Teams, Outlook and Google, plus SIP trunking into your own IP-PBX.",
-    icon: Code2,
-    href: "/industries/tech",
-  },
-  {
-    title: "Government Sectors",
-    description:
-      "DoT-certified telephony for departments and agencies, with quality of service guaranteed across the network and 24/7 support for critical lines.",
-    icon: Landmark,
-    href: "/industries/government",
-    badge: "DoT certified",
-  },
-  {
-    title: "Educational Solutions",
-    description:
-      "Campus-wide unified communications connecting departments, staff and remote learning — audio and video conferencing, team messaging and mobile apps on one platform.",
-    icon: GraduationCap,
-    href: "/industries/education",
-  },
-  {
-    title: "Staffing & Recruiting",
-    description:
-      "High-volume outbound calling with Ceipal and Salesforce integration, call recording and mobile apps so recruiters can place candidates from anywhere.",
+      "Simplify candidate outreach, interview coordination and client communication with smart calling and messaging features.",
     icon: UsersRound,
     href: "/industries/staffing",
+  },
+  {
+    title: "IT & Software",
+    description:
+      "Support technical teams with efficient communication tools for customer support, troubleshooting and internal collaboration.",
+    icon: Code2,
+    href: "/industries/it-software",
+  },
+  {
+    title: "Marketing & Sales",
+    description:
+      "Boost campaign outreach, lead generation and customer engagement with scalable communication solutions.",
+    icon: Megaphone,
+    href: "/industries/marketing-sales",
+  },
+  {
+    title: "Tech & SaaS",
+    description:
+      "Enable seamless customer interactions, onboarding and support with flexible and integrated communication systems.",
+    icon: Cloud,
+    href: "/industries/tech-saas",
+  },
+];
+
+export type Office = {
+  city: string;
+  entity: string;
+  address: string[];
+  phone: string;
+  /** India is where SipLink actually operates; the US entity is registered only. */
+  kind: "operating" | "registered";
+};
+
+/**
+ * Addresses from the live contact page. The US address is a registered-agent
+ * address carrying an Indian phone number, so it is presented as the US
+ * registered entity rather than a head office. See details-content.md §20.4.
+ */
+export const offices: Office[] = [
+  {
+    city: "Chennai",
+    entity: "SIPLINK Communications Pvt. Ltd.",
+    address: [
+      "Level 3, Third Floor, Anmol Palani, No. 88",
+      "Gopathi Narayanaswami Chetty Rd, T. Nagar",
+      "Chennai, Tamil Nadu 600017",
+    ],
+    phone: "+91 44 48636371",
+    kind: "operating",
+  },
+  {
+    city: "Bangalore",
+    entity: "SIPLINK Communications Pvt. Ltd.",
+    address: [
+      "Quadrant 2, 4th Floor, Tower 1, Umiya Business Bay",
+      "Cessna Business Park, Marathahalli, Outer Ring Rd",
+      "Kadubeesanahalli, Bengaluru 560037",
+    ],
+    phone: "+91 82172 02075",
+    kind: "operating",
+  },
+  {
+    city: "Hyderabad",
+    entity: "SIPLINK Communications Pvt. Ltd.",
+    address: [
+      "Capital Park, No. 602, 6th Floor, Capital Pk Rd",
+      "Ayyappa Society, Madhapur",
+      "Hyderabad, Telangana 500081",
+    ],
+    phone: "+91 82172 02075",
+    kind: "operating",
+  },
+  {
+    city: "United States",
+    entity: "SIPLINK COMMUNICATIONS LLC",
+    address: ["30 N Gould St, Ste R", "Sheridan, WY 82801"],
+    phone: "+91 82172 02075",
+    kind: "registered",
   },
 ];
 
@@ -303,6 +363,7 @@ export const nav = [
   { label: "Solutions", href: "/solutions" },
   { label: "Industries", href: "/industries" },
   { label: "Pricing", href: "/pricing" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const footerNav = [
@@ -316,12 +377,12 @@ export const footerNav = [
     ],
   },
   {
-    heading: "Services",
+    heading: "Industries",
     links: [
-      { label: "Healthcare", href: "/industries/healthcare" },
-      { label: "Financial Services", href: "/industries/financial-services" },
-      { label: "Government", href: "/industries/government" },
-      { label: "Staffing & Recruiting", href: "/industries/staffing" },
+      { label: "Medical Billing & RCM", href: "/industries/medical-billing-rcm" },
+      { label: "Medical Care & Healthcare", href: "/industries/healthcare" },
+      { label: "Staffing & Recruitment", href: "/industries/staffing" },
+      { label: "IT & Software", href: "/industries/it-software" },
     ],
   },
   {
