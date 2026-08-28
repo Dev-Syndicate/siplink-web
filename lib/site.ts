@@ -849,6 +849,72 @@ export const reviews: Review[] = [
   },
 ];
 
+
+/** Social profiles, from the live site footer. */
+export const social = [
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/people/Siplink-Communications/100064073381225/",
+  },
+  {
+    label: "WhatsApp",
+    href: "https://api.whatsapp.com/send/?phone=918217202075",
+  },
+  { label: "X (Twitter)", href: "https://twitter.com/siplinktelcom" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/siplink-communications-pvt-ltd/",
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@siplinkcommunicationsofficial/",
+  },
+  { label: "Pinterest", href: "https://in.pinterest.com/siplinkcommunications/" },
+] as const;
+
+/** The SipLink UC mobile apps. */
+export const mobileApps = {
+  ios: "https://apps.apple.com/us/app/siplink-uc/id6751613434",
+  android: "https://play.google.com/store/apps/details?id=in.siplink.one",
+} as const;
+
+/**
+ * "Why choose SipLink" — the five differentiators from the About page,
+ * rewritten lightly for grammar.
+ */
+export const whyChoose: Simple[] = [
+  {
+    title: "Leaders in VoIP communications",
+    description:
+      "Network design and solution experts in unified communications, with deep experience across IP voice.",
+    icon: Network,
+  },
+  {
+    title: "SIP trunking expertise",
+    description:
+      "A properly engineered SIP solution is critical — wrong configurations cause issues and unnecessary cost. We know the real-world challenges.",
+    icon: GitBranch,
+  },
+  {
+    title: "Proven migrations",
+    description:
+      "Over the years we have helped businesses move from traditional systems to IP, reducing cost and improving productivity.",
+    icon: Rocket,
+  },
+  {
+    title: "Leading-edge hosted services",
+    description:
+      "Hosted PBX on a dedicated IP network, continuously upgraded with the latest features, with disaster recovery and business continuity for every client.",
+    icon: ServerCog,
+  },
+  {
+    title: "Multiple cloud platforms",
+    description:
+      "Several cloud platforms so the solution fits your requirements, adapting to different environments for optimal performance.",
+    icon: LayoutGrid,
+  },
+];
+
 export const nav = [
   { label: "Home", href: "/" },
   { label: "Solutions", href: "/solutions" },

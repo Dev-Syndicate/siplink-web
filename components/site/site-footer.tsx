@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
-import { footerNav, site } from "@/lib/site";
+import { footerNav, mobileApps, site, social } from "@/lib/site";
 
 export function SiteFooter() {
   return (
@@ -37,6 +37,25 @@ export function SiteFooter() {
                 {site.email}
               </a>
             </div>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={mobileApps.ios}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
+              >
+                SipLink UC for iOS
+              </a>
+              <a
+                href={mobileApps.android}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
+              >
+                SipLink UC for Android
+              </a>
+            </div>
           </div>
 
           {footerNav.map((group) => (
@@ -60,9 +79,26 @@ export function SiteFooter() {
 
         <Separator className="my-10" />
 
-        <p className="text-xs text-muted-foreground">
-          Copyright © 2026 {site.legalName}. All Rights Reserved.
-        </p>
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-muted-foreground">
+            Copyright © 2026 {site.legalName}. All Rights Reserved.
+          </p>
+
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {social.map((item) => (
+              <li key={item.label}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </footer>
   );

@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { assurances, reliability, site } from "@/lib/site";
+import { assurances, reliability, site, whyChoose } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
@@ -136,8 +136,38 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Why choose SipLink */}
       <section className="border-t border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-semibold tracking-tight text-balance">
+              Why choose SipLink
+            </h2>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              What we bring to a deployment, beyond the platform itself.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {whyChoose.map(({ title, description, icon: Icon }) => (
+              <div key={title} className="flex gap-4">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-background text-primary shadow-sm">
+                  <Icon className="size-5" aria-hidden />
+                </span>
+                <div>
+                  <h3 className="font-medium">{title}</h3>
+                  <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
+                    {description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="border-t border-border">
         <div className="mx-auto max-w-2xl px-6 py-20 text-center lg:px-10">
           <h2 className="text-3xl font-semibold tracking-tight text-balance">
             Let&apos;s talk
