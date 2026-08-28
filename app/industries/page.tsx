@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 
@@ -28,17 +29,37 @@ export default function IndustriesPage() {
           aria-hidden
           className="pointer-events-none absolute -top-40 -right-32 size-[540px] rounded-full bg-brand-to/10 blur-3xl"
         />
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-          <span className="text-sm font-medium tracking-widest text-primary uppercase">
-            Industry verticals
-          </span>
-          <h1 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-            Built around how your sector works
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg text-pretty text-muted-foreground">
-            The same platform, configured for the demands of each industry — from
-            HIPAA-compliant patient lines to high-volume recruiting desks.
-          </p>
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 pt-12 pb-20 lg:grid-cols-2 lg:gap-16 lg:px-10">
+          <div>
+            <span className="text-sm font-medium tracking-widest text-primary uppercase">
+              Industry verticals
+            </span>
+            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+              Built around how your sector works
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
+              The same platform, configured for the demands of each industry —
+              from HIPAA-compliant patient lines to high-volume recruiting desks.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Button asChild size="lg">
+                <Link href="/contact">Book a demo</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/solutions">Browse solutions</Link>
+              </Button>
+            </div>
+          </div>
+
+          <Image
+            src="/images/industry-verticals.png"
+            alt="A cloud phone dashboard connected to healthcare, recruitment, retail and customer support teams"
+            width={1536}
+            height={1024}
+            priority
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="h-auto w-full"
+          />
         </div>
       </section>
 
