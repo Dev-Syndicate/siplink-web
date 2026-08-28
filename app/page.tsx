@@ -21,6 +21,7 @@ import {
   integrations,
   mobileApps,
   mobility,
+  planBaseFeatures,
   plans,
   solutions,
   trustPoints,
@@ -385,33 +386,96 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {plans.map((plan) => (
-              <Card
-                key={plan.name}
-                className={cn("h-full", plan.featured && "ring-2 ring-primary")}
-              >
-                <CardHeader>
-                  <div className="flex items-center justify-between gap-2">
+          <div className="mt-12 grid items-start gap-6 md:grid-cols-3">
+            {plans.map((plan) => {
+              // Show each tier's own additions first, then the shared set.
+              const features = [...plan.adds, ...planBaseFeatures].slice(0, 7);
+
+              return (
+                <Card
+                  key={plan.name}
+                  className={cn(
+                    "relative flex h-full flex-col overflow-hidden",
+                    plan.featured &&
+                      "bg-primary text-primary-foreground ring-0 md:-mt-4 md:shadow-xl"
+                  )}
+                >
+                  {plan.featured ? (
+                    <span className="absolute top-0 right-0 z-10 rounded-tr-xl rounded-bl-lg bg-primary-foreground/20 px-4 py-1.5 text-xs font-medium tracking-wider text-primary-foreground uppercase">
+                      Most popular
+                    </span>
+                  ) : null}
+
+                  <CardHeader>
                     <CardTitle className="text-xl">{plan.name}</CardTitle>
-                    {plan.featured ? (
-                      <Badge className="rounded-full">Most popular</Badge>
-                    ) : null}
-                  </div>
-                  <p className="mt-3 flex items-end gap-1.5">
-                    <span className="text-3xl font-semibold tracking-tight">
-                      {plan.price}
-                    </span>
-                    <span className="pb-0.5 text-sm text-muted-foreground">
-                      / user / month
-                    </span>
-                  </p>
-                  <CardDescription className="mt-2 text-pretty">
-                    {plan.blurb}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
+                    <p className="mt-3 flex items-end gap-1.5">
+                      <span className="text-3xl font-semibold tracking-tight">
+                        {plan.price}
+                      </span>
+                      <span
+                        className={cn(
+                          "pb-0.5 text-sm",
+                          plan.featured
+                            ? "text-primary-foreground/80"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        / user / month
+                      </span>
+                    </p>
+                    <p
+                      className={cn(
+                        "mt-2 text-sm text-pretty",
+                        plan.featured
+                          ? "text-primary-foreground/80"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      {plan.blurb}
+                    </p>
+                  </CardHeader>
+
+                  <CardContent className="flex flex-1 flex-col">
+                    <ul className="flex-1 space-y-2.5">
+                      {features.map((feature) => (
+                        <li key={feature} className="flex gap-2.5 text-sm">
+                          <Check
+                            className={cn(
+                              "mt-0.5 size-4 shrink-0",
+                              plan.featured
+                                ? "text-primary-foreground"
+                                : "text-primary"
+                            )}
+                            aria-hidden
+                          />
+                          <span
+                            className={cn(
+                              plan.featured
+                                ? "text-primary-foreground/90"
+                                : "text-muted-foreground"
+                            )}
+                          >
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Button
+                      asChild
+                      variant="secondary"
+                      className={cn(
+                        "mt-6 w-full",
+                        plan.featured &&
+                          "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                      )}
+                    >
+                      <Link href="/pricing">View full details</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
 
           <div className="mt-10 text-center">
