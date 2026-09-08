@@ -1,11 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, ShieldCheck, Smartphone } from "lucide-react";
 
+import { HeroBento } from "@/components/site/hero-bento";
 import { ReviewsMarquee } from "@/components/site/reviews-marquee";
 import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
 import { VideoEmbed } from "@/components/site/video-embed";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -28,86 +27,12 @@ import {
   trustPoints,
 } from "@/lib/site";
 
-const heroHighlights = [
-  "Unlimited calling within the USA",
-  "Free local number & IP-phone lease",
-  "Salesforce, Teams & Google integrations",
-];
 
 export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-40 -right-40 size-[600px] rounded-full bg-brand-to/10 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-52 -left-40 size-[420px] rounded-full bg-brand-from/10 blur-3xl"
-        />
-
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 pt-10 pb-20 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-10 lg:pt-12 lg:pb-24">
-          <div>
-            <Badge variant="secondary" className="mb-6 rounded-full">
-              <ShieldCheck className="size-3.5" aria-hidden />
-              HIPAA compliant &amp; DoT certified
-            </Badge>
-
-            <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Enterprise-grade{" "}
-              <span className="bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-                voice solutions
-              </span>{" "}
-              for growing businesses.
-            </h1>
-
-            <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
-              Reliable, scalable and secure cloud communications designed to
-              elevate your business operations — without the enterprise price
-              tag.
-            </p>
-
-            <ul className="mt-8 space-y-3">
-              {heroHighlights.map((item) => (
-                <li key={item} className="flex items-center gap-3 text-sm">
-                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                    <Check className="size-3 text-primary" aria-hidden />
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Button asChild size="lg">
-                <Link href="/contact">Book a demo</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="group">
-                <Link href="/pricing">
-                  See pricing
-                  <ArrowRight
-                    className="transition-transform group-hover:translate-x-0.5"
-                    aria-hidden
-                  />
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          <Image
-            src="/images/agent-cloud-telephony.png"
-            alt="Support agent on a headset with cloud telephony, live chat and call analytics around her"
-            width={1536}
-            height={1024}
-            priority
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="h-auto w-full lg:ml-auto"
-          />
-        </div>
-
-      </section>
+      <HeroBento />
 
       {/* Trust bar */}
       <section className="border-b border-border bg-muted/30">
