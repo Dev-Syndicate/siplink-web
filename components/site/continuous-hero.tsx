@@ -11,10 +11,10 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
+import dynamic from "next/dynamic";
 import { ArrowRight, Check } from "lucide-react";
 
-import dynamic from "next/dynamic";
-
+import { HeroDecor } from "@/components/site/hero-decor";
 import { LaptopModel } from "@/components/site/laptop-model";
 import { Button } from "@/components/ui/button";
 import { plans, planNote } from "@/lib/site";
@@ -57,15 +57,6 @@ const Laptop3D = dynamic(
  */
 
 /**
- * Where each panel's copy fades along the 0-1 scroll progress.
- *
- * Inputs must be strictly increasing — `useTransform` interpolates between
- * neighbouring stops, and a repeated stop (an obvious way to write "hold at
- * full") produces a zero-width segment and garbage output. So the first panel
- * opens already visible and the last one simply never fades out, each with
- * one stop fewer rather than a duplicated one.
- */
-/**
  * Required on every transform whose input stops do not span the whole 0-1
  * progress. Without it a value past its last stop ramps back toward its FIRST
  * output instead of holding the last one — so the opening headline faded out
@@ -74,6 +65,15 @@ const Laptop3D = dynamic(
  */
 const CLAMP = { clamp: true } as const;
 
+/**
+ * Where each panel's copy fades along the 0-1 scroll progress.
+ *
+ * Inputs must be strictly increasing — `useTransform` interpolates between
+ * neighbouring stops, and a repeated stop (an obvious way to write "hold at
+ * full") produces a zero-width segment and garbage output. So the first panel
+ * opens already visible and the last one simply never fades out, each with
+ * one stop fewer rather than a duplicated one.
+ */
 const PANEL_OPACITY: { input: number[]; output: number[] }[] = [
   { input: [0, 0.16, 0.26], output: [1, 1, 0] },
   { input: [0.24, 0.34, 0.56, 0.66], output: [0, 1, 1, 0] },
@@ -95,20 +95,6 @@ export function ContinuousHero() {
   });
 
   /**
-   * Plain mirror of `scrollYProgress`, and everything below reads this rather
-   * than the scroll value itself.
-   *
-   * Motion hoists transforms that trace back to a scroll value onto a native
-   * `ViewTimeline` WAAPI animation. That timeline measures how far the subject
-   * has travelled through the viewport, which is not the `start start -> end
-   * end` range asked for here, so the DOM ended up driven by a different
-   * progress than the JS value reported: the opening headline faded out on cue
-   * and then faded back in over the plan panel. Copying through a detached
-   * value breaks the chain and keeps every transform on the JS path, where the
-   * offsets mean what they say. Still only opacity and transform, so the work
-   * per frame stays on the compositor.
-   */
-  /**
    * Whether the hero is anywhere near the viewport. Drives the 3D frame loop:
    * it renders continuously while on screen and stops dead once past, so the
    * rest of the page costs nothing.
@@ -128,12 +114,25 @@ export function ContinuousHero() {
     return () => io.disconnect();
   }, []);
 
+  /**
+   * Plain mirror of `scrollYProgress`, and everything below reads this rather
+   * than the scroll value itself.
+   *
+   * Motion hoists transforms that trace back to a scroll value onto a native
+   * `ViewTimeline` WAAPI animation. That timeline measures how far the subject
+   * has travelled through the viewport, which is not the `start start -> end
+   * end` range asked for here, so the DOM ended up driven by a different
+   * progress than the JS value reported: the opening headline faded out on cue
+   * and then faded back in over the plan panel. Copying through a detached
+   * value breaks the chain and keeps every transform on the JS path, where the
+   * offsets mean what they say. Still only opacity and transform, so the work
+   * per frame stays on the compositor.
+   */
   const progress = useMotionValue(0);
   useMotionValueEvent(scrollYProgress, "change", (v) => progress.set(v));
   useEffect(() => {
     progress.set(scrollYProgress.get());
   }, [progress, scrollYProgress]);
-
 
   // Deep brand panel fades in under panel three.
   const darkBg = useTransform(progress, [0.58, 0.82], [0, 1], CLAMP);
@@ -184,6 +183,8 @@ export function ContinuousHero() {
           />
         </div>
 
+        <HeroDecor progress={progress} opacity={panel0} />
+
         {/* Panel 1 — headline and CTA */}
         <motion.div
           style={{ opacity: panel0 }}
@@ -222,7 +223,10 @@ export function ContinuousHero() {
           <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
             One platform for voice, video and messaging
           </h2>
-          
+          <p className="mt-5 max-w-xl text-pretty text-muted-foreground sm:text-lg">
+            Calls, video, business SMS and team chat in a single hub — no
+            hardware in the telecom closet, and nothing to maintain.
+          </p>
         </motion.div>
 
         {/* Panel 3 — plan detail, on the brand background */}
