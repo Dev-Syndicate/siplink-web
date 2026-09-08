@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Check, ShieldCheck, Smartphone } from "lucide-react";
 
 import { HeroBento } from "@/components/site/hero-bento";
+import { IntegrationMarquee } from "@/components/site/integration-marquee";
 import { ReviewsMarquee } from "@/components/site/reviews-marquee";
 import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
 import { VideoEmbed } from "@/components/site/video-embed";
@@ -33,6 +34,9 @@ export default function Home() {
     <>
       {/* Hero */}
       <HeroBento />
+
+      {/* Integrations strip */}
+      <IntegrationMarquee />
 
       {/* Trust bar */}
       <section className="border-b border-border bg-muted/30">
