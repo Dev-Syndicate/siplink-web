@@ -228,7 +228,7 @@ export default function Home() {
               like they are in the same office.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Button asChild size="lg">
+              <Button asChild variant="brand" size="lg">
                 <Link href="/contact">Book a demo</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
@@ -339,7 +339,7 @@ export default function Home() {
                   className={cn(
                     "relative flex h-full flex-col overflow-hidden",
                     plan.featured &&
-                      "bg-primary text-primary-foreground ring-0 md:-mt-4 md:shadow-xl"
+                      "bg-brand-gradient text-primary-foreground ring-0 md:-mt-4 md:shadow-xl"
                   )}
                 >
                   {plan.featured ? (
@@ -421,7 +421,7 @@ export default function Home() {
           </div>
 
           <div className="mt-10 text-center">
-            <Button asChild size="lg">
+            <Button asChild variant="brand" size="lg">
               <Link href="/pricing">Compare all plans</Link>
             </Button>
           </div>
@@ -473,7 +473,7 @@ export default function Home() {
 
       {/* Closing CTA */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <div className="rounded-2xl border border-border bg-gradient-to-br from-brand-from/10 to-brand-to/5 px-8 py-16 text-center">
+        <div className="rounded-2xl border border-border bg-gradient-to-br from-brand-lift-from/12 to-brand-lift-to/8 px-8 py-16 text-center">
           <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
             Ready to move your business to the cloud?
           </h2>
@@ -482,7 +482,7 @@ export default function Home() {
             migration and port your existing numbers.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
+            <Button asChild variant="brand" size="lg">
               <Link href="/contact">Book a demo</Link>
             </Button>
             <Button asChild size="lg" variant="outline">

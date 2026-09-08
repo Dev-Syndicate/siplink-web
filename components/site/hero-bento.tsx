@@ -124,7 +124,7 @@ export function HeroBento() {
 
               <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:leading-[1.06]">
                 Enterprise-grade{" "}
-                <span className="bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-brand-lift-from to-brand-lift-to bg-clip-text text-transparent">
                   voice solutions
                 </span>{" "}
                 for growing businesses.
@@ -137,7 +137,7 @@ export function HeroBento() {
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Button asChild size="lg">
+                <Button asChild variant="brand" size="lg">
                   <Link href="/contact">Book a demo</Link>
                 </Button>
                 <Button asChild size="lg" variant="ghost" className="group">
@@ -169,7 +169,7 @@ export function HeroBento() {
                   data-hero-tile="pricing"
                   onClick={() => setActive("pricing")}
                   aria-label={`Pricing: unlimited US and Canada calling from ${plans[0].price} per user — expand`}
-                  className={cn(tileClass, "bg-primary text-primary-foreground")}
+                  className={cn(tileClass, "bg-brand-gradient text-primary-foreground")}
                 >
                   <motion.div layout="position">
                     <h2 className="pr-10 text-2xl font-semibold text-balance">
@@ -238,7 +238,7 @@ export function HeroBento() {
                 className={cn(
                   "absolute inset-0 z-20 overflow-hidden",
                   active === "pricing"
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-brand-gradient text-primary-foreground"
                     : "bg-foreground text-background"
                 )}
               >

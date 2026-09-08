@@ -299,7 +299,7 @@ export function VideoScene() {
         <button
           type="button"
           onClick={() => setPlaying(true)}
-          className="group mt-8 inline-flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+          className="group mt-8 inline-flex size-16 items-center justify-center rounded-full bg-brand-gradient text-primary-foreground transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
         >
           <Play className="ml-0.5 size-6 fill-current" aria-hidden />
           <span className="sr-only">Play the SipLink explainer video</span>

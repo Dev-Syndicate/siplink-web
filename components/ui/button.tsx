@@ -10,6 +10,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/80",
+        // Bright red-to-pink sweep. Homepage only — every other page uses
+        // `default`, which stays the calmer solid primary.
+        brand:
+          "bg-brand-gradient text-primary-foreground transition-[filter] hover:brightness-110",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
         secondary:

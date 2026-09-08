@@ -7,6 +7,8 @@
 @theme inline {
     --color-brand-from: var(--brand-from);
     --color-brand-to: var(--brand-to);
+    --color-brand-lift-from: var(--brand-lift-from);
+    --color-brand-lift-to: var(--brand-lift-to);
     --font-heading: var(--font-geist-sans);
     --font-sans: var(--font-geist-sans);
     --font-mono: var(--font-geist-mono);
@@ -53,6 +55,12 @@
 :root {
     --brand-from: oklch(0.70 0.175 12.8);
     --brand-to: oklch(0.552 0.211 12.8);
+    /* Brighter red-to-pink sweep. Deliberately a separate pair rather than a
+       change to --brand-from/--brand-to: those two are used on about,
+       contact, industries, pricing and solutions, which keep the calmer
+       solid red. */
+    --brand-lift-from: oklch(0.625 0.235 18);
+    --brand-lift-to: oklch(0.705 0.215 350);
     --background: oklch(1 0 0);
     --foreground: oklch(0.18 0.012 260);
     --card: oklch(1 0 0);
@@ -90,6 +98,8 @@
 .dark {
     --brand-from: oklch(0.76 0.155 12.8);
     --brand-to: oklch(0.66 0.185 12.8);
+    --brand-lift-from: oklch(0.68 0.215 18);
+    --brand-lift-to: oklch(0.75 0.195 350);
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);
@@ -168,6 +178,17 @@
 }
 
 @layer components {
+  /* Bright brand sweep, used in place of flat `bg-primary` fills across the
+     homepage. Applied per element rather than by overriding the primary
+     token, so it cannot leak onto the other pages. */
+  .bg-brand-gradient {
+    background-image: linear-gradient(
+      115deg,
+      var(--brand-lift-from),
+      var(--brand-lift-to)
+    );
+  }
+
   /* Endless review marquee. The track holds the list twice, so translating
      it by -50% lands exactly on the duplicate and loops seamlessly. */
   @keyframes marquee-scroll {

@@ -161,7 +161,7 @@ export function ContinuousHero() {
         <div className="absolute inset-0 bg-gradient-to-b from-muted via-background to-muted" />
         <motion.div
           style={{ opacity: darkBg }}
-          className="absolute inset-0 bg-gradient-to-br from-brand-to via-primary to-brand-from"
+          className="absolute inset-0 bg-gradient-to-br from-brand-lift-from via-primary to-brand-lift-to"
         />
         <motion.div
           aria-hidden
@@ -199,13 +199,13 @@ export function ContinuousHero() {
           <div className="max-w-md lg:max-w-lg">
             <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
               Your phone system,{" "}
-              <span className="bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-lift-from to-brand-lift-to bg-clip-text text-transparent">
                 on every device
               </span>{" "}
               your team already uses.
             </h1>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Button asChild size="lg">
+              <Button asChild variant="brand" size="lg">
                 <Link href="/contact">Book a demo</Link>
               </Button>
               <Button asChild size="lg" variant="ghost" className="group">

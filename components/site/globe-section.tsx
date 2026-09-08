@@ -144,7 +144,7 @@ export function GlobeSection() {
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-3">
-            <Button asChild size="lg">
+            <Button asChild variant="brand" size="lg">
               <Link href="/contact">Talk to us</Link>
             </Button>
             <Button

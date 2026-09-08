@@ -137,7 +137,7 @@ export function SolutionShowcase() {
                           className={cn(
                             "flex size-12 shrink-0 items-center justify-center rounded-xl transition-colors",
                             isActive
-                              ? "bg-primary text-primary-foreground"
+                              ? "bg-brand-gradient text-primary-foreground"
                               : "bg-primary/10 text-primary/50"
                           )}
                         >
@@ -173,7 +173,7 @@ export function SolutionShowcase() {
                                   {solution.description}
                                 </span>
                                 <span className="mt-5 block">
-                                  <Button asChild size="sm">
+                                  <Button asChild variant="brand" size="sm">
                                     <Link href="/solutions">{solution.cta}</Link>
                                   </Button>
                                 </span>
@@ -204,7 +204,7 @@ export function SolutionShowcase() {
                 >
                   {/* Narrow viewports get the heading the rail would have shown. */}
                   <div className="lg:hidden">
-                    <span className="flex size-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                    <span className="flex size-12 items-center justify-center rounded-xl bg-brand-gradient text-primary-foreground">
                       <Icon className="size-6" aria-hidden />
                     </span>
                     <h3 className="mt-4 text-xl font-semibold">
@@ -236,7 +236,7 @@ export function SolutionShowcase() {
                   </ul>
 
                   <div className="mt-6 lg:hidden">
-                    <Button asChild size="sm">
+                    <Button asChild variant="brand" size="sm">
                       <Link href="/solutions">{solution.cta}</Link>
                     </Button>
                   </div>
