@@ -1,10 +1,18 @@
 "use client";
 
 import { motion, useTransform, type MotionValue } from "motion/react";
-import { Headphones, Puzzle, ShieldCheck } from "lucide-react";
+import {
+  Headphones,
+  MessageCircle,
+  MessagesSquare,
+  PhoneCall,
+  Puzzle,
+  ShieldCheck,
+  Video,
+} from "lucide-react";
 
 import { FlagCA, FlagUS } from "@/components/site/flags";
-import { integrations } from "@/lib/site";
+import { integrations, plans } from "@/lib/site";
 
 const CLAMP = { clamp: true } as const;
 
@@ -42,20 +50,10 @@ export function HeroDecor({
       style={{ opacity }}
       className="pointer-events-none absolute inset-0 hidden lg:block"
     >
-      {/* Signal arcs behind the laptop, echoing the hero illustration. */}
-      <motion.svg
-        aria-hidden
-        viewBox="0 0 400 400"
-        style={{ rotate: arcSpin }}
+      <Rings
+        rotate={arcSpin}
         className="absolute left-[63%] top-1/2 w-[42rem] -translate-x-1/2 -translate-y-1/2 text-primary/25"
-        fill="none"
-        stroke="currentColor"
-      >
-        {[80, 130, 180].map((r) => (
-          <circle key={r} cx="200" cy="200" r={r} strokeDasharray="2 10" />
-        ))}
-        <circle cx="200" cy="200" r="196" strokeDasharray="1 14" opacity="0.7" />
-      </motion.svg>
+      />
 
       <Card
         y={fast}
@@ -90,6 +88,166 @@ export function HeroDecor({
           {integrations.length} platforms
         </span>
       </Card>
+    </motion.div>
+  );
+}
+
+/** Concentric dotted rings, centred wherever the laptop sits in that panel. */
+function Rings({
+  rotate,
+  className,
+}: {
+  rotate: MotionValue<number>;
+  className: string;
+}) {
+  return (
+    <motion.svg
+      aria-hidden
+      viewBox="0 0 400 400"
+      style={{ rotate }}
+      className={className}
+      fill="none"
+      stroke="currentColor"
+    >
+      {[80, 130, 180].map((r) => (
+        <circle key={r} cx="200" cy="200" r={r} strokeDasharray="2 10" />
+      ))}
+      <circle cx="200" cy="200" r="196" strokeDasharray="1 14" opacity="0.7" />
+    </motion.svg>
+  );
+}
+
+/**
+ * Panel two: the four channels the platform actually carries, orbiting the
+ * laptop as it lands. Wording follows `platformFeatures` — audio and video
+ * conferencing, business SMS and internal team chat on one platform.
+ */
+export function PlatformDecor({
+  progress,
+  opacity,
+}: {
+  progress: MotionValue<number>;
+  opacity: MotionValue<number>;
+}) {
+  const range = [0.24, 0.66];
+  const rise = useTransform(progress, range, [34, -34], CLAMP);
+  const fall = useTransform(progress, range, [-30, 30], CLAMP);
+  const spread = useTransform(progress, range, [26, -26], CLAMP);
+  const spin = useTransform(progress, range, [-10, 10], CLAMP);
+
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="pointer-events-none absolute inset-0 hidden lg:block"
+    >
+      <Rings
+        rotate={spin}
+        className="absolute left-1/2 top-[58%] w-[52rem] -translate-x-1/2 -translate-y-1/2 text-primary/20"
+      />
+
+      <Card y={rise} x={spread} className="left-[11%] top-[36%]" label="Voice">
+        <span className="flex items-center gap-2 text-sm font-medium">
+          <PhoneCall className="size-4 text-primary" aria-hidden />
+          HD calling
+        </span>
+      </Card>
+
+      <Card y={fall} x={spread} className="left-[15%] bottom-[20%]" label="Video">
+        <span className="flex items-center gap-2 text-sm font-medium">
+          <Video className="size-4 text-primary" aria-hidden />
+          Conferencing
+        </span>
+      </Card>
+
+      <Card y={fall} className="right-[11%] top-[36%]" label="Messaging">
+        <span className="flex items-center gap-2 text-sm font-medium">
+          <MessageCircle className="size-4 text-primary" aria-hidden />
+          Business SMS
+        </span>
+      </Card>
+
+      <Card y={rise} className="right-[15%] bottom-[20%]" label="Collaboration">
+        <span className="flex items-center gap-2 text-sm font-medium">
+          <MessagesSquare className="size-4 text-primary" aria-hidden />
+          Team chat
+        </span>
+      </Card>
+    </motion.div>
+  );
+}
+
+/**
+ * Panel three: the other two tiers, so the featured plan reads as one point on
+ * a range rather than the only option. Prices come straight from `plans`.
+ *
+ * Outlined rather than the frosted cards used earlier — this panel sits on the
+ * brand red, where a light fill would punch a hole in it.
+ */
+export function PlanDecor({
+  progress,
+  opacity,
+}: {
+  progress: MotionValue<number>;
+  opacity: MotionValue<number>;
+}) {
+  const range = [0.64, 1];
+  const rise = useTransform(progress, range, [40, -22], CLAMP);
+  const fall = useTransform(progress, range, [-34, 20], CLAMP);
+  const spin = useTransform(progress, range, [0, 16], CLAMP);
+
+  const others = plans.filter((plan) => !plan.featured);
+
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="pointer-events-none absolute inset-0 hidden text-primary-foreground lg:block"
+    >
+      <Rings
+        rotate={spin}
+        className="absolute left-[26%] top-[52%] w-[34rem] -translate-x-1/2 -translate-y-1/2 text-current/20"
+      />
+
+      {others.map((plan, i) => (
+        <Tag
+          key={plan.name}
+          y={i === 0 ? rise : fall}
+          className={i === 0 ? "left-[5%] top-[26%]" : "left-[33%] bottom-[24%]"}
+        >
+          <span className="text-[0.65rem] font-medium uppercase tracking-widest opacity-70">
+            {plan.name}
+          </span>
+          <span className="mt-1 block text-lg font-semibold tabular-nums">
+            {plan.price}
+          </span>
+        </Tag>
+      ))}
+
+      <Tag y={fall} className="left-[7%] bottom-[16%]">
+        <span className="flex items-center gap-2 text-sm font-medium">
+          <Headphones className="size-4" aria-hidden />
+          24/7 support
+        </span>
+      </Tag>
+    </motion.div>
+  );
+}
+
+/** Outlined variant for the panels that sit on the brand background. */
+function Tag({
+  y,
+  className,
+  children,
+}: {
+  y: MotionValue<number>;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.div
+      style={{ y }}
+      className={`absolute rounded-2xl border border-current/30 bg-current/10 px-4 py-3 ${className}`}
+    >
+      {children}
     </motion.div>
   );
 }

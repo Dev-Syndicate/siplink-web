@@ -14,7 +14,11 @@ import {
 import dynamic from "next/dynamic";
 import { ArrowRight, Check } from "lucide-react";
 
-import { HeroDecor } from "@/components/site/hero-decor";
+import {
+  HeroDecor,
+  PlanDecor,
+  PlatformDecor,
+} from "@/components/site/hero-decor";
 import { LaptopModel } from "@/components/site/laptop-model";
 import { Button } from "@/components/ui/button";
 import { plans, planNote } from "@/lib/site";
@@ -184,6 +188,8 @@ export function ContinuousHero() {
         </div>
 
         <HeroDecor progress={progress} opacity={panel0} />
+        <PlatformDecor progress={progress} opacity={panel1} />
+        <PlanDecor progress={progress} opacity={panel2} />
 
         {/* Panel 1 — headline and CTA */}
         <motion.div
@@ -223,10 +229,6 @@ export function ContinuousHero() {
           <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
             One platform for voice, video and messaging
           </h2>
-          <p className="mt-5 max-w-xl text-pretty text-muted-foreground sm:text-lg">
-            Calls, video, business SMS and team chat in a single hub — no
-            hardware in the telecom closet, and nothing to maintain.
-          </p>
         </motion.div>
 
         {/* Panel 3 — plan detail, on the brand background */}
