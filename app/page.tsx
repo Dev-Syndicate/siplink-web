@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Check, ShieldCheck, Smartphone } from "lucide-react";
 
 import { ContinuousHero } from "@/components/site/continuous-hero";
+import { GlobeSection } from "@/components/site/globe-section";
 import { HeroBento } from "@/components/site/hero-bento";
 import { IntegrationMarquee } from "@/components/site/integration-marquee";
 import { SolutionShowcase } from "@/components/site/solution-showcase";
@@ -36,6 +37,9 @@ export default function Home() {
     <>
       {/* Scroll-scrubbed opening hero */}
       <ContinuousHero />
+
+      {/* Global reach, on the Vanta globe */}
+      <GlobeSection />
 
       {/* Hero */}
       <HeroBento />
