@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowRight, Play, ShieldCheck, X } from "lucide-react";
+import { ArrowRight, Maximize2, Play, ShieldCheck, X } from "lucide-react";
 
 import { HeroIllustration } from "@/components/site/hero-illustration";
 import { PricingScene, VideoScene } from "@/components/site/hero-scenes";
@@ -18,6 +18,33 @@ type TileId = "pricing" | "video";
 const RADIUS = 24;
 
 /**
+ * Shared by both collapsed tiles. `group` drives the expand hint, and the
+ * brightness shift is the only thing hover does now that it no longer opens
+ * the panel — without it the tiles look inert.
+ */
+const tileClass =
+  "group absolute inset-0 flex cursor-pointer flex-col justify-between overflow-hidden p-7 text-left transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+
+/**
+ * Corner affordance saying the tile opens.
+ *
+ * It carries the discoverability that hover-to-expand used to provide for
+ * free: with click-only there is nothing else telling a visitor these two
+ * tiles do more than link somewhere.
+ */
+function ExpandHint() {
+  return (
+    <motion.span
+      layout="position"
+      aria-hidden
+      className="absolute right-5 top-5 flex size-8 items-center justify-center rounded-full border border-current/25 opacity-70 transition group-hover:scale-105 group-hover:bg-current/10 group-hover:opacity-100"
+    >
+      <Maximize2 className="size-3.5" />
+    </motion.span>
+  );
+}
+
+/**
  * The homepage hero: a three-tile bento where the two small tiles expand to
  * fill the whole hero.
  *
@@ -27,47 +54,48 @@ const RADIUS = 24;
  * the collapsed tile is skipped while its panel is open; the grid cell stays
  * behind it to hold the row height.
  *
- * Pointer-capable devices expand on hover. Touch devices have no hover, so the
- * tiles are also buttons: tap expands, and the panel carries a close control.
+ * Expanding is click-only, on every device — hover does nothing but light the
+ * tile up. Closing is the × control, Escape, or a click outside the hero.
  */
 export function HeroBento() {
   const [active, setActive] = useState<TileId | null>(null);
-  const canHover = useRef(false);
   const reduced = useReducedMotion();
 
-  /**
-   * Whether the open panel was activated deliberately (click, tap, Enter)
-   * rather than by hovering over it. Only a deliberate open moves focus into
-   * the panel — hovering must never steal focus.
-   */
-  const activated = useRef(false);
+  const rootRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const returnFocusTo = useRef<TileId | null>(null);
-
-  useEffect(() => {
-    canHover.current = window.matchMedia("(hover: hover)").matches;
-  }, []);
 
   const close = useCallback(() => setActive(null), []);
 
   useEffect(() => {
     if (!active) return;
+
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") close();
     };
+    // Anything outside the hero dismisses the panel. The click that opened it
+    // targets a tile inside `rootRef`, so it cannot close itself on the way up.
+    const onPointerDown = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) close();
+    };
+
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
   }, [active, close]);
 
-  // Keep the keyboard somewhere sensible: into the panel on a deliberate
-  // open, back onto the tile once it closes.
+  // Every open is deliberate now, so focus always moves into the panel and
+  // returns to the tile that opened it.
   useEffect(() => {
-    if (active && activated.current) {
+    if (active) {
       closeRef.current?.focus();
       returnFocusTo.current = active;
       return;
     }
-    if (!active && returnFocusTo.current) {
+    if (returnFocusTo.current) {
       const id = returnFocusTo.current;
       returnFocusTo.current = null;
       document
@@ -76,30 +104,12 @@ export function HeroBento() {
     }
   }, [active]);
 
-  const tileProps = (id: TileId) => ({
-    "data-hero-tile": id,
-    onMouseEnter: () => {
-      if (!canHover.current) return;
-      activated.current = false;
-      setActive(id);
-    },
-    onClick: () => {
-      activated.current = true;
-      setActive(id);
-    },
-  });
-
   return (
     <section className="border-b border-border">
       <div className="mx-auto max-w-7xl px-6 py-8 lg:px-10 lg:py-12">
         <div
+          ref={rootRef}
           className="relative grid gap-4 lg:min-h-[36rem] lg:grid-cols-[1.62fr_1fr]"
-          // Guarded: after a tap, Chrome fires a synthetic mouseleave here as
-          // the tile unmounts under the finger, which would slam the panel
-          // shut the instant it opened. Touch closes via the button or Escape.
-          onMouseLeave={() => {
-            if (canHover.current) close();
-          }}
         >
           {/* Headline tile */}
           <div
@@ -156,16 +166,18 @@ export function HeroBento() {
                   type="button"
                   layoutId="tile-pricing"
                   style={{ borderRadius: RADIUS }}
+                  data-hero-tile="pricing"
+                  onClick={() => setActive("pricing")}
                   aria-label={`Pricing: unlimited US and Canada calling from ${plans[0].price} per user — expand`}
-                  className="absolute inset-0 flex flex-col justify-between overflow-hidden bg-primary p-7 text-left text-primary-foreground"
-                  {...tileProps("pricing")}
+                  className={cn(tileClass, "bg-primary text-primary-foreground")}
                 >
                   <motion.div layout="position">
-                    <h2 className="text-2xl font-semibold text-balance">
+                    <h2 className="pr-10 text-2xl font-semibold text-balance">
                       Unlimited US &amp; Canada calling
                     </h2>
                   </motion.div>
 
+                  <ExpandHint />
                   <PriceChart />
 
                   <motion.span
@@ -184,16 +196,19 @@ export function HeroBento() {
                   type="button"
                   layoutId="tile-video"
                   style={{ borderRadius: RADIUS }}
+                  data-hero-tile="video"
+                  onClick={() => setActive("video")}
                   aria-label="Explainer video: see how SipLink works — expand"
-                  className="absolute inset-0 flex flex-col justify-between overflow-hidden bg-foreground p-7 text-left text-background"
-                  {...tileProps("video")}
+                  className={cn(tileClass, "bg-foreground text-background")}
                 >
                   <motion.h2
                     layout="position"
-                    className="text-2xl font-semibold text-balance"
+                    className="pr-10 text-2xl font-semibold text-balance"
                   >
                     See how SipLink works
                   </motion.h2>
+
+                  <ExpandHint />
 
                   <motion.div layout="position" className="flex items-center gap-3">
                     <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">

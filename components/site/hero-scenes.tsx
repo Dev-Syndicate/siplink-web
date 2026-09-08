@@ -263,8 +263,12 @@ export function VideoScene() {
                 // Percentages of the ring container, so the chips actually sit
                 // on the orbit. A percentage `translate` would resolve against
                 // the chip instead and stack them all in the middle.
-                left: `${(50 + Math.cos(angle) * 42).toFixed(2)}%`,
-                top: `${(50 + Math.sin(angle) * 42).toFixed(2)}%`,
+                //
+                // The radius is capped by the panel's half-height, not its
+                // width: any wider and chips are clipped by the top and bottom
+                // edges each time the orbit carries them past 12 and 6 o'clock.
+                left: `${(50 + Math.cos(angle) * 30).toFixed(2)}%`,
+                top: `${(50 + Math.sin(angle) * 30).toFixed(2)}%`,
               }}
             >
               <motion.span
@@ -284,7 +288,9 @@ export function VideoScene() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.35, delay: 0.08 }}
-        className="relative z-10 text-center"
+        // Narrow enough that the orbiting chips clear the title as they pass
+        // through 3 and 9 o'clock.
+        className="relative z-10 max-w-[18rem] text-center"
       >
         <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
           See how SipLink works
