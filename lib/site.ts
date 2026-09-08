@@ -60,6 +60,20 @@ export type Solution = {
   icon: LucideIcon;
   cta: string;
   href: string;
+  /**
+   * Short label for the homepage showcase rail, where the full title is too
+   * long to sit beside an icon.
+   */
+  short: string;
+  /**
+   * The four capabilities shown beside this solution in the homepage
+   * showcase. Every one is lifted from the documented feature lists below
+   * (`platformFeatures`, `reliability`, `mobility`, `ucaasBenefits`) and
+   * assigned to the solution it actually belongs to — no capability is
+   * claimed twice, and nothing here is invented. If you add a solution,
+   * take its four from those lists rather than writing new ones.
+   */
+  highlights: { title: string; description: string }[];
 };
 
 /** Descriptions follow the wording used on siplink.in. See content.md. */
@@ -71,6 +85,29 @@ export const solutions: Solution[] = [
     icon: CloudCog,
     cta: "Explore PBX features",
     href: "/solutions/hosted-pbx",
+    short: "Hosted PBX",
+    highlights: [
+      {
+        title: "IVR and call routing",
+        description:
+          "An automated menu sends callers to billing, support or sales by keypad.",
+      },
+      {
+        title: "No hardware to maintain",
+        description:
+          "Voice runs over your internet connection. We handle updates and maintenance.",
+      },
+      {
+        title: "Everyone on one system",
+        description:
+          "Staff share the same virtual PBX, however many sites they work across.",
+      },
+      {
+        title: "Works wherever you do",
+        description:
+          "Phone, video and text stay seamless away from the desk, managed entirely off-site.",
+      },
+    ],
   },
   {
     title: "SIP Trunking",
@@ -79,6 +116,29 @@ export const solutions: Solution[] = [
     icon: Router,
     cta: "View trunking plans",
     href: "/solutions/sip-trunking",
+    short: "SIP Trunking",
+    highlights: [
+      {
+        title: "No single point of failure",
+        description:
+          "Redundant servers, routers and switches, replicating to a second data centre.",
+      },
+      {
+        title: "Multiple provider links",
+        description:
+          "Two data centres, each able to carry the whole network load on its own.",
+      },
+      {
+        title: "Quality of service",
+        description:
+          "IP voice with call quality monitored and guaranteed across the network.",
+      },
+      {
+        title: "Scales with you",
+        description:
+          "Add users and sites quickly from a browser, with central management and billing.",
+      },
+    ],
   },
   {
     title: "Enhanced Call Centre",
@@ -87,6 +147,29 @@ export const solutions: Solution[] = [
     icon: Headset,
     cta: "Discover call centre",
     href: "/solutions/call-centre",
+    short: "Call Centre",
+    highlights: [
+      {
+        title: "Supervisor monitoring",
+        description:
+          "Listen, whisper and barge in real time, with performance and quality reports.",
+      },
+      {
+        title: "Call recording",
+        description:
+          "Automatic and on-demand, with secure access, playback, download and sharing.",
+      },
+      {
+        title: "Queues and ring groups",
+        description:
+          "Intelligent distribution balances agent workload and holds response times down.",
+      },
+      {
+        title: "CDR and call history",
+        description:
+          "Track and download detailed call records for any period in Excel or CSV.",
+      },
+    ],
   },
   {
     title: "Unified Communications",
@@ -95,6 +178,28 @@ export const solutions: Solution[] = [
     icon: MessagesSquare,
     cta: "Learn about UCaaS",
     href: "/solutions/unified-communications",
+    short: "Unified Comms",
+    highlights: [
+      {
+        title: "Voice, video and messaging",
+        description:
+          "Conferencing, screen sharing, business SMS and team chat on one platform.",
+      },
+      {
+        title: "One platform, total control",
+        description:
+          "Calls, video, chat and collaboration in a single hub instead of four tools.",
+      },
+      {
+        title: "Crystal clear every time",
+        description: "Enterprise-grade voice and HD video with zero compromise.",
+      },
+      {
+        title: "Cut costs, not quality",
+        description:
+          "No expensive hardware or maintenance. Save instantly and scale effortlessly.",
+      },
+    ],
   },
 ];
 

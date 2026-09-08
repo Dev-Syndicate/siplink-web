@@ -3,6 +3,7 @@ import { ArrowRight, Check, ShieldCheck, Smartphone } from "lucide-react";
 
 import { HeroBento } from "@/components/site/hero-bento";
 import { IntegrationMarquee } from "@/components/site/integration-marquee";
+import { SolutionShowcase } from "@/components/site/solution-showcase";
 import { ReviewsMarquee } from "@/components/site/reviews-marquee";
 import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
 import { VideoEmbed } from "@/components/site/video-embed";
@@ -37,6 +38,9 @@ export default function Home() {
 
       {/* Integrations strip */}
       <IntegrationMarquee />
+
+      {/* Solution showcase */}
+      <SolutionShowcase />
 
       {/* Trust bar */}
       <section className="border-b border-border bg-muted/30">
