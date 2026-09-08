@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Check, ShieldCheck, Smartphone } from "lucide-react";
 
+import { ContinuousHero } from "@/components/site/continuous-hero";
 import { HeroBento } from "@/components/site/hero-bento";
 import { IntegrationMarquee } from "@/components/site/integration-marquee";
 import { SolutionShowcase } from "@/components/site/solution-showcase";
@@ -33,6 +34,9 @@ import {
 export default function Home() {
   return (
     <>
+      {/* Scroll-scrubbed opening hero */}
+      <ContinuousHero />
+
       {/* Hero */}
       <HeroBento />
 
