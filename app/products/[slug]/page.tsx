@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
+import { ProductIllustration } from "@/components/site/product-illustration";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -70,37 +70,44 @@ export default async function ProductDetailPage({
         />
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <Link
-            href={`/products#${categorySlug}`}
+            href="/products#lifecycle"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             <ArrowLeft className="size-4" aria-hidden />
             {category}
           </Link>
 
-          <div className="mt-8 flex items-start gap-5">
-            <span className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <Icon className="size-7" aria-hidden />
-            </span>
-            <div className="min-w-0">
-              <Badge variant="secondary">{category}</Badge>
-              <h1 className="mt-3 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+          <div className="mt-8 grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,34rem)] lg:gap-12">
+            <div>
+              {/* Icon sits above the title rather than beside it, so the
+                  heading, tagline and intro share one left edge. */}
+              <span className="flex size-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Icon className="size-7" aria-hidden />
+              </span>
+
+              <h1 className="font-heading mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
                 {title}
               </h1>
-              <p className="mt-3 text-lg text-primary">{tagline}</p>
+              <p className="mt-4 text-lg text-primary lg:text-xl">{tagline}</p>
+
+              <p className="mt-6 max-w-2xl text-lg text-pretty text-muted-foreground">
+                {intro}
+              </p>
+
+              <div className="mt-10 flex flex-wrap gap-4">
+                <Button asChild size="lg">
+                  <Link href="/contact">Book a demo</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/pricing">View pricing</Link>
+                </Button>
+              </div>
             </div>
-          </div>
 
-          <p className="mt-8 max-w-3xl text-lg text-pretty text-muted-foreground">
-            {intro}
-          </p>
-
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Button asChild size="lg">
-              <Link href="/contact">Book a demo</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/pricing">View pricing</Link>
-            </Button>
+            {/* Schematic of what this category actually does. */}
+            <div className="hidden rounded-2xl border border-border bg-muted/30 p-8 lg:block">
+              <ProductIllustration category={categorySlug} />
+            </div>
           </div>
         </div>
       </section>
