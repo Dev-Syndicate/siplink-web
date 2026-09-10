@@ -3,290 +3,396 @@ import { cn } from "@/lib/utils";
 /**
  * Schematic illustrations for the product pages.
  *
- * Each product category gets a diagram of what it actually does — a trunk
- * carrying channels, numbers fanning to destinations, calls queueing to
- * agents, a request/response exchange, a controlled network edge. Drawn
- * with theme tokens rather than fixed colours so both themes work, and
- * built from `currentColor` and CSS variables so no image is downloaded.
+ * Each category gets a diagram of the thing it actually does. Drawn as
+ * inline SVG from theme tokens so both themes work and nothing is
+ * downloaded. Depth comes from a faint grid field, layered strokes and a
+ * single glowing active path, rather than from flat filled shapes.
  */
 type Props = {
   category: string;
   className?: string;
 };
 
-const STROKE = "stroke-primary";
-const FAINT = "stroke-border";
+/** Shared defs: grid, glow and the dash animation for the live path. */
+function Defs({ uid }: { uid: string }) {
+  return (
+    <defs>
+      <pattern
+        id={`grid-${uid}`}
+        width="24"
+        height="24"
+        patternUnits="userSpaceOnUse"
+      >
+        <path
+          d="M24 0H0V24"
+          fill="none"
+          className="stroke-foreground/[0.06]"
+          strokeWidth="1"
+        />
+      </pattern>
 
-/** Business Voice: an aggregated trunk between two estates. */
-function TrunkDiagram() {
+      <radialGradient id={`fade-${uid}`} cx="50%" cy="50%" r="60%">
+        <stop offset="0%" stopColor="white" stopOpacity="1" />
+        <stop offset="100%" stopColor="white" stopOpacity="0" />
+      </radialGradient>
+
+      <mask id={`gridmask-${uid}`}>
+        <rect x="0" y="0" width="440" height="280" fill={`url(#fade-${uid})`} />
+      </mask>
+
+      <filter id={`glow-${uid}`} x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="4" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+  );
+}
+
+/** A device chassis: outline, header bar, and content rows. */
+function Chassis({
+  x,
+  y,
+  w,
+  h,
+  rows = 3,
+  active = false,
+  label,
+}: {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  rows?: number;
+  active?: boolean;
+  label?: string;
+}) {
+  const rowGap = (h - 26) / rows;
+
+  return (
+    <g>
+      <rect
+        x={x}
+        y={y}
+        width={w}
+        height={h}
+        rx="8"
+        className={cn(
+          "fill-background",
+          active ? "stroke-primary" : "stroke-border",
+        )}
+        strokeWidth={active ? 1.75 : 1.25}
+      />
+      {/* Header strip */}
+      <path
+        d={`M${x} ${y + 18} H${x + w}`}
+        className={active ? "stroke-primary/40" : "stroke-border"}
+        strokeWidth="1.25"
+      />
+      <circle
+        cx={x + 12}
+        cy={y + 9}
+        r="2.5"
+        className={active ? "fill-primary" : "fill-muted-foreground/35"}
+      />
+      {label ? (
+        <text
+          x={x + 22}
+          y={y + 12.5}
+          className={cn(
+            "text-[8px] font-medium [font-family:var(--font-mono)]",
+            active ? "fill-primary" : "fill-muted-foreground/70",
+          )}
+        >
+          {label}
+        </text>
+      ) : null}
+
+      {Array.from({ length: rows }).map((_, index) => (
+        <path
+          key={index}
+          d={`M${x + 12} ${y + 30 + index * rowGap} H${x + w - 12 - (index % 2) * 14}`}
+          className={
+            active && index === 1 ? "stroke-primary/70" : "stroke-border"
+          }
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
+      ))}
+    </g>
+  );
+}
+
+/** The animated packet travelling the active path. */
+function Flow({ d }: { d: string }) {
+  return (
+    <path
+      d={d}
+      fill="none"
+      strokeLinecap="round"
+      strokeWidth="2.5"
+      className="flow-path stroke-primary"
+    />
+  );
+}
+
+/** Business Voice: many channels aggregating into one trunk. */
+function TrunkDiagram({ uid }: { uid: string }) {
+  const trunk = "M300 140 H352";
+
   return (
     <>
-      {/* On-premise side */}
-      <rect
-        x="24"
-        y="96"
-        width="96"
-        height="128"
-        rx="10"
-        className={cn(FAINT, "fill-muted/40")}
-        strokeWidth="1.5"
-      />
-      {[124, 156, 188].map((y) => (
-        <rect
-          key={y}
-          x="42"
-          y={y}
-          width="60"
-          height="14"
-          rx="3"
-          className="fill-primary/20"
-        />
-      ))}
+      <Chassis x={40} y={78} w={116} h={124} rows={4} active label="IP-PBX" />
 
-      {/* Channels converging into a single trunk */}
-      {[128, 148, 168, 188].map((y, index) => (
+      {/* Channels converging */}
+      {[100, 124, 148, 172].map((y, index) => (
         <path
           key={y}
-          d={`M120 ${y} C 168 ${y}, 176 160, 216 160`}
-          className={cn(STROKE, index === 1 ? "opacity-90" : "opacity-40")}
-          strokeWidth="1.5"
+          d={`M156 ${y} C 218 ${y}, 232 140, 296 140`}
           fill="none"
+          strokeWidth={index === 1 ? "1.75" : "1.25"}
+          className={index === 1 ? "stroke-primary/70" : "stroke-primary/25"}
         />
       ))}
 
-      {/* The trunk itself */}
+      {/* Aggregation point */}
+      <circle
+        cx="298"
+        cy="140"
+        r="5"
+        className="fill-primary"
+        filter={`url(#glow-${uid})`}
+      />
+
+      {/* The trunk */}
       <path
-        d="M216 160 H300"
-        className={STROKE}
-        strokeWidth="3"
+        d={trunk}
+        className="stroke-primary"
+        strokeWidth="3.5"
         strokeLinecap="round"
         fill="none"
       />
-      <circle cx="216" cy="160" r="5" className="fill-primary" />
+      <Flow d={`M156 124 C 218 124, 232 140, 296 140 ${trunk.slice(1)}`} />
 
-      {/* Carrier cloud */}
+      {/* Carrier cloud — the trunk terminates at its edge */}
       <path
-        d="M320 138c-14 0-25 11-25 24s11 24 25 24h56c16 0 29-12 29-27s-13-27-29-27c-6-13-19-21-33-21-17 0-31 12-34 27z"
-        className={cn(STROKE, "fill-primary/5")}
-        strokeWidth="1.5"
+        d="M366 118c-9 0-16 7-16 16s7 16 16 16h44c11 0 20-9 20-20s-9-20-20-20c-4-9-13-15-23-15-12 0-22 8-24 18-1 0-1 0-1 0"
+        className="fill-background stroke-primary"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
       />
       <path
-        d="M330 162h66M330 174h44"
-        className={cn(STROKE, "opacity-50")}
-        strokeWidth="1.5"
+        d="M368 136h44M368 144h28"
+        className="stroke-primary/35"
+        strokeWidth="1.75"
         strokeLinecap="round"
       />
     </>
   );
 }
 
-/** Phone Numbers: one published number fanning out to destinations. */
+/** Phone Numbers: one published number reaching many destinations. */
 function NumbersDiagram() {
+  const rows = [72, 122, 172];
+
   return (
     <>
+      {/* The advertised number */}
       <rect
-        x="24"
-        y="140"
-        width="120"
-        height="44"
+        x="36"
+        y="116"
+        width="132"
+        height="48"
         rx="10"
-        className={cn(STROKE, "fill-primary/5")}
-        strokeWidth="1.5"
+        className="fill-background stroke-primary"
+        strokeWidth="1.75"
       />
-      <path
-        d="M44 162h20M74 162h12M96 162h28"
-        className={STROKE}
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
+      <text
+        x="56"
+        y="146"
+        className="fill-primary text-[15px] font-semibold [font-family:var(--font-mono)]"
+      >
+        +1 800···
+      </text>
 
-      {[
-        { y: 88, label: 220 },
-        { y: 140, label: 220 },
-        { y: 192, label: 220 },
-      ].map(({ y }, index) => (
-        <g key={y}>
-          <path
-            d={`M144 162 C 186 162, 190 ${y + 22}, 232 ${y + 22}`}
-            className={cn(STROKE, index === 1 ? "opacity-90" : "opacity-45")}
-            strokeWidth="1.5"
-            fill="none"
-          />
-          <rect
-            x="232"
-            y={y}
-            width="128"
-            height="44"
-            rx="10"
-            className={cn(
-              FAINT,
-              index === 1 ? "fill-primary/10" : "fill-muted/40",
-            )}
-            strokeWidth="1.5"
-          />
-          <circle
-            cx="256"
-            cy={y + 22}
-            r="7"
-            className={index === 1 ? "fill-primary" : "fill-primary/30"}
-          />
-          <path
-            d={`M274 ${y + 18}h62M274 ${y + 27}h40`}
-            className={cn(FAINT, "opacity-90")}
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </g>
-      ))}
+      {rows.map((y, index) => {
+        const path = `M168 140 C 214 140, 220 ${y + 24}, 268 ${y + 24}`;
+        const active = index === 1;
+        return (
+          <g key={y}>
+            <path
+              d={path}
+              fill="none"
+              strokeWidth={active ? "1.75" : "1.25"}
+              className={active ? "stroke-primary/70" : "stroke-primary/25"}
+            />
+            {active ? <Flow d={path} /> : null}
+            <Chassis
+              x={268}
+              y={y}
+              w={136}
+              h={48}
+              rows={1}
+              active={active}
+              label={["SALES", "SUPPORT", "BILLING"][index]}
+            />
+          </g>
+        );
+      })}
     </>
   );
 }
 
 /** Contact Center: callers queue, then distribute to agents. */
 function QueueDiagram() {
+  const agents = [70, 122, 174];
+
   return (
     <>
       {/* Waiting callers */}
-      {[70, 110, 150, 190].map((y, index) => (
-        <circle
-          key={y}
-          cx="44"
-          cy={y + 20}
-          r="11"
-          className={cn(
-            index === 0 ? "fill-primary" : "fill-primary/25",
-            "transition-none",
-          )}
-        />
-      ))}
-
-      {/* Queue channel */}
-      <rect
-        x="88"
-        y="78"
-        width="104"
-        height="164"
-        rx="12"
-        className={cn(STROKE, "fill-primary/5")}
-        strokeWidth="1.5"
-        strokeDasharray="4 5"
-      />
-      <path
-        d="M112 108h56M112 138h56M112 168h56M112 198h32"
-        className={cn(STROKE, "opacity-45")}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-
-      {/* Distribution */}
-      {[96, 160, 224].map((y, index) => (
-        <path
-          key={y}
-          d={`M192 160 C 232 160, 236 ${y}, 268 ${y}`}
-          className={cn(STROKE, index === 1 ? "opacity-90" : "opacity-45")}
-          strokeWidth="1.5"
-          fill="none"
-        />
-      ))}
-
-      {/* Agents */}
-      {[96, 160, 224].map((y, index) => (
+      {[92, 122, 152, 182].map((y, index) => (
         <g key={y}>
-          <rect
-            x="268"
-            y={y - 22}
-            width="108"
-            height="44"
-            rx="10"
+          <circle
+            cx="48"
+            cy={y}
+            r="9"
             className={cn(
-              FAINT,
-              index === 1 ? "fill-primary/10" : "fill-muted/40",
+              "stroke-primary",
+              index === 0 ? "fill-primary" : "fill-background",
             )}
             strokeWidth="1.5"
-          />
-          <circle
-            cx="292"
-            cy={y}
-            r="8"
-            className={index === 1 ? "fill-primary" : "fill-primary/30"}
-          />
-          <path
-            d={`M310 ${y - 4}h48M310 ${y + 5}h30`}
-            className={cn(FAINT, "opacity-90")}
-            strokeWidth="1.5"
-            strokeLinecap="round"
+            opacity={1 - index * 0.22}
           />
         </g>
       ))}
+
+      {/* Queue */}
+      <rect
+        x="86"
+        y="76"
+        width="96"
+        height="128"
+        rx="12"
+        className="fill-background stroke-primary/60"
+        strokeWidth="1.5"
+        strokeDasharray="5 5"
+      />
+      <text
+        x="134"
+        y="70"
+        textAnchor="middle"
+        className="fill-primary text-[9px] font-medium [font-family:var(--font-mono)]"
+      >
+        QUEUE
+      </text>
+      {[104, 128, 152, 176].map((y, index) => (
+        <path
+          key={y}
+          d={`M104 ${y} H${164 - index * 10}`}
+          className={index === 0 ? "stroke-primary/70" : "stroke-border"}
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
+      ))}
+
+      {agents.map((y, index) => {
+        const path = `M182 140 C 220 140, 226 ${y + 23}, 260 ${y + 23}`;
+        const active = index === 1;
+        return (
+          <g key={y}>
+            <path
+              d={path}
+              fill="none"
+              strokeWidth={active ? "1.75" : "1.25"}
+              className={active ? "stroke-primary/70" : "stroke-primary/25"}
+            />
+            {active ? <Flow d={path} /> : null}
+            <Chassis
+              x={260}
+              y={y}
+              w={144}
+              h={46}
+              rows={1}
+              active={active}
+              label={`AGENT ${index + 1}`}
+            />
+          </g>
+        );
+      })}
     </>
   );
 }
 
-/** Communication APIs: a request crossing into the network, and back. */
-function ApiDiagram() {
+/** Communication APIs: a request out, a response back. */
+function ApiDiagram({ uid }: { uid: string }) {
   return (
     <>
-      {/* Application window */}
+      {/* Editor */}
       <rect
-        x="24"
-        y="84"
-        width="150"
-        height="152"
-        rx="12"
-        className={cn(FAINT, "fill-muted/40")}
-        strokeWidth="1.5"
+        x="34"
+        y="74"
+        width="168"
+        height="132"
+        rx="10"
+        className="fill-background stroke-primary"
+        strokeWidth="1.75"
       />
-      <path d="M24 112h150" className={FAINT} strokeWidth="1.5" />
-      {[100].map((y) => (
-        <g key={y}>
-          <circle cx="42" cy="98" r="3.5" className="fill-primary/40" />
-          <circle cx="56" cy="98" r="3.5" className="fill-primary/25" />
-          <circle cx="70" cy="98" r="3.5" className="fill-primary/25" />
-        </g>
+      <path d="M34 96 H202" className="stroke-primary/40" strokeWidth="1.25" />
+      {[46, 58, 70].map((cx, index) => (
+        <circle
+          key={cx}
+          cx={cx}
+          cy="85"
+          r="3"
+          className={index === 0 ? "fill-primary" : "fill-muted-foreground/30"}
+        />
       ))}
-      {/* Code lines */}
-      {[136, 154, 172, 190, 208].map((y, index) => (
+      {[
+        { w: 96, active: false },
+        { w: 62, active: false },
+        { w: 118, active: true },
+        { w: 74, active: false },
+        { w: 48, active: false },
+      ].map((row, index) => (
         <path
-          key={y}
-          d={`M44 ${y}h${[92, 64, 108, 72, 50][index]}`}
-          className={cn(
-            index === 2 ? "stroke-primary" : FAINT,
-            index === 2 ? "opacity-90" : "opacity-80",
-          )}
+          key={index}
+          d={`M52 ${114 + index * 19} h${row.w}`}
+          className={row.active ? "stroke-primary" : "stroke-border"}
           strokeWidth="3"
           strokeLinecap="round"
         />
       ))}
 
-      {/* Request out */}
+      {/* Request / response */}
       <path
-        d="M174 138 H286"
-        className={STROKE}
+        d="M202 122 H286"
+        className="stroke-primary/70"
         strokeWidth="1.5"
-        strokeDasharray="5 5"
         fill="none"
       />
       <path
-        d="M278 132l8 6-8 6"
-        className={STROKE}
-        strokeWidth="1.5"
+        d="M279 116l8 6-8 6"
+        className="stroke-primary"
+        strokeWidth="1.75"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+      <Flow d="M202 122 H286" />
 
-      {/* Response back */}
       <path
-        d="M286 186 H174"
-        className={cn(STROKE, "opacity-50")}
+        d="M286 162 H202"
+        className="stroke-primary/25"
         strokeWidth="1.5"
-        strokeDasharray="5 5"
+        strokeDasharray="5 4"
         fill="none"
       />
       <path
-        d="M182 180l-8 6 8 6"
-        className={cn(STROKE, "opacity-50")}
-        strokeWidth="1.5"
+        d="M209 156l-8 6 8 6"
+        className="stroke-primary/50"
+        strokeWidth="1.75"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -294,129 +400,173 @@ function ApiDiagram() {
 
       {/* Network */}
       <circle
-        cx="344"
-        cy="160"
-        r="58"
-        className={cn(STROKE, "fill-primary/5")}
-        strokeWidth="1.5"
+        cx="348"
+        cy="140"
+        r="60"
+        className="fill-background stroke-primary/30"
+        strokeWidth="1.25"
       />
-      <circle cx="344" cy="160" r="9" className="fill-primary" />
+      <circle
+        cx="348"
+        cy="140"
+        r="38"
+        className="stroke-primary/20"
+        strokeWidth="1.25"
+        fill="none"
+      />
       {[0, 60, 120, 180, 240, 300].map((angle) => {
         const rad = (angle * Math.PI) / 180;
+        const x = 348 + Math.cos(rad) * 38;
+        const y = 140 + Math.sin(rad) * 38;
         return (
-          <circle
-            key={angle}
-            cx={344 + Math.cos(rad) * 38}
-            cy={160 + Math.sin(rad) * 38}
-            r="5"
-            className="fill-primary/40"
-          />
+          <g key={angle}>
+            <path
+              d={`M348 140 L${x} ${y}`}
+              className="stroke-primary/25"
+              strokeWidth="1.25"
+            />
+            <circle cx={x} cy={y} r="4.5" className="fill-primary/50" />
+          </g>
         );
       })}
-      {[0, 60, 120, 180, 240, 300].map((angle) => {
-        const rad = (angle * Math.PI) / 180;
-        return (
-          <path
-            key={angle}
-            d={`M344 160 L${344 + Math.cos(rad) * 38} ${160 + Math.sin(rad) * 38}`}
-            className={cn(STROKE, "opacity-30")}
-            strokeWidth="1.5"
-          />
-        );
-      })}
+      <circle
+        cx="348"
+        cy="140"
+        r="9"
+        className="fill-primary"
+        filter={`url(#glow-${uid})`}
+      />
     </>
   );
 }
 
-/** Enterprise: several systems meeting at one controlled edge. */
-function EdgeDiagram() {
+/** Enterprise: systems meeting at one controlled edge. */
+function EdgeDiagram({ uid }: { uid: string }) {
+  const systems = [
+    { y: 70, label: "TEAMS" },
+    { y: 122, label: "PBX" },
+    { y: 174, label: "CRM" },
+  ];
+
   return (
     <>
-      {/* Internal systems */}
-      {[86, 146, 206].map((y, index) => (
-        <g key={y}>
-          <rect
-            x="24"
-            y={y}
-            width="104"
-            height="42"
-            rx="9"
-            className={cn(
-              FAINT,
-              index === 1 ? "fill-primary/10" : "fill-muted/40",
-            )}
-            strokeWidth="1.5"
-          />
-          <path
-            d={`M44 ${y + 16}h48M44 ${y + 27}h30`}
-            className={cn(FAINT, "opacity-90")}
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <path
-            d={`M128 ${y + 21} C 168 ${y + 21}, 172 160, 202 160`}
-            className={cn(STROKE, index === 1 ? "opacity-90" : "opacity-45")}
-            strokeWidth="1.5"
-            fill="none"
-          />
-        </g>
-      ))}
+      {systems.map(({ y, label }, index) => {
+        const active = index === 1;
+        const path = `M158 ${y + 23} C 190 ${y + 23}, 194 140, 216 140`;
+        return (
+          <g key={y}>
+            <Chassis
+              x={34}
+              y={y}
+              w={124}
+              h={46}
+              rows={1}
+              active={active}
+              label={label}
+            />
+            <path
+              d={path}
+              fill="none"
+              strokeWidth={active ? "1.75" : "1.25"}
+              className={active ? "stroke-primary/70" : "stroke-primary/25"}
+            />
+            {active ? <Flow d={path} /> : null}
+          </g>
+        );
+      })}
 
       {/* The controlled edge */}
       <rect
-        x="202"
-        y="92"
-        width="60"
-        height="136"
+        x="216"
+        y="80"
+        width="58"
+        height="120"
         rx="14"
-        className={cn(STROKE, "fill-primary/10")}
+        className="fill-background stroke-primary"
         strokeWidth="2"
       />
+      <text
+        x="245"
+        y="74"
+        textAnchor="middle"
+        className="fill-primary text-[9px] font-medium [font-family:var(--font-mono)]"
+      >
+        SBC
+      </text>
       <path
-        d="M232 128v64"
-        className={STROKE}
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <circle cx="232" cy="118" r="6" className="fill-primary" />
-
-      {/* External */}
-      <path
-        d="M262 160 H316"
-        className={STROKE}
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <path
-        d="M336 134c-12 0-22 10-22 22s10 22 22 22h44c14 0 25-11 25-24s-11-24-25-24c-5-11-16-18-28-18-14 0-26 10-29 22z"
-        className={cn(STROKE, "fill-primary/5")}
+        d="M245 104v72"
+        className="stroke-primary/40"
         strokeWidth="1.5"
+        strokeDasharray="4 4"
+        strokeLinecap="round"
+      />
+      <circle
+        cx="245"
+        cy="140"
+        r="6"
+        className="fill-primary"
+        filter={`url(#glow-${uid})`}
+      />
+
+      <path
+        d="M274 140 H330"
+        className="stroke-primary"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        fill="none"
+      />
+
+      <path
+        d="M344 120c-9 0-16 7-16 16s7 16 16 16h42c11 0 19-9 19-19s-8-19-19-19c-4-9-13-14-22-14-11 0-21 7-23 17"
+        className="fill-background stroke-primary"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M346 138h42M346 146h26"
+        className="stroke-primary/35"
+        strokeWidth="1.75"
+        strokeLinecap="round"
       />
     </>
   );
 }
 
-const DIAGRAMS: Record<string, () => React.JSX.Element> = {
-  "business-voice": TrunkDiagram,
-  "phone-numbers": NumbersDiagram,
-  "contact-center": QueueDiagram,
-  "communication-apis": ApiDiagram,
-  "enterprise-features": EdgeDiagram,
-};
+const DIAGRAMS: Record<string, (props: { uid: string }) => React.JSX.Element> =
+  {
+    "business-voice": TrunkDiagram,
+    "phone-numbers": NumbersDiagram,
+    "contact-center": QueueDiagram,
+    "communication-apis": ApiDiagram,
+    "enterprise-features": EdgeDiagram,
+  };
 
 export function ProductIllustration({ category, className }: Props) {
   const Diagram = DIAGRAMS[category] ?? TrunkDiagram;
+  // Stable per-category id so gradient and filter references stay unique
+  // without needing a client component.
+  const uid = category;
 
   return (
     <svg
-      // Cropped to the band the diagrams occupy, so they fill the container
-      // rather than floating in empty space.
-      viewBox="16 60 416 200"
+      viewBox="20 50 404 180"
       role="presentation"
       aria-hidden
       className={cn("h-auto w-full", className)}
     >
-      <Diagram />
+      <Defs uid={uid} />
+
+      {/* Grid field, faded at the edges, for depth behind the diagram. */}
+      <rect
+        x="0"
+        y="0"
+        width="440"
+        height="280"
+        fill={`url(#grid-${uid})`}
+        mask={`url(#gridmask-${uid})`}
+      />
+
+      <Diagram uid={uid} />
     </svg>
   );
 }
