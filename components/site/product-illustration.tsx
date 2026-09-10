@@ -79,6 +79,7 @@ function Chassis({
         width={w}
         height={h}
         rx="8"
+        fill="var(--background, #fff)"
         className={cn(
           "fill-background",
           active ? "stroke-primary" : "stroke-border",
@@ -179,6 +180,7 @@ function TrunkDiagram({ uid }: { uid: string }) {
       {/* Carrier cloud — the trunk terminates at its edge */}
       <path
         d="M366 118c-9 0-16 7-16 16s7 16 16 16h44c11 0 20-9 20-20s-9-20-20-20c-4-9-13-15-23-15-12 0-22 8-24 18-1 0-1 0-1 0"
+        fill="var(--background, #fff)"
         className="fill-background stroke-primary"
         strokeWidth="1.75"
         strokeLinejoin="round"
@@ -206,6 +208,7 @@ function NumbersDiagram() {
         width="132"
         height="48"
         rx="10"
+        fill="var(--background, #fff)"
         className="fill-background stroke-primary"
         strokeWidth="1.75"
       />
@@ -258,6 +261,7 @@ function QueueDiagram() {
             cx="48"
             cy={y}
             r="9"
+            fill={index === 0 ? "currentColor" : "var(--background, #fff)"}
             className={cn(
               "stroke-primary",
               index === 0 ? "fill-primary" : "fill-background",
@@ -275,6 +279,7 @@ function QueueDiagram() {
         width="96"
         height="128"
         rx="12"
+        fill="var(--background, #fff)"
         className="fill-background stroke-primary/60"
         strokeWidth="1.5"
         strokeDasharray="5 5"
@@ -336,6 +341,7 @@ function ApiDiagram({ uid }: { uid: string }) {
         width="168"
         height="132"
         rx="10"
+        fill="var(--background, #fff)"
         className="fill-background stroke-primary"
         strokeWidth="1.75"
       />
@@ -403,6 +409,7 @@ function ApiDiagram({ uid }: { uid: string }) {
         cx="348"
         cy="140"
         r="60"
+        fill="var(--background, #fff)"
         className="fill-background stroke-primary/30"
         strokeWidth="1.25"
       />
@@ -482,6 +489,7 @@ function EdgeDiagram({ uid }: { uid: string }) {
         width="58"
         height="120"
         rx="14"
+        fill="var(--background, #fff)"
         className="fill-background stroke-primary"
         strokeWidth="2"
       />
@@ -518,6 +526,7 @@ function EdgeDiagram({ uid }: { uid: string }) {
 
       <path
         d="M344 120c-9 0-16 7-16 16s7 16 16 16h42c11 0 19-9 19-19s-8-19-19-19c-4-9-13-14-22-14-11 0-21 7-23 17"
+        fill="var(--background, #fff)"
         className="fill-background stroke-primary"
         strokeWidth="1.75"
         strokeLinejoin="round"
