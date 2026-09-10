@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { MegaMenu } from "@/components/site/mega-menu";
 import { MobileNav } from "@/components/site/mobile-nav";
-import { NavLink } from "@/components/site/nav-link";
 import { Button } from "@/components/ui/button";
-import { nav, site } from "@/lib/site";
+import { site } from "@/lib/site";
 
 export function SiteHeader() {
   return (
@@ -20,11 +20,7 @@ export function SiteHeader() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
-          {nav.map((item) => (
-            <NavLink key={item.href} href={item.href} label={item.label} />
-          ))}
-        </nav>
+        <MegaMenu />
 
         <div className="flex items-center gap-3">
           <Button asChild>

@@ -941,13 +941,358 @@ export const integrations = [
   "CEIPAL",
 ] as const;
 
-export const nav = [
-  { label: "Home", href: "/" },
-  { label: "Solutions", href: "/solutions" },
-  { label: "Industries", href: "/industries" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "About", href: "/about" },
+export type NavLeaf = {
+  label: string;
+  href: string;
+  description?: string;
+};
+
+export type NavGroup = {
+  heading: string;
+  description?: string;
+  icon?: LucideIcon;
+  links: NavLeaf[];
+};
+
+export type NavItem = {
+  label: string;
+  href: string;
+  /** Present on mega-menu entries; plain links omit it. */
+  groups?: NavGroup[];
+  /** Promo panel rendered alongside the groups. */
+  feature?: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    cta: string;
+    href: string;
+  };
+  /** Renders groups as one flat column instead of grouped columns. */
+  flat?: boolean;
+};
+
+export const nav: NavItem[] = [
+  {
+    label: "Products",
+    href: "/products",
+    groups: [
+      {
+        heading: "Business Voice",
+        icon: PhoneCall,
+        description: "Carrier-grade voice for every setup.",
+        links: [
+          { label: "SIP Trunking", href: "/products/sip-trunking", description: "Connect your PBX to our IP network" },
+          { label: "Cloud PBX", href: "/products/cloud-pbx", description: "A full phone system in the cloud" },
+          { label: "Hosted PBX", href: "/products/hosted-pbx", description: "We host and manage it end to end" },
+          { label: "IP PBX", href: "/products/ip-pbx", description: "On-premise PBX, SIP enabled" },
+        ],
+      },
+      {
+        heading: "Phone Numbers",
+        icon: Network,
+        description: "Local presence in 150+ countries.",
+        links: [
+          { label: "DID Numbers", href: "/products/did-numbers", description: "Direct inward dialling worldwide" },
+          { label: "Toll-Free Numbers", href: "/products/toll-free-numbers", description: "Free for your customers to call" },
+          { label: "Virtual Phone Numbers", href: "/products/virtual-numbers", description: "Any city, no local office" },
+          { label: "Number Porting", href: "/products/number-porting", description: "Keep the numbers you already have" },
+        ],
+      },
+      {
+        heading: "Contact Center",
+        icon: Headset,
+        description: "Everything your agents need.",
+        links: [
+          { label: "Call Center Solution", href: "/products/call-center", description: "Inbound and outbound at scale" },
+          { label: "Predictive Dialer", href: "/products/predictive-dialer", description: "Maximise agent talk time" },
+          { label: "Auto Dialer", href: "/products/auto-dialer", description: "Automate outbound campaigns" },
+          { label: "IVR System", href: "/products/ivr", description: "Route callers to the right place" },
+          { label: "Call Recording", href: "/products/call-recording", description: "Capture and store every call" },
+          { label: "Call Analytics", href: "/products/call-analytics", description: "Live dashboards and reporting" },
+        ],
+      },
+      {
+        heading: "Communication APIs",
+        icon: Code2,
+        description: "Build comms into your product.",
+        links: [
+          { label: "Voice API", href: "/products/voice-api", description: "Place and receive calls in code" },
+          { label: "SMS API", href: "/products/sms-api", description: "Programmable messaging" },
+          { label: "WhatsApp Business API", href: "/products/whatsapp-api", description: "Reach customers where they are" },
+          { label: "WebRTC SDK", href: "/products/webrtc-sdk", description: "Calling in the browser" },
+          { label: "SIP API", href: "/products/sip-api", description: "Provision trunks programmatically" },
+        ],
+      },
+      {
+        heading: "Enterprise Features",
+        icon: ShieldCheck,
+        description: "For complex, regulated estates.",
+        links: [
+          { label: "Microsoft Teams Calling", href: "/products/teams-calling", description: "Direct Routing for Teams" },
+          { label: "Session Border Controller", href: "/products/sbc", description: "Secure the network edge" },
+          { label: "Call Queue", href: "/products/call-queue", description: "Never drop a waiting caller" },
+          { label: "CRM Integration", href: "/products/crm-integration", description: "Salesforce, Zoho, Dynamics" },
+          { label: "AI Voice Assistant", href: "/products/ai-voice-assistant", description: "Automate routine conversations" },
+        ],
+      },
+    ],
+    feature: {
+      eyebrow: "SIPLINK PLATFORM",
+      title: "One platform for every conversation",
+      description:
+        "Voice, messaging and APIs on a single network — with the reliability and support your business runs on.",
+      cta: "Explore the platform",
+      href: "/products",
+    },
+  },
+  {
+    label: "Solutions",
+    href: "/solutions",
+    groups: [
+      {
+        heading: "By Business Size",
+        icon: UsersRound,
+        description: "Solutions tailored to your growth stage.",
+        links: [
+          { label: "Startups", href: "/solutions/startups", description: "Flexible and affordable communication for fast-moving teams" },
+          { label: "Small Business", href: "/solutions/small-business", description: "Easy-to-use solutions to stay connected and grow" },
+          { label: "Mid-Market", href: "/solutions/mid-market", description: "Advanced features for growing organizations" },
+          { label: "Enterprise", href: "/solutions/enterprise", description: "Ultra-reliable, secure, and scalable for global businesses" },
+        ],
+      },
+      {
+        heading: "By Use Case",
+        icon: Activity,
+        description: "Solve real communication challenges.",
+        links: [
+          { label: "Remote Workforce", href: "/solutions/remote-workforce", description: "Keep your distributed teams connected" },
+          { label: "Customer Support", href: "/solutions/customer-support", description: "Deliver exceptional customer experiences" },
+          { label: "Sales Teams", href: "/solutions/sales-teams", description: "Empower your sales with smarter communication tools" },
+          { label: "Unified Communications", href: "/solutions/unified-communications", description: "Bring voice, messaging, and collaboration together" },
+          { label: "Global Offices", href: "/solutions/global-offices", description: "Stay connected across countries and time zones" },
+          { label: "Multi-Branch Businesses", href: "/solutions/multi-branch", description: "Seamless communication for all your locations" },
+        ],
+      },
+      {
+        heading: "Migration",
+        icon: Cloud,
+        description: "Move to modern communication with ease.",
+        links: [
+          { label: "Move from PRI", href: "/solutions/pri-migration", description: "Upgrade from legacy PRI to cloud" },
+          { label: "PBX Migration", href: "/solutions/pbx-migration", description: "Migrate your existing PBX to SipLink" },
+          { label: "Cloud Migration", href: "/solutions/cloud-migration", description: "Move to a scalable cloud communication platform" },
+          { label: "Number Porting", href: "/solutions/number-porting", description: "Keep your existing numbers, hassle-free" },
+        ],
+      },
+    ],
+    feature: {
+      eyebrow: "SIPLINK SOLUTIONS",
+      title: "Built for Every Business. Ready for What’s Next.",
+      description:
+        "Scalable communication solutions designed for businesses of all sizes and use cases.",
+      cta: "Find Your Solution",
+      href: "/solutions",
+    },
+  },
+  {
+    label: "Industries",
+    href: "/industries",
+    flat: true,
+    groups: [
+      {
+        heading: "Industries we serve",
+        icon: Building2,
+        links: [
+          { label: "Call Centers", href: "/industries/call-centers" },
+          { label: "Healthcare", href: "/industries/healthcare" },
+          { label: "Banking & Finance", href: "/industries/banking-finance" },
+          { label: "Education", href: "/industries/education" },
+          { label: "Retail", href: "/industries/retail" },
+          { label: "Hospitality", href: "/industries/hospitality" },
+          { label: "Logistics", href: "/industries/logistics" },
+          { label: "IT & SaaS", href: "/industries/it-saas" },
+          { label: "Government", href: "/industries/government" },
+          { label: "Manufacturing", href: "/industries/manufacturing" },
+          { label: "Telecom Operators", href: "/industries/telecom-operators" },
+        ],
+      },
+    ],
+    feature: {
+      eyebrow: "SIPLINK INDUSTRIES",
+      title: "Communication that fits how you work",
+      description:
+        "Deployments tuned to the compliance, volume and workflow demands of your sector.",
+      cta: "See all industries",
+      href: "/industries",
+    },
+  },
+  {
+    label: "Developers",
+    href: "/developers",
+    groups: [
+      {
+        heading: "Documentation",
+        icon: ScrollText,
+        description: "Everything you need to integrate.",
+        links: [
+          { label: "API Documentation", href: "/developers/api-docs", description: "REST endpoints and payloads" },
+          { label: "SIP Documentation", href: "/developers/sip-docs", description: "Trunk setup and SIP signalling" },
+          { label: "SDK Downloads", href: "/developers/sdks", description: "Client libraries for your stack" },
+          { label: "Webhooks", href: "/developers/webhooks", description: "Subscribe to real-time events" },
+        ],
+      },
+      {
+        heading: "Resources",
+        icon: GitBranch,
+        description: "Get to a working call faster.",
+        links: [
+          { label: "API Reference", href: "/developers/api-reference", description: "Every method, parameter and error" },
+          { label: "Sample Code", href: "/developers/sample-code", description: "Copy-paste starting points" },
+          { label: "Postman Collection", href: "/developers/postman", description: "Try the API without writing code" },
+          { label: "GitHub Examples", href: "/developers/github-examples", description: "Full working demo apps" },
+        ],
+      },
+      {
+        heading: "Support",
+        icon: LifeBuoy,
+        description: "Build and ship with confidence.",
+        links: [
+          { label: "Sandbox", href: "/developers/sandbox", description: "Test safely before you go live" },
+          { label: "API Status", href: "/developers/status", description: "Live platform availability" },
+          { label: "Rate Limits", href: "/developers/rate-limits", description: "Quotas and throttling rules" },
+        ],
+      },
+    ],
+    feature: {
+      eyebrow: "SIPLINK DEVELOPERS",
+      title: "From first call to production",
+      description:
+        "Well-documented APIs, real sample code and a sandbox — so you can integrate voice in days, not quarters.",
+      cta: "Read the docs",
+      href: "/developers",
+    },
+  },
+  {
+    label: "Pricing",
+    href: "/pricing",
+    flat: true,
+    groups: [
+      {
+        heading: "Plans & pricing",
+        icon: Receipt,
+        links: [
+          { label: "SIP Trunk Pricing", href: "/pricing/sip-trunk" },
+          { label: "Cloud PBX Plans", href: "/pricing/cloud-pbx" },
+          { label: "DID Pricing", href: "/pricing/did" },
+          { label: "Toll-Free Pricing", href: "/pricing/toll-free" },
+          { label: "Contact Center Pricing", href: "/pricing/contact-center" },
+          { label: "Voice API Pricing", href: "/pricing/voice-api" },
+          { label: "Enterprise Quote", href: "/pricing/enterprise-quote" },
+        ],
+      },
+    ],
+    feature: {
+      eyebrow: "SIPLINK PRICING",
+      title: "Transparent pricing, no surprises",
+      description:
+        "Pay for what you use, scale when you need to, and talk to a human before you commit.",
+      cta: "Compare all plans",
+      href: "/pricing",
+    },
+  },
+  {
+    label: "Resources",
+    href: "/resources",
+    groups: [
+      {
+        heading: "Learn",
+        icon: GraduationCap,
+        description: "Get more from your platform.",
+        links: [
+          { label: "Blog", href: "/resources/blog", description: "Industry news and product updates" },
+          { label: "Knowledge Base", href: "/resources/knowledge-base", description: "How-to guides and troubleshooting" },
+          { label: "Documentation", href: "/developers/api-docs", description: "Technical product documentation" },
+          { label: "FAQs", href: "/resources/faqs", description: "Quick answers to common questions" },
+        ],
+      },
+      {
+        heading: "Customer Stories",
+        icon: HeartHandshake,
+        description: "Results from businesses like yours.",
+        links: [
+          { label: "Case Studies", href: "/resources/case-studies", description: "In-depth customer deployments" },
+          { label: "Testimonials", href: "/resources/testimonials", description: "What our customers say" },
+          { label: "Success Stories", href: "/resources/success-stories", description: "Measurable outcomes and ROI" },
+        ],
+      },
+      {
+        heading: "Downloads",
+        icon: FileSpreadsheet,
+        description: "Take the detail with you.",
+        links: [
+          { label: "Whitepapers", href: "/resources/whitepapers", description: "Deep dives on cloud telephony" },
+          { label: "Brochures", href: "/resources/brochures", description: "Overviews to share internally" },
+          { label: "Datasheets", href: "/resources/datasheets", description: "Specs, limits and features" },
+          { label: "Product Catalog", href: "/resources/product-catalog", description: "The full SipLink range" },
+        ],
+      },
+      {
+        heading: "Network",
+        icon: Waves,
+        description: "Know exactly what you are running on.",
+        links: [
+          { label: "Coverage Map", href: "/resources/coverage-map", description: "Where we deliver numbers and voice" },
+          { label: "Network Status", href: "/resources/network-status", description: "Real-time service health" },
+          { label: "SLA", href: "/resources/sla", description: "Our uptime and support commitments" },
+        ],
+      },
+    ],
+    feature: {
+      eyebrow: "SIPLINK RESOURCES",
+      title: "Everything you need to decide",
+      description:
+        "Guides, customer results and network transparency — all in one place.",
+      cta: "Browse resources",
+      href: "/resources",
+    },
+  },
+  {
+    label: "Company",
+    href: "/about",
+    flat: true,
+    groups: [
+      {
+        heading: "Company",
+        icon: Building,
+        links: [
+          { label: "About SipLink", href: "/about" },
+          { label: "Why SipLink", href: "/why-siplink" },
+          { label: "Partners", href: "/company/partners" },
+          { label: "Certifications", href: "/company/certifications" },
+          { label: "Careers", href: "/company/careers" },
+          { label: "News", href: "/company/news" },
+          { label: "Contact Us", href: "/contact" },
+        ],
+      },
+    ],
+    feature: {
+      eyebrow: "ABOUT SIPLINK",
+      title: "A partner, not just a provider",
+      description:
+        "D-U-N-S registered, globally connected, and backed by a support team that answers.",
+      cta: "About SipLink",
+      href: "/about",
+    },
+  },
   { label: "Contact", href: "/contact" },
+];
+
+/** Trust strip shown along the bottom of the mega menu. */
+export const navHighlights = [
+  { label: "Scalable Solutions", description: "For businesses of all sizes", icon: Activity },
+  { label: "Reliable & Secure", description: "Enterprise-grade infrastructure", icon: ShieldCheck },
+  { label: "Global Reach", description: "150+ countries coverage", icon: Network },
+  { label: "Expert Support", description: "We are with you at every step", icon: Headset },
 ] as const;
 
 export const footerNav = [
