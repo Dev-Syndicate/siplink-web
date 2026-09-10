@@ -380,7 +380,6 @@ export const plans: Plan[] = [
   },
 ];
 
-
 /**
  * The full plan comparison, as supplied by SipLink.
  *
@@ -535,8 +534,7 @@ export const ucaasBenefits: Simple[] = [
   },
   {
     title: "Crystal clear every time",
-    description:
-      "Enterprise-grade voice and HD video with zero compromise.",
+    description: "Enterprise-grade voice and HD video with zero compromise.",
     icon: AudioLines,
   },
   {
@@ -606,7 +604,8 @@ export const assurances: Simple[] = [
   },
   {
     title: "24x7 customer support",
-    description: "Dedicated customer support staff are always available to help.",
+    description:
+      "Dedicated customer support staff are always available to help.",
     icon: Clock,
   },
   {
@@ -853,7 +852,6 @@ export const reviews: Review[] = [
   },
 ];
 
-
 /** Social profiles, from the live site footer. */
 export const social = [
   {
@@ -873,7 +871,10 @@ export const social = [
     label: "YouTube",
     href: "https://www.youtube.com/@siplinkcommunicationsofficial/",
   },
-  { label: "Pinterest", href: "https://in.pinterest.com/siplinkcommunications/" },
+  {
+    label: "Pinterest",
+    href: "https://in.pinterest.com/siplinkcommunications/",
+  },
 ] as const;
 
 /** The SipLink UC mobile apps. */
@@ -981,10 +982,26 @@ export const nav: NavItem[] = [
         icon: PhoneCall,
         description: "Carrier-grade voice for every setup.",
         links: [
-          { label: "SIP Trunking", href: "/products/sip-trunking", description: "Connect your PBX to our IP network" },
-          { label: "Cloud PBX", href: "/products/cloud-pbx", description: "A full phone system in the cloud" },
-          { label: "Hosted PBX", href: "/products/hosted-pbx", description: "We host and manage it end to end" },
-          { label: "IP PBX", href: "/products/ip-pbx", description: "On-premise PBX, SIP enabled" },
+          {
+            label: "SIP Trunking",
+            href: "/products/sip-trunking",
+            description: "Connect your PBX to our IP network",
+          },
+          {
+            label: "Cloud PBX",
+            href: "/products/cloud-pbx",
+            description: "A full phone system in the cloud",
+          },
+          {
+            label: "Hosted PBX",
+            href: "/products/hosted-pbx",
+            description: "We host and manage it end to end",
+          },
+          {
+            label: "IP PBX",
+            href: "/products/ip-pbx",
+            description: "On-premise PBX, SIP enabled",
+          },
         ],
       },
       {
@@ -992,10 +1009,26 @@ export const nav: NavItem[] = [
         icon: Network,
         description: "Local presence in 150+ countries.",
         links: [
-          { label: "DID Numbers", href: "/products/did-numbers", description: "Direct inward dialling worldwide" },
-          { label: "Toll-Free Numbers", href: "/products/toll-free-numbers", description: "Free for your customers to call" },
-          { label: "Virtual Phone Numbers", href: "/products/virtual-numbers", description: "Any city, no local office" },
-          { label: "Number Porting", href: "/products/number-porting", description: "Keep the numbers you already have" },
+          {
+            label: "DID Numbers",
+            href: "/products/did-numbers",
+            description: "Direct inward dialling worldwide",
+          },
+          {
+            label: "Toll-Free Numbers",
+            href: "/products/toll-free-numbers",
+            description: "Free for your customers to call",
+          },
+          {
+            label: "Virtual Phone Numbers",
+            href: "/products/virtual-numbers",
+            description: "Any city, no local office",
+          },
+          {
+            label: "Number Porting",
+            href: "/products/number-porting",
+            description: "Keep the numbers you already have",
+          },
         ],
       },
       {
@@ -1003,12 +1036,36 @@ export const nav: NavItem[] = [
         icon: Headset,
         description: "Everything your agents need.",
         links: [
-          { label: "Call Center Solution", href: "/products/call-center", description: "Inbound and outbound at scale" },
-          { label: "Predictive Dialer", href: "/products/predictive-dialer", description: "Maximise agent talk time" },
-          { label: "Auto Dialer", href: "/products/auto-dialer", description: "Automate outbound campaigns" },
-          { label: "IVR System", href: "/products/ivr", description: "Route callers to the right place" },
-          { label: "Call Recording", href: "/products/call-recording", description: "Capture and store every call" },
-          { label: "Call Analytics", href: "/products/call-analytics", description: "Live dashboards and reporting" },
+          {
+            label: "Call Center Solution",
+            href: "/products/call-center",
+            description: "Inbound and outbound at scale",
+          },
+          {
+            label: "Predictive Dialer",
+            href: "/products/predictive-dialer",
+            description: "Maximise agent talk time",
+          },
+          {
+            label: "Auto Dialer",
+            href: "/products/auto-dialer",
+            description: "Automate outbound campaigns",
+          },
+          {
+            label: "IVR System",
+            href: "/products/ivr",
+            description: "Route callers to the right place",
+          },
+          {
+            label: "Call Recording",
+            href: "/products/call-recording",
+            description: "Capture and store every call",
+          },
+          {
+            label: "Call Analytics",
+            href: "/products/call-analytics",
+            description: "Live dashboards and reporting",
+          },
         ],
       },
       {
@@ -1016,11 +1073,31 @@ export const nav: NavItem[] = [
         icon: Code2,
         description: "Build comms into your product.",
         links: [
-          { label: "Voice API", href: "/products/voice-api", description: "Place and receive calls in code" },
-          { label: "SMS API", href: "/products/sms-api", description: "Programmable messaging" },
-          { label: "WhatsApp Business API", href: "/products/whatsapp-api", description: "Reach customers where they are" },
-          { label: "WebRTC SDK", href: "/products/webrtc-sdk", description: "Calling in the browser" },
-          { label: "SIP API", href: "/products/sip-api", description: "Provision trunks programmatically" },
+          {
+            label: "Voice API",
+            href: "/products/voice-api",
+            description: "Place and receive calls in code",
+          },
+          {
+            label: "SMS API",
+            href: "/products/sms-api",
+            description: "Programmable messaging",
+          },
+          {
+            label: "WhatsApp Business API",
+            href: "/products/whatsapp-api",
+            description: "Reach customers where they are",
+          },
+          {
+            label: "WebRTC SDK",
+            href: "/products/webrtc-sdk",
+            description: "Calling in the browser",
+          },
+          {
+            label: "SIP API",
+            href: "/products/sip-api",
+            description: "Provision trunks programmatically",
+          },
         ],
       },
       {
@@ -1028,11 +1105,31 @@ export const nav: NavItem[] = [
         icon: ShieldCheck,
         description: "For complex, regulated estates.",
         links: [
-          { label: "Microsoft Teams Calling", href: "/products/teams-calling", description: "Direct Routing for Teams" },
-          { label: "Session Border Controller", href: "/products/sbc", description: "Secure the network edge" },
-          { label: "Call Queue", href: "/products/call-queue", description: "Never drop a waiting caller" },
-          { label: "CRM Integration", href: "/products/crm-integration", description: "Salesforce, Zoho, Dynamics" },
-          { label: "AI Voice Assistant", href: "/products/ai-voice-assistant", description: "Automate routine conversations" },
+          {
+            label: "Microsoft Teams Calling",
+            href: "/products/teams-calling",
+            description: "Direct Routing for Teams",
+          },
+          {
+            label: "Session Border Controller",
+            href: "/products/sbc",
+            description: "Secure the network edge",
+          },
+          {
+            label: "Call Queue",
+            href: "/products/call-queue",
+            description: "Never drop a waiting caller",
+          },
+          {
+            label: "CRM Integration",
+            href: "/products/crm-integration",
+            description: "Salesforce, Zoho, Dynamics",
+          },
+          {
+            label: "AI Voice Assistant",
+            href: "/products/ai-voice-assistant",
+            description: "Automate routine conversations",
+          },
         ],
       },
     ],
@@ -1054,10 +1151,28 @@ export const nav: NavItem[] = [
         icon: UsersRound,
         description: "Solutions tailored to your growth stage.",
         links: [
-          { label: "Startups", href: "/solutions/startups", description: "Flexible and affordable communication for fast-moving teams" },
-          { label: "Small Business", href: "/solutions/small-business", description: "Easy-to-use solutions to stay connected and grow" },
-          { label: "Mid-Market", href: "/solutions/mid-market", description: "Advanced features for growing organizations" },
-          { label: "Enterprise", href: "/solutions/enterprise", description: "Ultra-reliable, secure, and scalable for global businesses" },
+          {
+            label: "Startups",
+            href: "/solutions/startups",
+            description:
+              "Flexible and affordable communication for fast-moving teams",
+          },
+          {
+            label: "Small Business",
+            href: "/solutions/small-business",
+            description: "Easy-to-use solutions to stay connected and grow",
+          },
+          {
+            label: "Mid-Market",
+            href: "/solutions/mid-market",
+            description: "Advanced features for growing organizations",
+          },
+          {
+            label: "Enterprise",
+            href: "/solutions/enterprise",
+            description:
+              "Ultra-reliable, secure, and scalable for global businesses",
+          },
         ],
       },
       {
@@ -1065,12 +1180,36 @@ export const nav: NavItem[] = [
         icon: Activity,
         description: "Solve real communication challenges.",
         links: [
-          { label: "Remote Workforce", href: "/solutions/remote-workforce", description: "Keep your distributed teams connected" },
-          { label: "Customer Support", href: "/solutions/customer-support", description: "Deliver exceptional customer experiences" },
-          { label: "Sales Teams", href: "/solutions/sales-teams", description: "Empower your sales with smarter communication tools" },
-          { label: "Unified Communications", href: "/solutions/unified-communications", description: "Bring voice, messaging, and collaboration together" },
-          { label: "Global Offices", href: "/solutions/global-offices", description: "Stay connected across countries and time zones" },
-          { label: "Multi-Branch Businesses", href: "/solutions/multi-branch", description: "Seamless communication for all your locations" },
+          {
+            label: "Remote Workforce",
+            href: "/solutions/remote-workforce",
+            description: "Keep your distributed teams connected",
+          },
+          {
+            label: "Customer Support",
+            href: "/solutions/customer-support",
+            description: "Deliver exceptional customer experiences",
+          },
+          {
+            label: "Sales Teams",
+            href: "/solutions/sales-teams",
+            description: "Empower your sales with smarter communication tools",
+          },
+          {
+            label: "Unified Communications",
+            href: "/solutions/unified-communications",
+            description: "Bring voice, messaging, and collaboration together",
+          },
+          {
+            label: "Global Offices",
+            href: "/solutions/global-offices",
+            description: "Stay connected across countries and time zones",
+          },
+          {
+            label: "Multi-Branch Businesses",
+            href: "/solutions/multi-branch",
+            description: "Seamless communication for all your locations",
+          },
         ],
       },
       {
@@ -1078,10 +1217,26 @@ export const nav: NavItem[] = [
         icon: Cloud,
         description: "Move to modern communication with ease.",
         links: [
-          { label: "Move from PRI", href: "/solutions/pri-migration", description: "Upgrade from legacy PRI to cloud" },
-          { label: "PBX Migration", href: "/solutions/pbx-migration", description: "Migrate your existing PBX to SipLink" },
-          { label: "Cloud Migration", href: "/solutions/cloud-migration", description: "Move to a scalable cloud communication platform" },
-          { label: "Number Porting", href: "/solutions/number-porting", description: "Keep your existing numbers, hassle-free" },
+          {
+            label: "Move from PRI",
+            href: "/solutions/pri-migration",
+            description: "Upgrade from legacy PRI to cloud",
+          },
+          {
+            label: "PBX Migration",
+            href: "/solutions/pbx-migration",
+            description: "Migrate your existing PBX to SipLink",
+          },
+          {
+            label: "Cloud Migration",
+            href: "/solutions/cloud-migration",
+            description: "Move to a scalable cloud communication platform",
+          },
+          {
+            label: "Number Porting",
+            href: "/solutions/number-porting",
+            description: "Keep your existing numbers, hassle-free",
+          },
         ],
       },
     ],
@@ -1135,10 +1290,26 @@ export const nav: NavItem[] = [
         icon: ScrollText,
         description: "Everything you need to integrate.",
         links: [
-          { label: "API Documentation", href: "/developers/api-docs", description: "REST endpoints and payloads" },
-          { label: "SIP Documentation", href: "/developers/sip-docs", description: "Trunk setup and SIP signalling" },
-          { label: "SDK Downloads", href: "/developers/sdks", description: "Client libraries for your stack" },
-          { label: "Webhooks", href: "/developers/webhooks", description: "Subscribe to real-time events" },
+          {
+            label: "API Documentation",
+            href: "/developers/api-docs",
+            description: "REST endpoints and payloads",
+          },
+          {
+            label: "SIP Documentation",
+            href: "/developers/sip-docs",
+            description: "Trunk setup and SIP signalling",
+          },
+          {
+            label: "SDK Downloads",
+            href: "/developers/sdks",
+            description: "Client libraries for your stack",
+          },
+          {
+            label: "Webhooks",
+            href: "/developers/webhooks",
+            description: "Subscribe to real-time events",
+          },
         ],
       },
       {
@@ -1146,10 +1317,26 @@ export const nav: NavItem[] = [
         icon: GitBranch,
         description: "Get to a working call faster.",
         links: [
-          { label: "API Reference", href: "/developers/api-reference", description: "Every method, parameter and error" },
-          { label: "Sample Code", href: "/developers/sample-code", description: "Copy-paste starting points" },
-          { label: "Postman Collection", href: "/developers/postman", description: "Try the API without writing code" },
-          { label: "GitHub Examples", href: "/developers/github-examples", description: "Full working demo apps" },
+          {
+            label: "API Reference",
+            href: "/developers/api-reference",
+            description: "Every method, parameter and error",
+          },
+          {
+            label: "Sample Code",
+            href: "/developers/sample-code",
+            description: "Copy-paste starting points",
+          },
+          {
+            label: "Postman Collection",
+            href: "/developers/postman",
+            description: "Try the API without writing code",
+          },
+          {
+            label: "GitHub Examples",
+            href: "/developers/github-examples",
+            description: "Full working demo apps",
+          },
         ],
       },
       {
@@ -1157,9 +1344,21 @@ export const nav: NavItem[] = [
         icon: LifeBuoy,
         description: "Build and ship with confidence.",
         links: [
-          { label: "Sandbox", href: "/developers/sandbox", description: "Test safely before you go live" },
-          { label: "API Status", href: "/developers/status", description: "Live platform availability" },
-          { label: "Rate Limits", href: "/developers/rate-limits", description: "Quotas and throttling rules" },
+          {
+            label: "Sandbox",
+            href: "/developers/sandbox",
+            description: "Test safely before you go live",
+          },
+          {
+            label: "API Status",
+            href: "/developers/status",
+            description: "Live platform availability",
+          },
+          {
+            label: "Rate Limits",
+            href: "/developers/rate-limits",
+            description: "Quotas and throttling rules",
+          },
         ],
       },
     ],
@@ -1209,10 +1408,26 @@ export const nav: NavItem[] = [
         icon: GraduationCap,
         description: "Get more from your platform.",
         links: [
-          { label: "Blog", href: "/resources/blog", description: "Industry news and product updates" },
-          { label: "Knowledge Base", href: "/resources/knowledge-base", description: "How-to guides and troubleshooting" },
-          { label: "Documentation", href: "/developers/api-docs", description: "Technical product documentation" },
-          { label: "FAQs", href: "/resources/faqs", description: "Quick answers to common questions" },
+          {
+            label: "Blog",
+            href: "/resources/blog",
+            description: "Industry news and product updates",
+          },
+          {
+            label: "Knowledge Base",
+            href: "/resources/knowledge-base",
+            description: "How-to guides and troubleshooting",
+          },
+          {
+            label: "Documentation",
+            href: "/developers/api-docs",
+            description: "Technical product documentation",
+          },
+          {
+            label: "FAQs",
+            href: "/resources/faqs",
+            description: "Quick answers to common questions",
+          },
         ],
       },
       {
@@ -1220,9 +1435,21 @@ export const nav: NavItem[] = [
         icon: HeartHandshake,
         description: "Results from businesses like yours.",
         links: [
-          { label: "Case Studies", href: "/resources/case-studies", description: "In-depth customer deployments" },
-          { label: "Testimonials", href: "/resources/testimonials", description: "What our customers say" },
-          { label: "Success Stories", href: "/resources/success-stories", description: "Measurable outcomes and ROI" },
+          {
+            label: "Case Studies",
+            href: "/resources/case-studies",
+            description: "In-depth customer deployments",
+          },
+          {
+            label: "Testimonials",
+            href: "/resources/testimonials",
+            description: "What our customers say",
+          },
+          {
+            label: "Success Stories",
+            href: "/resources/success-stories",
+            description: "Measurable outcomes and ROI",
+          },
         ],
       },
       {
@@ -1230,10 +1457,26 @@ export const nav: NavItem[] = [
         icon: FileSpreadsheet,
         description: "Take the detail with you.",
         links: [
-          { label: "Whitepapers", href: "/resources/whitepapers", description: "Deep dives on cloud telephony" },
-          { label: "Brochures", href: "/resources/brochures", description: "Overviews to share internally" },
-          { label: "Datasheets", href: "/resources/datasheets", description: "Specs, limits and features" },
-          { label: "Product Catalog", href: "/resources/product-catalog", description: "The full SipLink range" },
+          {
+            label: "Whitepapers",
+            href: "/resources/whitepapers",
+            description: "Deep dives on cloud telephony",
+          },
+          {
+            label: "Brochures",
+            href: "/resources/brochures",
+            description: "Overviews to share internally",
+          },
+          {
+            label: "Datasheets",
+            href: "/resources/datasheets",
+            description: "Specs, limits and features",
+          },
+          {
+            label: "Product Catalog",
+            href: "/resources/product-catalog",
+            description: "The full SipLink range",
+          },
         ],
       },
       {
@@ -1241,9 +1484,21 @@ export const nav: NavItem[] = [
         icon: Waves,
         description: "Know exactly what you are running on.",
         links: [
-          { label: "Coverage Map", href: "/resources/coverage-map", description: "Where we deliver numbers and voice" },
-          { label: "Network Status", href: "/resources/network-status", description: "Real-time service health" },
-          { label: "SLA", href: "/resources/sla", description: "Our uptime and support commitments" },
+          {
+            label: "Coverage Map",
+            href: "/resources/coverage-map",
+            description: "Where we deliver numbers and voice",
+          },
+          {
+            label: "Network Status",
+            href: "/resources/network-status",
+            description: "Real-time service health",
+          },
+          {
+            label: "SLA",
+            href: "/resources/sla",
+            description: "Our uptime and support commitments",
+          },
         ],
       },
     ],
@@ -1289,10 +1544,314 @@ export const nav: NavItem[] = [
 
 /** Trust strip shown along the bottom of the mega menu. */
 export const navHighlights = [
-  { label: "Scalable Solutions", description: "For businesses of all sizes", icon: Activity },
-  { label: "Reliable & Secure", description: "Enterprise-grade infrastructure", icon: ShieldCheck },
-  { label: "Global Reach", description: "150+ countries coverage", icon: Network },
-  { label: "Expert Support", description: "We are with you at every step", icon: Headset },
+  {
+    label: "Scalable Solutions",
+    description: "For businesses of all sizes",
+    icon: Activity,
+  },
+  {
+    label: "Reliable & Secure",
+    description: "Enterprise-grade infrastructure",
+    icon: ShieldCheck,
+  },
+  {
+    label: "Global Reach",
+    description: "150+ countries coverage",
+    icon: Network,
+  },
+  {
+    label: "Expert Support",
+    description: "We are with you at every step",
+    icon: Headset,
+  },
+] as const;
+
+/**
+ * Product catalogue for /products. Copy is drawn from
+ * docs/website-contents.md and docs/siplink-documentation.md; the
+ * category order matches the Products mega menu in `nav`.
+ */
+export type ProductCategory = {
+  slug: string;
+  eyebrow: string;
+  heading: string;
+  tagline: string;
+  description: string;
+  icon: LucideIcon;
+  products: {
+    title: string;
+    description: string;
+    href: string;
+    idealFor?: string;
+  }[];
+};
+
+export const productCategories: ProductCategory[] = [
+  {
+    slug: "business-voice",
+    eyebrow: "Business Voice",
+    heading: "Carrier-grade voice for every setup",
+    tagline: "The foundation of your business telephony.",
+    description:
+      "Whether you run your own PBX, want us to host it, or need SIP connectivity for existing equipment, SipLink delivers business calling on infrastructure built for uptime.",
+    icon: PhoneCall,
+    products: [
+      {
+        title: "SIP Trunking",
+        description:
+          "SIP-enabled connectivity between your IP-PBX and the telephony network. Connect existing equipment to our IP network for immediate savings and guaranteed quality of service.",
+        href: "/products/sip-trunking",
+        idealFor:
+          "Businesses with existing PBX hardware, multi-site organisations, high call volumes",
+      },
+      {
+        title: "Cloud PBX",
+        description:
+          "A complete business phone system delivered from the cloud — extensions, routing, IVR, voicemail and reporting, managed from a web portal with no hardware to maintain.",
+        href: "/products/cloud-pbx",
+        idealFor:
+          "Growing teams, remote and hybrid workforces, businesses replacing legacy systems",
+      },
+      {
+        title: "Hosted PBX",
+        description:
+          "We host, manage and monitor the PBX end to end. Business extensions, IP phones, softphones and mobile access with centralised administration and no on-premise box.",
+        href: "/products/hosted-pbx",
+        idealFor:
+          "Organisations without in-house telecom staff, branch offices, managed-service customers",
+      },
+      {
+        title: "IP PBX",
+        description:
+          "On-premise IP-PBX deployments for organisations that need to keep call control inside their own network, connected to external voice services over SIP.",
+        href: "/products/ip-pbx",
+        idealFor:
+          "Regulated environments, on-premise requirements, hybrid deployments",
+      },
+    ],
+  },
+  {
+    slug: "phone-numbers",
+    eyebrow: "Phone Numbers",
+    heading: "Business numbers built for the way you communicate",
+    tagline: "Establish presence anywhere, keep the numbers you have.",
+    description:
+      "Choose from local DID numbers, toll-free numbers and virtual phone numbers, or port your existing business numbers to SipLink while maintaining continuity — for one team or many locations.",
+    icon: Network,
+    products: [
+      {
+        title: "DID Numbers",
+        description:
+          "Direct Inward Dialing numbers that connect callers straight to a specific employee, department, extension or application, without routing through a main switchboard.",
+        href: "/products/did-numbers",
+        idealFor:
+          "Sales teams, support departments, individual employees, remote teams",
+      },
+      {
+        title: "Toll-Free Numbers",
+        description:
+          "Give customers a convenient way to reach you without being charged for the call, while incoming calls are directed to the right teams, agents or locations.",
+        href: "/products/toll-free-numbers",
+        idealFor:
+          "Customer support, sales enquiries, helplines, organisations serving several regions",
+      },
+      {
+        title: "Virtual Phone Numbers",
+        description:
+          "A professional phone presence without a physical line. Route calls to SIP phones, softphones, mobiles or extensions so teams stay reachable from anywhere.",
+        href: "/products/virtual-numbers",
+        idealFor:
+          "Distributed teams, companies entering new markets, flexible call routing",
+      },
+      {
+        title: "Number Porting",
+        description:
+          "Move your existing business numbers to SipLink and keep the numbers your customers already know — no reprinting, no updating listings, minimal disruption.",
+        href: "/products/number-porting",
+        idealFor:
+          "Businesses migrating from another provider, PRI and legacy PBX replacements",
+      },
+    ],
+  },
+  {
+    slug: "contact-center",
+    eyebrow: "Contact Center",
+    heading: "Connect your teams, elevate every conversation",
+    tagline: "One platform for agents, queues and customer interactions.",
+    description:
+      "Handle inbound and outbound calls, route customers to the right teams, manage queues, monitor agent activity, record conversations and analyse performance — with real-time visibility throughout.",
+    icon: Headset,
+    products: [
+      {
+        title: "Call Center Solution",
+        description:
+          "Route high volumes of calls to the right department, agent or extension, organise waiting customers into queues and manage inbound and outbound campaigns from one platform.",
+        href: "/products/call-center",
+        idealFor: "Sales, support and service teams handling high call volumes",
+      },
+      {
+        title: "Predictive Dialer",
+        description:
+          "Automate the repetitive work of dialling. The system manages outbound calling and connects answered calls to available agents, so teams spend more time talking to real prospects.",
+        href: "/products/predictive-dialer",
+        idealFor: "Outbound sales teams, collections, campaign-driven calling",
+      },
+      {
+        title: "Auto Dialer",
+        description:
+          "Run automated outbound campaigns with configurable pacing, call outcomes and campaign reporting for teams that need volume without manual dialling.",
+        href: "/products/auto-dialer",
+        idealFor: "Notification campaigns, reminders, outbound follow-up",
+      },
+      {
+        title: "IVR System",
+        description:
+          "Multi-level voice menus with professional greetings, routing to Sales, Support or Billing, and separate call flows for business hours, holidays and after-hours.",
+        href: "/products/ivr",
+        idealFor: "Any business wanting fewer transfers and faster response",
+      },
+      {
+        title: "Call Recording",
+        description:
+          "Securely capture inbound and outbound conversations for quality, training and accountability, with role-based access controlling who can replay each call.",
+        href: "/products/call-recording",
+        idealFor: "Quality assurance, training, regulated industries",
+      },
+      {
+        title: "Call Analytics",
+        description:
+          "Understand call volumes, answered and missed calls, duration, agent activity and overall trends — so you know what is happening inside your calls, not just how many there were.",
+        href: "/products/call-analytics",
+        idealFor: "Managers tracking performance and staffing decisions",
+      },
+    ],
+  },
+  {
+    slug: "communication-apis",
+    eyebrow: "Communication APIs",
+    heading: "Build powerful communication experiences",
+    tagline: "Voice, messaging and real-time calling in your own product.",
+    description:
+      "Integrate communication directly into your applications without developing the underlying telephony infrastructure from scratch — through reliable voice, SMS, WhatsApp, WebRTC and SIP technologies.",
+    icon: Code2,
+    products: [
+      {
+        title: "Voice API",
+        description:
+          "Initiate and receive calls, connect customers with agents and automate calling workflows programmatically from websites, applications and CRM platforms.",
+        href: "/products/voice-api",
+        idealFor:
+          "CRM platforms, SaaS applications, support systems, automated calling",
+      },
+      {
+        title: "SMS API",
+        description:
+          "Send automated notifications, alerts, reminders, verification messages and customer updates from your own systems, triggered by business events.",
+        href: "/products/sms-api",
+        idealFor:
+          "OTP and verification, alerts, appointment reminders, transactional messages",
+      },
+      {
+        title: "WhatsApp Business API",
+        description:
+          "Bring business conversations to WhatsApp — updates, support, notifications and customer engagement on a platform your customers already use daily.",
+        href: "/products/whatsapp-api",
+        idealFor:
+          "Customer support, order updates, appointment reminders, sales engagement",
+      },
+      {
+        title: "WebRTC SDK",
+        description:
+          "Add real-time voice directly into web and application environments — browser calling, click-to-call and embedded softphones with nothing for customers to install.",
+        href: "/products/webrtc-sdk",
+        idealFor:
+          "Web applications, SaaS platforms, click-to-call, support portals",
+      },
+      {
+        title: "SIP API",
+        description:
+          "Integrate SIP-based voice into your applications and existing telephony estate, for organisations that need greater control over their voice architecture.",
+        href: "/products/sip-api",
+        idealFor:
+          "Cloud telephony platforms, PBX environments, enterprise integrations",
+      },
+    ],
+  },
+  {
+    slug: "enterprise-features",
+    eyebrow: "Enterprise Features",
+    heading: "Built for scale, security and control",
+    tagline: "The communication layer across your existing systems.",
+    description:
+      "Large organisations run Teams, PBX platforms, SIP trunks, CRM applications and contact centres side by side. SipLink connects them into one managed environment rather than replacing everything you already use.",
+    icon: ShieldCheck,
+    products: [
+      {
+        title: "Microsoft Teams Calling",
+        description:
+          "Connect Teams to your business telephony so employees make and receive external calls from the Teams environment they already work in, on your existing business numbers.",
+        href: "/products/teams-calling",
+        idealFor: "Organisations already invested in Microsoft Teams",
+      },
+      {
+        title: "Session Border Controller",
+        description:
+          "A controlled layer between your voice infrastructure and external SIP networks, managing connections, supporting interoperability and giving visibility across platforms.",
+        href: "/products/sbc",
+        idealFor:
+          "Enterprises connecting PBX, cloud telephony and carrier networks",
+      },
+      {
+        title: "Call Queue",
+        description:
+          "Organise incoming calls by department and routing rules, distributing them to available agents instead of returning busy signals when everyone is occupied.",
+        href: "/products/call-queue",
+        idealFor: "Sales, support, billing, service and help-desk teams",
+      },
+      {
+        title: "CRM Integration",
+        description:
+          "Bring calling closer to the customer records your teams already rely on — screen pop, click-to-dial, call logging and contact synchronisation.",
+        href: "/products/crm-integration",
+        idealFor: "Sales and support teams working inside a CRM all day",
+      },
+      {
+        title: "AI Voice Assistant",
+        description:
+          "An intelligent voice layer that handles routine interactions naturally, collects the information needed and routes to a human when the conversation calls for one.",
+        href: "/products/ai-voice-assistant",
+        idealFor: "High-volume service desks with repetitive enquiries",
+      },
+    ],
+  },
+];
+
+/** Platform-wide capabilities shown beneath the product catalogue. */
+export const productPlatformPillars = [
+  {
+    title: "Security",
+    description:
+      "TLS-encrypted signalling and SRTP media where supported, two-factor authentication, role-based administration and IP access controls.",
+    icon: Lock,
+  },
+  {
+    title: "High availability",
+    description:
+      "Redundant deployment options, SIP trunk and route failover, load distribution, backup and recovery, with monitoring and alerting.",
+    icon: Activity,
+  },
+  {
+    title: "Multi-site & multi-tenant",
+    description:
+      "Separate customer or department environments, tenant-level administration, centralised management and multi-site control.",
+    icon: Building2,
+  },
+  {
+    title: "Integrations & APIs",
+    description:
+      "REST APIs, webhooks and SDK-based integration, plus CRM, Microsoft 365 and Google connections for your existing workflows.",
+    icon: Boxes,
+  },
 ] as const;
 
 export const footerNav = [
@@ -1308,7 +1867,10 @@ export const footerNav = [
   {
     heading: "Industries",
     links: [
-      { label: "Medical Billing & RCM", href: "/industries/medical-billing-rcm" },
+      {
+        label: "Medical Billing & RCM",
+        href: "/industries/medical-billing-rcm",
+      },
       { label: "Medical Care & Healthcare", href: "/industries/healthcare" },
       { label: "Staffing & Recruitment", href: "/industries/staffing" },
       { label: "IT & Software", href: "/industries/it-software" },
