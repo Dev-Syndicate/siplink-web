@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check, ShieldCheck, Smartphone } from "lucide-react";
+import { Check, ShieldCheck, Smartphone } from "lucide-react";
 
 import { ContinuousHero } from "@/components/site/continuous-hero";
 import { GlobeSection } from "@/components/site/globe-section";
@@ -13,13 +13,11 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
-  capabilities,
   certifications,
   industries,
   integrations,
@@ -27,10 +25,8 @@ import {
   mobility,
   planBaseFeatures,
   plans,
-  solutions,
   trustPoints,
 } from "@/lib/site";
-
 
 export default function Home() {
   return (
@@ -65,53 +61,6 @@ export default function Home() {
                 </p>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Solutions */}
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-medium tracking-widest text-primary uppercase">
-            Unified communications
-          </span>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Powerful tools built for modern workflows.
-          </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            Replace fragmented legacy systems with a single cloud platform for
-            voice, video and messaging.
-          </p>
-        </div>
-
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {solutions.map(({ title, description, icon: Icon, cta, href }) => (
-            <Card
-              key={title}
-              className="group transition-shadow hover:shadow-md"
-            >
-              <CardHeader>
-                <span className="mb-2 flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform group-hover:scale-105">
-                  <Icon className="size-6" aria-hidden />
-                </span>
-                <CardTitle className="text-xl">{title}</CardTitle>
-                <CardDescription className="text-pretty">
-                  {description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Link
-                  href={href}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-                >
-                  {cta}
-                  <ArrowRight
-                    className="size-4 transition-transform group-hover:translate-x-0.5"
-                    aria-hidden
-                  />
-                </Link>
-              </CardContent>
-            </Card>
           ))}
         </div>
       </section>
@@ -156,36 +105,6 @@ export default function Home() {
             <Button asChild variant="outline" size="lg">
               <Link href="/industries">View all industries</Link>
             </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Capabilities */}
-      <section className="border-t border-border bg-muted/30">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="text-sm font-medium tracking-widest text-primary uppercase">
-              Quality &amp; efficiency
-            </span>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Built for the way business actually communicates
-            </h2>
-          </div>
-
-          <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {capabilities.map(({ title, description, icon: Icon }) => (
-              <div key={title} className="flex gap-4">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-background text-primary shadow-sm">
-                  <Icon className="size-5" aria-hidden />
-                </span>
-                <div>
-                  <h3 className="font-medium">{title}</h3>
-                  <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
-                    {description}
-                  </p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

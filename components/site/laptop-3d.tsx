@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useLayoutEffect, useMemo, useRef } from "react";
+import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, useGLTF } from "@react-three/drei";
 import { Box3, Group, MathUtils, Vector3 } from "three";
@@ -73,47 +73,39 @@ function Rig({ progress, reduced, children }: Pose & { children: React.ReactNode
 /** Loads the model and normalises its size and origin. */
 function Model() {
   const { scene } = useGLTF(MODEL_URL);
-  const ref = useRef<Group>(null);
 
-  // Clone so a re-mount never mutates the cached scene graph twice.
-  const object = useMemo(() => scene.clone(true), [scene]);
+  /**
+   * Clone and normalise in one step, while the clone is still parentless.
+   *
+   * `Box3.setFromObject` measures in WORLD space. Doing this in an effect
+   * instead — after the clone is mounted under the rig — means that once a
+   * frame has rotated the rig, a re-run measures the axis-aligned box of the
+   * *rotated* model: a different size, a different scale factor, and a
+   * world-space centre then applied as a local offset, which throws the model
+   * off screen. React double-invokes effects on mount in development, so that
+   * race showed up as an empty canvas on roughly one load in seven.
+   *
+   * Here the clone has no parent, so the measurement is pure local space and
+   * cannot be perturbed by anything the rig is doing. It also runs exactly
+   * once per loaded model rather than on every mount.
+   */
+  const object = useMemo(() => {
+    const clone = scene.clone(true);
 
-  useLayoutEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    /**
-     * Reset before measuring.
-     *
-     * This effect mutates the object it measures, so it has to be idempotent:
-     * measuring an already-normalised object reports a size of exactly
-     * TARGET_SIZE and a centre of origin, yielding k = 1, which then
-     * overwrites the correct scale and offset and flings the model off
-     * screen. React runs effects twice on mount in development, so that is
-     * not a hypothetical — it showed up as a canvas that was mounted, error
-     * free and simply empty, on roughly a third of loads.
-     */
-    object.position.set(0, 0, 0);
-    object.scale.setScalar(1);
-    object.updateMatrixWorld(true);
-
-    const box = new Box3().setFromObject(object);
+    const box = new Box3().setFromObject(clone);
     const size = box.getSize(new Vector3());
     const centre = box.getCenter(new Vector3());
     const longest = Math.max(size.x, size.y, size.z) || 1;
 
     const k = TARGET_SIZE / longest;
-    object.scale.setScalar(k);
-    object.position.set(-centre.x * k, -centre.y * k, -centre.z * k);
+    clone.scale.setScalar(k);
+    clone.position.set(-centre.x * k, -centre.y * k, -centre.z * k);
+    clone.updateMatrixWorld(true);
 
-    node.updateMatrixWorld(true);
-  }, [object]);
+    return clone;
+  }, [scene]);
 
-  return (
-    <group ref={ref}>
-      <primitive object={object} />
-    </group>
-  );
+  return <primitive object={object} />;
 }
 
 export function Laptop3D({
