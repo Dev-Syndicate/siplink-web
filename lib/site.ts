@@ -1555,8 +1555,11 @@ export const navHighlights = [
     icon: ShieldCheck,
   },
   {
-    label: "Global Reach",
-    description: "150+ countries coverage",
+    // "150+ countries" is not supported by the source docs, which state
+    // carrier-neutral POPs and redundant connectivity only. See
+    // solutions-content-source memory / docs open questions.
+    label: "Resilient Network",
+    description: "Carrier-neutral, redundant connectivity",
     icon: Network,
   },
   {
