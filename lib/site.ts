@@ -1889,3 +1889,100 @@ export const footerNav = [
     ],
   },
 ] as const;
+
+/* -------------------------------------------------------------------------
+ * Homepage content model
+ *
+ * The homepage argues one thing: enterprise-grade voice, answered by people
+ * who pick up. Everything below supports that claim with facts already
+ * verified elsewhere in this file — no new proof is invented here.
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Hero proof strip. Deliberately only claims we can stand behind:
+ * the review count is the real number in `reviews`, the plan price is the
+ * published Value tier, and both certifications are in `certifications`.
+ * No uptime figure — we do not publish an SLA. See content.md.
+ */
+export const heroProof: { value: string; label: string }[] = [
+  { value: "HIPAA", label: "Compliant cloud phone system" },
+  { value: "DoT", label: "Certified carrier network" },
+  { value: "5.0", label: "Average of 13 customer reviews" },
+  { value: "24/7", label: "Support, by people who answer" },
+];
+
+/**
+ * "What changes on Monday" — the migration story told as a before/after,
+ * because the real buying objection is disruption, not features.
+ */
+export const switchingStory: {
+  before: string;
+  after: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    before: "A PBX box in the telecom closet that someone has to maintain",
+    after: "Nothing on site. We handle every update and all maintenance.",
+    icon: ServerCog,
+  },
+  {
+    before: "New numbers, reprinted cards, updated listings",
+    after: "Keep the numbers your customers already dial. We port them.",
+    icon: PhoneCall,
+  },
+  {
+    before: "Desk phones that only work at the desk",
+    after: "Your extension on iOS, Android and desktop, wherever you are.",
+    icon: Laptop,
+  },
+  {
+    before: "A support ticket into the void",
+    after: "A named team on WhatsApp, phone and email, around the clock.",
+    icon: HeartHandshake,
+  },
+];
+
+/**
+ * The four platform pillars, phrased as the job the customer is hiring us
+ * for rather than as product names. Hrefs point at the existing solutions.
+ */
+export const homePillars: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  href: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    eyebrow: "Replace the hardware",
+    title: "Hosted PBX",
+    description:
+      "Your whole phone system in the cloud — extensions, IVR, voicemail and routing, with no box to maintain.",
+    href: "/products/hosted-pbx",
+    icon: CloudCog,
+  },
+  {
+    eyebrow: "Keep your equipment",
+    title: "SIP Trunking",
+    description:
+      "Already have an IP-PBX? Connect it to our network for immediate savings and guaranteed call quality.",
+    href: "/products/sip-trunking",
+    icon: Router,
+  },
+  {
+    eyebrow: "Handle the volume",
+    title: "Enhanced Call Centre",
+    description:
+      "Queues, routing, recording and live monitoring — configured around how your team actually works.",
+    href: "/products/call-center",
+    icon: Headset,
+  },
+  {
+    eyebrow: "Bring it together",
+    title: "Unified Communications",
+    description:
+      "Voice, video, business SMS and team messaging on one platform, so distributed teams feel co-located.",
+    href: "/solutions/unified-communications",
+    icon: MessagesSquare,
+  },
+];
