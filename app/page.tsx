@@ -252,7 +252,7 @@ export default function Home() {
               large ones so the headline keeps its contrast. */}
           <div
             aria-hidden
-            className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_85%_0%,oklch(from_var(--brand-from)_l_c_h/0.22),transparent_60%)] lg:bg-linear-to-r lg:from-ink lg:from-30% lg:via-ink/60 lg:via-55% lg:to-transparent"
+            className="bg-aurora absolute inset-0 -z-10 lg:bg-linear-to-r lg:from-ink lg:from-30% lg:via-ink/60 lg:via-55% lg:to-transparent"
           />
 
           <div

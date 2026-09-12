@@ -330,6 +330,43 @@
     border-radius: 45% 2rem 2rem 2rem / 38% 2rem 2rem 2rem;
   }
 
+  /* Deep crimson aurora: a bloom in the top-right corner with soft light
+     ribbons sweeping under it. Stands in for the hero photograph on screens
+     too narrow to crop it well, so it is scoped below lg — above that the
+     photo and its own shading take over. Built from wide, low-opacity
+     ellipses so it stays smooth at any size and costs no request. */
+  @media (width < 64rem) {
+    .bg-aurora {
+      background-color: var(--ink);
+      background-image:
+        radial-gradient(
+          70% 55% at 88% 4%,
+          oklch(from var(--brand-from) l c h / 0.85),
+          transparent 62%
+        ),
+        radial-gradient(
+          95% 60% at 108% 42%,
+          oklch(from var(--brand-from) l c h / 0.42),
+          transparent 58%
+        ),
+        radial-gradient(
+          120% 45% at 78% 88%,
+          oklch(from var(--brand-from) calc(l * 0.82) c h / 0.5),
+          transparent 62%
+        ),
+        radial-gradient(
+          90% 50% at -8% 72%,
+          oklch(from var(--brand-from) calc(l * 0.7) c h / 0.34),
+          transparent 60%
+        ),
+        radial-gradient(
+          140% 90% at 50% 120%,
+          oklch(from var(--ink) calc(l * 0.55) c h),
+          transparent 55%
+        );
+    }
+  }
+
   /* Homepage scroll reveal. Same approach as the About page: pure CSS, and
      reduced-motion or unsupported browsers see the content in place. */
   @keyframes reveal-up {
