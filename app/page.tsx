@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   ArrowRight,
   ArrowUpRight,
-  Check,
   Phone,
   Quote,
   ShieldCheck,
@@ -209,66 +208,6 @@ function TileDiagram({ children }: { children: ReactNode }) {
   );
 }
 
-/**
- * A call moving through the system — the product in one glance. Decorative:
- * the same story is told in words beside it.
- */
-function LiveCallCard() {
-  const steps = [
-    "Greeted by your IVR",
-    "Routed to the billing queue",
-    "Answered by the next free agent",
-  ];
-
-  return (
-    <div
-      aria-hidden
-      className="absolute top-44 right-10 hidden w-72 rounded-3xl border border-ink-foreground/15 bg-ink/60 p-5 shadow-2xl backdrop-blur-xl motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-6 motion-safe:delay-500 motion-safe:duration-700 motion-safe:fill-mode-both xl:block"
-    >
-      <div className="flex items-center justify-between">
-        <span className="flex items-center gap-2 text-xs font-medium text-ink-foreground/70">
-          <span className="relative flex size-2">
-            <span className="absolute inline-flex size-full rounded-full bg-brand-from/60 motion-safe:animate-ping" />
-            <span className="relative inline-flex size-2 rounded-full bg-brand-from" />
-          </span>
-          Incoming call
-        </span>
-        <span className="font-mono text-xs text-ink-foreground/50">00:04</span>
-      </div>
-
-      <p className="mt-4 text-lg font-semibold">Billing enquiry</p>
-      <p className="text-sm text-ink-foreground/60">Main line · Option 2</p>
-
-      <ol className="mt-5 space-y-2.5 text-sm">
-        {steps.map((step, index) => {
-          const last = index === steps.length - 1;
-          return (
-            <li key={step} className="flex items-center gap-3">
-              <span
-                className={cn(
-                  "flex size-5 shrink-0 items-center justify-center rounded-full",
-                  last
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-ink-foreground/10 text-ink-foreground/70",
-                )}
-              >
-                <Check className="size-3" />
-              </span>
-              <span
-                className={
-                  last ? "text-ink-foreground" : "text-ink-foreground/60"
-                }
-              >
-                {step}
-              </span>
-            </li>
-          );
-        })}
-      </ol>
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ page */
 
 export default function Home() {
@@ -293,21 +232,27 @@ export default function Home() {
         <div className="relative isolate overflow-hidden rounded-4xl bg-ink text-ink-foreground">
           <HeroNotch />
 
-          {/* The photo is small, so on desktop it fills only the right of
-              the panel instead of being stretched across all of it. */}
-          <div className="absolute inset-0 -z-10 lg:left-2/5">
+          {/* The photo only earns its place from lg up, where the panel is
+              wide enough for the image's own empty left half to sit behind
+              the headline. Below that the aspect ratios fight: a 16:9 frame
+              cropped into a tall column zooms so far into the agent that he
+              reads as texture, so small screens get the panel alone. */}
+          <div className="absolute inset-0 -z-10 hidden lg:block">
             <Image
               src={homeImages.office}
               alt=""
               fill
               preload
-              sizes="(min-width: 1024px) 60vw, 100vw"
-              className="object-cover motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-110 motion-safe:duration-1000 motion-safe:fill-mode-both"
+              sizes="100vw"
+              className="object-cover object-center motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-110 motion-safe:duration-1000 motion-safe:fill-mode-both"
             />
           </div>
+
+          {/* Carries the panel on small screens, and shades the photo on
+              large ones so the headline keeps its contrast. */}
           <div
             aria-hidden
-            className="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/85 to-ink/55 lg:bg-linear-to-r lg:from-ink lg:from-40% lg:via-ink/75 lg:via-55% lg:to-ink/20"
+            className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_85%_0%,oklch(from_var(--brand-from)_l_c_h/0.22),transparent_60%)] lg:bg-linear-to-r lg:from-ink lg:from-30% lg:via-ink/60 lg:via-55% lg:to-transparent"
           />
 
           <div
@@ -385,8 +330,6 @@ export default function Home() {
                 per user / month &middot; 10-line minimum
               </p>
             </div>
-
-            <LiveCallCard />
 
             <div className="min-h-16 flex-1" />
 

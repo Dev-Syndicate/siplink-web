@@ -14,13 +14,15 @@ import { integrations, offices, plans, reviews } from "@/lib/site";
  */
 
 /**
- * The supplied photography. All three files are small (≤740px wide), so the
- * layout never stretches one full-bleed across a wide screen. Replace with
- * larger originals when available — the markup needs no change.
+ * The supplied photography. `studio` and `mobile` are small (≤740px wide), so
+ * the layout never stretches those full-bleed across a wide screen. Replace
+ * with larger originals when available — the markup needs no change.
  */
 export const homeImages = {
-  office:
-    "/home/hero_section.png",
+  /* Agent mid-call, with the subject in the right third facing left so the
+     headline gets the empty dark half. Used from lg up only — see the hero
+     in app/page.tsx for why narrow viewports drop it. */
+  office: "/home/agent-on-call.webp",
   studio: "/home/images.jpg",
   mobile: "/home/person-using-smartphone-touchscreen_9975-135680.avif",
 } as const;
