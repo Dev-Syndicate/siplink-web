@@ -3,6 +3,7 @@ import {
   Activity,
   Banknote,
   Boxes,
+  Briefcase,
   Building,
   HeartHandshake,
   Laptop,
@@ -20,6 +21,8 @@ import {
   Headphones,
   Headset,
   HeartPulse,
+  // Aliased: bare `Infinity` would shadow the JS global.
+  Infinity as InfinityIcon,
   Landmark,
   LayoutGrid,
   LifeBuoy,
@@ -35,6 +38,7 @@ import {
   ScrollText,
   ServerCog,
   ShieldCheck,
+  Star,
   Stethoscope,
   Store,
   Ticket,
@@ -131,6 +135,20 @@ export const certifications = [
   "D-U-N-S REGISTERED",
 ] as const;
 
+/**
+ * The announcement bar above the header. `status` items sit on the right and
+ * are deliberately claim-free — no uptime SLA or NOC tier until verified, per
+ * the note on `certifications` above.
+ */
+export const announcement = {
+  label: "Update",
+  message:
+    "Voice AI Assistant and WhatsApp Business v2 API endpoints are now live.",
+  href: "/products",
+  linkLabel: "Explore documentation",
+  status: ["HIPAA compliant", "DoT certified"],
+} as const;
+
 export type Segment = {
   title: string;
   description: string;
@@ -209,6 +227,7 @@ export type Industry = {
   href: string;
   /** Only badge a credential SipLink actually holds. */
   badge?: string;
+  image: { src: string; alt: string };
 };
 
 /**
@@ -227,6 +246,10 @@ export const industries: Industry[] = [
       "Streamline revenue cycle management with efficient call handling, automated workflows, and seamless communication for billing operations.",
     icon: Receipt,
     href: "/industries/medical-billing-rcm",
+    image: {
+      src: "/images/industry-medical-billing.png",
+      alt: "A clinician in a white coat reviewing patient billing records on a tablet",
+    },
   },
   {
     title: "Medical Care & Healthcare",
@@ -234,6 +257,10 @@ export const industries: Industry[] = [
       "Enhance patient communication, appointment coordination, and support services with reliable and secure telephony solutions.",
     icon: Stethoscope,
     href: "/industries/healthcare",
+    image: {
+      src: "/images/industry-healthcare.png",
+      alt: "A modern hospital building entrance",
+    },
     badge: "HIPAA compliant",
   },
   {
@@ -242,6 +269,10 @@ export const industries: Industry[] = [
       "Simplify candidate outreach, interview coordination and client communication with smart calling and messaging features.",
     icon: UsersRound,
     href: "/industries/staffing",
+    image: {
+      src: "/images/industry-staffing.png",
+      alt: "A recruiter wearing a headset working at a laptop",
+    },
   },
   {
     title: "IT & Software",
@@ -249,6 +280,10 @@ export const industries: Industry[] = [
       "Support technical teams with efficient communication tools for customer support, troubleshooting and internal collaboration.",
     icon: Code2,
     href: "/industries/it-software",
+    image: {
+      src: "/images/industry-it-software.png",
+      alt: "A laptop on a desk showing source code in an editor",
+    },
   },
   {
     title: "Marketing & Sales",
@@ -256,6 +291,10 @@ export const industries: Industry[] = [
       "Boost campaign outreach, lead generation and customer engagement with scalable communication solutions.",
     icon: Megaphone,
     href: "/industries/marketing-sales",
+    image: {
+      src: "/images/industry-marketing-sales.png",
+      alt: "A rising bar chart captioned more leads, higher conversions",
+    },
   },
   {
     title: "Tech & SaaS",
@@ -263,6 +302,10 @@ export const industries: Industry[] = [
       "Enable seamless customer interactions, onboarding and support with flexible and integrated communication systems.",
     icon: Cloud,
     href: "/industries/tech-saas",
+    image: {
+      src: "/images/industry-tech-saas.png",
+      alt: "A stack of servers linked to a cloud with database, security and settings icons",
+    },
   },
 ];
 
@@ -330,7 +373,27 @@ export type Plan = {
   featured?: boolean;
   /** Features unique to this tier, on top of the previous one. */
   adds: string[];
+  icon: LucideIcon;
 };
+
+/**
+ * The reassurance bar under the pricing cards. Each item restates a term that
+ * already applies to every plan, so nothing here is a new claim.
+ */
+export const planAssurances: {
+  value: string;
+  label: string;
+  icon: LucideIcon;
+}[] = [
+  { value: "Unlimited calling", label: "US & Canada", icon: MessagesSquare },
+  { value: "Free local number", label: "Included in all plans", icon: PhoneCall },
+  { value: "Minimum 10 lines", label: "Scale as you grow", icon: UsersRound },
+  {
+    value: "No hidden fees",
+    label: "Transparent pricing",
+    icon: InfinityIcon,
+  },
+];
 
 /** Shared by every tier — rendered under the Value plan. */
 export const planBaseFeatures = [
@@ -359,6 +422,7 @@ export const plans: Plan[] = [
     price: "$18.95",
     blurb: "Essential cloud telephony for small teams.",
     adds: [],
+    icon: UsersRound,
   },
   {
     name: "Business",
@@ -366,11 +430,13 @@ export const plans: Plan[] = [
     blurb: "Adds the integrations most growing teams run on.",
     featured: true,
     adds: ["Microsoft Teams, Outlook and Google integration"],
+    icon: Activity,
   },
   {
     name: "Enterprise",
     price: "$24.95",
     blurb: "Full collaboration suite for larger organisations.",
+    icon: Briefcase,
     adds: [
       "Microsoft Teams, Outlook and Google integration",
       "Unlimited video calling (peer-to-peer)",
@@ -774,6 +840,23 @@ export type Review = {
  * testimonials here: an invented quote attributed to a named person is a
  * fabricated endorsement. The section renders nothing if this list is empty.
  */
+/**
+ * The proof bar under the customer stories.
+ *
+ * Only claims we can stand behind: the Google rating is the live figure from
+ * the Business Profile, the rest are credentials already asserted elsewhere.
+ * No uptime SLA or country count until verified — see `certifications`.
+ */
+export const reviewStats: {
+  value: string;
+  label: string;
+  icon: LucideIcon;
+}[] = [
+  { value: "4.5", label: "Average rating on Google", icon: Star },
+  { value: "24/7", label: "Expert support", icon: Headphones },
+  { value: "HIPAA", label: "Compliant platform", icon: ShieldCheck },
+];
+
 export const reviews: Review[] = [
   {
     name: "Joseph Karthick",
@@ -1904,10 +1987,25 @@ export const footerNav = [
  * published Value tier, and both certifications are in `certifications`.
  * No uptime figure — we do not publish an SLA. See content.md.
  */
+/**
+ * The cards floating over the hero photograph. These describe what the
+ * platform *does* — the credentials and ratings live in `heroProof` directly
+ * below, and repeating them here wasted the most valuable space on the page.
+ */
+export const heroHighlights: {
+  value: string;
+  label: string;
+  icon: LucideIcon;
+}[] = [
+  { value: "Hosted PBX", label: "No hardware on site", icon: Cloud },
+  { value: "SIP trunking", label: "Keep your own kit", icon: Network },
+  { value: "Number porting", label: "Keep your numbers", icon: PhoneCall },
+];
+
 export const heroProof: { value: string; label: string }[] = [
   { value: "HIPAA", label: "Compliant cloud phone system" },
   { value: "DoT", label: "Certified carrier network" },
-  { value: "5.0", label: "Average of 13 customer reviews" },
+  { value: "4.5", label: "Average rating on Google" },
   { value: "24/7", label: "Support, by people who answer" },
 ];
 
@@ -1952,6 +2050,7 @@ export const homePillars: {
   description: string;
   href: string;
   icon: LucideIcon;
+  image: { src: string; alt: string };
 }[] = [
   {
     eyebrow: "Replace the hardware",
@@ -1960,6 +2059,10 @@ export const homePillars: {
       "Your whole phone system in the cloud — extensions, IVR, voicemail and routing, with no box to maintain.",
     href: "/products/hosted-pbx",
     icon: CloudCog,
+    image: {
+      src: "/images/pillar-hosted-pbx.png",
+      alt: "A desk phone and a laptop connected to a cloud, the laptop showing extensions, IVR, voicemail and call routing",
+    },
   },
   {
     eyebrow: "Keep your equipment",
@@ -1968,6 +2071,10 @@ export const homePillars: {
       "Already have an IP-PBX? Connect it to our network for immediate savings and guaranteed call quality.",
     href: "/products/sip-trunking",
     icon: Router,
+    image: {
+      src: "/images/pillar-sip-trunking.png",
+      alt: "An on-premise IP-PBX stack linked by a SIP trunk to the SipLink cloud",
+    },
   },
   {
     eyebrow: "Handle the volume",
@@ -1976,6 +2083,10 @@ export const homePillars: {
       "Queues, routing, recording and live monitoring — configured around how your team actually works.",
     href: "/products/call-center",
     icon: Headset,
+    image: {
+      src: "/images/pillar-call-centre.png",
+      alt: "A live calls panel showing agents on a call, in queue, available and wrapping up, beside a weekly total calls chart",
+    },
   },
   {
     eyebrow: "Bring it together",
@@ -1984,5 +2095,9 @@ export const homePillars: {
       "Voice, video, business SMS and team messaging on one platform, so distributed teams feel co-located.",
     href: "/solutions/unified-communications",
     icon: MessagesSquare,
+    image: {
+      src: "/images/pillar-unified-communications.png",
+      alt: "A desktop team messaging app beside a phone on an active call, ringed by video, voice, chat and team icons",
+    },
   },
 ];

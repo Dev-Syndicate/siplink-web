@@ -1,23 +1,34 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, Quote, ShieldCheck, Star } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Crown,
+  PhoneCall,
+  Quote,
+  ShieldCheck,
+  Star,
+  UsersRound,
+} from "lucide-react";
 
-import { ReviewsMarquee } from "@/components/site/reviews-marquee";
+import { CustomerStories } from "@/components/site/customer-stories";
 import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
 import { VideoEmbed } from "@/components/site/video-embed";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
-  certifications,
+  heroHighlights,
   heroProof,
   homePillars,
   industries,
   integrations,
   mobileApps,
+  planAssurances,
   planBaseFeatures,
   plans,
   reviews,
+  site,
   switchingStory,
 } from "@/lib/site";
 
@@ -44,33 +55,59 @@ export default function Home() {
           proof the visitor can verify. Everything below is subordinate.
          --------------------------------------------------------------- */}
       <section className="relative overflow-hidden border-b border-border">
+        {/* The photograph is the section's backdrop, not a column item: it
+            occupies the right half on desktop and sits behind the copy,
+            which stays legible via the scrim below. */}
+        <div className="absolute inset-y-0 right-0 hidden w-[64%] lg:block">
+          <Image
+            src="/images/hero-agent-headset.png"
+            alt="Support agent wearing a headset at a desk with a laptop and desk phone, city skyline behind her"
+            fill
+            priority
+            sizes="64vw"
+            className="object-cover object-[62%_center]"
+          />
+          {/* Scrim covers only the overlap with the text column and clears by
+              40%, so the agent herself stays at full saturation. */}
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-r from-background from-5% via-background/60 via-22% to-transparent to-45%"
+          />
+        </div>
+
         <div
           aria-hidden
           className="pointer-events-none absolute -top-48 -right-32 size-[680px] rounded-full bg-brand-to/10 blur-3xl"
         />
 
-        <div className="relative mx-auto max-w-7xl px-6 pt-16 pb-16 lg:px-10 lg:pt-24 lg:pb-20">
-          <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:items-center lg:gap-16">
+        {/* On desktop the hero fills exactly the viewport left under the
+            fixed 120px header, so the whole pitch — headline through proof
+            strip — lands above the fold on short laptop screens instead of
+            depending on padding values adding up to less than the height. */}
+        <div className="relative mx-auto flex max-w-7xl flex-col justify-center px-6 py-12 lg:min-h-[calc(100svh-7.5rem)] lg:px-10 lg:py-8">
+          <div className="grid gap-14 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:items-center lg:gap-12 xl:gap-16">
             <div>
               <Badge variant="secondary" className="font-mono tracking-widest">
                 <ShieldCheck className="size-3.5" aria-hidden />
                 HIPAA COMPLIANT &middot; DoT CERTIFIED
               </Badge>
 
-              <h1 className="font-heading mt-6 text-5xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-6xl lg:text-7xl">
+              {/* Fluid: tracks viewport height too, so a short laptop screen
+                  gets a smaller headline rather than an overflowing one. */}
+              <h1 className="font-heading mt-5 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[clamp(2.25rem,4.2vh+1.1vw,3.5rem)]">
                 Enterprise-grade voice.{" "}
                 <span className="text-primary">
                   Answered by people who pick up.
                 </span>
               </h1>
 
-              <p className="mt-8 max-w-xl text-lg text-pretty text-muted-foreground lg:text-xl">
+              <p className="mt-5 max-w-xl text-base text-pretty text-muted-foreground lg:text-lg">
                 A cloud phone system for growing businesses — hosted PBX, SIP
                 trunking, call centre and unified communications on one secure
                 network. Keep your numbers. Lose the hardware.
               </p>
 
-              <div className="mt-10 flex flex-wrap items-center gap-4">
+              <div className="mt-7 flex flex-wrap items-center gap-4">
                 <Button asChild size="lg">
                   <Link href="/contact">Book a demo</Link>
                 </Button>
@@ -85,7 +122,7 @@ export default function Home() {
                 </Button>
               </div>
 
-              <p className="mt-5 text-sm text-muted-foreground">
+              <p className="mt-4 text-sm text-muted-foreground">
                 From{" "}
                 <span className="font-medium text-foreground">
                   {plans[0].price}
@@ -95,22 +132,129 @@ export default function Home() {
               </p>
             </div>
 
-            <Image
-              src="/images/agent-cloud-telephony.png"
-              alt="Support agent on a headset with cloud telephony, live chat and call analytics around her"
-              width={1536}
-              height={1024}
-              priority
-              sizes="(min-width: 1024px) 32rem, 100vw"
-              className="h-auto w-full lg:ml-auto"
-            />
+            {/* Below `lg` the backdrop is hidden, so the photo appears here
+                as an ordinary framed image instead. */}
+            <div className="relative lg:hidden">
+              <Image
+                src="/images/hero-agent-headset.png"
+                alt="Support agent wearing a headset at a desk with a laptop and desk phone, city skyline behind her"
+                width={1613}
+                height={975}
+                priority
+                sizes="100vw"
+                className="h-auto w-full rounded-2xl border border-border object-cover shadow-sm"
+              />
+            </div>
+
+            {/* Floating glass cards over the photograph. Purely decorative
+                framing of claims already made in copy, so they are hidden
+                from assistive tech rather than read out twice. */}
+            <div
+              aria-hidden
+              className="pointer-events-none relative hidden h-full min-h-[22rem] lg:block xl:min-h-[26rem]"
+            >
+              {/* Live-call chip, echoing the agent mid-conversation. */}
+              <div
+                className="card-float absolute top-4 left-0 flex items-center gap-2.5 rounded-xl border border-border bg-background/80 px-3 py-2 shadow-md backdrop-blur-md xl:top-10"
+                style={{ "--float-duration": "5.5s" } as React.CSSProperties}
+              >
+                <span className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <PhoneCall className="size-3.5" />
+                </span>
+                <div>
+                  {/* The word is static; only the ellipsis is revealed, so the
+                      card never changes width as it animates. */}
+                  <p className="text-xs font-medium">
+                    Speaking
+                    <span className="speaking-dots inline-block">&hellip;</span>
+                  </p>
+                  <p className="font-mono text-[11px] text-muted-foreground">
+                    00:24
+                  </p>
+                </div>
+                <span className="ml-2 flex h-4 items-center gap-0.5">
+                  {[3, 6, 4, 8, 5].map((bar, index) => (
+                    <span
+                      key={index}
+                      className="wave-bar w-0.5 rounded-full bg-primary/70"
+                      style={
+                        {
+                          height: `${bar * 2}px`,
+                          "--bar-delay": `${index * 0.09}s`,
+                        } as React.CSSProperties
+                      }
+                    />
+                  ))}
+                </span>
+              </div>
+
+              {/* What the caller hears, quoted — the other half of the live
+                  call the chip on the left is timing. */}
+              <div
+                className="card-float absolute -top-2 -right-6 flex w-64 items-center gap-3 rounded-xl border border-border bg-background/80 px-3 py-2.5 shadow-md backdrop-blur-md xl:top-2 xl:-right-10"
+                style={
+                  {
+                    "--float-duration": "7s",
+                    "--float-delay": "-2.5s",
+                  } as React.CSSProperties
+                }
+              >
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                  <span className="flex h-4 items-center gap-[1.5px]">
+                    {[4, 9, 14, 7, 16, 6, 11, 3].map((bar, index) => (
+                      <span
+                        key={index}
+                        className="wave-bar w-[1.5px] rounded-full bg-primary"
+                        style={
+                          {
+                            height: `${bar}px`,
+                            "--bar-delay": `${index * 0.07}s`,
+                          } as React.CSSProperties
+                        }
+                      />
+                    ))}
+                  </span>
+                </span>
+                <p className="text-xs leading-snug text-pretty">
+                  &ldquo;Hi, thanks for calling SipLink. How can I help you
+                  today?&rdquo;
+                </p>
+              </div>
+
+              {/* Capability stack, pinned to the bottom edge and kept small
+                  so it frames the agent rather than covering her. */}
+              <div className="absolute -right-6 -bottom-6 w-52 space-y-1.5 xl:-right-10">
+                {heroHighlights.map(({ value, label, icon: Icon }, index) => (
+                  <div
+                    key={label}
+                    className="card-float flex items-center gap-2.5 rounded-xl border border-border bg-background/80 px-3 py-2 shadow-md backdrop-blur-md"
+                    style={
+                      {
+                        "--float-duration": "6.5s",
+                        "--float-delay": `${index * -0.8}s`,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <Icon className="size-3.5" />
+                    </span>
+                    <div>
+                      <p className="text-xs font-medium">{value}</p>
+                      <p className="text-[11px] text-muted-foreground">
+                        {label}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Proof strip — hairline grid, the products-page signature. */}
-          <dl className="mt-16 grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="mt-12 grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2 lg:mt-8 lg:grid-cols-4">
             {heroProof.map(({ value, label }) => (
-              <div key={label} className="bg-background p-6">
-                <dt className="font-heading text-3xl font-semibold tracking-tight text-primary">
+              <div key={label} className="bg-background p-6 lg:p-5">
+                <dt className="font-heading text-3xl font-semibold tracking-tight text-primary lg:text-2xl">
                   {value}
                 </dt>
                 <dd className="mt-1 text-sm text-pretty text-muted-foreground">
@@ -144,35 +288,46 @@ export default function Home() {
 
           <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-border md:grid-cols-2">
             {homePillars.map(
-              ({ eyebrow, title, description, href, icon: Icon }) => (
+              ({ eyebrow, title, description, href, icon: Icon, image }) => (
                 <Link
                   key={title}
                   href={href}
-                  className="group flex flex-col gap-4 bg-background p-8 transition-colors hover:bg-primary/5 focus-visible:bg-primary/5 focus-visible:outline-none"
+                  className="group grid gap-6 bg-background p-8 transition-colors hover:bg-primary/5 focus-visible:bg-primary/5 focus-visible:outline-none sm:grid-cols-[minmax(0,1fr)_minmax(0,14rem)] sm:items-center"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                      <Icon className="size-5" aria-hidden />
-                    </span>
-                    <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-                      {eyebrow}
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center gap-3">
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                        <Icon className="size-5" aria-hidden />
+                      </span>
+                      <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                        {eyebrow}
+                      </span>
+                    </div>
+
+                    <h3 className="font-heading text-xl font-semibold tracking-tight">
+                      {title}
+                    </h3>
+                    <p className="text-sm text-pretty text-muted-foreground">
+                      {description}
+                    </p>
+
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-medium text-primary">
+                      Explore {title}
+                      <ArrowRight
+                        className="size-4 transition-transform group-hover:translate-x-0.5"
+                        aria-hidden
+                      />
                     </span>
                   </div>
 
-                  <h3 className="font-heading text-xl font-semibold tracking-tight">
-                    {title}
-                  </h3>
-                  <p className="text-sm text-pretty text-muted-foreground">
-                    {description}
-                  </p>
-
-                  <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-medium text-primary">
-                    Explore {title}
-                    <ArrowRight
-                      className="size-4 transition-transform group-hover:translate-x-0.5"
-                      aria-hidden
-                    />
-                  </span>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    width={512}
+                    height={512}
+                    sizes="(min-width: 640px) 14rem, 100vw"
+                    className="h-auto w-full rounded-xl object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                  />
                 </Link>
               ),
             )}
@@ -285,63 +440,131 @@ export default function Home() {
         </div>
       </section>
 
-      <ReviewsMarquee />
+      <CustomerStories />
 
       {/* ---------------------------------------------------------------
           Industries. Relevance check — "is this built for a business
           like mine?" — kept compact, since the depth lives one click in.
          --------------------------------------------------------------- */}
-      <section className="border-y border-border bg-muted/30">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="max-w-2xl">
-            <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Who we serve
-            </span>
-            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Configured for how your sector works
-            </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">
-              A billing desk and a recruiting team need very different things
-              from a phone system. Pick yours to see what changes.
-            </p>
+      <section className="relative overflow-hidden border-y border-border bg-muted/30">
+        {/* Dot field behind the header, fading out before the cards — the
+            texture the design carries, without shipping a map bitmap. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-0 right-0 h-[22rem] w-2/3 [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)] [background-image:radial-gradient(var(--color-primary)_1px,transparent_1px)] [background-size:14px_14px] opacity-[0.13]"
+        />
+
+        <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+            <div className="max-w-xl">
+              <span className="font-mono text-xs tracking-widest text-primary uppercase">
+                Who we serve
+              </span>
+              <h2 className="font-heading mt-4 text-3xl leading-[1.15] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+                Configured for how
+                <br />
+                <span className="text-primary">your sector</span> works
+              </h2>
+              <p className="mt-4 max-w-md text-sm text-pretty text-muted-foreground">
+                A billing desk and a recruiting team need very different things
+                from a phone system. Pick yours to see what changes.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-8 lg:pt-6">
+              <p
+                className="hidden -rotate-6 text-2xl leading-tight text-primary md:block"
+                style={{ fontFamily: "var(--font-accent)" }}
+              >
+                Different people.
+                <br />
+                Different possibilities.
+              </p>
+
+              <div className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-3 shadow-sm">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <UsersRound className="size-5" aria-hidden />
+                </span>
+                <div>
+                  <p className="font-heading text-base font-semibold tracking-tight">
+                    6 sectors
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Configured end to end
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Not links: there is no /industries/[slug] route yet, so the
               section CTA below carries the navigation instead of sending
               each card to a 404. */}
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2 lg:grid-cols-3">
-            {industries.map(({ title, description, icon: Icon, badge }) => (
-              <div
-                key={title}
-                className="flex flex-col gap-3 bg-background p-6"
-              >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Icon className="size-5" aria-hidden />
-                </span>
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {industries.map(
+              ({ title, description, icon: Icon, badge, image }) => (
+                <div
+                  key={title}
+                  className="group relative flex min-h-[13.5rem] flex-col overflow-hidden rounded-2xl border border-border bg-background p-5 shadow-sm transition-shadow hover:shadow-md"
+                >
+                  {/* The cut-out fills the card's right half and runs to the
+                      bottom edge; the copy keeps a matching gutter so the two
+                      never collide whatever the image's aspect ratio. */}
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    width={512}
+                    height={512}
+                    sizes="(min-width: 1024px) 16rem, (min-width: 640px) 50vw, 100vw"
+                    className="pointer-events-none absolute right-0 -bottom-1 h-[88%] w-[46%] object-contain object-right-bottom transition-transform duration-300 group-hover:scale-[1.04]"
+                  />
 
-                <h3 className="font-heading flex flex-wrap items-center gap-2 text-base font-semibold tracking-tight">
-                  {title}
-                  {badge ? (
-                    <Badge
-                      variant="secondary"
-                      className="font-mono text-[10px] tracking-wider"
+                  <div className="relative flex flex-1 flex-col gap-2 pr-[44%]">
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <Icon className="size-4" aria-hidden />
+                    </span>
+
+                    <h3 className="font-heading mt-1 flex flex-wrap items-center gap-2 text-[0.95rem] font-semibold tracking-tight">
+                      {title}
+                      {badge ? (
+                        <Badge
+                          variant="secondary"
+                          className="font-mono text-[10px] tracking-wider"
+                        >
+                          {badge}
+                        </Badge>
+                      ) : null}
+                    </h3>
+
+                    <p className="text-xs leading-relaxed text-pretty text-muted-foreground">
+                      {description}
+                    </p>
+
+                    <span
+                      className="mt-auto flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground"
+                      aria-hidden
                     >
-                      {badge}
-                    </Badge>
-                  ) : null}
-                </h3>
-
-                <p className="text-sm text-pretty text-muted-foreground">
-                  {description}
-                </p>
-              </div>
-            ))}
+                      <ArrowRight className="size-4" />
+                    </span>
+                  </div>
+                </div>
+              ),
+            )}
           </div>
 
-          <div className="mt-10">
-            <Button asChild variant="outline" size="lg">
-              <Link href="/industries">View all industries</Link>
+          <div className="mt-10 flex flex-wrap items-center justify-between gap-6">
+            <Button asChild size="lg">
+              <Link href="/industries">
+                View all industries
+                <ArrowRight aria-hidden />
+              </Link>
             </Button>
+
+            <p className="border-l-2 border-primary pl-4 text-sm text-pretty text-muted-foreground">
+              Built for every conversation.
+              <br />
+              Across every industry.
+            </p>
           </div>
         </div>
       </section>
@@ -372,106 +595,113 @@ export default function Home() {
             </Button>
           </div>
 
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-border md:grid-cols-3">
+          {/* Cards are separated rather than a hairline grid, so the featured
+              tier can lift out of the row the way the design intends. */}
+          <div className="mt-14 grid items-center gap-6 md:grid-cols-3 lg:gap-8">
             {plans.map((plan) => {
               // Each tier's own additions first, then the shared essentials.
               const features = [...plan.adds, ...planBaseFeatures].slice(0, 6);
+              const Icon = plan.icon;
 
               return (
                 <div
                   key={plan.name}
                   className={cn(
-                    "relative flex flex-col p-8",
+                    "relative flex flex-col overflow-hidden rounded-2xl border",
                     plan.featured
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-background",
+                      ? "border-primary bg-background shadow-xl md:scale-[1.04]"
+                      : "border-border bg-background shadow-sm",
                   )}
                 >
                   {plan.featured ? (
-                    <span className="font-mono text-[10px] tracking-widest uppercase opacity-80">
+                    <p className="flex items-center justify-center gap-1.5 bg-primary py-2 text-xs font-semibold tracking-wide text-primary-foreground">
+                      <Crown className="size-3.5" aria-hidden />
                       Most popular
-                    </span>
-                  ) : (
-                    <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
-                      &nbsp;
-                    </span>
-                  )}
+                    </p>
+                  ) : null}
 
-                  <h3 className="font-heading mt-3 text-xl font-semibold tracking-tight">
-                    {plan.name}
-                  </h3>
-
-                  <p className="mt-4 flex items-end gap-1.5">
-                    <span className="font-heading text-4xl font-semibold tracking-tight">
-                      {plan.price}
-                    </span>
+                  <div className="flex flex-1 flex-col p-8">
                     <span
                       className={cn(
-                        "pb-1 text-sm",
+                        "flex size-11 items-center justify-center rounded-xl",
                         plan.featured
-                          ? "text-primary-foreground/80"
-                          : "text-muted-foreground",
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-primary/10 text-primary",
                       )}
                     >
-                      / user / month
+                      <Icon className="size-5" aria-hidden />
                     </span>
-                  </p>
 
-                  <p
-                    className={cn(
-                      "mt-3 text-sm text-pretty",
-                      plan.featured
-                        ? "text-primary-foreground/80"
-                        : "text-muted-foreground",
-                    )}
-                  >
-                    {plan.blurb}
-                  </p>
+                    <h3 className="font-heading mt-5 text-xl font-semibold tracking-tight">
+                      {plan.name}
+                    </h3>
 
-                  <ul className="mt-8 flex-1 space-y-2.5">
-                    {features.map((feature) => (
-                      <li key={feature} className="flex gap-2.5 text-sm">
-                        <Check
-                          className={cn(
-                            "mt-0.5 size-4 shrink-0",
-                            plan.featured
-                              ? "text-primary-foreground"
-                              : "text-primary",
-                          )}
-                          aria-hidden
-                        />
-                        <span
-                          className={cn(
-                            "text-pretty",
-                            plan.featured
-                              ? "text-primary-foreground/90"
-                              : "text-muted-foreground",
-                          )}
-                        >
-                          {feature}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                    <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
+                      {plan.blurb}
+                    </p>
 
-                  <Button
-                    asChild
-                    variant={plan.featured ? "secondary" : "outline"}
-                    className={cn(
-                      "mt-8 w-full",
-                      plan.featured &&
-                        "bg-primary-foreground text-primary hover:bg-primary-foreground/90",
-                    )}
-                  >
-                    <Link href="/pricing">
-                      View {plan.name} details
-                      <span className="sr-only"> and full feature list</span>
-                    </Link>
-                  </Button>
+                    <p className="mt-6 flex items-end gap-1.5">
+                      <span
+                        className={cn(
+                          "font-heading text-4xl font-semibold tracking-tight",
+                          plan.featured && "text-primary",
+                        )}
+                      >
+                        {plan.price}
+                      </span>
+                      <span className="pb-1 text-sm text-muted-foreground">
+                        / user / month
+                      </span>
+                    </p>
+
+                    <ul className="mt-6 flex-1 space-y-3 border-t border-border pt-6">
+                      {features.map((feature) => (
+                        <li key={feature} className="flex gap-2.5 text-sm">
+                          <span
+                            className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/10"
+                            aria-hidden
+                          >
+                            <Check className="size-2.5 text-primary" />
+                          </span>
+                          <span className="text-pretty text-muted-foreground">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Button
+                      asChild
+                      variant={plan.featured ? "default" : "outline"}
+                      className="mt-8 w-full"
+                    >
+                      <Link href="/pricing">
+                        View {plan.name} details
+                        <ArrowRight aria-hidden />
+                        <span className="sr-only"> and full feature list</span>
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               );
             })}
           </div>
+
+          {/* Terms that hold on every tier, so they sit under the row rather
+              than repeating inside all three cards. */}
+          <dl className="mt-12 grid gap-8 rounded-2xl border border-border bg-muted/30 p-6 sm:grid-cols-2 lg:grid-cols-4 lg:p-8">
+            {planAssurances.map(({ value, label, icon: Icon }) => (
+              <div key={value} className="flex items-center gap-3">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Icon className="size-5" aria-hidden />
+                </span>
+                <div>
+                  <dt className="text-sm font-medium">{value}</dt>
+                  <dd className="text-xs text-muted-foreground">{label}</dd>
+                </div>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
@@ -547,35 +777,49 @@ export default function Home() {
           last reassurance sits next to the last ask.
          --------------------------------------------------------------- */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <div className="overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-brand-from/10 to-brand-to/5 px-8 py-16 text-center lg:px-16">
-          <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Ready to move your business to the cloud?
+        <div className="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-brand-to via-brand-to to-brand-from px-8 py-14 text-primary-foreground lg:px-14 lg:py-16">
+          {/* Soft light falling from the top-right, so the flat gradient
+              reads as a lit surface rather than a solid fill. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-32 -right-24 -z-10 size-[520px] rounded-full bg-white/10 blur-3xl"
+          />
+
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 font-mono text-[11px] font-semibold tracking-widest uppercase">
+            <span className="size-1.5 rounded-full bg-current" aria-hidden />
+            Zero risk &middot; Instant onboarding
+          </span>
+
+          <h2 className="font-heading mt-6 max-w-xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+            Ready to modernize your enterprise telephony?
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-            See SipLink running on your own workflows. Our team will plan the
-            migration and port your existing numbers.
+
+          <p className="mt-5 max-w-xl text-pretty text-primary-foreground/85 lg:text-lg">
+            Activate your elastic SIP trunk in minutes with complimentary test
+            credits, or schedule a private architecture review with a certified
+            carrier engineer.
           </p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
+          <div className="mt-9 flex flex-wrap gap-4">
+            <Button
+              asChild
+              size="lg"
+              className="bg-background text-primary hover:bg-background/90"
+            >
               <Link href="/contact">Book a demo</Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/pricing">See pricing</Link>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-white/25 bg-white/10 text-primary-foreground hover:bg-white/20 hover:text-primary-foreground dark:border-white/25 dark:bg-white/10 dark:hover:bg-white/20"
+            >
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
+                <PhoneCall aria-hidden />
+                Speak to an architect ({site.phone})
+              </a>
             </Button>
           </div>
-
-          <ul className="mt-12 flex flex-wrap justify-center gap-3 border-t border-border pt-8">
-            {certifications.map((cert) => (
-              <li
-                key={cert}
-                className="flex items-center gap-2 rounded-lg border border-border bg-background/60 px-4 py-2 font-mono text-[11px] tracking-wider"
-              >
-                <ShieldCheck className="size-3.5 text-primary" aria-hidden />
-                {cert}
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
     </>
