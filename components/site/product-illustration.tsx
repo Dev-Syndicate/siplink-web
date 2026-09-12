@@ -558,7 +558,8 @@ export function ProductIllustration({ category, className }: Props) {
 
   return (
     <svg
-      viewBox="20 50 404 180"
+      // Right edge at 434: the trunk diagram's carrier cloud reaches x=430.
+      viewBox="20 50 414 180"
       role="presentation"
       aria-hidden
       className={cn("h-auto w-full", className)}

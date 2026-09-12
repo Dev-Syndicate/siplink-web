@@ -189,12 +189,23 @@ function MenuHighlights() {
   );
 }
 
-export function MegaMenu() {
+export function MegaMenu({
+  docked = false,
+}: {
+  /**
+   * The header is seated in the homepage hero's dark notch. Items go light,
+   * and tighter with no chevrons, because the docked pill is narrower.
+   */
+  docked?: boolean;
+}) {
   const pathname = usePathname();
 
   return (
-    <NavigationMenu className="hidden lg:flex">
-      <NavigationMenuList className="gap-1">
+    // Only at xl: nine entries plus logo and CTA do not fit the pill below
+    // that. `self-stretch` makes the menu as tall as the pill, so the
+    // dropdown opens beneath the pill rather than overlapping its edge.
+    <NavigationMenu className="hidden self-stretch xl:flex">
+      <NavigationMenuList className="gap-0.5">
         {nav.map((item) => {
           const isActive = isItemActive(item, pathname);
 
@@ -202,15 +213,26 @@ export function MegaMenu() {
           if (!item.groups?.length) {
             return (
               <NavigationMenuItem key={item.label}>
-                <NavigationMenuLink asChild>
+                <NavigationMenuLink
+                  asChild
+                  className={cn(
+                    docked &&
+                      "hover:bg-ink-foreground/10 focus:bg-ink-foreground/10",
+                  )}
+                >
                   <Link
                     href={item.href}
                     aria-current={isActive ? "page" : undefined}
                     className={cn(
-                      "rounded-full px-3 py-2 text-sm transition-colors",
+                      "rounded-full py-2 text-sm transition-colors",
+                      docked ? "px-2.5" : "px-3",
                       isActive
-                        ? "font-semibold text-primary"
-                        : "font-medium text-muted-foreground hover:text-foreground",
+                        ? docked
+                          ? "font-semibold text-ink-foreground"
+                          : "font-semibold text-primary"
+                        : docked
+                          ? "font-medium text-ink-foreground/70 hover:text-ink-foreground"
+                          : "font-medium text-muted-foreground hover:text-foreground",
                     )}
                   >
                     {item.label}
@@ -226,10 +248,17 @@ export function MegaMenu() {
             <NavigationMenuItem key={item.label}>
               <NavigationMenuTrigger
                 className={cn(
-                  "rounded-full bg-transparent px-3 py-2 text-sm data-[state=open]:bg-primary/10",
+                  "rounded-full bg-transparent py-2 text-sm",
+                  docked
+                    ? "px-2.5 hover:bg-ink-foreground/10 focus:bg-ink-foreground/10 data-open:bg-ink-foreground/10 data-open:hover:bg-ink-foreground/10 data-open:focus:bg-ink-foreground/10 data-[state=open]:bg-ink-foreground/10 [&>svg]:hidden"
+                    : "px-3 data-[state=open]:bg-primary/10",
                   isActive
-                    ? "font-semibold text-primary data-[state=open]:text-primary"
-                    : "font-medium text-muted-foreground hover:text-foreground data-[state=open]:text-primary",
+                    ? docked
+                      ? "font-semibold text-ink-foreground data-[state=open]:text-ink-foreground"
+                      : "font-semibold text-primary data-[state=open]:text-primary"
+                    : docked
+                      ? "font-medium text-ink-foreground/70 hover:text-ink-foreground data-[state=open]:text-ink-foreground"
+                      : "font-medium text-muted-foreground hover:text-foreground data-[state=open]:text-primary",
                 )}
               >
                 {item.label}

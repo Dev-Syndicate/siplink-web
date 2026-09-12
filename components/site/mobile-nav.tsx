@@ -33,7 +33,12 @@ function isItemActive(item: NavItem, pathname: string) {
   );
 }
 
-export function MobileNav() {
+export function MobileNav({
+  inverted = false,
+}: {
+  /** The header is docked on the dark hero (md and up): light trigger. */
+  inverted?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const close = () => setOpen(false);
@@ -44,7 +49,11 @@ export function MobileNav() {
         <Button
           variant="ghost"
           size="icon"
-          className="lg:hidden"
+          className={cn(
+            "rounded-full xl:hidden",
+            inverted &&
+              "md:text-ink-foreground md:hover:bg-ink-foreground/10 md:hover:text-ink-foreground",
+          )}
           aria-label="Open menu"
         >
           <Menu />

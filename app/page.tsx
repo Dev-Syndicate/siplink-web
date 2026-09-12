@@ -1,228 +1,449 @@
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, Quote, ShieldCheck, Star } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Check,
+  Phone,
+  Quote,
+  ShieldCheck,
+  Star,
+} from "lucide-react";
 
-import { ReviewsMarquee } from "@/components/site/reviews-marquee";
+import { HeroNotch } from "@/components/site/hero-notch";
+import { ProductIllustration } from "@/components/site/product-illustration";
+import { SolutionIllustration } from "@/components/site/solution-illustration";
 import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
-import { VideoEmbed } from "@/components/site/video-embed";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
 import {
-  certifications,
-  heroProof,
-  homePillars,
+  homeFaqs,
+  homeImages,
+  homeProof,
+  homeServices,
+  reviewSummary,
+  type HomeService,
+} from "@/lib/home";
+import {
   industries,
-  integrations,
   mobileApps,
-  planBaseFeatures,
+  planNote,
   plans,
   reviews,
+  site,
+  social,
   switchingStory,
 } from "@/lib/site";
+import { migrationProcess } from "@/lib/solutions";
+import { cn } from "@/lib/utils";
+
+const title = "SipLink — Cloud Phone Systems for Growing Businesses";
+const description = `Hosted PBX, SIP trunking, call centre and unified communications on one network. Keep your numbers, lose the hardware, and get 24/7 support from people who answer. From ${plans[0].price} per user per month.`;
+
+export const metadata: Metadata = {
+  title: { absolute: title },
+  description,
+  alternates: { canonical: "/" },
+  // A page-level openGraph replaces the layout's rather than merging with
+  // it, so the shared fields are restated here.
+  openGraph: {
+    type: "website",
+    siteName: site.legalName,
+    locale: "en_IN",
+    title,
+    description,
+    url: "/",
+  },
+};
 
 /**
  * Homepage.
  *
- * The argument, in order: enterprise-grade voice (hero) → which product is
- * yours (pillars) → what actually changes when you switch (migration) → who
- * already trusts it (reviews) → what it costs (pricing) → talk to us (CTA).
+ * The argument, in order: what we do and why it's safe to switch (hero) →
+ * the problem we remove (why switch) → the four ways in (services) → what
+ * the move looks like (process) → who it's built for (industries) → who
+ * already relies on it (reviews) → what it costs (pricing) → the remaining
+ * objections (FAQ) → one clear ask (CTA).
  *
- * Section rhythm alternates deliberately — left header, inverted, split,
- * hairline grid — so the page never settles into a scannable-but-unread
- * stack of identical centred blocks.
+ * Framed dark panels open and close the page; everything between sits on
+ * the warm page ground, so the eye moves in one continuous column.
  */
 
-/** The single review we pull forward as the page's headline proof. */
-const featuredReview = reviews[0];
+/** Entrance for above-the-fold content. Skipped for reduced motion. */
+const enter =
+  "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700 motion-safe:fill-mode-both";
+
+const container = "mx-auto max-w-7xl px-6 lg:px-10";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${site.url}/#organization`,
+      name: site.legalName,
+      alternateName: site.name,
+      url: site.url,
+      logo: `${site.url}/siplink-logo.webp`,
+      email: site.email,
+      telephone: site.phoneInternational,
+      foundingDate: "2012",
+      sameAs: social
+        .filter((profile) => profile.label !== "WhatsApp")
+        .map((profile) => profile.href),
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: homeFaqs.map(({ question, answer }) => ({
+        "@type": "Question",
+        name: question,
+        acceptedAnswer: { "@type": "Answer", text: answer },
+      })),
+    },
+  ],
+};
+
+/* ------------------------------------------------------------ primitives */
+
+function Eyebrow({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <p
+      className={cn(
+        "flex items-center gap-3 text-xs font-medium tracking-widest text-primary uppercase",
+        className,
+      )}
+    >
+      <span aria-hidden className="h-px w-8 bg-current" />
+      {children}
+    </p>
+  );
+}
+
+/** The round arrow that rides inside primary pill buttons. */
+function ArrowChip() {
+  return (
+    <span
+      aria-hidden
+      className="flex size-8 items-center justify-center rounded-full bg-primary-foreground/15 transition-transform group-hover/button:translate-x-0.5"
+    >
+      <ArrowUpRight className="size-4" />
+    </span>
+  );
+}
+
+function Stars({ count }: { count: number }) {
+  return (
+    <span aria-hidden className="flex items-center gap-0.5 text-primary">
+      {Array.from({ length: count }, (_, index) => (
+        <Star key={index} className="size-3.5 fill-current" />
+      ))}
+    </span>
+  );
+}
+
+/**
+ * Bento tile. The whole tile is the link; the cut-out label in the corner
+ * carries the name, so the visual above it can be photo or diagram.
+ */
+function ServiceTile({
+  service,
+  className,
+  children,
+}: {
+  service: HomeService;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <Link
+      href={service.href}
+      className={cn(
+        "group relative isolate flex min-h-88 overflow-hidden rounded-4xl bg-card ring-1 ring-border transition-shadow duration-300 outline-none hover:shadow-xl hover:shadow-foreground/5 focus-visible:ring-3 focus-visible:ring-ring/50",
+        className,
+      )}
+    >
+      {children}
+
+      <div className="notch w-5/6 max-w-sm p-5 pt-6 pr-6">
+        <p className="text-xs font-medium tracking-widest text-primary uppercase">
+          {service.eyebrow}
+        </p>
+        <h3 className="mt-2 flex items-center justify-between gap-3 text-xl font-semibold tracking-tight">
+          {service.title}
+          <span
+            aria-hidden
+            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-foreground text-background transition-transform duration-300 group-hover:rotate-45"
+          >
+            <ArrowUpRight className="size-4" />
+          </span>
+        </h3>
+        <p className="mt-2 text-sm text-pretty text-muted-foreground">
+          {service.description}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
+/** Diagram area for an illustrated tile, clear of the corner label. */
+function TileDiagram({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex w-full justify-center p-6 pb-48 sm:px-10">
+      {children}
+    </div>
+  );
+}
+
+/**
+ * A call moving through the system — the product in one glance. Decorative:
+ * the same story is told in words beside it.
+ */
+function LiveCallCard() {
+  const steps = [
+    "Greeted by your IVR",
+    "Routed to the billing queue",
+    "Answered by the next free agent",
+  ];
+
+  return (
+    <div
+      aria-hidden
+      className="absolute top-44 right-10 hidden w-72 rounded-3xl border border-ink-foreground/15 bg-ink/60 p-5 shadow-2xl backdrop-blur-xl motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-6 motion-safe:delay-500 motion-safe:duration-700 motion-safe:fill-mode-both xl:block"
+    >
+      <div className="flex items-center justify-between">
+        <span className="flex items-center gap-2 text-xs font-medium text-ink-foreground/70">
+          <span className="relative flex size-2">
+            <span className="absolute inline-flex size-full rounded-full bg-brand-from/60 motion-safe:animate-ping" />
+            <span className="relative inline-flex size-2 rounded-full bg-brand-from" />
+          </span>
+          Incoming call
+        </span>
+        <span className="font-mono text-xs text-ink-foreground/50">00:04</span>
+      </div>
+
+      <p className="mt-4 text-lg font-semibold">Billing enquiry</p>
+      <p className="text-sm text-ink-foreground/60">Main line · Option 2</p>
+
+      <ol className="mt-5 space-y-2.5 text-sm">
+        {steps.map((step, index) => {
+          const last = index === steps.length - 1;
+          return (
+            <li key={step} className="flex items-center gap-3">
+              <span
+                className={cn(
+                  "flex size-5 shrink-0 items-center justify-center rounded-full",
+                  last
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-ink-foreground/10 text-ink-foreground/70",
+                )}
+              >
+                <Check className="size-3" />
+              </span>
+              <span
+                className={
+                  last ? "text-ink-foreground" : "text-ink-foreground/60"
+                }
+              >
+                {step}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ page */
 
 export default function Home() {
+  const [featured, ...otherReviews] = reviews;
+  const supporting = otherReviews.slice(1, 4);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+
       {/* ---------------------------------------------------------------
-          Hero. One dominant focal point: the claim, the two CTAs, and
-          proof the visitor can verify. Everything below is subordinate.
+          Hero. A framed panel the floating header sits inside. It pulls up
+          under the header (cancelling the layout's top padding) so the
+          photograph runs behind the navigation, as in the design.
          --------------------------------------------------------------- */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-48 -right-32 size-[680px] rounded-full bg-brand-to/10 blur-3xl"
-        />
+      <section className="-mt-20 px-2 pt-2 sm:px-3 sm:pt-3">
+        <div className="relative isolate overflow-hidden rounded-4xl bg-ink text-ink-foreground">
+          <HeroNotch />
 
-        <div className="relative mx-auto max-w-7xl px-6 pt-16 pb-16 lg:px-10 lg:pt-24 lg:pb-20">
-          <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:items-center lg:gap-16">
-            <div>
-              <Badge variant="secondary" className="font-mono tracking-widest">
-                <ShieldCheck className="size-3.5" aria-hidden />
-                HIPAA COMPLIANT &middot; DoT CERTIFIED
-              </Badge>
+          {/* The photo is small, so on desktop it fills only the right of
+              the panel instead of being stretched across all of it. */}
+          <div className="absolute inset-0 -z-10 lg:left-2/5">
+            <Image
+              src={homeImages.office}
+              alt=""
+              fill
+              preload
+              sizes="(min-width: 1024px) 60vw, 100vw"
+              className="object-cover motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-110 motion-safe:duration-1000 motion-safe:fill-mode-both"
+            />
+          </div>
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/85 to-ink/55 lg:bg-linear-to-r lg:from-ink lg:from-40% lg:via-ink/75 lg:via-55% lg:to-ink/20"
+          />
 
-              <h1 className="font-heading mt-6 text-5xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-6xl lg:text-7xl">
-                Enterprise-grade voice.{" "}
-                <span className="text-primary">
-                  Answered by people who pick up.
+          <div
+            className={cn(
+              container,
+              "relative flex min-h-176 flex-col pt-32 pb-6 sm:pt-36 sm:pb-8 lg:pt-44",
+            )}
+          >
+            <div className="max-w-3xl">
+              <p
+                className={cn(
+                  enter,
+                  "inline-flex items-center gap-2 rounded-full border border-ink-foreground/15 bg-ink-foreground/5 px-3.5 py-1.5 text-xs font-medium text-ink-foreground/80 backdrop-blur",
+                )}
+              >
+                <ShieldCheck className="size-3.5 text-brand-from" aria-hidden />
+                HIPAA-compliant cloud telephony
+              </p>
+
+              <h1
+                className={cn(
+                  enter,
+                  "mt-6 text-4xl leading-[1.05] font-semibold tracking-tight text-balance motion-safe:delay-100 sm:text-5xl lg:text-6xl",
+                )}
+              >
+                Move your phones to the cloud.{" "}
+                <span className="text-brand-from">
+                  Keep the numbers your customers know.
                 </span>
               </h1>
 
-              <p className="mt-8 max-w-xl text-lg text-pretty text-muted-foreground lg:text-xl">
-                A cloud phone system for growing businesses — hosted PBX, SIP
-                trunking, call centre and unified communications on one secure
-                network. Keep your numbers. Lose the hardware.
+              <p
+                className={cn(
+                  enter,
+                  "mt-6 max-w-xl text-lg text-pretty text-ink-foreground/75 motion-safe:delay-200",
+                )}
+              >
+                SipLink runs hosted PBX, SIP trunking, call centre and unified
+                communications for growing businesses — ported, configured and
+                supported by a team that answers around the clock.
               </p>
 
-              <div className="mt-10 flex flex-wrap items-center gap-4">
-                <Button asChild size="lg">
-                  <Link href="/contact">Book a demo</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="group">
-                  <Link href="/pricing">
-                    See pricing
-                    <ArrowRight
-                      className="transition-transform group-hover:translate-x-0.5"
-                      aria-hidden
-                    />
+              <div
+                className={cn(
+                  enter,
+                  "mt-10 flex flex-wrap items-center gap-3 motion-safe:delay-300",
+                )}
+              >
+                <Button asChild size="lg" className="rounded-full pr-2 pl-6">
+                  <Link href="/contact">
+                    Book a demo
+                    <ArrowChip />
                   </Link>
                 </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full border-ink-foreground/25 bg-transparent text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground dark:bg-transparent"
+                >
+                  <Link href="/pricing">See pricing</Link>
+                </Button>
               </div>
 
-              <p className="mt-5 text-sm text-muted-foreground">
+              <p
+                className={cn(
+                  enter,
+                  "mt-5 text-sm text-ink-foreground/60 motion-safe:delay-300",
+                )}
+              >
                 From{" "}
-                <span className="font-medium text-foreground">
+                <span className="font-medium text-ink-foreground">
                   {plans[0].price}
                 </span>{" "}
-                per user / month &middot; unlimited US &amp; Canada calling
-                &middot; minimum 10 lines
+                per user / month &middot; 10-line minimum
               </p>
             </div>
 
-            <Image
-              src="/images/agent-cloud-telephony.png"
-              alt="Support agent on a headset with cloud telephony, live chat and call analytics around her"
-              width={1536}
-              height={1024}
-              priority
-              sizes="(min-width: 1024px) 32rem, 100vw"
-              className="h-auto w-full lg:ml-auto"
-            />
-          </div>
+            <LiveCallCard />
 
-          {/* Proof strip — hairline grid, the products-page signature. */}
-          <dl className="mt-16 grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2 lg:grid-cols-4">
-            {heroProof.map(({ value, label }) => (
-              <div key={label} className="bg-background p-6">
-                <dt className="font-heading text-3xl font-semibold tracking-tight text-primary">
-                  {value}
-                </dt>
-                <dd className="mt-1 text-sm text-pretty text-muted-foreground">
-                  {label}
-                </dd>
-              </div>
-            ))}
-          </dl>
+            <div className="min-h-16 flex-1" />
+
+            <dl
+              className={cn(
+                enter,
+                "grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-ink-foreground/10 ring-1 ring-ink-foreground/10 motion-safe:delay-500 lg:grid-cols-4",
+              )}
+            >
+              {homeProof.map(({ value, label }) => (
+                <div
+                  key={label}
+                  className="flex flex-col-reverse justify-end gap-1 bg-ink/70 p-5 backdrop-blur-md sm:p-6"
+                >
+                  <dt className="text-xs text-pretty text-ink-foreground/65 sm:text-sm">
+                    {label}
+                  </dt>
+                  <dd className="text-2xl font-semibold tracking-tight sm:text-3xl">
+                    {value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
       </section>
 
       {/* ---------------------------------------------------------------
-          Pillars. Four ways in, labelled by the job the customer is
-          hiring us for — not by product name alone.
+          Why switch. The design's "Our Story" block: argument on the left,
+          organically framed photograph on the right.
          --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="max-w-2xl">
-            <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Where you start
-            </span>
-            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Four ways onto the network
+      <section className={cn(container, "py-24 lg:py-32")}>
+        <div className="grid items-center gap-16 lg:grid-cols-2 lg:gap-20">
+          <div className="reveal">
+            <Eyebrow>Why teams switch</Eyebrow>
+            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+              A phone system should be the last thing on your mind.
             </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">
-              Whether you are replacing a PBX, connecting equipment you already
-              own, or running a floor of agents — the same platform underneath,
-              configured to your situation.
+            <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
+              For most businesses it is the first thing to cause trouble.
+              SipLink takes the whole system off your hands — we host it,
+              maintain it and bring your numbers across.
             </p>
-          </div>
 
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-border md:grid-cols-2">
-            {homePillars.map(
-              ({ eyebrow, title, description, href, icon: Icon }) => (
-                <Link
-                  key={title}
-                  href={href}
-                  className="group flex flex-col gap-4 bg-background p-8 transition-colors hover:bg-primary/5 focus-visible:bg-primary/5 focus-visible:outline-none"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                      <Icon className="size-5" aria-hidden />
-                    </span>
-                    <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-                      {eyebrow}
-                    </span>
-                  </div>
-
-                  <h3 className="font-heading text-xl font-semibold tracking-tight">
-                    {title}
-                  </h3>
-                  <p className="text-sm text-pretty text-muted-foreground">
-                    {description}
-                  </p>
-
-                  <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-medium text-primary">
-                    Explore {title}
-                    <ArrowRight
-                      className="size-4 transition-transform group-hover:translate-x-0.5"
-                      aria-hidden
-                    />
-                  </span>
-                </Link>
-              ),
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------------
-          Migration. The real objection is disruption, not features — so
-          answer it directly, before anything else is asked for.
-         --------------------------------------------------------------- */}
-      <section className="border-b border-border bg-foreground text-background">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-20">
-            <div className="lg:sticky lg:top-28 lg:self-start">
-              <span className="font-mono text-xs tracking-widest text-primary uppercase">
-                Making the move
-              </span>
-              <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                What actually changes on Monday
-              </h2>
-              <p className="mt-4 text-pretty text-background/70">
-                Switching phone systems sounds like a project. In practice we
-                port your numbers, ship the handsets and run both in parallel
-                until you are ready.
-              </p>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="mt-8 border-background/25 bg-transparent text-background hover:bg-background/10 hover:text-background"
-              >
-                <Link href="/contact">Plan your migration</Link>
-              </Button>
-            </div>
-
-            <ul className="space-y-px overflow-hidden rounded-2xl bg-background/10">
+            <ul className="mt-10 divide-y divide-border border-y border-border">
               {switchingStory.map(({ before, after, icon: Icon }) => (
-                <li
-                  key={before}
-                  className="grid gap-4 bg-foreground p-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-6 sm:p-8"
-                >
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-background/10 text-primary">
-                    <Icon className="size-5" aria-hidden />
+                <li key={before} className="flex gap-4 py-4">
+                  <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-primary">
+                    <Icon className="size-4" aria-hidden />
                   </span>
-                  <div className="grid gap-3 sm:grid-cols-2 sm:gap-8">
-                    <p className="text-sm text-pretty text-background/50 line-through decoration-background/30">
+                  <div>
+                    <p className="text-sm text-muted-foreground line-through decoration-muted-foreground/40">
+                      <span className="sr-only">Before: </span>
                       {before}
                     </p>
-                    <p className="text-sm text-pretty text-background">
+                    <p className="mt-1 font-medium text-pretty">
+                      <span className="sr-only">With SipLink: </span>
                       {after}
                     </p>
                   </div>
@@ -230,352 +451,467 @@ export default function Home() {
               ))}
             </ul>
           </div>
-        </div>
-      </section>
 
-      {/* ---------------------------------------------------------------
-          The support claim, evidenced. The hero promises people who pick
-          up; this is where a real customer says it instead of us.
-         --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
-            <div>
-              <span className="font-mono text-xs tracking-widest text-primary uppercase">
-                Why customers stay
-              </span>
-              <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                The part no feature list covers
-              </h2>
-              <p className="mt-4 text-pretty text-muted-foreground">
-                Every provider sells the same features. What customers write
-                about, over and over, is that someone answers — on WhatsApp, on
-                the phone, at any hour, and the problem gets fixed.
-              </p>
-
-              <figure className="mt-8 border-l-2 border-primary pl-6">
-                <Quote
-                  className="size-6 rotate-180 fill-primary/20 text-primary/20"
-                  aria-hidden
-                />
-                <blockquote className="mt-3 text-lg text-pretty">
-                  {featuredReview.quote}
-                </blockquote>
-                <figcaption className="mt-4 flex items-center gap-3 text-sm">
-                  <span
-                    className="flex items-center gap-0.5 text-primary"
-                    aria-hidden
-                  >
-                    {Array.from({ length: featuredReview.rating }).map(
-                      (_, index) => (
-                        <Star key={index} className="size-3.5 fill-current" />
-                      ),
-                    )}
-                  </span>
-                  <span className="font-medium">{featuredReview.name}</span>
-                  <span className="text-muted-foreground">
-                    {featuredReview.rating}/5 on Google
-                  </span>
-                </figcaption>
-              </figure>
+          <div className="reveal relative pb-12 lg:pb-0">
+            <div className="shape-organic relative aspect-4/3 overflow-hidden bg-muted">
+              <Image
+                src={homeImages.mobile}
+                alt="Hands using the SipLink app on a smartphone"
+                fill
+                sizes="(min-width: 1024px) 36rem, 100vw"
+                className="object-cover"
+              />
             </div>
 
-            <VideoEmbed />
+            <div className="absolute right-4 bottom-0 left-4 rounded-3xl bg-card p-5 shadow-xl ring-1 ring-border sm:right-auto sm:w-80 lg:-bottom-10 lg:-left-8">
+              <p className="font-semibold">Your extension, in your pocket</p>
+              <p className="mt-1 text-sm text-pretty text-muted-foreground">
+                The SipLink UC app brings calls, video, messaging and voicemail
+                to iOS and Android.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Button asChild size="sm" variant="outline" className="rounded-full">
+                  <a href={mobileApps.ios} target="_blank" rel="noreferrer noopener">
+                    <AppleLogo className="size-4" />
+                    App Store
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </Button>
+                <Button asChild size="sm" variant="outline" className="rounded-full">
+                  <a
+                    href={mobileApps.android}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    <PlayStoreLogo className="size-4" />
+                    Google Play
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <ReviewsMarquee />
+      {/* ---------------------------------------------------------------
+          Services. The design's bento of image tiles with cut-out labels.
+          One photograph anchors it; the rest are diagrams of what each
+          service actually does, drawn from theme tokens.
+         --------------------------------------------------------------- */}
+      <section className={cn(container, "pb-24 lg:pb-32")}>
+        <div className="reveal grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
+            <Eyebrow>What we run for you</Eyebrow>
+            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+              Four ways onto one network.
+            </h2>
+          </div>
+          <div className="lg:col-span-5">
+            <p className="text-pretty text-muted-foreground">
+              Replacing a PBX, keeping the one you own or running a floor of
+              agents — the same platform underneath, configured to your
+              situation.
+            </p>
+            <Link
+              href="/products"
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+            >
+              Browse every product
+              <ArrowRight className="size-4" aria-hidden />
+            </Link>
+          </div>
+        </div>
+
+        <div className="reveal mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-12">
+          <ServiceTile
+            service={homeServices.hostedPbx}
+            className="min-h-120 md:row-span-2 lg:col-span-4"
+          >
+            <Image
+              src={homeImages.studio}
+              alt=""
+              fill
+              sizes="(min-width: 1024px) 26rem, (min-width: 768px) 50vw, 100vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          </ServiceTile>
+
+          <ServiceTile service={homeServices.sipTrunking} className="lg:col-span-4">
+            <TileDiagram>
+              <ProductIllustration category="business-voice" className="max-w-sm" />
+            </TileDiagram>
+          </ServiceTile>
+
+          <ServiceTile service={homeServices.callCentre} className="lg:col-span-4">
+            <TileDiagram>
+              <ProductIllustration category="contact-center" className="max-w-sm" />
+            </TileDiagram>
+          </ServiceTile>
+
+          <ServiceTile
+            service={homeServices.unified}
+            className="md:col-span-2 lg:col-span-8"
+          >
+            <div className="flex w-full justify-center p-6 pb-48 lg:items-center lg:justify-end lg:p-10">
+              <SolutionIllustration
+                shape="converge"
+                className="max-w-sm lg:max-w-xs"
+              />
+            </div>
+          </ServiceTile>
+        </div>
+      </section>
 
       {/* ---------------------------------------------------------------
-          Industries. Relevance check — "is this built for a business
-          like mine?" — kept compact, since the depth lives one click in.
+          How switching works. The real buying objection is disruption, so
+          show the method. Numbered because the order genuinely matters.
          --------------------------------------------------------------- */}
-      <section className="border-y border-border bg-muted/30">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="max-w-2xl">
-            <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Who we serve
-            </span>
-            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Configured for how your sector works
-            </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">
-              A billing desk and a recruiting team need very different things
-              from a phone system. Pick yours to see what changes.
+      <section className="border-y border-border bg-muted/50">
+        <div className={cn(container, "py-24 lg:py-32")}>
+          <div className="reveal grid gap-6 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-7">
+              <Eyebrow>How switching works</Eyebrow>
+              <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+                From your current system to SipLink, one planned step at a
+                time.
+              </h2>
+            </div>
+            <p className="text-pretty text-muted-foreground lg:col-span-5">
+              Every move follows the same method, and nothing carries live
+              calls until it has been built and tested.
             </p>
           </div>
 
-          {/* Not links: there is no /industries/[slug] route yet, so the
-              section CTA below carries the navigation instead of sending
-              each card to a 404. */}
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2 lg:grid-cols-3">
+          <ol className="reveal mt-14 grid gap-px overflow-hidden rounded-4xl bg-border ring-1 ring-border sm:grid-cols-2 lg:grid-cols-3">
+            {migrationProcess.map((step, index) => (
+              <li key={step.title} className="flex flex-col gap-3 bg-card p-8">
+                <span aria-hidden className="font-mono text-sm text-primary">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="text-lg font-semibold tracking-tight">
+                  {step.title}
+                </h3>
+                <p className="text-sm text-pretty text-muted-foreground">
+                  {step.body}
+                </p>
+              </li>
+            ))}
+          </ol>
+
+          <div className="reveal mt-10">
+            <Button asChild size="lg" className="rounded-full pr-2 pl-6">
+              <Link href="/contact">
+                Plan your migration
+                <ArrowChip />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------
+          Industries. The relevance check. Not links: the per-industry
+          pages do not exist yet, so the one button carries navigation.
+         --------------------------------------------------------------- */}
+      <section className={cn(container, "py-24 lg:py-32")}>
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="reveal lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
+            <Eyebrow>Who we serve</Eyebrow>
+            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+              Built for teams that live on the phone.
+            </h2>
+            <p className="mt-6 text-pretty text-muted-foreground">
+              A billing desk and a recruiting team need very different things
+              from a phone system. We configure SipLink around the way your
+              sector works.
+            </p>
+            <Button asChild size="lg" variant="outline" className="mt-8 rounded-full">
+              <Link href="/industries">Explore industries</Link>
+            </Button>
+          </div>
+
+          <ul className="reveal divide-y divide-border border-y border-border lg:col-span-7">
             {industries.map(({ title, description, icon: Icon, badge }) => (
-              <div
-                key={title}
-                className="flex flex-col gap-3 bg-background p-6"
-              >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <li key={title} className="flex gap-5 py-6">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-accent text-primary">
                   <Icon className="size-5" aria-hidden />
                 </span>
-
-                <h3 className="font-heading flex flex-wrap items-center gap-2 text-base font-semibold tracking-tight">
-                  {title}
-                  {badge ? (
-                    <Badge
-                      variant="secondary"
-                      className="font-mono text-[10px] tracking-wider"
-                    >
-                      {badge}
-                    </Badge>
-                  ) : null}
-                </h3>
-
-                <p className="text-sm text-pretty text-muted-foreground">
-                  {description}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-10">
-            <Button asChild variant="outline" size="lg">
-              <Link href="/industries">View all industries</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------------
-          Pricing. Transparent numbers early builds trust; the full
-          comparison stays on /pricing where it belongs.
-         --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div className="max-w-2xl">
-              <span className="font-mono text-xs tracking-widest text-primary uppercase">
-                Pricing
-              </span>
-              <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                Simple per-user pricing
-              </h2>
-              <p className="mt-4 text-pretty text-muted-foreground">
-                Three plans, every one with unlimited calling across the US and
-                Canada, a free local number and an IP-phone lease. Minimum 10
-                lines.
-              </p>
-            </div>
-
-            <Button asChild variant="outline" size="lg">
-              <Link href="/pricing">Compare all plans</Link>
-            </Button>
-          </div>
-
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-border md:grid-cols-3">
-            {plans.map((plan) => {
-              // Each tier's own additions first, then the shared essentials.
-              const features = [...plan.adds, ...planBaseFeatures].slice(0, 6);
-
-              return (
-                <div
-                  key={plan.name}
-                  className={cn(
-                    "relative flex flex-col p-8",
-                    plan.featured
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-background",
-                  )}
-                >
-                  {plan.featured ? (
-                    <span className="font-mono text-[10px] tracking-widest uppercase opacity-80">
-                      Most popular
-                    </span>
-                  ) : (
-                    <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
-                      &nbsp;
-                    </span>
-                  )}
-
-                  <h3 className="font-heading mt-3 text-xl font-semibold tracking-tight">
-                    {plan.name}
+                <div className="min-w-0">
+                  <h3 className="flex flex-wrap items-center gap-2 font-semibold tracking-tight">
+                    {title}
+                    {badge ? <Badge variant="secondary">{badge}</Badge> : null}
                   </h3>
-
-                  <p className="mt-4 flex items-end gap-1.5">
-                    <span className="font-heading text-4xl font-semibold tracking-tight">
-                      {plan.price}
-                    </span>
-                    <span
-                      className={cn(
-                        "pb-1 text-sm",
-                        plan.featured
-                          ? "text-primary-foreground/80"
-                          : "text-muted-foreground",
-                      )}
-                    >
-                      / user / month
-                    </span>
+                  <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
+                    {description}
                   </p>
-
-                  <p
-                    className={cn(
-                      "mt-3 text-sm text-pretty",
-                      plan.featured
-                        ? "text-primary-foreground/80"
-                        : "text-muted-foreground",
-                    )}
-                  >
-                    {plan.blurb}
-                  </p>
-
-                  <ul className="mt-8 flex-1 space-y-2.5">
-                    {features.map((feature) => (
-                      <li key={feature} className="flex gap-2.5 text-sm">
-                        <Check
-                          className={cn(
-                            "mt-0.5 size-4 shrink-0",
-                            plan.featured
-                              ? "text-primary-foreground"
-                              : "text-primary",
-                          )}
-                          aria-hidden
-                        />
-                        <span
-                          className={cn(
-                            "text-pretty",
-                            plan.featured
-                              ? "text-primary-foreground/90"
-                              : "text-muted-foreground",
-                          )}
-                        >
-                          {feature}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button
-                    asChild
-                    variant={plan.featured ? "secondary" : "outline"}
-                    className={cn(
-                      "mt-8 w-full",
-                      plan.featured &&
-                        "bg-primary-foreground text-primary hover:bg-primary-foreground/90",
-                    )}
-                  >
-                    <Link href="/pricing">
-                      View {plan.name} details
-                      <span className="sr-only"> and full feature list</span>
-                    </Link>
-                  </Button>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------------
-          Integrations + apps. Two practical "does it fit my stack?"
-          answers, side by side rather than as two more full sections.
-         --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-28">
-          <div>
-            <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Integrations
-            </span>
-            <h2 className="font-heading mt-4 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-              Works with the tools you already run
-            </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">
-              Calls, contacts and records stay where your team already works.
-            </p>
-
-            <ul className="mt-8 flex flex-wrap gap-2.5">
-              {integrations.map((name) => (
-                <li
-                  key={name}
-                  className="rounded-full border border-border px-4 py-2 text-sm font-medium"
-                >
-                  {name}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="lg:border-l lg:border-border lg:pl-16">
-            <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Mobile &amp; desktop
-            </span>
-            <h2 className="font-heading mt-4 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-              Take your extension anywhere
-            </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">
-              The SipLink UC app puts your business line on your phone and
-              desktop — calls, video, messaging and voicemail, wherever you are.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Button asChild variant="outline" size="lg">
-                <a
-                  href={mobileApps.ios}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <AppleLogo className="size-5" />
-                  Download for iOS
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <a
-                  href={mobileApps.android}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <PlayStoreLogo className="size-5" />
-                  Download for Android
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------------
-          Closing CTA, with the compliance credentials folded in — the
-          last reassurance sits next to the last ask.
-         --------------------------------------------------------------- */}
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <div className="overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-brand-from/10 to-brand-to/5 px-8 py-16 text-center lg:px-16">
-          <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Ready to move your business to the cloud?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-            See SipLink running on your own workflows. Our team will plan the
-            migration and port your existing numbers.
-          </p>
-
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
-              <Link href="/contact">Book a demo</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/pricing">See pricing</Link>
-            </Button>
-          </div>
-
-          <ul className="mt-12 flex flex-wrap justify-center gap-3 border-t border-border pt-8">
-            {certifications.map((cert) => (
-              <li
-                key={cert}
-                className="flex items-center gap-2 rounded-lg border border-border bg-background/60 px-4 py-2 font-mono text-[11px] tracking-wider"
-              >
-                <ShieldCheck className="size-3.5 text-primary" aria-hidden />
-                {cert}
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------
+          Reviews. Verbatim Google reviews — the support claim, made by
+          customers instead of by us.
+         --------------------------------------------------------------- */}
+      {featured ? (
+        <section className={cn(container, "pb-24 lg:pb-32")}>
+          <div className="reveal flex flex-wrap items-end justify-between gap-6">
+            <div className="max-w-2xl">
+              <Eyebrow>In their words</Eyebrow>
+              <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+                Customers rarely write about features. They write about who
+                answers.
+              </h2>
+            </div>
+            {reviewSummary.average ? (
+              <p className="flex items-center gap-2 text-sm">
+                <Stars count={5} />
+                <span className="font-semibold">{reviewSummary.average}</span>
+                <span className="text-muted-foreground">
+                  from {reviewSummary.count} Google reviews
+                </span>
+              </p>
+            ) : null}
+          </div>
+
+          <div className="reveal mt-14 grid gap-4 lg:grid-cols-12">
+            <figure className="flex flex-col justify-between gap-10 rounded-4xl bg-accent p-8 sm:p-12 lg:col-span-7">
+              <Quote
+                className="size-10 rotate-180 fill-primary text-primary"
+                aria-hidden
+              />
+              <blockquote className="text-2xl leading-snug font-medium tracking-tight text-pretty sm:text-3xl">
+                “{featured.quote}”
+              </blockquote>
+              <figcaption className="flex flex-wrap items-center gap-3">
+                <Stars count={featured.rating} />
+                <span className="font-semibold">{featured.name}</span>
+                <span className="text-sm text-muted-foreground">
+                  {featured.rating}/5 on Google
+                </span>
+              </figcaption>
+            </figure>
+
+            <div className="grid gap-4 lg:col-span-5">
+              {supporting.map((review) => (
+                <Card key={review.name} className="rounded-3xl">
+                  <CardContent className="h-full px-6 py-2">
+                    <figure className="flex h-full flex-col justify-between gap-5">
+                      <blockquote className="text-sm text-pretty">
+                        “{review.quote}”
+                      </blockquote>
+                      <figcaption className="flex items-center gap-3">
+                        <Stars count={review.rating} />
+                        <span className="text-sm font-medium">
+                          {review.name}
+                        </span>
+                      </figcaption>
+                    </figure>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ---------------------------------------------------------------
+          Pricing. Published numbers early build trust; the feature
+          comparison stays on /pricing where it belongs.
+         --------------------------------------------------------------- */}
+      <section className={cn(container, "pb-24 lg:pb-32")}>
+        <div className="reveal grid gap-px overflow-hidden rounded-4xl bg-border ring-1 ring-border md:grid-cols-2 lg:grid-cols-4">
+          <div className="flex flex-col bg-card p-8 lg:p-10">
+            <Eyebrow>Pricing</Eyebrow>
+            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance">
+              Priced per user, per month.
+            </h2>
+            <p className="mt-3 text-sm text-pretty text-muted-foreground">
+              {planNote}
+            </p>
+            <Link
+              href="/pricing"
+              className="mt-auto inline-flex items-center gap-1.5 pt-8 text-sm font-medium text-primary hover:underline"
+            >
+              Compare every feature
+              <ArrowRight className="size-4" aria-hidden />
+            </Link>
+          </div>
+
+          {plans.map((plan) => (
+            <div
+              key={plan.name}
+              className={cn(
+                "flex flex-col bg-card p-8 lg:p-10",
+                plan.featured && "bg-primary text-primary-foreground",
+              )}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-lg font-semibold">{plan.name}</h3>
+                {plan.featured ? (
+                  <span className="rounded-full bg-primary-foreground/15 px-2.5 py-1 text-xs font-medium">
+                    Recommended
+                  </span>
+                ) : null}
+              </div>
+
+              <p className="mt-6 flex items-end gap-1.5">
+                <span className="text-5xl font-semibold tracking-tight">
+                  {plan.price}
+                </span>
+                <span
+                  className={cn(
+                    "pb-1.5 text-sm",
+                    plan.featured
+                      ? "text-primary-foreground/75"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  / user / mo
+                </span>
+              </p>
+
+              <p
+                className={cn(
+                  "mt-4 flex-1 text-sm text-pretty",
+                  plan.featured
+                    ? "text-primary-foreground/80"
+                    : "text-muted-foreground",
+                )}
+              >
+                {plan.blurb}
+              </p>
+
+              <Button
+                asChild
+                variant="outline"
+                className={cn(
+                  "mt-8 rounded-full",
+                  plan.featured &&
+                    "border-transparent bg-primary-foreground text-primary hover:bg-primary-foreground/90 hover:text-primary",
+                )}
+              >
+                <Link href="/contact">Choose {plan.name}</Link>
+              </Button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------
+          FAQ. The objections left after pricing, answered plainly.
+         --------------------------------------------------------------- */}
+      <section className="border-t border-border">
+        <div className={cn(container, "grid gap-12 py-24 lg:grid-cols-12 lg:gap-16 lg:py-32")}>
+          <div className="reveal lg:col-span-4">
+            <Eyebrow>Questions</Eyebrow>
+            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              What people ask before they switch.
+            </h2>
+            <p className="mt-6 text-sm text-pretty text-muted-foreground">
+              Something else on your mind? Call{" "}
+              <a
+                href={`tel:${site.phone.replace(/\s/g, "")}`}
+                className="font-medium text-foreground underline-offset-4 hover:underline"
+              >
+                {site.phone}
+              </a>{" "}
+              or email{" "}
+              <a
+                href={`mailto:${site.email}`}
+                className="font-medium text-foreground underline-offset-4 hover:underline"
+              >
+                {site.email}
+              </a>
+              .
+            </p>
+          </div>
+
+          <Accordion
+            type="single"
+            collapsible
+            defaultValue={homeFaqs[0]?.question}
+            className="reveal border-t border-border lg:col-span-8"
+          >
+            {homeFaqs.map(({ question, answer }) => (
+              <AccordionItem
+                key={question}
+                value={question}
+                className="border-b border-border"
+              >
+                <AccordionTrigger className="py-5 text-base font-medium hover:no-underline">
+                  {question}
+                </AccordionTrigger>
+                <AccordionContent className="max-w-2xl pb-6 text-pretty text-muted-foreground">
+                  {answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------
+          Closing CTA. One ask, framed like the hero so the page ends where
+          it began.
+         --------------------------------------------------------------- */}
+      <section className="px-2 sm:px-3">
+        <div className="relative isolate overflow-hidden rounded-4xl bg-ink px-6 py-24 text-center text-ink-foreground sm:py-32">
+          <div
+            aria-hidden
+            className="absolute top-full left-1/2 -z-10 size-160 -translate-1/2 rounded-full bg-primary/30 blur-3xl"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10 flex items-center justify-center"
+          >
+            {["size-96", "size-144", "size-192", "size-240"].map((size) => (
+              <span
+                key={size}
+                className={cn(
+                  "absolute rounded-full border border-ink-foreground/[0.07]",
+                  size,
+                )}
+              />
+            ))}
+          </div>
+
+          <div className="reveal mx-auto max-w-2xl">
+            <Eyebrow className="justify-center text-brand-from">
+              Talk to us
+            </Eyebrow>
+            <h2 className="mt-5 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+              Hear SipLink on your own call flows.
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl text-lg text-pretty text-ink-foreground/75">
+              Book a demo and we will map your numbers, extensions and call
+              routing to a plan — including porting the numbers you already
+              have.
+            </p>
+
+            <div className="mt-10 flex flex-wrap justify-center gap-3">
+              <Button asChild size="lg" className="rounded-full pr-2 pl-6">
+                <Link href="/contact">
+                  Book a demo
+                  <ArrowChip />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full border-ink-foreground/25 bg-transparent text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground dark:bg-transparent"
+              >
+                <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
+                  <Phone aria-hidden />
+                  {site.phone}
+                </a>
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
     </>

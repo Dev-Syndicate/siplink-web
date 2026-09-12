@@ -4,9 +4,21 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Pinned scroll panels (the About page). Only where the viewport is wide
+   enough for the side-by-side layouts and tall enough for a whole panel to
+   fit on screen — a pinned panel's overflow is covered before it can be
+   read. Anywhere smaller, the panels stack and scroll normally. */
+@custom-variant pin {
+  @media (min-width: 64rem) and (min-height: 40rem) {
+    @slot;
+  }
+}
+
 @theme inline {
   --color-brand-from: var(--brand-from);
   --color-brand-to: var(--brand-to);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
   --font-heading: var(--font-geist-sans);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -53,7 +65,13 @@
 :root {
   --brand-from: oklch(0.7 0.175 12.8);
   --brand-to: oklch(0.552 0.211 12.8);
-  --background: oklch(1 0 0);
+  /* Deep wine surface for framed panels (homepage hero, CTA, footer). The
+     brand pink is too saturated to carry a large field; this is its dark
+     register. */
+  --ink: oklch(0.23 0.035 12.8);
+  --ink-foreground: oklch(0.975 0.008 75);
+  /* Warm off-white page; cards stay pure white so they lift off it. */
+  --background: oklch(0.982 0.007 75);
   --foreground: oklch(0.18 0.012 260);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.18 0.012 260);
@@ -61,15 +79,15 @@
   --popover-foreground: oklch(0.18 0.012 260);
   --primary: oklch(0.552 0.211 12.8);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(0.958 0.009 75);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.5 0.018 260);
+  --muted: oklch(0.958 0.009 75);
+  --muted-foreground: oklch(0.5 0.015 50);
   --accent: oklch(0.955 0.021 12.8);
   --accent-foreground: oklch(0.42 0.19 12.8);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  --border: oklch(0.91 0.01 75);
+  --input: oklch(0.91 0.01 75);
   --ring: oklch(0.552 0.211 12.8);
   --chart-1: oklch(0.552 0.211 12.8);
   --chart-2: oklch(0.68 0.17 12.8);
@@ -90,6 +108,8 @@
 .dark {
   --brand-from: oklch(0.76 0.155 12.8);
   --brand-to: oklch(0.66 0.185 12.8);
+  --ink: oklch(0.21 0.03 12.8);
+  --ink-foreground: oklch(0.975 0.008 75);
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -224,6 +244,108 @@
       animation: none;
       stroke-dasharray: none;
       opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* About page. The opening photograph and Our Story card ease in on load;
+     blocks further down rise as they scroll into view (scroll-driven, so no
+     JS). Anyone who prefers reduced motion, and browsers without
+     animation-timeline, get the finished state. */
+  @keyframes about-hero-in {
+    from {
+      opacity: 0;
+      transform: scale(1.04);
+    }
+  }
+
+  @keyframes about-rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .about-hero-in {
+      animation: about-hero-in 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    .about-rise-in {
+      animation: about-rise 0.9s 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    @supports (animation-timeline: view()) {
+      .about-rise {
+        animation: about-rise linear both;
+        animation-timeline: view();
+        animation-range: entry 10% entry 70%;
+      }
+    }
+  }
+}
+
+@layer components {
+  /* Cut-out label (homepage bento). A panel the colour of the page, pinned
+     to the bottom-left of a `relative overflow-hidden` tile, with concave
+     fillets above and beside it so the tile appears to wrap around it. */
+  .notch {
+    --notch-r: 1.5rem;
+    --notch-bg: var(--background);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: var(--notch-bg);
+    border-top-right-radius: var(--notch-r);
+  }
+
+  .notch::before,
+  .notch::after {
+    content: "";
+    position: absolute;
+    width: var(--notch-r);
+    height: var(--notch-r);
+    background: radial-gradient(
+      circle at 100% 0,
+      transparent calc(var(--notch-r) - 0.5px),
+      var(--notch-bg) var(--notch-r)
+    );
+    pointer-events: none;
+  }
+
+  .notch::before {
+    bottom: 100%;
+    left: 0;
+  }
+
+  .notch::after {
+    bottom: 0;
+    left: 100%;
+  }
+
+  /* One sweeping corner on an otherwise soft rectangle — the organic frame
+     for editorial photography. */
+  .shape-organic {
+    border-radius: 45% 2rem 2rem 2rem / 38% 2rem 2rem 2rem;
+  }
+
+  /* Homepage scroll reveal. Same approach as the About page: pure CSS, and
+     reduced-motion or unsupported browsers see the content in place. */
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .reveal {
+        animation: reveal-up linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 55%;
+      }
     }
   }
 }

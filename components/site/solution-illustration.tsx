@@ -335,10 +335,10 @@ function ConvergeDiagram({ uid }: { uid: string }) {
         strokeWidth="1.75"
       />
       <circle cx={hub.x} cy={hub.y} r="7" className="fill-primary" filter={`url(#sglow-${uid})`} />
+      {/* Start-anchored just past the hub's ring, so no glyph sits on it. */}
       <text
-        x={hub.x + 44}
+        x={hub.x + 38}
         y={hub.y + 4}
-        textAnchor="middle"
         className="fill-muted-foreground/70 text-[8px] font-medium [font-family:var(--font-mono)]"
       >
         ONE HUB

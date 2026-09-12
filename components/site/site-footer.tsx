@@ -2,105 +2,134 @@ import Image from "next/image";
 import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
 
+import { socialIcons } from "@/components/site/social-icons";
 import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import { footerNav, mobileApps, site, social } from "@/lib/site";
 
+/**
+ * Framed footer panel, matching the homepage hero and CTA. The wordmark sits
+ * on its own light tile because its "link" half disappears on dark ground.
+ */
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-muted/40">
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
-          <div className="col-span-2 md:col-span-1">
-            <Image
-              src="/siplink-logo.webp"
-              alt={site.legalName}
-              width={300}
-              height={135}
-              className="h-9 w-auto object-contain"
-            />
-            <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-              {site.description}
-            </p>
-            <div className="mt-6 space-y-2 text-sm">
-              <a
-                href={`tel:${site.phone.replace(/\s/g, "")}`}
-                className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+    <footer className="px-2 pt-3 pb-2 sm:px-3 sm:pb-3">
+      <div className="rounded-4xl bg-ink text-ink-foreground">
+        <div className="mx-auto max-w-7xl px-6 pt-16 pb-8 lg:px-10 lg:pt-20">
+          <div className="grid gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <Link
+                href="/"
+                className="inline-flex rounded-2xl bg-background px-4 py-3 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               >
-                <Phone className="size-4" aria-hidden />
-                {site.phone}
-              </a>
-              <a
-                href={`mailto:${site.email}`}
-                className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <Mail className="size-4" aria-hidden />
-                {site.email}
-              </a>
-            </div>
+                <Image
+                  src="/siplink-logo.webp"
+                  alt={`${site.legalName} home`}
+                  width={300}
+                  height={135}
+                  className="h-8 w-auto object-contain"
+                />
+              </Link>
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href={mobileApps.ios}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
-              >
-                <AppleLogo className="size-4" />
-                SipLink UC for iOS
-              </a>
-              <a
-                href={mobileApps.android}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
-              >
-                <PlayStoreLogo className="size-4" />
-                SipLink UC for Android
-              </a>
-            </div>
-          </div>
+              <p className="mt-6 max-w-sm text-sm text-pretty text-ink-foreground/70">
+                {site.description}
+              </p>
 
-          {footerNav.map((group) => (
-            <div key={group.heading}>
-              <h3 className="text-sm font-semibold">{group.heading}</h3>
-              <ul className="mt-4 space-y-3">
-                {group.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <Separator className="my-10" />
-
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-muted-foreground">
-            Copyright © 2026 {site.legalName}. All Rights Reserved.
-          </p>
-
-          <ul className="flex flex-wrap gap-x-5 gap-y-2">
-            {social.map((item) => (
-              <li key={item.label}>
+              <div className="mt-6 space-y-2 text-sm">
                 <a
-                  href={item.href}
+                  href={`tel:${site.phone.replace(/\s/g, "")}`}
+                  className="flex w-fit items-center gap-2 text-ink-foreground/80 transition-colors hover:text-ink-foreground"
+                >
+                  <Phone className="size-4" aria-hidden />
+                  {site.phone}
+                </a>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="flex w-fit items-center gap-2 text-ink-foreground/80 transition-colors hover:text-ink-foreground"
+                >
+                  <Mail className="size-4" aria-hidden />
+                  {site.email}
+                </a>
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                <a
+                  href={mobileApps.ios}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                  className="flex items-center gap-2 rounded-full border border-ink-foreground/15 px-3.5 py-2 text-xs font-medium transition-colors hover:bg-ink-foreground/10"
                 >
-                  {item.label}
+                  <AppleLogo className="size-4" />
+                  SipLink UC for iOS
+                  <span className="sr-only"> (opens in a new tab)</span>
                 </a>
-              </li>
-            ))}
-          </ul>
+                <a
+                  href={mobileApps.android}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="flex items-center gap-2 rounded-full border border-ink-foreground/15 px-3.5 py-2 text-xs font-medium transition-colors hover:bg-ink-foreground/10"
+                >
+                  <PlayStoreLogo className="size-4" />
+                  SipLink UC for Android
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </div>
+            </div>
+
+            <nav
+              aria-label="Footer"
+              className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-7"
+            >
+              {footerNav.map((group) => (
+                <div key={group.heading}>
+                  <h2 className="text-sm font-semibold">{group.heading}</h2>
+                  <ul className="mt-4 space-y-3">
+                    {group.links.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-sm text-ink-foreground/65 transition-colors hover:text-ink-foreground"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </nav>
+          </div>
+
+          <div className="mt-16 flex flex-col gap-6 border-t border-ink-foreground/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs text-ink-foreground/60">
+              Copyright © 2026 {site.legalName}. All Rights Reserved.
+            </p>
+
+            <ul className="flex flex-wrap gap-1">
+              {social.map(({ label, href }) => {
+                const Icon = socialIcons[label];
+                return (
+                  <li key={label}>
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="icon-sm"
+                      className="rounded-full text-ink-foreground/70 hover:bg-ink-foreground/10 hover:text-ink-foreground dark:hover:bg-ink-foreground/10"
+                    >
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        aria-label={`${site.name} on ${label}`}
+                      >
+                        <Icon className="size-4" />
+                      </a>
+                    </Button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </footer>

@@ -17,11 +17,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
     default: `${site.legalName} — ${site.tagline}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
+  openGraph: {
+    type: "website",
+    siteName: site.legalName,
+    locale: "en_IN",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

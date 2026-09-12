@@ -98,7 +98,7 @@ export type SolutionDetail = {
 /* ------------------------------------------------------------------ shared */
 
 /** The migration method from docs/website-contents.md, refined into steps. */
-const migrationProcess: SolutionStep[] = [
+export const migrationProcess: SolutionStep[] = [
   {
     title: "Understand what you run today",
     body: "We map your existing numbers, PRI or PBX configuration, users, extensions, departments and call flows before anything moves.",

@@ -51,7 +51,11 @@ export const site = {
   description:
     "Reliable, scalable and secure cloud communications for growing businesses — hosted PBX, SIP trunking, call centre and unified communications.",
   phone: "082172 02075",
+  /** The same number in international format, for structured data. */
+  phoneInternational: "+91 82172 02075",
   email: "support@siplink.in",
+  /** Canonical origin. Used for metadataBase, the sitemap and JSON-LD. */
+  url: "https://www.siplink.in",
 } as const;
 
 export type Solution = {
@@ -120,16 +124,6 @@ export const trustPoints: Trust[] = [
     icon: Lock,
   },
 ];
-
-/**
- * Only credentials SipLink actually holds. Do not add SOC 2, PCI DSS, GDPR or
- * an uptime SLA here until they are verified — see content.md open questions.
- */
-export const certifications = [
-  "HIPAA COMPLIANT",
-  "DoT CERTIFIED",
-  "D-U-N-S REGISTERED",
-] as const;
 
 export type Segment = {
   title: string;
@@ -973,6 +967,7 @@ export type NavItem = {
 };
 
 export const nav: NavItem[] = [
+  { label: "Home", href: "/" },
   {
     label: "Products",
     href: "/products",
@@ -1891,25 +1886,9 @@ export const footerNav = [
 ] as const;
 
 /* -------------------------------------------------------------------------
- * Homepage content model
- *
- * The homepage argues one thing: enterprise-grade voice, answered by people
- * who pick up. Everything below supports that claim with facts already
- * verified elsewhere in this file — no new proof is invented here.
+ * Homepage copy shared with the rest of the site. The homepage's own
+ * content model lives in lib/home.ts.
  * ---------------------------------------------------------------------- */
-
-/**
- * Hero proof strip. Deliberately only claims we can stand behind:
- * the review count is the real number in `reviews`, the plan price is the
- * published Value tier, and both certifications are in `certifications`.
- * No uptime figure — we do not publish an SLA. See content.md.
- */
-export const heroProof: { value: string; label: string }[] = [
-  { value: "HIPAA", label: "Compliant cloud phone system" },
-  { value: "DoT", label: "Certified carrier network" },
-  { value: "5.0", label: "Average of 13 customer reviews" },
-  { value: "24/7", label: "Support, by people who answer" },
-];
 
 /**
  * "What changes on Monday" — the migration story told as a before/after,
@@ -1939,50 +1918,5 @@ export const switchingStory: {
     before: "A support ticket into the void",
     after: "A named team on WhatsApp, phone and email, around the clock.",
     icon: HeartHandshake,
-  },
-];
-
-/**
- * The four platform pillars, phrased as the job the customer is hiring us
- * for rather than as product names. Hrefs point at the existing solutions.
- */
-export const homePillars: {
-  eyebrow: string;
-  title: string;
-  description: string;
-  href: string;
-  icon: LucideIcon;
-}[] = [
-  {
-    eyebrow: "Replace the hardware",
-    title: "Hosted PBX",
-    description:
-      "Your whole phone system in the cloud — extensions, IVR, voicemail and routing, with no box to maintain.",
-    href: "/products/hosted-pbx",
-    icon: CloudCog,
-  },
-  {
-    eyebrow: "Keep your equipment",
-    title: "SIP Trunking",
-    description:
-      "Already have an IP-PBX? Connect it to our network for immediate savings and guaranteed call quality.",
-    href: "/products/sip-trunking",
-    icon: Router,
-  },
-  {
-    eyebrow: "Handle the volume",
-    title: "Enhanced Call Centre",
-    description:
-      "Queues, routing, recording and live monitoring — configured around how your team actually works.",
-    href: "/products/call-center",
-    icon: Headset,
-  },
-  {
-    eyebrow: "Bring it together",
-    title: "Unified Communications",
-    description:
-      "Voice, video, business SMS and team messaging on one platform, so distributed teams feel co-located.",
-    href: "/solutions/unified-communications",
-    icon: MessagesSquare,
   },
 ];
