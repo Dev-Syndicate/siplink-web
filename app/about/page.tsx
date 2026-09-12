@@ -83,7 +83,7 @@ export default function AboutPage() {
               fills a relative box inside it. */}
           <div className="relative size-full">
             <Image
-              src="/about/images.jpg"
+              src="/about/four_way.jpg"
               alt="An open-plan office with rows of desks and ergonomic chairs under exposed ducts, with yellow accent walls"
               fill
               preload

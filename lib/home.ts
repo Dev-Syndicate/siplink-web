@@ -20,7 +20,7 @@ import { integrations, offices, plans, reviews } from "@/lib/site";
  */
 export const homeImages = {
   office:
-    "/home/modern-executive-office-interior-with-pink-furniture-large-windows-city-view-background-featuring-clean-design-organized-workspace-3d-rendering_670147-119499.avif",
+    "/home/hero_section.png",
   studio: "/home/images.jpg",
   mobile: "/home/person-using-smartphone-touchscreen_9975-135680.avif",
 } as const;
