@@ -47,7 +47,7 @@ function MenuRow({
       <NavigationMenuLink asChild>
         <Link
           href={href}
-          className="group/row flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-muted focus-visible:bg-muted"
+          className="group/row flex items-center gap-2.5 rounded-lg px-2 py-1 transition-colors hover:bg-muted focus-visible:bg-muted"
         >
           {Icon ? (
             <span className="flex size-8 shrink-0 items-center justify-center rounded-[0.6rem] bg-muted text-foreground/70 transition-colors group-hover/row:bg-primary group-hover/row:text-primary-foreground">
@@ -78,7 +78,7 @@ function MenuRow({
  */
 function MenuColumn({ group }: { group: NavGroup }) {
   return (
-    <div className="mb-5 break-inside-avoid last:mb-0">
+    <div className="mb-4 break-inside-avoid last:mb-0">
       <p className="px-2 pb-1 font-mono text-[10px] font-semibold tracking-[0.16em] text-muted-foreground/70 uppercase">
         {group.heading}
       </p>
@@ -185,9 +185,11 @@ export function MegaMenu() {
           }
 
           const groupCount = item.groups.length;
-          // Three columns is the widest that stays readable next to the promo
-          // card, so four- and five-group menus wrap onto a second row.
-          const linkColumns = item.flat ? 1 : Math.min(groupCount, 3);
+          // Columns track the number of groups up to four. Products has five
+          // groups and 24 links: at three columns one column has to carry two
+          // groups and the panel grows tall enough to scroll, so the wider
+          // menus get a fourth column and a wider panel to put it in.
+          const linkColumns = item.flat ? 1 : Math.min(groupCount, 4);
 
           return (
             <NavigationMenuItem key={item.label}>
@@ -215,7 +217,9 @@ export function MegaMenu() {
                       ? "w-[min(calc(100vw-3rem),880px)]"
                       : linkColumns === 2
                         ? "w-[min(calc(100vw-3rem),1040px)]"
-                        : "w-[min(calc(100vw-3rem),1240px)]",
+                        : linkColumns === 3
+                          ? "w-[min(calc(100vw-3rem),1240px)]"
+                          : "w-[min(calc(100vw-3rem),1400px)]",
                   )}
                 >
                   <div className="grid gap-3 p-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,21rem)]">
@@ -233,7 +237,9 @@ export function MegaMenu() {
                             ? "[&_ul]:columns-2 [&_ul]:gap-x-5"
                             : linkColumns === 2
                               ? "columns-2"
-                              : "columns-3",
+                              : linkColumns === 3
+                                ? "columns-3"
+                                : "columns-4",
                         )}
                       >
                         {item.groups.map((group) => (
