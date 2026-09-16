@@ -252,3 +252,118 @@
     }
   }
 }
+
+@layer components {
+  /* A signal travelling an integration wire into the hub.
+     Every wire declares `pathLength="100"`, so one dash definition covers
+     wires of different real lengths and each pulse crosses its wire at the
+     same speed — without that, the short centre wire would fire twice while
+     the long corner ones fired once. */
+  .signal-path {
+    stroke-dasharray: 2 98;
+    /* A soft bloom, so a 3px dash still reads as a signal on the dark ground.
+       The colour is the brand token, not a fixed value, so it follows a theme
+       change with everything else. */
+    filter: drop-shadow(0 0 4px var(--primary));
+    animation: signal-travel 3.2s linear infinite;
+    animation-delay: var(--signal-delay, 0s);
+  }
+
+  @keyframes signal-travel {
+    from {
+      stroke-dashoffset: 100;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .signal-path {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* The caret on the typed review. `steps(1)` rather than a fade, because a
+     text cursor switches — it does not dissolve. The blink stops on its own
+     when the component drops the opacity at the end of the line: a message
+     that has been sent does not sit there with a cursor after it. */
+  @keyframes type-caret {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .type-caret {
+    animation: type-caret 1.06s steps(1, end) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .type-caret {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* One face of a rolling line. Two of these share a grid cell and pivot
+     about opposite edges — the old one falls away about its bottom edge as
+     the new one rises about its top — which reads as a panel turning like a
+     cube face without either needing a known height. A real cube would want
+     `translateZ(half the height)`, and these lines wrap to one line on a
+     desktop and three on a phone.
+
+     The outgoing face fades well before it finishes turning, so the two are
+     never legible at once. The easing is deliberately not front-loaded: at a
+     snappier curve the rotation was over inside the first quarter of the
+     duration and the whole thing read as a cut rather than a turn. */
+  .roll-face {
+    backface-visibility: hidden;
+    transition:
+      transform 620ms cubic-bezier(0.45, 0.05, 0.25, 1),
+      opacity 240ms linear;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .roll-face {
+      transition: none;
+    }
+  }
+}
+
+@layer components {
+  /* A strikethrough that draws across the line rather than appearing whole.
+     `text-decoration` cannot be animated this way, so the rule is a gradient
+     the width of the text. `box-decoration-break: clone` is what makes it
+     work on wrapped text: each line fragment paints its own bar, instead of
+     one bar spanning the whole block at a single height. The element has to
+     stay inline for those fragments to exist. */
+  .strike-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 0.58em;
+    background-size: 0% 2px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    transition: background-size 520ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .strike-draw[data-struck="true"] {
+    background-size: 100% 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .strike-draw {
+      transition: none;
+    }
+  }
+}
