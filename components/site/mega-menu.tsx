@@ -179,10 +179,12 @@ function MenuFeature({ feature }: { feature: NonNullable<NavItem["feature"]> }) 
               sizes="340px"
               className="object-cover transition-transform duration-700 ease-out group-hover/feature:scale-[1.07]"
             />
-            {/* Grounds the caption card against a busy photograph. */}
+            {/* Settles the artwork behind the caption card. Kept light: the
+                nav images are pale pink brand graphics, and the heavier scrim
+                a photograph would need reads as grime over them. */}
             <span
               aria-hidden
-              className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent"
+              className="absolute inset-0 bg-gradient-to-t from-foreground/12 via-transparent to-transparent"
             />
           </>
         ) : (
@@ -221,9 +223,6 @@ function MenuFeature({ feature }: { feature: NonNullable<NavItem["feature"]> }) 
           </Badge>
           <span className="mt-2.5 block text-sm leading-snug font-semibold text-balance text-foreground">
             {feature.title}
-          </span>
-          <span className="mt-1.5 block text-xs leading-relaxed text-pretty text-muted-foreground">
-            {feature.description}
           </span>
         </span>
       </Link>

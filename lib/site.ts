@@ -1110,11 +1110,18 @@ export type NavItem = {
    * `image` is a path under `public/`. Until one is supplied the panel draws
    * a placeholder at the same aspect ratio, so dropping the artwork in later
    * is a one-line change and never shifts the layout.
+   *
+   * Only `eyebrow`, `title`, `image`/`imageAlt` and `href` are rendered. The
+   * caption is badge and title alone so it covers as little of the artwork as
+   * possible; `description` and `cta` are kept because the copy is worth
+   * keeping, not because anything draws them.
    */
   feature?: {
     eyebrow: string;
     title: string;
+    /** Not rendered — see the note above. */
     description: string;
+    /** Not rendered — the whole card is the link. */
     cta: string;
     href: string;
     image?: string;
@@ -1316,6 +1323,9 @@ export const nav: NavItem[] = [
         "Voice, messaging and APIs on a single network — with the reliability and support your business runs on.",
       cta: "Explore the platform",
       href: "/products",
+      image: "/nav_images/product.jpeg",
+      imageAlt:
+        "SipLink dashboard on a laptop beside a phone on an active call, with voice, messaging, API and integration callouts around a globe",
     },
   },
   {
@@ -1437,6 +1447,9 @@ export const nav: NavItem[] = [
         "Scalable communication solutions designed for businesses of all sizes and use cases.",
       cta: "Find Your Solution",
       href: "/solutions",
+      image: "/nav_images/solutions.png",
+      imageAlt:
+        "SipLink solution areas — phone numbers, contact centre, enterprise communication, industries, AI, migration, APIs and internet — arranged around a globe",
     },
   },
   {
@@ -1578,6 +1591,9 @@ export const nav: NavItem[] = [
         "Licensed by the DoT, with carrier-neutral POPs in Bangalore and Chennai and a Global NOC watching every circuit.",
       cta: "Explore connectivity",
       href: "/internet",
+      image: "/nav_images/internet.png",
+      imageAlt:
+        "Illustrated business district and data centre linked to a SipLink router, with broadband, dedicated internet, leased line and SD-WAN callouts",
     },
   },
   {
@@ -1610,6 +1626,9 @@ export const nav: NavItem[] = [
         "Deployments tuned to the compliance, volume and workflow demands of your sector.",
       cta: "See all industries",
       href: "/industries",
+      image: "/nav_images/industries.png",
+      imageAlt:
+        "Industry tiles for healthcare, banking, retail, education, hospitality, logistics, manufacturing, government, IT and call centres around a globe",
     },
   },
   {
@@ -1711,6 +1730,9 @@ export const nav: NavItem[] = [
         "Well-documented APIs, real sample code and a sandbox — so you can integrate voice in days, not quarters.",
       cta: "Read the docs",
       href: "/developers",
+      image: "/nav_images/developers.png",
+      imageAlt:
+        "Developer at a desk writing a SipLink API call, with voice, SMS, WhatsApp, WebRTC and SIP API callouts",
     },
   },
   {
@@ -1739,6 +1761,9 @@ export const nav: NavItem[] = [
         "Pay for what you use, scale when you need to, and talk to a human before you commit.",
       cta: "Compare all plans",
       href: "/pricing",
+      image: "/nav_images/pricing.png",
+      imageAlt:
+        "SipLink plan comparison cards, with voice, messaging, internet and API callouts above them",
     },
   },
   {
@@ -1865,6 +1890,9 @@ export const nav: NavItem[] = [
         "Guides, customer results and network transparency — all in one place.",
       cta: "Browse resources",
       href: "/resources",
+      image: "/nav_images/resources.png",
+      imageAlt:
+        "Laptop showing the SipLink resource hub, with documentation, guides, blog, webinar and case study callouts",
     },
   },
   {
@@ -1893,6 +1921,9 @@ export const nav: NavItem[] = [
         "D-U-N-S registered, globally connected, and backed by a support team that answers.",
       cta: "About SipLink",
       href: "/about",
+      image: "/nav_images/company.png",
+      imageAlt:
+        "SipLink office building with mission, vision, people and innovation callouts",
     },
   },
   { label: "Contact", href: "/contact" },
