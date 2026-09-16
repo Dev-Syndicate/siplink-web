@@ -39,9 +39,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col">
         <SiteHeader />
-        {/* Offset matches the fixed header: h-10 announcement bar + h-20
-            nav row. The bar is hidden below `sm`, so the offset drops with
-            it — keep these in sync with SiteHeader. */}
+        {/* Offset matches the fixed header: the h-16 nav pill plus its pt-3
+            gap, and above `sm` the h-10 announcement bar as well. The bar is
+            hidden below `sm`, so the offset drops with it — keep these in
+            sync with SiteHeader.
+
+            The nav pill floats, so every page's first section cancels this
+            offset with `-mt-20 pt-20 sm:-mt-30 sm:pt-30` and gives the space
+            straight back as padding. Content lands in exactly the same place;
+            the section's background simply runs up behind the pill instead of
+            leaving a bare strip above it. Change the values here and those
+            ten sections have to move with them. */}
         <main className="flex-1 pt-20 sm:pt-30">{children}</main>
         <SiteFooter />
       </body>

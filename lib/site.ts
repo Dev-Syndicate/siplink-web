@@ -1,50 +1,100 @@
 import {
-  AudioLines,
   Activity,
+  ArrowLeftRight,
+  AudioLines,
+  BadgeCheck,
   Banknote,
+  Book,
+  BookOpen,
+  Bot,
   Boxes,
+  Braces,
   Briefcase,
   Building,
-  HeartHandshake,
-  Laptop,
-  Rocket,
-  Waves,
   Building2,
+  Cable,
+  ChartColumn,
+  CirclePlus,
+  CircleQuestionMark,
+  ClipboardList,
   Clock,
   Cloud,
   CloudCog,
+  Code,
   Code2,
   Cpu,
+  Download,
+  EthernetPort,
+  Factory,
+  FileCode,
   FileSpreadsheet,
+  FileText,
+  FlaskConical,
+  Gauge,
   GitBranch,
+  Globe,
   GraduationCap,
   Headphones,
   Headset,
+  HeartHandshake,
   HeartPulse,
+  Hotel,
   // Aliased: bare `Infinity` would shadow the JS global.
   Infinity as InfinityIcon,
   Landmark,
+  Laptop,
   LayoutGrid,
   LifeBuoy,
+  ListChecks,
+  ListOrdered,
   Lock,
+  Mail,
+  Map,
+  MapPin,
   Megaphone,
   MessageCircle,
+  MessageSquare,
   MessagesSquare,
+  Mic,
   Network,
+  Newspaper,
   PhoneCall,
+  PhoneIncoming,
+  PhoneOutgoing,
   PiggyBank,
+  Puzzle,
+  Quote,
+  RadioTower,
   Receipt,
+  Replace,
+  Rocket,
   Router,
+  Scale,
   ScrollText,
+  Send,
   ServerCog,
+  Share2,
   ShieldCheck,
+  ShoppingCart,
+  Smartphone,
+  Sparkles,
   Star,
   Stethoscope,
   Store,
+  Target,
   Ticket,
+  TrendingUp,
+  Trophy,
+  Truck,
+  Unplug,
   Users,
   UsersRound,
   Video,
+  Waves,
+  Waypoints,
+  Webhook,
+  Wifi,
+  Workflow,
   type LucideIcon,
 } from "lucide-react";
 
@@ -1028,11 +1078,22 @@ export const integrations = [
 export type NavLeaf = {
   label: string;
   href: string;
+  /**
+   * Per-item icon for the mega-menu tile. Falls back to the group icon when
+   * absent, so a group reads as a set until its items earn distinct marks.
+   */
+  icon?: LucideIcon;
+  /**
+   * No longer rendered — the mega menu shows navigation only, with no
+   * explanatory copy under each link. Kept because the strings are useful
+   * for section indexes and metadata elsewhere.
+   */
   description?: string;
 };
 
 export type NavGroup = {
   heading: string;
+  /** Not rendered in the mega menu; see the note on `NavLeaf.description`. */
   description?: string;
   icon?: LucideIcon;
   links: NavLeaf[];
@@ -1043,13 +1104,28 @@ export type NavItem = {
   href: string;
   /** Present on mega-menu entries; plain links omit it. */
   groups?: NavGroup[];
-  /** Promo panel rendered alongside the groups. */
+  /**
+   * Promo panel rendered beside the links — the image card in the menu.
+   *
+   * `image` is a path under `public/`. Until one is supplied the panel draws
+   * a placeholder at the same aspect ratio, so dropping the artwork in later
+   * is a one-line change and never shifts the layout.
+   *
+   * Only `eyebrow`, `title`, `image`/`imageAlt` and `href` are rendered. The
+   * caption is badge and title alone so it covers as little of the artwork as
+   * possible; `description` and `cta` are kept because the copy is worth
+   * keeping, not because anything draws them.
+   */
   feature?: {
     eyebrow: string;
     title: string;
+    /** Not rendered — see the note above. */
     description: string;
+    /** Not rendered — the whole card is the link. */
     cta: string;
     href: string;
+    image?: string;
+    imageAlt?: string;
   };
   /** Renders groups as one flat column instead of grouped columns. */
   flat?: boolean;
@@ -1067,21 +1143,25 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "SIP Trunking",
+            icon: Cable,
             href: "/products/sip-trunking",
             description: "Connect your PBX to our IP network",
           },
           {
             label: "Cloud PBX",
+            icon: Cloud,
             href: "/products/cloud-pbx",
             description: "A full phone system in the cloud",
           },
           {
             label: "Hosted PBX",
+            icon: ServerCog,
             href: "/products/hosted-pbx",
             description: "We host and manage it end to end",
           },
           {
             label: "IP PBX",
+            icon: Network,
             href: "/products/ip-pbx",
             description: "On-premise PBX, SIP enabled",
           },
@@ -1094,21 +1174,25 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "DID Numbers",
+            icon: PhoneIncoming,
             href: "/products/did-numbers",
             description: "Direct inward dialling worldwide",
           },
           {
             label: "Toll-Free Numbers",
+            icon: PhoneCall,
             href: "/products/toll-free-numbers",
             description: "Free for your customers to call",
           },
           {
             label: "Virtual Phone Numbers",
+            icon: Smartphone,
             href: "/products/virtual-numbers",
             description: "Any city, no local office",
           },
           {
             label: "Number Porting",
+            icon: ArrowLeftRight,
             href: "/products/number-porting",
             description: "Keep the numbers you already have",
           },
@@ -1121,31 +1205,37 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Call Center Solution",
+            icon: Headset,
             href: "/products/call-center",
             description: "Inbound and outbound at scale",
           },
           {
             label: "Predictive Dialer",
+            icon: Target,
             href: "/products/predictive-dialer",
             description: "Maximise agent talk time",
           },
           {
             label: "Auto Dialer",
+            icon: PhoneOutgoing,
             href: "/products/auto-dialer",
             description: "Automate outbound campaigns",
           },
           {
             label: "IVR System",
+            icon: Workflow,
             href: "/products/ivr",
             description: "Route callers to the right place",
           },
           {
             label: "Call Recording",
+            icon: Mic,
             href: "/products/call-recording",
             description: "Capture and store every call",
           },
           {
             label: "Call Analytics",
+            icon: ChartColumn,
             href: "/products/call-analytics",
             description: "Live dashboards and reporting",
           },
@@ -1158,26 +1248,31 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Voice API",
+            icon: AudioLines,
             href: "/products/voice-api",
             description: "Place and receive calls in code",
           },
           {
             label: "SMS API",
+            icon: MessageSquare,
             href: "/products/sms-api",
             description: "Programmable messaging",
           },
           {
             label: "WhatsApp Business API",
+            icon: MessageCircle,
             href: "/products/whatsapp-api",
             description: "Reach customers where they are",
           },
           {
             label: "WebRTC SDK",
+            icon: Video,
             href: "/products/webrtc-sdk",
             description: "Calling in the browser",
           },
           {
             label: "SIP API",
+            icon: Code,
             href: "/products/sip-api",
             description: "Provision trunks programmatically",
           },
@@ -1190,26 +1285,31 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Microsoft Teams Calling",
+            icon: Users,
             href: "/products/teams-calling",
             description: "Direct Routing for Teams",
           },
           {
             label: "Session Border Controller",
+            icon: ShieldCheck,
             href: "/products/sbc",
             description: "Secure the network edge",
           },
           {
             label: "Call Queue",
+            icon: ListOrdered,
             href: "/products/call-queue",
             description: "Never drop a waiting caller",
           },
           {
             label: "CRM Integration",
+            icon: Puzzle,
             href: "/products/crm-integration",
             description: "Salesforce, Zoho, Dynamics",
           },
           {
             label: "AI Voice Assistant",
+            icon: Bot,
             href: "/products/ai-voice-assistant",
             description: "Automate routine conversations",
           },
@@ -1223,6 +1323,9 @@ export const nav: NavItem[] = [
         "Voice, messaging and APIs on a single network — with the reliability and support your business runs on.",
       cta: "Explore the platform",
       href: "/products",
+      image: "/nav_images/product.jpeg",
+      imageAlt:
+        "SipLink dashboard on a laptop beside a phone on an active call, with voice, messaging, API and integration callouts around a globe",
     },
   },
   {
@@ -1236,22 +1339,26 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Startups",
+            icon: Rocket,
             href: "/solutions/startups",
             description:
               "Flexible and affordable communication for fast-moving teams",
           },
           {
             label: "Small Business",
+            icon: Store,
             href: "/solutions/small-business",
             description: "Easy-to-use solutions to stay connected and grow",
           },
           {
             label: "Mid-Market",
+            icon: Building,
             href: "/solutions/mid-market",
             description: "Advanced features for growing organizations",
           },
           {
             label: "Enterprise",
+            icon: Building2,
             href: "/solutions/enterprise",
             description:
               "Ultra-reliable, secure, and scalable for global businesses",
@@ -1265,31 +1372,37 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Remote Workforce",
+            icon: Laptop,
             href: "/solutions/remote-workforce",
             description: "Keep your distributed teams connected",
           },
           {
             label: "Customer Support",
+            icon: LifeBuoy,
             href: "/solutions/customer-support",
             description: "Deliver exceptional customer experiences",
           },
           {
             label: "Sales Teams",
+            icon: TrendingUp,
             href: "/solutions/sales-teams",
             description: "Empower your sales with smarter communication tools",
           },
           {
             label: "Unified Communications",
+            icon: MessagesSquare,
             href: "/solutions/unified-communications",
             description: "Bring voice, messaging, and collaboration together",
           },
           {
             label: "Global Offices",
+            icon: Globe,
             href: "/solutions/global-offices",
             description: "Stay connected across countries and time zones",
           },
           {
             label: "Multi-Branch Businesses",
+            icon: GitBranch,
             href: "/solutions/multi-branch",
             description: "Seamless communication for all your locations",
           },
@@ -1302,21 +1415,25 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Move from PRI",
+            icon: Unplug,
             href: "/solutions/pri-migration",
             description: "Upgrade from legacy PRI to cloud",
           },
           {
             label: "PBX Migration",
+            icon: Replace,
             href: "/solutions/pbx-migration",
             description: "Migrate your existing PBX to SipLink",
           },
           {
             label: "Cloud Migration",
+            icon: CloudCog,
             href: "/solutions/cloud-migration",
             description: "Move to a scalable cloud communication platform",
           },
           {
             label: "Number Porting",
+            icon: ArrowLeftRight,
             href: "/solutions/number-porting",
             description: "Keep your existing numbers, hassle-free",
           },
@@ -1330,6 +1447,153 @@ export const nav: NavItem[] = [
         "Scalable communication solutions designed for businesses of all sizes and use cases.",
       cta: "Find Your Solution",
       href: "/solutions",
+      image: "/nav_images/solutions.png",
+      imageAlt:
+        "SipLink solution areas — phone numbers, contact centre, enterprise communication, industries, AI, migration, APIs and internet — arranged around a globe",
+    },
+  },
+  {
+    // The connectivity line, alongside voice. Links are in-page anchors: the
+    // four pillars live on one /internet page rather than four thin routes,
+    // which is how internet.md describes them.
+    label: "Internet",
+    href: "/internet",
+    groups: [
+      {
+        heading: "Business Broadband",
+        icon: Wifi,
+        description: "Shared-port connectivity for the office.",
+        links: [
+          {
+            label: "Plans",
+            icon: LayoutGrid,
+            href: "/internet#broadband-plans",
+            description: "Committed rate with burst, sized per site",
+          },
+          {
+            label: "Features",
+            icon: ListChecks,
+            href: "/internet#broadband-features",
+            description: "Static IP, managed router, 24/7 monitoring",
+          },
+          {
+            label: "Business Benefits",
+            icon: TrendingUp,
+            href: "/internet#broadband-business-benefits",
+            description: "Voice and internet from one provider",
+          },
+        ],
+      },
+      {
+        heading: "Dedicated Internet",
+        icon: Gauge,
+        description: "Uncontended leased lines on fibre.",
+        links: [
+          {
+            label: "Dedicated Bandwidth",
+            icon: Gauge,
+            href: "/internet#dedicated-dedicated-bandwidth",
+            description: "50 Mbps to 100 Gbps, shared with nobody",
+          },
+          {
+            label: "Symmetrical Speeds",
+            icon: ArrowLeftRight,
+            href: "/internet#dedicated-symmetrical-speeds",
+            description: "Equal upstream for cloud, voice and video",
+          },
+          {
+            label: "SLA",
+            icon: ScrollText,
+            href: "/internet#dedicated-sla",
+            description: "Availability and throughput, set out in writing",
+          },
+          {
+            label: "Enterprise Connectivity",
+            icon: Building2,
+            href: "/internet#dedicated-enterprise-connectivity",
+            description: "Point-to-point, Tier-1 peering, data centres",
+          },
+        ],
+      },
+      {
+        heading: "Static IP",
+        icon: MapPin,
+        description: "A fixed public address that stays yours.",
+        links: [
+          {
+            label: "What is Static IP?",
+            icon: MapPin,
+            href: "/internet#static-ip-what-is-static-ip",
+            description: "Permanent addressing, single or routed block",
+          },
+          {
+            label: "Business Uses",
+            icon: Briefcase,
+            href: "/internet#static-ip-business-uses",
+            description: "VPN endpoints, SIP trunks, allow-listing",
+          },
+          {
+            label: "Add Static IP",
+            icon: CirclePlus,
+            href: "/internet#static-ip-add-static-ip",
+            description: "With a new order or on a live circuit",
+          },
+        ],
+      },
+      {
+        heading: "Network Solutions",
+        icon: Network,
+        description: "Everything past the router, managed.",
+        links: [
+          {
+            label: "Managed Router & Firewall",
+            icon: Router,
+            href: "/internet#network-managed-router-firewall",
+            description: "Edge equipment configured and monitored",
+          },
+          {
+            label: "Business Wi-Fi",
+            icon: Wifi,
+            href: "/internet#network-business-wi-fi",
+            description: "Coverage designed around the floor plan",
+          },
+          {
+            label: "LAN & Switching",
+            icon: EthernetPort,
+            href: "/internet#network-lan-switching",
+            description: "Cabling, VLANs and QoS for voice",
+          },
+          {
+            label: "VPN",
+            icon: Lock,
+            href: "/internet#network-vpn",
+            description: "Encrypted tunnels across fixed sites",
+          },
+          {
+            label: "SD-WAN",
+            icon: Waypoints,
+            href: "/internet#network-sd-wan",
+            description: "Application-aware routing across links",
+          },
+          {
+            label: "Multi-Location Networking",
+            icon: Share2,
+            href: "/internet#network-multi-location-networking",
+            description: "One network across every office",
+          },
+        ],
+      },
+    ],
+    feature: {
+      eyebrow: "SIPLINK INTERNET",
+      title: "A Class A ISP, not a reseller",
+      description:
+        "Licensed by the DoT, with carrier-neutral POPs in Bangalore and Chennai and a Global NOC watching every circuit.",
+      cta: "Explore connectivity",
+      href: "/internet",
+      image: "/nav_images/internet.png",
+      imageAlt:
+        "Illustrated business district and data centre linked to a SipLink router, with broadband, dedicated internet, leased line and SD-WAN callouts",
     },
   },
   {
@@ -1341,17 +1605,17 @@ export const nav: NavItem[] = [
         heading: "Industries we serve",
         icon: Building2,
         links: [
-          { label: "Call Centers", href: "/industries/call-centers" },
-          { label: "Healthcare", href: "/industries/healthcare" },
-          { label: "Banking & Finance", href: "/industries/banking-finance" },
-          { label: "Education", href: "/industries/education" },
-          { label: "Retail", href: "/industries/retail" },
-          { label: "Hospitality", href: "/industries/hospitality" },
-          { label: "Logistics", href: "/industries/logistics" },
-          { label: "IT & SaaS", href: "/industries/it-saas" },
-          { label: "Government", href: "/industries/government" },
-          { label: "Manufacturing", href: "/industries/manufacturing" },
-          { label: "Telecom Operators", href: "/industries/telecom-operators" },
+          { label: "Call Centers", href: "/industries/call-centers", icon: Headset },
+          { label: "Healthcare", href: "/industries/healthcare", icon: HeartPulse },
+          { label: "Banking & Finance", href: "/industries/banking-finance", icon: Landmark },
+          { label: "Education", href: "/industries/education", icon: GraduationCap },
+          { label: "Retail", href: "/industries/retail", icon: ShoppingCart },
+          { label: "Hospitality", href: "/industries/hospitality", icon: Hotel },
+          { label: "Logistics", href: "/industries/logistics", icon: Truck },
+          { label: "IT & SaaS", href: "/industries/it-saas", icon: Cloud },
+          { label: "Government", href: "/industries/government", icon: Scale },
+          { label: "Manufacturing", href: "/industries/manufacturing", icon: Factory },
+          { label: "Telecom Operators", href: "/industries/telecom-operators", icon: RadioTower },
         ],
       },
     ],
@@ -1362,6 +1626,9 @@ export const nav: NavItem[] = [
         "Deployments tuned to the compliance, volume and workflow demands of your sector.",
       cta: "See all industries",
       href: "/industries",
+      image: "/nav_images/industries.png",
+      imageAlt:
+        "Industry tiles for healthcare, banking, retail, education, hospitality, logistics, manufacturing, government, IT and call centres around a globe",
     },
   },
   {
@@ -1375,21 +1642,25 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "API Documentation",
+            icon: BookOpen,
             href: "/developers/api-docs",
             description: "REST endpoints and payloads",
           },
           {
             label: "SIP Documentation",
+            icon: FileCode,
             href: "/developers/sip-docs",
             description: "Trunk setup and SIP signalling",
           },
           {
             label: "SDK Downloads",
+            icon: Download,
             href: "/developers/sdks",
             description: "Client libraries for your stack",
           },
           {
             label: "Webhooks",
+            icon: Webhook,
             href: "/developers/webhooks",
             description: "Subscribe to real-time events",
           },
@@ -1402,21 +1673,25 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "API Reference",
+            icon: Braces,
             href: "/developers/api-reference",
             description: "Every method, parameter and error",
           },
           {
             label: "Sample Code",
+            icon: Code,
             href: "/developers/sample-code",
             description: "Copy-paste starting points",
           },
           {
             label: "Postman Collection",
+            icon: Send,
             href: "/developers/postman",
             description: "Try the API without writing code",
           },
           {
             label: "GitHub Examples",
+            icon: GitBranch,
             href: "/developers/github-examples",
             description: "Full working demo apps",
           },
@@ -1429,16 +1704,19 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Sandbox",
+            icon: FlaskConical,
             href: "/developers/sandbox",
             description: "Test safely before you go live",
           },
           {
             label: "API Status",
+            icon: Activity,
             href: "/developers/status",
             description: "Live platform availability",
           },
           {
             label: "Rate Limits",
+            icon: Gauge,
             href: "/developers/rate-limits",
             description: "Quotas and throttling rules",
           },
@@ -1452,6 +1730,9 @@ export const nav: NavItem[] = [
         "Well-documented APIs, real sample code and a sandbox — so you can integrate voice in days, not quarters.",
       cta: "Read the docs",
       href: "/developers",
+      image: "/nav_images/developers.png",
+      imageAlt:
+        "Developer at a desk writing a SipLink API call, with voice, SMS, WhatsApp, WebRTC and SIP API callouts",
     },
   },
   {
@@ -1463,13 +1744,13 @@ export const nav: NavItem[] = [
         heading: "Plans & pricing",
         icon: Receipt,
         links: [
-          { label: "SIP Trunk Pricing", href: "/pricing/sip-trunk" },
-          { label: "Cloud PBX Plans", href: "/pricing/cloud-pbx" },
-          { label: "DID Pricing", href: "/pricing/did" },
-          { label: "Toll-Free Pricing", href: "/pricing/toll-free" },
-          { label: "Contact Center Pricing", href: "/pricing/contact-center" },
-          { label: "Voice API Pricing", href: "/pricing/voice-api" },
-          { label: "Enterprise Quote", href: "/pricing/enterprise-quote" },
+          { label: "SIP Trunk Pricing", href: "/pricing/sip-trunk", icon: Cable },
+          { label: "Cloud PBX Plans", href: "/pricing/cloud-pbx", icon: Cloud },
+          { label: "DID Pricing", href: "/pricing/did", icon: PhoneIncoming },
+          { label: "Toll-Free Pricing", href: "/pricing/toll-free", icon: PhoneCall },
+          { label: "Contact Center Pricing", href: "/pricing/contact-center", icon: Headset },
+          { label: "Voice API Pricing", href: "/pricing/voice-api", icon: AudioLines },
+          { label: "Enterprise Quote", href: "/pricing/enterprise-quote", icon: FileSpreadsheet },
         ],
       },
     ],
@@ -1480,6 +1761,9 @@ export const nav: NavItem[] = [
         "Pay for what you use, scale when you need to, and talk to a human before you commit.",
       cta: "Compare all plans",
       href: "/pricing",
+      image: "/nav_images/pricing.png",
+      imageAlt:
+        "SipLink plan comparison cards, with voice, messaging, internet and API callouts above them",
     },
   },
   {
@@ -1493,21 +1777,25 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Blog",
+            icon: Newspaper,
             href: "/resources/blog",
             description: "Industry news and product updates",
           },
           {
             label: "Knowledge Base",
+            icon: BookOpen,
             href: "/resources/knowledge-base",
             description: "How-to guides and troubleshooting",
           },
           {
             label: "Documentation",
+            icon: FileText,
             href: "/developers/api-docs",
             description: "Technical product documentation",
           },
           {
             label: "FAQs",
+            icon: CircleQuestionMark,
             href: "/resources/faqs",
             description: "Quick answers to common questions",
           },
@@ -1520,16 +1808,19 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Case Studies",
+            icon: ClipboardList,
             href: "/resources/case-studies",
             description: "In-depth customer deployments",
           },
           {
             label: "Testimonials",
+            icon: Quote,
             href: "/resources/testimonials",
             description: "What our customers say",
           },
           {
             label: "Success Stories",
+            icon: Trophy,
             href: "/resources/success-stories",
             description: "Measurable outcomes and ROI",
           },
@@ -1542,21 +1833,25 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Whitepapers",
+            icon: ScrollText,
             href: "/resources/whitepapers",
             description: "Deep dives on cloud telephony",
           },
           {
             label: "Brochures",
+            icon: Book,
             href: "/resources/brochures",
             description: "Overviews to share internally",
           },
           {
             label: "Datasheets",
+            icon: FileSpreadsheet,
             href: "/resources/datasheets",
             description: "Specs, limits and features",
           },
           {
             label: "Product Catalog",
+            icon: LayoutGrid,
             href: "/resources/product-catalog",
             description: "The full SipLink range",
           },
@@ -1569,16 +1864,19 @@ export const nav: NavItem[] = [
         links: [
           {
             label: "Coverage Map",
+            icon: Map,
             href: "/resources/coverage-map",
             description: "Where we deliver numbers and voice",
           },
           {
             label: "Network Status",
+            icon: Activity,
             href: "/resources/network-status",
             description: "Real-time service health",
           },
           {
             label: "SLA",
+            icon: ShieldCheck,
             href: "/resources/sla",
             description: "Our uptime and support commitments",
           },
@@ -1592,6 +1890,9 @@ export const nav: NavItem[] = [
         "Guides, customer results and network transparency — all in one place.",
       cta: "Browse resources",
       href: "/resources",
+      image: "/nav_images/resources.png",
+      imageAlt:
+        "Laptop showing the SipLink resource hub, with documentation, guides, blog, webinar and case study callouts",
     },
   },
   {
@@ -1603,13 +1904,13 @@ export const nav: NavItem[] = [
         heading: "Company",
         icon: Building,
         links: [
-          { label: "About SipLink", href: "/about" },
-          { label: "Why SipLink", href: "/why-siplink" },
-          { label: "Partners", href: "/company/partners" },
-          { label: "Certifications", href: "/company/certifications" },
-          { label: "Careers", href: "/company/careers" },
-          { label: "News", href: "/company/news" },
-          { label: "Contact Us", href: "/contact" },
+          { label: "About SipLink", href: "/about", icon: Building2 },
+          { label: "Why SipLink", href: "/why-siplink", icon: Sparkles },
+          { label: "Partners", href: "/company/partners", icon: HeartHandshake },
+          { label: "Certifications", href: "/company/certifications", icon: BadgeCheck },
+          { label: "Careers", href: "/company/careers", icon: Briefcase },
+          { label: "News", href: "/company/news", icon: Newspaper },
+          { label: "Contact Us", href: "/contact", icon: Mail },
         ],
       },
     ],
@@ -1620,6 +1921,9 @@ export const nav: NavItem[] = [
         "D-U-N-S registered, globally connected, and backed by a support team that answers.",
       cta: "About SipLink",
       href: "/about",
+      image: "/nav_images/company.png",
+      imageAlt:
+        "SipLink office building with mission, vision, people and innovation callouts",
     },
   },
   { label: "Contact", href: "/contact" },
@@ -1947,7 +2251,7 @@ export const footerNav = [
       { label: "Call Centre Solutions", href: "/solutions/call-centre" },
       { label: "Small & Medium Business", href: "/solutions/smb" },
       { label: "Enterprise Business", href: "/solutions/enterprise" },
-      { label: "Internet Services", href: "/solutions/internet" },
+      { label: "Internet Services", href: "/internet" },
     ],
   },
   {
