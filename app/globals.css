@@ -133,6 +133,22 @@
   }
   html {
     @apply font-sans;
+    /* In-page anchors (the mega menu links into /internet, and every page has
+       a section index) glide rather than jump. `scroll-mt-*` on the targets
+       keeps them clear of the fixed header. */
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Belt and braces against a stray wide child on small screens: the page may
+     scroll down, never sideways. */
+  body {
+    overflow-x: clip;
   }
 }
 
@@ -190,6 +206,34 @@
       animation: none;
       stroke-dasharray: none;
       opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* Mega-menu rows deal themselves in when a panel opens, rather than the
+     whole block appearing at once. The stagger is capped so a 24-link panel
+     finishes about as fast as a 7-link one — past ~14 rows the eye reads it
+     as one motion anyway, and a longer cascade just feels slow. */
+  @keyframes menu-row-in {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .menu-row-in {
+    animation: menu-row-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(min(var(--row-index, 0), 14) * 20ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-row-in {
+      animation: none;
     }
   }
 }

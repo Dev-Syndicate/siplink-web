@@ -936,7 +936,7 @@ export const solutionRedirects: Record<string, string> = {
   "sip-trunking": "/products/sip-trunking",
   "call-centre": "/products/call-center",
   smb: "/solutions/small-business",
-  internet: "/products",
+  internet: "/internet",
 };
 
 export function getSolutionDetail(slug: string): SolutionDetail | undefined {
