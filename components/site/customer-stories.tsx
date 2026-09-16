@@ -6,6 +6,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { reviewStats, reviews, type Review } from "@/lib/site";
 
+/**
+ * How many reviews the row carries.
+ *
+ * The list in lib/site.ts runs longest and most specific first, and tails off
+ * into short ratings — "Giving best VOIP services with best price." At this
+ * card size those read as padding rather than proof: a card most of a screen
+ * wide holding one line of text argues against itself. Five is where the
+ * substance stops.
+ *
+ * It is also comfortably enough for the loop. The track only has to be wider
+ * than the viewport for the seam to stay off screen, and five cards at this
+ * width clears 3,900px — past a 4K display.
+ */
+const SHOWN = 5;
+
 /** Initials stand in for a photo — we have no reviewer images. */
 function initials(name: string) {
   return name
@@ -17,158 +32,155 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-function Stars({ rating, className }: { rating: number; className?: string }) {
+function Stars({ rating }: { rating: number }) {
   return (
-    <span
-      className={cn("flex items-center gap-0.5 text-primary", className)}
-      aria-hidden
-    >
+    <span className="flex items-center gap-0.5 text-primary" aria-hidden>
       {Array.from({ length: rating }).map((_, index) => (
-        <Star key={index} className="size-3.5 fill-current" />
+        <Star key={index} className="size-4 fill-current" />
       ))}
     </span>
   );
 }
 
-/** Avatar + name, shared by the featured quote and the grid cards. */
-function Author({ review, large }: { review: Review; large?: boolean }) {
+function Author({ review }: { review: Review }) {
   return (
-    <footer className="flex items-center gap-3">
+    <footer className="flex items-center gap-4">
       <span
-        className={cn(
-          "flex shrink-0 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary",
-          large ? "size-12 text-sm" : "size-9 text-xs",
-        )}
+        className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary"
         aria-hidden
       >
         {initials(review.name)}
       </span>
       <span className="min-w-0">
-        <span
-          className={cn(
-            "block truncate font-medium",
-            large ? "text-base" : "text-sm",
-          )}
-        >
-          {review.name}
+        <span className="block truncate font-medium">{review.name}</span>
+        <span className="block truncate text-sm text-muted-foreground">
+          {review.role ?? "Verified Google review"}
         </span>
-        {review.role ? (
-          <span className="block truncate text-xs text-muted-foreground">
-            {review.role}
-          </span>
-        ) : (
-          <span className="block truncate text-xs text-muted-foreground">
-            Verified Google review
-          </span>
-        )}
       </span>
     </footer>
+  );
+}
+
+function ReviewCard({ review }: { review: Review }) {
+  return (
+    <Card className="h-full bg-card">
+      {/* Padding climbs with the card so the quote keeps a readable measure at
+          every width instead of the card simply getting emptier. */}
+      <CardContent className="flex h-full flex-col gap-6 p-6 sm:p-8 lg:gap-8 lg:p-10">
+        <div className="flex items-start justify-between gap-4">
+          <Quote
+            className="size-8 rotate-180 fill-primary/20 text-primary/20"
+            aria-hidden
+          />
+          <Stars rating={review.rating} />
+        </div>
+
+        <blockquote className="flex-1 text-base leading-relaxed text-pretty sm:text-lg lg:text-xl">
+          {review.quote}
+        </blockquote>
+
+        <Author review={review} />
+      </CardContent>
+    </Card>
   );
 }
 
 /**
  * Customer stories.
  *
- * One review carries the section as a tall featured quote; four more sit in a
- * grid beside it, with the standing proof points on a bar underneath. Static
- * rather than a marquee — these are meant to be read, not watched.
+ * One row of large reviews drifting across the full width of the page. At
+ * roughly two cards a screen a review is read rather than scanned, which is
+ * the whole point of quoting people at length — so the scale of a single card
+ * is the only loud thing here, and everything around it stays quiet.
+ *
+ * The cards are rendered twice. The second set is what makes the loop
+ * seamless, and it is hidden from assistive tech: a screen reader that read
+ * the same five reviews through twice would be narrating a rendering trick.
  */
 export function CustomerStories() {
   // Renders nothing until real reviews exist. See lib/site.ts.
   if (reviews.length === 0) return null;
 
   // `reviews[0]` already carries the "why customers stay" section further up
-  // the page, so start here at the next one rather than quoting it twice.
-  const pool = reviews.length > 5 ? reviews.slice(1) : reviews;
-  const [featured, ...rest] = pool;
-  const grid = rest.slice(0, 4);
+  // the page, so start at the next one rather than quoting it twice.
+  const pool = reviews.length > SHOWN ? reviews.slice(1) : reviews;
+  const row = pool.slice(0, SHOWN);
+
+  const rating = reviewStats[0];
+
+  // Width and font both climb, so the quote holds a sane line length rather
+  // than stretching to 90 characters on a wide monitor. The 50rem cap is what
+  // stops that happening past about 1700px.
+  const cardWidth = "w-[88vw] shrink-0 sm:w-[clamp(24rem,52vw,50rem)]";
 
   return (
     <section className="border-t border-border bg-muted/30">
-      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="font-mono text-xs tracking-widest text-primary uppercase">
-            Customer stories
-          </span>
-          <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Trusted by businesses that keep{" "}
-            <span className="text-primary">conversations moving.</span>
-          </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            Real experiences from teams using SipLink every day.
-          </p>
-        </div>
+      <div className="py-20 lg:py-28">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-8 px-6 lg:px-10">
+          <div className="max-w-xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Customer stories
+            </span>
+            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Trusted by businesses that keep conversations moving
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Each of these is published on our Google Business Profile, with
+              the wording unchanged.
+            </p>
+          </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] lg:items-stretch">
-          {/* Featured — the longest, most specific review gets the space. */}
-          <Card className="bg-background">
-            <CardContent className="flex h-full flex-col gap-6 p-8">
-              <div className="flex items-start justify-between gap-4">
-                <Quote
-                  className="size-9 rotate-180 fill-primary/20 text-primary/20"
-                  aria-hidden
-                />
-                <div className="text-right">
-                  <Stars rating={featured.rating} className="justify-end" />
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {featured.rating.toFixed(1)} out of 5
-                  </p>
-                </div>
+          <div className="flex items-center gap-6">
+            {/* One star, not five: the average is 4.5, and a row of five full
+                stars beside that number would be claiming half a point we do
+                not have. The cards carry their own real ratings. */}
+            <div className="flex items-center gap-3">
+              <Star
+                className="size-6 shrink-0 fill-current text-primary"
+                aria-hidden
+              />
+              <div>
+                <p className="font-heading text-2xl font-semibold tracking-tight">
+                  {rating.value}
+                </p>
+                <p className="text-xs text-muted-foreground">{rating.label}</p>
               </div>
+            </div>
 
-              <blockquote className="flex-1 text-lg text-pretty">
-                {featured.quote}
-              </blockquote>
-
-              <Author review={featured} large />
-            </CardContent>
-          </Card>
-
-          {/* Four supporting reviews, two across. */}
-          <div className="grid gap-6 sm:grid-cols-2">
-            {grid.map((review) => (
-              <Card key={review.name} className="bg-background">
-                <CardContent className="flex h-full flex-col gap-4 p-6">
-                  <div className="flex items-start justify-between gap-3">
-                    <Quote
-                      className="size-6 rotate-180 fill-primary/20 text-primary/20"
-                      aria-hidden
-                    />
-                    <Stars rating={review.rating} />
-                  </div>
-
-                  <blockquote className="flex-1 text-sm text-pretty">
-                    {review.quote}
-                  </blockquote>
-
-                  <Author review={review} />
-                </CardContent>
-              </Card>
-            ))}
+            <Button asChild size="lg" variant="outline">
+              <Link href="/about">See customer stories</Link>
+            </Button>
           </div>
         </div>
 
-        {/* Standing proof points, and the way through to the rest. */}
-        <div className="mt-6 grid gap-6 rounded-2xl border border-border bg-background p-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-10 lg:p-8">
-          <dl className="grid gap-6 sm:grid-cols-3 sm:gap-8">
-            {reviewStats.map(({ value, label, icon: Icon }) => (
-              <div key={label} className="flex items-center gap-3">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Icon className="size-5" aria-hidden />
-                </span>
-                <div>
-                  <dt className="font-heading text-lg font-semibold tracking-tight">
-                    {value}
-                  </dt>
-                  <dd className="text-xs text-muted-foreground">{label}</dd>
-                </div>
-              </div>
+        {/* Full bleed, and focusable: the tabindex is what gives a keyboard
+            user the same way to stop the row that hovering gives a mouse. */}
+        <div
+          role="region"
+          aria-label="Reviews from our Google Business Profile"
+          tabIndex={0}
+          className="review-viewport mt-14 [mask-image:linear-gradient(to_right,transparent,black_2rem,black_calc(100%-2rem),transparent)] focus-visible:outline-2 focus-visible:outline-offset-2 lg:mt-16 lg:[mask-image:linear-gradient(to_right,transparent,black_5rem,black_calc(100%-5rem),transparent)]"
+        >
+          <ul
+            className="review-track"
+            style={{ "--review-duration": "110s" } as React.CSSProperties}
+          >
+            {row.map((review) => (
+              <li key={review.name} className={cardWidth}>
+                <ReviewCard review={review} />
+              </li>
             ))}
-          </dl>
 
-          <Button asChild size="lg" className="w-full lg:w-auto">
-            <Link href="/about">See customer stories</Link>
-          </Button>
+            {row.map((review) => (
+              <li
+                key={`${review.name}-repeat`}
+                className={cn("review-clone", cardWidth)}
+                aria-hidden
+              >
+                <ReviewCard review={review} />
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

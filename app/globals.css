@@ -411,3 +411,294 @@
     }
   }
 }
+
+@layer components {
+  /* The dwell timer on the chosen sector, drawn rather than counted: the bar
+     runs the same span the stage waits before it moves. Keyed on the
+     active index in the markup so it restarts with each change instead of
+     continuing from wherever the last one left off. */
+  .dwell-bar {
+    animation: dwell-fill 6000ms linear forwards;
+  }
+
+  @keyframes dwell-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dwell-bar {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* The review track.
+   *
+   * Two copies of the same row sit in one flex line, and the line slides left
+   * by exactly the width of one copy. At the moment it lands, the second copy
+   * is sitting precisely where the first began, so the reset is invisible and
+   * the row reads as endless.
+   *
+   * The distance is `-50% minus half a gap`, not a plain `-50%`. The track
+   * carries a gap between every card, including the seam between the two
+   * copies, so that one extra gap is shared between the halves — take the
+   * whole 50% and the row slips a little further left on every lap until the
+   * seam is visible. */
+  .review-track {
+    --review-gap: 1.5rem;
+    display: flex;
+    width: max-content;
+    gap: var(--review-gap);
+    animation: review-drift var(--review-duration, 80s) linear infinite;
+  }
+
+  /* The cards are close to half the screen by this width, and a 24px channel
+     between two of them reads as a mistake rather than a gap. The keyframe
+     reads the same variable, so the loop stays seamless as it changes. */
+  @media (min-width: 1024px) {
+    .review-track {
+      --review-gap: 2rem;
+    }
+  }
+
+  @keyframes review-drift {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-50% - (var(--review-gap) / 2)));
+    }
+  }
+
+  /* `overflow` belongs here rather than on a utility class: the reduced-motion
+     rule below has to be able to override it, and a Tailwind utility would sit
+     in a later layer and win. */
+  .review-viewport {
+    overflow: hidden;
+  }
+
+  /* Hover and keyboard focus both hold the rows still. The viewport takes a
+     tabindex, so someone reading by keyboard has the same way to stop a line
+     from sliding out from under them that someone with a mouse does — which
+     is what is owed for anything that starts moving on its own. */
+  .review-viewport:hover .review-track,
+  .review-viewport:focus-within .review-track {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .review-track {
+      animation: none;
+    }
+
+    /* Nothing is sliding, so the second copy is just the same reviews again a
+       little further along. Drop it, and let the row be scrolled by hand. */
+    .review-clone {
+      display: none;
+    }
+
+    .review-viewport {
+      overflow-x: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Softens the outer edge of a cut-out photograph so it dissolves into the
+     ground instead of stopping on a line. These are cut-outs, but the content
+     inside them — a desk, a floor — still runs to the frame in places, and on
+     a saturated ground that reads as a box nobody drew.
+
+     The fade starts early because `object-contain` letterboxes the photograph
+     inside its box: the mask is on the element, so a gradient that only bites
+     at the very edge never reaches where the picture actually stops. */
+  .edge-fade {
+    mask-image: radial-gradient(
+      ellipse 88% 92% at 50% 46%,
+      black 40%,
+      transparent 88%
+    );
+  }
+
+  /* A control that stays out of the way until wanted. Focus brings it back
+     for the keyboard, and on a touch screen — where hover never happens and
+     it would otherwise be unreachable — it is simply always there. */
+  .reveal-on-hover {
+    opacity: 0;
+    transition: opacity 250ms ease-out;
+  }
+
+  .group\/stage:hover .reveal-on-hover,
+  .reveal-on-hover:focus-visible {
+    opacity: 1;
+  }
+
+  @media (hover: none) {
+    .reveal-on-hover {
+      opacity: 1;
+    }
+  }
+
+  /* The copy settling after its panel arrives. Keyed on the active index in
+     the markup so it replays with every change. */
+  .panel-enter {
+    animation: panel-enter 620ms cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  }
+
+  @keyframes panel-enter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-on-hover {
+      opacity: 1;
+      transition: none;
+    }
+    .panel-enter {
+      animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* Feature card diagrams.
+   *
+   * Each panel demonstrates the capability its card names, so the motion is
+   * doing a job rather than dressing one. Three keyframes cover all six
+   * panels — something takes its turn, something grows, something arrives —
+   * and the durations differ per card so the grid never pulses in formation,
+   * which is what makes a group of loops read as a loading state. */
+
+  /* Takes its turn: lit for a slice of the cycle, dark for the rest. The IVR
+     menu selection, the routing seats and the number chips all share it, with
+     a stagger that hands the highlight down the list. */
+  @keyframes feature-turn {
+    0%,
+    22% {
+      opacity: 1;
+    }
+    34%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .feature-turn {
+    opacity: 0;
+    animation: feature-turn var(--turn-duration, 5.4s) ease-in-out infinite;
+    animation-delay: var(--turn-delay, 0s);
+  }
+
+  /* Grows from its baseline. The analytics bars, which carry their real
+     height inline and are scaled from nothing up to it. */
+  @keyframes feature-rise {
+    0%,
+    100% {
+      transform: scaleY(0.2);
+    }
+    45%,
+    68% {
+      transform: scaleY(1);
+    }
+  }
+
+  .feature-rise {
+    transform-origin: bottom;
+    animation: feature-rise 4.2s ease-in-out infinite;
+    animation-delay: var(--rise-delay, 0s);
+  }
+
+  /* Arrives, is read, leaves. The messages. */
+  @keyframes feature-arrive {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    12%,
+    58% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    74%,
+    100% {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+  }
+
+  .feature-arrive {
+    opacity: 0;
+    animation: feature-arrive 5s ease-out infinite;
+    animation-delay: var(--arrive-delay, 0s);
+  }
+
+  /* Each one rests differently, so a blanket `animation: none` is wrong here.
+     The highlights have to settle *off* — stopping them mid-keyframe would
+     leave every row of the IVR menu selected at once, which is not a state
+     the product has. The bars settle at full height and the messages all
+     present, because those are their finished states. */
+  @media (prefers-reduced-motion: reduce) {
+    .feature-turn {
+      animation: none;
+      opacity: 0;
+    }
+
+    .feature-rise {
+      animation: none;
+      transform: none;
+    }
+
+    .feature-arrive {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@layer components {
+  /* A pulse running a schematic line on a light ground.
+   *
+   * `.signal-path` does the same job on the integration wall, but it carries
+   * a drop-shadow bloom tuned to read against near-black. On white that bloom
+   * smears into a pink haze, so this is the same idea without it.
+   *
+   * Every line using this declares `pathLength="100"`, which normalises runs
+   * of different real lengths to one dash definition — otherwise a short
+   * branch fires twice while a long one fires once. */
+  .trace-pulse {
+    stroke-dasharray: 5 95;
+    animation: trace-travel var(--trace-duration, 3.6s) linear infinite;
+    animation-delay: var(--trace-delay, 0s);
+  }
+
+  @keyframes trace-travel {
+    from {
+      stroke-dashoffset: 100;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trace-pulse {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
