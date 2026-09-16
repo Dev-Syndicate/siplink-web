@@ -16,6 +16,7 @@ import {
   Code2,
   Cpu,
   FileSpreadsheet,
+  Gauge,
   GitBranch,
   GraduationCap,
   Headphones,
@@ -27,6 +28,7 @@ import {
   LayoutGrid,
   LifeBuoy,
   Lock,
+  MapPin,
   Megaphone,
   MessageCircle,
   MessagesSquare,
@@ -45,6 +47,7 @@ import {
   Users,
   UsersRound,
   Video,
+  Wifi,
   type LucideIcon,
 } from "lucide-react";
 
@@ -1333,6 +1336,131 @@ export const nav: NavItem[] = [
     },
   },
   {
+    // The connectivity line, alongside voice. Links are in-page anchors: the
+    // four pillars live on one /internet page rather than four thin routes,
+    // which is how internet.md describes them.
+    label: "Internet",
+    href: "/internet",
+    groups: [
+      {
+        heading: "Business Broadband",
+        icon: Wifi,
+        description: "Shared-port connectivity for the office.",
+        links: [
+          {
+            label: "Plans",
+            href: "/internet#broadband-plans",
+            description: "Committed rate with burst, sized per site",
+          },
+          {
+            label: "Features",
+            href: "/internet#broadband-features",
+            description: "Static IP, managed router, 24/7 monitoring",
+          },
+          {
+            label: "Business Benefits",
+            href: "/internet#broadband-business-benefits",
+            description: "Voice and internet from one provider",
+          },
+        ],
+      },
+      {
+        heading: "Dedicated Internet",
+        icon: Gauge,
+        description: "Uncontended leased lines on fibre.",
+        links: [
+          {
+            label: "Dedicated Bandwidth",
+            href: "/internet#dedicated-dedicated-bandwidth",
+            description: "50 Mbps to 100 Gbps, shared with nobody",
+          },
+          {
+            label: "Symmetrical Speeds",
+            href: "/internet#dedicated-symmetrical-speeds",
+            description: "Equal upstream for cloud, voice and video",
+          },
+          {
+            label: "SLA",
+            href: "/internet#dedicated-sla",
+            description: "Availability and throughput, set out in writing",
+          },
+          {
+            label: "Enterprise Connectivity",
+            href: "/internet#dedicated-enterprise-connectivity",
+            description: "Point-to-point, Tier-1 peering, data centres",
+          },
+        ],
+      },
+      {
+        heading: "Static IP",
+        icon: MapPin,
+        description: "A fixed public address that stays yours.",
+        links: [
+          {
+            label: "What is Static IP?",
+            href: "/internet#static-ip-what-is-static-ip",
+            description: "Permanent addressing, single or routed block",
+          },
+          {
+            label: "Business Uses",
+            href: "/internet#static-ip-business-uses",
+            description: "VPN endpoints, SIP trunks, allow-listing",
+          },
+          {
+            label: "Add Static IP",
+            href: "/internet#static-ip-add-static-ip",
+            description: "With a new order or on a live circuit",
+          },
+        ],
+      },
+      {
+        heading: "Network Solutions",
+        icon: Network,
+        description: "Everything past the router, managed.",
+        links: [
+          {
+            label: "Managed Router & Firewall",
+            href: "/internet#network-managed-router-firewall",
+            description: "Edge equipment configured and monitored",
+          },
+          {
+            label: "Business Wi-Fi",
+            href: "/internet#network-business-wi-fi",
+            description: "Coverage designed around the floor plan",
+          },
+          {
+            label: "LAN & Switching",
+            href: "/internet#network-lan-switching",
+            description: "Cabling, VLANs and QoS for voice",
+          },
+          {
+            label: "VPN",
+            href: "/internet#network-vpn",
+            description: "Encrypted tunnels across fixed sites",
+          },
+          {
+            label: "SD-WAN",
+            href: "/internet#network-sd-wan",
+            description: "Application-aware routing across links",
+          },
+          {
+            label: "Multi-Location Networking",
+            href: "/internet#network-multi-location-networking",
+            description: "One network across every office",
+          },
+        ],
+      },
+    ],
+    feature: {
+      eyebrow: "SIPLINK INTERNET",
+      title: "A Class A ISP, not a reseller",
+      description:
+        "Licensed by the DoT, with carrier-neutral POPs in Bangalore and Chennai and a Global NOC watching every circuit.",
+      cta: "Explore connectivity",
+      href: "/internet",
+    },
+  },
+  {
     label: "Industries",
     href: "/industries",
     flat: true,
@@ -1947,7 +2075,7 @@ export const footerNav = [
       { label: "Call Centre Solutions", href: "/solutions/call-centre" },
       { label: "Small & Medium Business", href: "/solutions/smb" },
       { label: "Enterprise Business", href: "/solutions/enterprise" },
-      { label: "Internet Services", href: "/solutions/internet" },
+      { label: "Internet Services", href: "/internet" },
     ],
   },
   {
