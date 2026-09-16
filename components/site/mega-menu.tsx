@@ -210,7 +210,7 @@ export function MegaMenu() {
                     // Hard ceiling so the panel can never run past the fold,
                     // whatever a menu grows to. Reaching it should be rare —
                     // the column flow above is what actually keeps menus short.
-                    "max-h-[calc(100vh-9rem)] overflow-y-auto",
+                    "max-h-[calc(100vh-10rem)] overflow-y-auto",
                     linkColumns === 1
                       ? "w-[min(calc(100vw-3rem),880px)]"
                       : linkColumns === 2

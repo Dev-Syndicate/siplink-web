@@ -114,7 +114,14 @@ function NavigationMenuViewport({
         className={cn(
           // Radius and shadow are dialled up from the shadcn default so the
           // panel matches the pill nav above it — see SiteHeader.
-          "origin-top-center relative mt-3 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-3xl bg-popover text-popover-foreground shadow-2xl shadow-foreground/10 ring-1 ring-foreground/10 duration-100 md:w-(--radix-navigation-menu-viewport-width) data-open:animate-in data-open:zoom-in-90 data-closed:animate-out data-closed:zoom-out-90",
+          //
+          // The margin is measured from the trigger row, not the pill: the
+          // menu is centred inside an h-16 pill, so ~14px of that is spent
+          // clearing the pill's own bottom edge and the rest is the visible
+          // gap. It stays a margin rather than a positioning offset so the
+          // gap belongs to the viewport wrapper — the pointer crossing it is
+          // still inside the menu root, so the panel does not close.
+          "origin-top-center relative mt-7 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-3xl bg-popover text-popover-foreground shadow-2xl shadow-foreground/10 ring-1 ring-foreground/10 duration-100 md:w-(--radix-navigation-menu-viewport-width) data-open:animate-in data-open:zoom-in-90 data-closed:animate-out data-closed:zoom-out-90",
           className,
         )}
         {...props}
