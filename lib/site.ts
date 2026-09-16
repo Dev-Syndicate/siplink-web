@@ -2,6 +2,7 @@ import {
   AudioLines,
   Activity,
   Banknote,
+  BarChart3,
   Boxes,
   Briefcase,
   Building,
@@ -18,6 +19,7 @@ import {
   FileSpreadsheet,
   GitBranch,
   GraduationCap,
+  Hash,
   Headphones,
   Headset,
   HeartPulse,
@@ -32,6 +34,7 @@ import {
   MessagesSquare,
   Network,
   PhoneCall,
+  PhoneForwarded,
   PiggyBank,
   Receipt,
   Router,
@@ -2010,6 +2013,48 @@ export const heroProof: { value: string; label: string }[] = [
 ];
 
 /**
+ * "Why SipLink" — the four questions a buyer asks before they read on.
+ *
+ * Every sentence here is drawn from a claim SipLink already makes elsewhere
+ * in this file: the two data centres and the either-link failover come from
+ * `reliability`, the browser provisioning from `reliability[2]`, the
+ * credentials from `certifications`, and the named owner from `assurances`.
+ * That is the whole point of the section — the usual treatment for these four
+ * words is a row of big figures, and the note on `certifications` above rules
+ * out inventing the ones that row would need. Sentences, not numbers.
+ *
+ * Icons repeat the ones each claim already carries in its source list, so the
+ * page keeps one icon per idea rather than a second vocabulary for the same
+ * four things.
+ */
+export const whyPoints: Simple[] = [
+  {
+    title: "Reliability",
+    description:
+      "Two data centres replicating in real time, with provider links either of which carries the whole network. A failed link is not a dropped call.",
+    icon: ServerCog,
+  },
+  {
+    title: "Scalability",
+    description:
+      "Add users and whole sites from a standard browser. Management and billing stay in one place however far you grow.",
+    icon: LayoutGrid,
+  },
+  {
+    title: "Security",
+    description:
+      "HIPAA compliant and DoT certified, on a dedicated IP network — suitable for healthcare and other regulated work.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Support",
+    description:
+      "A named team on WhatsApp, phone and email at any hour. One expert owns your issue from the first message until it is closed.",
+    icon: HeartHandshake,
+  },
+];
+
+/**
  * "What changes on Monday" — the migration story told as a before/after,
  * because the real buying objection is disruption, not features.
  */
@@ -2099,5 +2144,88 @@ export const homePillars: {
       src: "/images/pillar-unified-communications.png",
       alt: "A desktop team messaging app beside a phone on an active call, ringed by video, voice, chat and team icons",
     },
+  },
+];
+
+/**
+ * The capability grid on the homepage.
+ *
+ * Ordered, not ranked: the first three are what happens to a call on the way
+ * in — a menu answers it, routing places it, recording keeps it. The last
+ * three are what you get back out — messages, numbers, and the record of what
+ * happened. That sequence is why the grid needs no sub-headings to explain
+ * itself.
+ *
+ * Every `href` is a product page that exists. Do not add an entry here until
+ * its page does; a capability that 404s is worse than one left off the list.
+ *
+ * Descriptions are condensed from `platformFeatures` above and the matching
+ * entries in lib/products.ts. Nothing here is a new claim — in particular,
+ * none of these may be described as included on every plan: `planMatrix`
+ * shows Business SMS is not on the Value tier.
+ */
+export type HomeFeature = {
+  /** Selects the diagram drawn in the card's panel. See FeatureCards. */
+  id:
+    | "ivr"
+    | "routing"
+    | "recording"
+    | "sms"
+    | "analytics"
+    | "numbers";
+  title: string;
+  description: string;
+  href: string;
+  icon: LucideIcon;
+};
+
+export const homeFeatures: HomeFeature[] = [
+  {
+    id: "ivr",
+    title: "IVR",
+    description:
+      "A multi-level menu that sends callers to sales, support or billing, with separate flows for holidays and after hours.",
+    href: "/products/ivr",
+    icon: GitBranch,
+  },
+  {
+    id: "routing",
+    title: "Call routing",
+    description:
+      "Queues and ring groups that spread calls across whoever is free, instead of returning a busy signal.",
+    href: "/products/call-queue",
+    icon: PhoneForwarded,
+  },
+  {
+    id: "recording",
+    title: "Call recording",
+    description:
+      "Automatic and on-demand recording, with role-based access deciding who can replay a given call.",
+    href: "/products/call-recording",
+    icon: AudioLines,
+  },
+  {
+    id: "sms",
+    title: "Business SMS",
+    description:
+      "Notifications, reminders and verification messages, sent from your own systems as events happen.",
+    href: "/products/sms-api",
+    icon: MessageCircle,
+  },
+  {
+    id: "analytics",
+    title: "Analytics",
+    description:
+      "Volumes, answered and missed calls, duration and agent activity — downloadable for any period as Excel or CSV.",
+    href: "/products/call-analytics",
+    icon: BarChart3,
+  },
+  {
+    id: "numbers",
+    title: "Number management",
+    description:
+      "Direct dial numbers for people and departments, toll-free lines, and porting the numbers you already advertise.",
+    href: "/products/did-numbers",
+    icon: Hash,
   },
 ];

@@ -68,6 +68,26 @@ const DELAYS = [
   "-2.2s",
 ] as const;
 
+/**
+ * The same diagram stacked, for a phone.
+ *
+ * It gets its own viewBox so the wiring can be drawn rather than assembled
+ * out of borders. A straight rule running the full height between two columns
+ * reads as a column divider, not a wire — what makes it read as wiring is the
+ * corner, so each branch leaves the trunk on a curve the way the runs do on
+ * the wide version.
+ */
+const STACK = { w: 340, h: 510 } as const;
+const STACK_ROWS = [130, 235, 340, 445] as const;
+const STACK_TRUNK = 170;
+
+const STACK_TRUNK_PATH = `M ${STACK_TRUNK} 76 V ${STACK_ROWS[STACK_ROWS.length - 1]}`;
+
+const STACK_WIRES = STACK_ROWS.flatMap((y) => [
+  `M ${STACK_TRUNK} ${y - 36} Q ${STACK_TRUNK} ${y} ${STACK_TRUNK - 26} ${y} H 98`,
+  `M ${STACK_TRUNK} ${y - 36} Q ${STACK_TRUNK} ${y} ${STACK_TRUNK + 26} ${y} H 242`,
+]);
+
 const VIEW = { w: 900, h: 520 } as const;
 
 /** Percentage of the frame, so the HTML plates track the SVG at every width. */
@@ -219,10 +239,108 @@ export function IntegrationWall() {
           </div>
         </div>
 
-        {/* Every integration, named. On a phone this stands in for the diagram
-            outright: eight plates and eight wires at 400px wide are a smudge,
-            and shrinking them to fit would be worse than not drawing them. */}
-        <ul className="mt-12 flex flex-wrap justify-center gap-2.5 md:mt-14">
+        {/* The phone gets the same diagram, stood on its end.
+
+            Eight plates and eight wires at 390px wide are a smudge, so the
+            wide version stays behind `md`. This is not a different design:
+            the same trunk, the same curving branches and the same travelling
+            pulse, drawn in their own viewBox with the plates laid over them
+            by percentage exactly as the wide one is built. */}
+        <div
+          aria-hidden
+          className="relative mx-auto mt-12 w-full max-w-xs md:hidden"
+        >
+          <svg
+            viewBox={`0 0 ${STACK.w} ${STACK.h}`}
+            role="presentation"
+            className="block h-auto w-full"
+          >
+            <path
+              d={STACK_TRUNK_PATH}
+              fill="none"
+              strokeWidth="1.5"
+              className="stroke-background/30"
+            />
+
+            {STACK_WIRES.map((d, index) => (
+              <g key={d}>
+                <path
+                  d={d}
+                  fill="none"
+                  strokeWidth="1.5"
+                  className="stroke-background/30"
+                />
+                <path
+                  d={d}
+                  fill="none"
+                  pathLength="100"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  className="signal-path stroke-primary"
+                  style={
+                    { "--signal-delay": DELAYS[index] } as React.CSSProperties
+                  }
+                />
+              </g>
+            ))}
+          </svg>
+
+          <div className="absolute inset-0">
+            <span
+              className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-background p-3 shadow-lg"
+              style={{
+                left: pct(STACK_TRUNK, STACK.w),
+                top: pct(38, STACK.h),
+                width: pct(150, STACK.w),
+              }}
+            >
+              <Image
+                src="/siplink-logo.webp"
+                alt=""
+                width={300}
+                height={135}
+                sizes="170px"
+                className="h-auto w-full object-contain"
+              />
+            </span>
+
+            {NODES.map(({ name, logo, fill }, index) => (
+              <span
+                key={name}
+                // Anchored by the top of the plate rather than the middle of
+                // the cell: a two-line name makes the cell taller, and
+                // centring the cell would lift its plate clear of the branch.
+                className="absolute flex -translate-x-1/2 flex-col items-center"
+                style={{
+                  left: pct(index % 2 === 0 ? 62 : 278, STACK.w),
+                  top: pct(STACK_ROWS[Math.floor(index / 2)] - 32, STACK.h),
+                  width: pct(112, STACK.w),
+                }}
+              >
+                <span className="flex aspect-square w-[57%] items-center justify-center rounded-2xl bg-background p-1.5 shadow-md">
+                  <Image
+                    src={logo}
+                    alt=""
+                    width={64}
+                    height={64}
+                    sizes="64px"
+                    style={{ width: `${fill}%` }}
+                    className="h-auto object-contain"
+                  />
+                </span>
+                <span className="mt-2 text-center text-[11px] leading-tight text-background/85">
+                  {name}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* The full list. Both pictures above are decorative, so this is the
+            only place a screen reader meets the names — it stays in the tree
+            at every width, and is only hidden from sight on a phone, where
+            the grid already spells each one out. */}
+        <ul className="mt-14 hidden flex-wrap justify-center gap-2.5 md:flex">
           {integrations.map((name) => (
             <li
               key={name}

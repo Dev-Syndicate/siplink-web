@@ -6,11 +6,12 @@ import {
   Quote,
   ShieldCheck,
   Star,
-  UsersRound,
 } from "lucide-react";
 
 import { CustomerStories } from "@/components/site/customer-stories";
+import { FeatureCards } from "@/components/site/feature-cards";
 import { IntegrationWall } from "@/components/site/integration-wall";
+import { SectorStage } from "@/components/site/sector-stage";
 import { SwitchingStory } from "@/components/site/switching-story";
 import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
 import { TypedQuote } from "@/components/site/typed-quote";
@@ -20,21 +21,23 @@ import { Button } from "@/components/ui/button";
 import {
   heroHighlights,
   homePillars,
-  industries,
   mobileApps,
   plans,
   reviews,
   site,
+  whyPoints,
 } from "@/lib/site";
 
 /**
  * Homepage.
  *
- * The argument, in order: enterprise-grade voice (hero) → which product is
- * yours (pillars) → what actually changes when you switch (migration) → the
- * support claim, evidenced once (film and one review) → which sector you are
- * in (industries) → does it fit your stack (integrations, apps) → who else
- * went through with it (customer stories) → talk to us (CTA).
+ * The argument, in order: enterprise-grade voice (hero) → the four questions
+ * that answer holds up to (why) → which product is
+ * yours (pillars) → what actually changes when you switch (migration) → what
+ * it does once it is in (capabilities) → the support claim, evidenced once
+ * (film and one review) → which sector you are in (industries) → does it fit
+ * your stack (integrations, apps) → who else went through with it (customer
+ * stories) → talk to us (CTA).
  *
  * Price is not argued here any more, only quoted once in the hero. The plan
  * cards live on /pricing, which the hero and the nav both link to.
@@ -253,6 +256,57 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------------------------
+          Why SipLink. The hinge between the hero and the pillars, and
+          deliberately the quietest thing on the page: it sits between a
+          full-height hero and four crimson cards, so a third loud block
+          here would leave the top of the page with no rest in it.
+
+          Everything that would normally box this content is left off. No
+          card, no radius, no shadow, no tray behind the icons — the only
+          structure is the hairline grid, which arrives at `lg` and is
+          simply absent below it. Four boxes stacked directly above the
+          pillars' four boxes is the failure this avoids.
+
+          It is also the one section head on the page with no eyebrow and
+          no supporting sentence. That is the choice, not an oversight:
+          the single line is what makes this read as a hinge rather than
+          as a seventh full section. Padding is tighter than the page's
+          usual py-20/28 for the same reason.
+         --------------------------------------------------------------- */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
+          <h2 className="font-heading text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
+            Why {site.name}
+          </h2>
+
+          {/* Below `lg` this is an ordinary spaced grid with no rules at
+              all; at `lg` the left borders turn it into the band. Doing it
+              with per-cell borders rather than `divide-x` is what keeps the
+              2-up tablet layout from growing stray verticals. */}
+          <div className="mt-10 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-x-0">
+            {whyPoints.map(({ title, description, icon: Icon }) => (
+              <div
+                key={title}
+                className="lg:border-l lg:border-border lg:px-6 lg:first:border-l-0 lg:first:pl-0 lg:last:pr-0"
+              >
+                <Icon className="size-5 text-primary" aria-hidden />
+
+                <h3 className="font-heading mt-4 text-base font-semibold tracking-tight">
+                  {title}
+                </h3>
+
+                {/* Held short: in a quarter-width column a full measure
+                    would run to two words a line. */}
+                <p className="mt-2 max-w-[46ch] text-sm leading-relaxed text-pretty text-muted-foreground">
+                  {description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------
           Pillars. Four ways in, labelled by the job the customer is
           hiring us for — not by product name alone.
          --------------------------------------------------------------- */}
@@ -329,6 +383,8 @@ export default function Home() {
 
       <SwitchingStory />
 
+      <FeatureCards />
+
       {/* ---------------------------------------------------------------
           The support claim, evidenced. The hero promises people who pick
           up; this is where a real customer says it instead of us.
@@ -395,132 +451,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------------------
-          Industries. Relevance check — "is this built for a business
-          like mine?" — kept compact, since the depth lives one click in.
-         --------------------------------------------------------------- */}
-      <section className="relative overflow-hidden border-y border-border bg-muted/30">
-        {/* Dot field behind the header, fading out before the cards — the
-            texture the design carries, without shipping a map bitmap. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute top-0 right-0 h-[22rem] w-2/3 [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)] [background-image:radial-gradient(var(--color-primary)_1px,transparent_1px)] [background-size:14px_14px] opacity-[0.13]"
-        />
-
-        <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
-            <div className="max-w-xl">
-              <span className="font-mono text-xs tracking-widest text-primary uppercase">
-                Who we serve
-              </span>
-              <h2 className="font-heading mt-4 text-3xl leading-[1.15] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
-                Configured for how
-                <br />
-                <span className="text-primary">your sector</span> works
-              </h2>
-              <p className="mt-4 max-w-md text-sm text-pretty text-muted-foreground">
-                A billing desk and a recruiting team need very different things
-                from a phone system. Pick yours to see what changes.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-8 lg:pt-6">
-              <p
-                className="hidden -rotate-6 text-2xl leading-tight text-primary md:block"
-                style={{ fontFamily: "var(--font-accent)" }}
-              >
-                Different people.
-                <br />
-                Different possibilities.
-              </p>
-
-              <div className="flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-3 shadow-sm">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <UsersRound className="size-5" aria-hidden />
-                </span>
-                <div>
-                  <p className="font-heading text-base font-semibold tracking-tight">
-                    6 sectors
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Configured end to end
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Not links: there is no /industries/[slug] route yet, so the
-              section CTA below carries the navigation instead of sending
-              each card to a 404. */}
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {industries.map(
-              ({ title, description, icon: Icon, badge, image }) => (
-                <div
-                  key={title}
-                  className="group relative flex min-h-[13.5rem] flex-col overflow-hidden rounded-2xl border border-border bg-background p-5 shadow-sm transition-shadow hover:shadow-md"
-                >
-                  {/* The cut-out fills the card's right half and runs to the
-                      bottom edge; the copy keeps a matching gutter so the two
-                      never collide whatever the image's aspect ratio. */}
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={512}
-                    height={512}
-                    sizes="(min-width: 1024px) 16rem, (min-width: 640px) 50vw, 100vw"
-                    className="pointer-events-none absolute right-0 -bottom-1 h-[88%] w-[46%] object-contain object-right-bottom transition-transform duration-300 group-hover:scale-[1.04]"
-                  />
-
-                  <div className="relative flex flex-1 flex-col gap-2 pr-[44%]">
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                      <Icon className="size-4" aria-hidden />
-                    </span>
-
-                    <h3 className="font-heading mt-1 flex flex-wrap items-center gap-2 text-[0.95rem] font-semibold tracking-tight">
-                      {title}
-                      {badge ? (
-                        <Badge
-                          variant="secondary"
-                          className="font-mono text-[10px] tracking-wider"
-                        >
-                          {badge}
-                        </Badge>
-                      ) : null}
-                    </h3>
-
-                    <p className="text-xs leading-relaxed text-pretty text-muted-foreground">
-                      {description}
-                    </p>
-
-                    <span
-                      className="mt-auto flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground"
-                      aria-hidden
-                    >
-                      <ArrowRight className="size-4" />
-                    </span>
-                  </div>
-                </div>
-              ),
-            )}
-          </div>
-
-          <div className="mt-10 flex flex-wrap items-center justify-between gap-6">
-            <Button asChild size="lg">
-              <Link href="/industries">
-                View all industries
-                <ArrowRight aria-hidden />
-              </Link>
-            </Button>
-
-            <p className="border-l-2 border-primary pl-4 text-sm text-pretty text-muted-foreground">
-              Built for every conversation.
-              <br />
-              Across every industry.
-            </p>
-          </div>
-        </div>
-      </section>
+      <SectorStage />
 
       <IntegrationWall />
 
