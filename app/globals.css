@@ -133,6 +133,22 @@
   }
   html {
     @apply font-sans;
+    /* In-page anchors (the mega menu links into /internet, and every page has
+       a section index) glide rather than jump. `scroll-mt-*` on the targets
+       keeps them clear of the fixed header. */
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Belt and braces against a stray wide child on small screens: the page may
+     scroll down, never sideways. */
+  body {
+    overflow-x: clip;
   }
 }
 
