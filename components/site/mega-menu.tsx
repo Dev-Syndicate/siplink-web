@@ -1,8 +1,9 @@
 "use client";
 
+import NextImage from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, ChevronRight, Headset } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Image as ImageIcon } from "lucide-react";
 
 import {
   NavigationMenu,
@@ -12,9 +13,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { nav, navHighlights, type NavGroup, type NavItem } from "@/lib/site";
+import { nav, type NavGroup, type NavItem } from "@/lib/site";
 
 function isItemActive(item: NavItem, pathname: string) {
   if (item.href === "/") return pathname === "/";
@@ -26,166 +27,129 @@ function isItemActive(item: NavItem, pathname: string) {
   );
 }
 
-/** Grouped column: heading with icon, then its links with descriptions. */
-function MenuColumn({ group }: { group: NavGroup }) {
-  const Icon = group.icon;
-
+/**
+ * One navigation row: icon tile, label, and an arrow that slides in on hover.
+ *
+ * Deliberately label-only. The panel is a way to get somewhere, not a place
+ * to explain what is there — descriptions belong on the page being linked to.
+ */
+function MenuRow({
+  label,
+  href,
+  icon: Icon,
+}: {
+  label: string;
+  href: string;
+  icon?: NavGroup["icon"];
+}) {
   return (
-    <div className="min-w-0">
-      <div className="flex items-start gap-3 border-b border-border/60 pb-3">
-        {Icon ? (
-          <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <Icon className="size-4" aria-hidden />
-          </span>
-        ) : null}
-        <div className="min-w-0">
-          <p className="text-sm font-semibold text-foreground">
-            {group.heading}
-          </p>
-          {group.description ? (
-            <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
-              {group.description}
-            </p>
+    <li className="break-inside-avoid">
+      <NavigationMenuLink asChild>
+        <Link
+          href={href}
+          className="group/row flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-muted focus-visible:bg-muted"
+        >
+          {Icon ? (
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-[0.6rem] bg-muted text-foreground/70 transition-colors group-hover/row:bg-primary group-hover/row:text-primary-foreground">
+              <Icon className="size-4" aria-hidden />
+            </span>
           ) : null}
-        </div>
-      </div>
 
-      <ul className="mt-3 space-y-0.5">
+          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-foreground">
+            {label}
+          </span>
+
+          <ArrowRight
+            className="size-4 shrink-0 -translate-x-1 text-muted-foreground/50 opacity-0 transition-all group-hover/row:translate-x-0 group-hover/row:text-primary group-hover/row:opacity-100"
+            aria-hidden
+          />
+        </Link>
+      </NavigationMenuLink>
+    </li>
+  );
+}
+
+/**
+ * A group of rows under its heading.
+ *
+ * `break-inside-avoid` keeps a group whole when the panel flows it into
+ * balanced CSS columns — without it a heading can end up orphaned at the
+ * foot of one column with its links at the top of the next.
+ */
+function MenuColumn({ group }: { group: NavGroup }) {
+  return (
+    <div className="mb-5 break-inside-avoid last:mb-0">
+      <p className="px-2 pb-1 font-mono text-[10px] font-semibold tracking-[0.16em] text-muted-foreground/70 uppercase">
+        {group.heading}
+      </p>
+      <ul>
         {group.links.map((link) => (
-          <li key={link.href}>
-            <NavigationMenuLink asChild>
-              <Link
-                href={link.href}
-                className="group/link block rounded-lg px-2 py-2 transition-colors hover:bg-muted focus-visible:bg-muted"
-              >
-                <span className="flex items-center justify-between gap-2">
-                  <span className="text-sm leading-snug font-medium text-foreground">
-                    {link.label}
-                  </span>
-                  <ChevronRight
-                    className="size-3.5 shrink-0 text-muted-foreground/40 transition-all group-hover/link:translate-x-0.5 group-hover/link:text-primary"
-                    aria-hidden
-                  />
-                </span>
-                {link.description ? (
-                  <span className="mt-1 block text-xs leading-snug text-muted-foreground">
-                    {link.description}
-                  </span>
-                ) : null}
-              </Link>
-            </NavigationMenuLink>
-          </li>
+          <MenuRow
+            key={link.href}
+            label={link.label}
+            href={link.href}
+            icon={link.icon ?? group.icon}
+          />
         ))}
       </ul>
     </div>
   );
 }
 
-/** Flat menus (Industries, Pricing, Company) render as a plain multi-column list. */
-function MenuFlatList({ group }: { group: NavGroup }) {
+/**
+ * The promo card on the right of every panel.
+ *
+ * Artwork is dropped in through `feature.image`; until then the same box
+ * renders a placeholder, so the menu keeps its proportions either way.
+ */
+function MenuFeature({ feature }: { feature: NonNullable<NavItem["feature"]> }) {
   return (
-    <ul className="grid grid-cols-2 gap-x-6 gap-y-0.5">
-      {group.links.map((link) => (
-        <li key={link.href}>
-          <NavigationMenuLink asChild>
-            <Link
-              href={link.href}
-              className="group/link flex items-center justify-between gap-2 rounded-lg px-2 py-2.5 transition-colors hover:bg-muted focus-visible:bg-muted"
-            >
-              <span className="text-sm font-medium text-foreground">
-                {link.label}
-              </span>
-              <ChevronRight
-                className="size-3.5 shrink-0 text-muted-foreground/40 transition-all group-hover/link:translate-x-0.5 group-hover/link:text-primary"
-                aria-hidden
-              />
-            </Link>
-          </NavigationMenuLink>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** Left promo panel — the pink card in the design. */
-function MenuFeature({
-  feature,
-  wide = false,
-}: {
-  feature: NonNullable<NavItem["feature"]>;
-  /** Spans the full grid row and lays out horizontally (5-column menus). */
-  wide?: boolean;
-}) {
-  return (
-    <div
-      className={cn(
-        "rounded-xl bg-primary/5 p-6 ring-1 ring-primary/10",
-        wide
-          ? "col-span-full flex items-center justify-between gap-8"
-          : "flex flex-col justify-between",
-      )}
-    >
-      <div className={cn(wide && "min-w-0")}>
-        <p className="text-[11px] font-semibold tracking-[0.14em] text-primary">
-          {feature.eyebrow}
-        </p>
-        <p
-          className={cn(
-            "mt-2 font-bold leading-tight text-foreground",
-            wide ? "text-xl" : "mt-4 text-2xl",
-          )}
-        >
-          {feature.title}
-        </p>
-        <p
-          className={cn(
-            "mt-2 text-sm leading-relaxed text-muted-foreground",
-            wide ? "max-w-2xl" : "mt-3",
-          )}
-        >
-          {feature.description}
-        </p>
-      </div>
-
-      <Button
-        asChild
-        size="sm"
-        className={cn(wide ? "shrink-0" : "mt-6 w-fit")}
+    <NavigationMenuLink asChild>
+      <Link
+        href={feature.href}
+        className="group/feature relative flex min-h-[19rem] flex-col overflow-hidden rounded-2xl bg-muted focus-visible:outline-none"
       >
-        <NavigationMenuLink asChild>
-          <Link href={feature.href}>
-            {feature.cta}
-            <ArrowRight className="size-4" aria-hidden />
-          </Link>
-        </NavigationMenuLink>
-      </Button>
-    </div>
-  );
-}
-
-/** Trust strip along the bottom of every mega panel. */
-function MenuHighlights() {
-  return (
-    <div className="grid grid-cols-4 gap-4 border-t border-border/60 px-6 py-4">
-      {navHighlights.map((highlight) => {
-        const Icon = highlight.icon;
-        return (
-          <div key={highlight.label} className="flex items-center gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Icon className="size-4" aria-hidden />
+        {feature.image ? (
+          <NextImage
+            src={feature.image}
+            alt={feature.imageAlt ?? ""}
+            fill
+            sizes="340px"
+            className="object-cover transition-transform duration-500 group-hover/feature:scale-105"
+          />
+        ) : (
+          /* Placeholder — replace by setting `image` on this nav item's
+             `feature` in lib/site.ts. Nothing else needs to change. */
+          <span
+            aria-hidden
+            className="absolute inset-3 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-background/40 text-muted-foreground/60"
+          >
+            <ImageIcon className="size-7" />
+            <span className="font-mono text-[10px] tracking-[0.16em] uppercase">
+              Image placeholder
             </span>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-foreground">
-                {highlight.label}
-              </p>
-              <p className="text-[11px] leading-snug text-muted-foreground">
-                {highlight.description}
-              </p>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+          </span>
+        )}
+
+        {/* Opens-the-page affordance, mirroring the reference layout. */}
+        <span className="absolute top-3 right-3 z-10 flex size-8 items-center justify-center rounded-full bg-background/80 text-foreground shadow-sm backdrop-blur transition-colors group-hover/feature:bg-primary group-hover/feature:text-primary-foreground">
+          <ArrowUpRight className="size-4" aria-hidden />
+        </span>
+
+        {/* Caption card sitting over the artwork. */}
+        <span className="absolute inset-x-3 bottom-3 z-10 block rounded-xl bg-background/90 p-4 shadow-sm backdrop-blur-md">
+          <Badge className="font-mono text-[10px] tracking-widest uppercase">
+            {feature.eyebrow}
+          </Badge>
+          <span className="mt-2.5 block text-sm leading-snug font-semibold text-balance text-foreground">
+            {feature.title}
+          </span>
+          <span className="mt-1.5 block text-xs leading-relaxed text-pretty text-muted-foreground">
+            {feature.description}
+          </span>
+        </span>
+      </Link>
+    </NavigationMenuLink>
   );
 }
 
@@ -194,7 +158,7 @@ export function MegaMenu() {
 
   return (
     <NavigationMenu className="hidden lg:flex">
-      <NavigationMenuList className="gap-1">
+      <NavigationMenuList className="gap-0.5">
         {nav.map((item) => {
           const isActive = isItemActive(item, pathname);
 
@@ -210,7 +174,7 @@ export function MegaMenu() {
                       "rounded-full px-3 py-2 text-sm transition-colors",
                       isActive
                         ? "font-semibold text-primary"
-                        : "font-medium text-muted-foreground hover:text-foreground",
+                        : "font-medium text-foreground/80 hover:text-foreground",
                     )}
                   >
                     {item.label}
@@ -220,91 +184,80 @@ export function MegaMenu() {
             );
           }
 
-          const columns = item.groups.length;
+          const groupCount = item.groups.length;
+          // Three columns is the widest that stays readable next to the promo
+          // card, so four- and five-group menus wrap onto a second row.
+          const linkColumns = item.flat ? 1 : Math.min(groupCount, 3);
 
           return (
             <NavigationMenuItem key={item.label}>
               <NavigationMenuTrigger
                 className={cn(
-                  "rounded-full bg-transparent px-3 py-2 text-sm data-[state=open]:bg-primary/10",
+                  "rounded-full bg-transparent px-3 py-2 text-sm data-[state=open]:bg-muted",
                   isActive
                     ? "font-semibold text-primary data-[state=open]:text-primary"
-                    : "font-medium text-muted-foreground hover:text-foreground data-[state=open]:text-primary",
+                    : "font-medium text-foreground/80 hover:text-foreground data-[state=open]:text-foreground",
                 )}
               >
                 {item.label}
               </NavigationMenuTrigger>
 
-              {/* The viewport sizes itself to this content, so the width is set
+              {/* The viewport sizes itself to this content, so width is set
                   here rather than fought onto the positioned wrapper. */}
               <NavigationMenuContent className="p-0!">
                 <div
                   className={cn(
-                    item.flat
-                      ? "w-[min(calc(100vw-3rem),820px)]"
-                      : columns >= 5
-                        ? "w-[min(calc(100vw-3rem),1400px)]"
-                        : columns === 4
-                          ? "w-[min(calc(100vw-3rem),1240px)]"
-                          : "w-[min(calc(100vw-3rem),1100px)]",
+                    // Hard ceiling so the panel can never run past the fold,
+                    // whatever a menu grows to. Reaching it should be rare —
+                    // the column flow above is what actually keeps menus short.
+                    "max-h-[calc(100vh-9rem)] overflow-y-auto",
+                    linkColumns === 1
+                      ? "w-[min(calc(100vw-3rem),880px)]"
+                      : linkColumns === 2
+                        ? "w-[min(calc(100vw-3rem),1040px)]"
+                        : "w-[min(calc(100vw-3rem),1240px)]",
                   )}
                 >
-                  <div
-                    className={cn(
-                      "grid gap-x-8 gap-y-6 p-6",
-                      item.flat
-                        ? "grid-cols-[minmax(0,320px)_minmax(0,1fr)]"
-                        : // 5 groups: promo sits above the columns so each column
-                          // keeps a readable width. Otherwise promo shares the row.
-                          columns >= 5
-                          ? "grid-cols-5"
-                          : columns === 4
-                            ? "grid-cols-[minmax(0,260px)_repeat(4,minmax(0,1fr))]"
-                            : "grid-cols-[minmax(0,280px)_repeat(3,minmax(0,1fr))]",
-                    )}
-                  >
-                    {item.feature ? (
-                      <MenuFeature
-                        feature={item.feature}
-                        wide={!item.flat && columns >= 5}
-                      />
-                    ) : null}
-
-                    {item.flat
-                      ? item.groups.map((group) => (
-                          <MenuFlatList key={group.heading} group={group} />
-                        ))
-                      : item.groups.map((group) => (
+                  <div className="grid gap-3 p-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,21rem)]">
+                    {/* Navigation side */}
+                    <div className="flex min-w-0 flex-col">
+                      <div
+                        className={cn(
+                          "flex-1 gap-x-5",
+                          // Balanced CSS columns, not a grid: groups flow and
+                          // pack, so an uneven set (three short groups and one
+                          // six-link group) fills the columns evenly instead
+                          // of wrapping onto a second row and doubling the
+                          // panel's height.
+                          item.flat
+                            ? "[&_ul]:columns-2 [&_ul]:gap-x-5"
+                            : linkColumns === 2
+                              ? "columns-2"
+                              : "columns-3",
+                        )}
+                      >
+                        {item.groups.map((group) => (
                           <MenuColumn key={group.heading} group={group} />
                         ))}
-                  </div>
-
-                  <MenuHighlights />
-
-                  <div className="flex items-center justify-between gap-4 rounded-b-2xl border-t border-border/60 bg-muted/40 px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-background text-primary shadow-sm">
-                        <Headset className="size-4" aria-hidden />
-                      </span>
-                      <div>
-                        <p className="text-sm font-semibold text-foreground">
-                          Not sure which solution is right for you?
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Talk to our experts and get a personalized
-                          recommendation for your business.
-                        </p>
                       </div>
-                    </div>
 
-                    <Button asChild size="sm" className="shrink-0">
                       <NavigationMenuLink asChild>
-                        <Link href="/contact">
-                          Schedule a Demo
-                          <ArrowRight className="size-4" aria-hidden />
+                        <Link
+                          href={item.href}
+                          className="group/all mt-4 flex items-center justify-center gap-2 rounded-xl bg-muted px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                        >
+                          View all {item.label}
+                          <ArrowRight
+                            className="size-4 transition-transform group-hover/all:translate-x-0.5"
+                            aria-hidden
+                          />
                         </Link>
                       </NavigationMenuLink>
-                    </Button>
+                    </div>
+
+                    {item.feature ? (
+                      <MenuFeature feature={item.feature} />
+                    ) : null}
                   </div>
                 </div>
               </NavigationMenuContent>

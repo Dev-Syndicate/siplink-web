@@ -1031,11 +1031,22 @@ export const integrations = [
 export type NavLeaf = {
   label: string;
   href: string;
+  /**
+   * Per-item icon for the mega-menu tile. Falls back to the group icon when
+   * absent, so a group reads as a set until its items earn distinct marks.
+   */
+  icon?: LucideIcon;
+  /**
+   * No longer rendered — the mega menu shows navigation only, with no
+   * explanatory copy under each link. Kept because the strings are useful
+   * for section indexes and metadata elsewhere.
+   */
   description?: string;
 };
 
 export type NavGroup = {
   heading: string;
+  /** Not rendered in the mega menu; see the note on `NavLeaf.description`. */
   description?: string;
   icon?: LucideIcon;
   links: NavLeaf[];
@@ -1046,13 +1057,21 @@ export type NavItem = {
   href: string;
   /** Present on mega-menu entries; plain links omit it. */
   groups?: NavGroup[];
-  /** Promo panel rendered alongside the groups. */
+  /**
+   * Promo panel rendered beside the links — the image card in the menu.
+   *
+   * `image` is a path under `public/`. Until one is supplied the panel draws
+   * a placeholder at the same aspect ratio, so dropping the artwork in later
+   * is a one-line change and never shifts the layout.
+   */
   feature?: {
     eyebrow: string;
     title: string;
     description: string;
     cta: string;
     href: string;
+    image?: string;
+    imageAlt?: string;
   };
   /** Renders groups as one flat column instead of grouped columns. */
   flat?: boolean;
