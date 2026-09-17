@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 const milestones = [
   { year: "2012", label: "SipLink started" },
   { year: "2014", label: "Incorporated" },
-  { year: "10,000+", label: "Customers served" },
+  { year: "24/7", label: "Support and monitoring" },
 ];
 
 export default function AboutPage() {
@@ -107,8 +107,58 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Siplink Assure */}
+      {/* What we bring together — the brochure's product suite, in prose */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+        <div className="max-w-2xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-balance">
+            One platform, every channel
+          </h2>
+          <p className="mt-4 text-pretty text-muted-foreground">
+            SipLink brings calls, SMS and digital channels together in a single
+            system, so workflows stay simple as teams grow. Smart automation —
+            call scheduling, IVR and AI-driven insight — helps businesses deliver
+            a better customer experience while keeping day-to-day operations
+            efficient.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-8 md:grid-cols-2">
+          <div>
+            <h3 className="font-medium">Work from anywhere</h3>
+            <p className="mt-2 text-sm text-pretty text-muted-foreground">
+              Dedicated Android and iOS applications, a softphone and a
+              browser-based client mean employees can use whichever suits them —
+              at a desk, at home or on the move.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-medium">Voice, SMS and team chat</h3>
+            <p className="mt-2 text-sm text-pretty text-muted-foreground">
+              Send and receive SMS for inbound and outbound communication, with
+              internal team chat for collaboration alongside every call.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-medium">Smart dialling and recording</h3>
+            <p className="mt-2 text-sm text-pretty text-muted-foreground">
+              A dialer with auto-attendant, call transfer, do-not-disturb and
+              automatic call recording keeps outbound calling efficient and
+              accountable.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-medium">Supervision built in</h3>
+            <p className="mt-2 text-sm text-pretty text-muted-foreground">
+              IVR, call queues and live monitoring — listen, whisper and barge —
+              give supervisors the tools to manage and coach teams in real time.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Siplink Assure */}
+      <section className="border-t border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-semibold tracking-tight text-balance">
             SipLink Assure
@@ -134,10 +184,11 @@ export default function AboutPage() {
             </Card>
           ))}
         </div>
+        </div>
       </section>
 
       {/* Why choose SipLink */}
-      <section className="border-t border-border bg-muted/30">
+      <section className="border-t border-border">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-semibold tracking-tight text-balance">

@@ -113,7 +113,7 @@ const migrationProcess: SolutionStep[] = [
   },
   {
     title: "Port your numbers",
-    body: "Eligible numbers transfer to SipLink so your customers keep reaching you on the numbers they already know.",
+    body: "Eligible numbers transfer to SipLink, where porting is available, so your customers keep reaching you on the numbers they already know.",
   },
   {
     title: "Cut over with continuity",
@@ -152,25 +152,31 @@ const useCase: SolutionDetail[] = [
       {
         title: "Desktop, mobile and browser calling",
         description:
-          "Take business calls from a softphone, a phone in the pocket or straight from the browser with WebRTC.",
+          "Take business calls from a desktop softphone, a mobile app or straight from the browser over WebRTC — with a Chrome extension dialer for click-to-call.",
         icon: Smartphone,
       },
       {
-        title: "Extension mobility",
+        title: "Extension mobility and Follow Me",
         description:
-          "An extension follows the person, not the desk, so moving location changes nothing for callers.",
+          "An extension follows the person, not the desk. Find Me / Follow Me rings the right devices so a change of location changes nothing for callers.",
         icon: ArrowLeftRight,
       },
       {
         title: "Presence and multi-device",
         description:
-          "See who's available and pick up on whichever device is closest, with calls staying in sync.",
+          "See who's available and pick up on whichever device is closest, with calls, chat and status staying in sync across every endpoint.",
         icon: Users,
+      },
+      {
+        title: "Voicemail to email",
+        description:
+          "Missed calls turn into voicemail delivered to email, so nothing waits for someone to be back at a desk.",
+        icon: Headset,
       },
       {
         title: "Centralised control",
         description:
-          "Provision users, set routing and manage the whole team from one web portal.",
+          "Provision users, set routing and manage the whole distributed team from one web portal, with changes taking effect immediately.",
         icon: ServerCog,
       },
     ],
@@ -208,25 +214,25 @@ const useCase: SolutionDetail[] = [
       {
         title: "Intelligent routing and queues",
         description:
-          "Send each caller to the right team and hold the rest in an organised queue instead of a busy tone.",
+          "Automatic call distribution sends each caller to the right team and holds the rest in an organised queue — with wait-time announcements and callback instead of a busy tone.",
         icon: Route,
       },
       {
-        title: "IVR menus",
+        title: "Multi-level IVR menus",
         description:
-          "Let callers self-select Sales, Support or Billing before they ever reach an agent.",
+          "Let callers self-select Sales, Support or Billing before they reach an agent, with separate flows for business hours, holidays and after-hours.",
         icon: ListChecks,
       },
       {
-        title: "Recording and monitoring",
+        title: "Recording, monitoring and coaching",
         description:
-          "Capture conversations and let supervisors listen, whisper or barge to support agents live.",
+          "Capture conversations and let supervisors listen, whisper or barge in live to support agents through difficult calls.",
         icon: Headset,
       },
       {
-        title: "Analytics",
+        title: "Analytics and service levels",
         description:
-          "Understand call volumes, answered and missed calls, and busy periods to staff and improve accordingly.",
+          "Track call volumes, answered and missed calls, wait times and busy periods so you can staff, coach and improve against what the numbers show.",
         icon: Gauge,
       },
     ],
@@ -262,27 +268,27 @@ const useCase: SolutionDetail[] = [
     },
     capabilities: [
       {
-        title: "Streamlined outbound calling",
+        title: "Outbound dialling and campaigns",
         description:
-          "Spend more time speaking with prospects and less time on the repetitive parts of dialling.",
+          "Automate the repetitive part of dialling and organise calling campaigns, so reps spend their time in real conversations rather than waiting on busy or unanswered numbers.",
         icon: PhoneOutgoing,
       },
       {
         title: "Professional business numbers",
         description:
-          "Reach prospects from consistent business numbers rather than personal lines.",
+          "Reach prospects from consistent business numbers rather than personal lines, with click-to-dial from where the team already works.",
         icon: Phone,
       },
       {
         title: "Conversation visibility",
         description:
-          "Keep track of customer conversations so the whole team knows where each relationship stands.",
+          "Track call outcomes and campaign performance so the whole team knows where each relationship stands and which follow-ups are due.",
         icon: Gauge,
       },
       {
         title: "CRM integration",
         description:
-          "Connect calling to the CRM workflows your team already relies on, where the integration supports it.",
+          "Screen pop, click-to-dial and automatic call logging connect calling to the CRM workflows your team already relies on, where the integration supports it.",
         icon: Workflow,
       },
     ],
@@ -320,13 +326,19 @@ const useCase: SolutionDetail[] = [
       {
         title: "Voice, video and messaging",
         description:
-          "Calls, HD video meetings, instant messaging and presence on one platform.",
+          "Calls, HD video meetings, instant messaging and presence on one platform, reachable from desktop, mobile and the browser.",
         icon: Video,
+      },
+      {
+        title: "Meetings and file sharing",
+        description:
+          "Audio and video conferencing with screen sharing and file sharing, so a conversation can become a working session without leaving the platform.",
+        icon: MonitorSmartphone,
       },
       {
         title: "Collaboration in one place",
         description:
-          "Bring team communication together instead of spreading it across separate apps.",
+          "One-to-one and group chat with a shared directory bring team communication together instead of spreading it across separate apps.",
         icon: MessagesSquare,
       },
       {
@@ -338,7 +350,7 @@ const useCase: SolutionDetail[] = [
       {
         title: "One environment to manage",
         description:
-          "Administer calls, video, chat and collaboration from a single platform.",
+          "Administer calls, video, chat and collaboration from a single platform and web portal.",
         icon: Layers,
       },
     ],
@@ -382,7 +394,7 @@ const useCase: SolutionDetail[] = [
       {
         title: "Local numbers and routing",
         description:
-          "Give each market the local presence it needs while routing stays centrally managed.",
+          "Give each market the local or virtual number presence it needs to enter a region, while routing and DID management stay centrally controlled.",
         icon: MapPin,
       },
       {
@@ -493,25 +505,25 @@ const businessSize: SolutionDetail[] = [
       {
         title: "Cloud phone system",
         description:
-          "IP telephony, extensions and call handling delivered over the internet.",
+          "IP telephony, extensions and call handling delivered over the internet and managed from a web portal — no PBX in a closet to maintain.",
         icon: CloudCog,
       },
       {
         title: "Mobile and browser calling",
         description:
-          "Work from softphones, mobile and the browser from the first hire onward.",
+          "Work from desktop softphones, a mobile app and the browser from the first hire onward, with voicemail delivered to email.",
         icon: Smartphone,
       },
       {
-        title: "IVR and routing",
+        title: "Auto-attendant and routing",
         description:
-          "Sound like a bigger company with menus that route callers to the right place.",
+          "Sound like a bigger company with an IVR auto-attendant that greets callers and routes them to the right person or department.",
         icon: ListChecks,
       },
       {
         title: "Scales with you",
         description:
-          "Add users and features on demand instead of buying capacity up front.",
+          "Add extensions, numbers and features on demand instead of buying capacity up front.",
         icon: TrendingUp,
       },
     ],
@@ -555,19 +567,19 @@ const businessSize: SolutionDetail[] = [
       {
         title: "Call recording and voicemail",
         description:
-          "Record calls and get voicemail to email so nothing important is lost.",
+          "Record inbound and outbound calls and get voicemail delivered to email, so nothing important is lost.",
         icon: Headset,
       },
       {
         title: "Business SMS and mobile app",
         description:
-          "Reach customers by message and take the business line anywhere.",
+          "Reach customers by message and take the business line anywhere from the mobile app, keeping personal numbers out of it.",
         icon: Smartphone,
       },
       {
         title: "CRM and app integrations",
         description:
-          "Connect calling to the business tools you already use, where supported.",
+          "Click-to-dial and call logging connect calling to the business tools you already use, where supported.",
         icon: Workflow,
       },
     ],
@@ -617,13 +629,13 @@ const businessSize: SolutionDetail[] = [
       {
         title: "Reporting and analytics",
         description:
-          "CDR, agent and queue reports to understand and improve performance.",
+          "CDR, agent and queue reports, wallboards and service-level monitoring to understand and improve performance.",
         icon: Gauge,
       },
       {
         title: "CRM and business integrations",
         description:
-          "Screen pop, click-to-dial and call logging connected to your applications, where supported.",
+          "Screen pop, click-to-dial and call activity logging connected to your applications, where supported.",
         icon: Workflow,
       },
     ],
@@ -685,7 +697,7 @@ const businessSize: SolutionDetail[] = [
       {
         title: "AI voice assistant",
         description:
-          "Let an intelligent voice layer handle routine interactions and route the rest to the right agent.",
+          "An intelligent voice layer handles routine interactions naturally and routes anything needing human expertise to the right agent — AI and people working together, not one replacing the other.",
         icon: Bot,
       },
       {

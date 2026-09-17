@@ -352,18 +352,20 @@ export const customerShapes = [
 ] as const;
 
 /**
- * Proof points. Figures the source documents attribute to SipLink; those
- * marked `footnote` carry the qualification the documents attach to them.
+ * Proof points. Only claims the source documents actually support: no country
+ * count, no uptime/SLA percentage, and no SOC 2 / ISO 27001 / GDPR (SipLink
+ * holds none of these). See the guardrails in lib/site.ts and the
+ * solutions-content-source note.
  */
 export const platformProof: {
   value: string;
   label: string;
   footnote?: boolean;
 }[] = [
-  { value: "150+", label: "Countries covered" },
-  { value: "99.5%", label: "Port availability", footnote: true },
-  { value: "24/7", label: "Support and NOC" },
-  { value: "SOC 2", label: "ISO 27001, HIPAA, GDPR" },
+  { value: "HIPAA", label: "Compliant platform" },
+  { value: "DoT", label: "Certified carrier" },
+  { value: "24/7", label: "Support and monitoring" },
+  { value: "Cloud", label: "Managed and maintained for you" },
 ];
 
 export const messagingChannels = [

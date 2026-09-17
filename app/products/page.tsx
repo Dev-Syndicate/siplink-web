@@ -41,8 +41,7 @@ export default function ProductsPage() {
           <p className="mt-8 max-w-2xl text-lg text-pretty text-muted-foreground lg:text-xl">
             A call reaches you, gets routed, is handled, and becomes something
             you can act on. SipLink is the platform underneath all four — voice,
-            contact centre, messaging and APIs on one network, in 150+
-            countries.
+            contact centre, messaging and APIs on one managed cloud network.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4">

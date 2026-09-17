@@ -1173,7 +1173,7 @@ export const nav: NavItem[] = [
       {
         heading: "Phone Numbers",
         icon: Network,
-        description: "Local presence in 150+ countries.",
+        description: "Local presence where your customers are.",
         links: [
           {
             label: "DID Numbers",

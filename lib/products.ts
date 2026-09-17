@@ -80,17 +80,18 @@ export const productDetails: ProductDetail[] = [
     categorySlug: "business-voice",
     tagline: "Connect your PBX to our IP network.",
     intro:
-      "SipLink SIP Trunking provides SIP-enabled connectivity for IP-PBX environments, allowing businesses to connect existing telephony systems to external voice networks using SIP and VoIP — for immediate savings and guaranteed quality of service.",
+      "SipLink SIP Trunking delivers voice connectivity over the internet to businesses running a SIP-enabled IP-PBX. Your existing phone system keeps handling call control and features while the trunk beneath it carries traffic to the public network over SIP and VoIP, so you cut cost and gain flexibility without replacing the equipment you already run.",
     icon: Router,
     problem: {
       heading: "Legacy trunks are expensive and inflexible",
-      body: "Traditional PRI and analogue lines are billed by the channel, take weeks to provision and cannot flex with demand. Adding capacity for a busy season means paying for it all year.",
+      body: "Traditional PRI and analogue lines are billed by the channel, take weeks to provision, and cannot flex with demand. You buy capacity for the busiest hour of the year and pay for it every other hour too — and when a line goes down, there is no clean way to route around it.",
     },
     approach: {
       heading: "How SipLink handles it",
       body: [
-        "We connect your existing IP-PBX to our voice network over SIP, so your current equipment keeps working while the connectivity underneath it changes.",
-        "Trunks are designed around your call volumes, number ranges and redundancy requirements, with carrier failover and least-cost routing available where the deployment supports it.",
+        "We connect your IP-enabled PBX to our voice network over SIP, so voice traffic travels the data network to reach the PSTN instead of relying on dedicated PRI circuits. Your current call management, auto attendants and features keep working exactly as they do today.",
+        "Trunks are sized around your real call volumes, number ranges and redundancy needs, and can be bought in increments as small as a single channel — so you provision and pay for the capacity you actually use, then scale it as requirements change.",
+        "Where the deployment supports it, carrier failover, prefix- and destination-based least-cost routing, and analogue adapters for legacy handsets keep calls flowing and costs controlled through the transition.",
       ],
     },
     features: [
@@ -139,7 +140,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "Lower per-channel costs, capacity that scales with demand, and a path to cloud calling that does not require discarding the equipment you have already paid for.",
+      body: "Lower per-channel cost, capacity that scales up and down with demand rather than sitting idle, and a foundation for cloud calling, routing, IVR and contact-centre services — all reached without discarding the PBX you have already paid for.",
     },
   },
   {
@@ -149,17 +150,17 @@ export const productDetails: ProductDetail[] = [
     categorySlug: "business-voice",
     tagline: "A full phone system in the cloud.",
     intro:
-      "A complete business phone system delivered from the cloud — extensions, call routing, IVR, voicemail and reporting, all managed from a web portal with no hardware to maintain.",
+      "A complete business phone system delivered entirely over the internet — extensions, call routing, IVR, voicemail, conferencing and reporting, all administered from a web portal with no on-site switch to buy or maintain. The desk phones are the only hardware you need; SipLink supplies and runs everything behind them.",
     icon: CloudCog,
     problem: {
       heading: "Phone systems should not need a telecom closet",
-      body: "On-premise systems tie communication to a physical location, need specialist maintenance, and make supporting remote or hybrid staff unnecessarily difficult.",
+      body: "An on-premise PBX ties your communication to one physical location, demands specialist maintenance and upgrades, and turns something as ordinary as supporting a remote or hybrid team into a hardware project. The box in the closet becomes a single point of failure and a standing cost.",
     },
     approach: {
       heading: "How SipLink handles it",
       body: [
-        "Your phone system runs in our cloud and is administered through a web portal. Extensions, call flows, business hours and users are configured centrally and take effect immediately.",
-        "Employees connect from IP phones, desktop softphones, browsers or mobile devices, so the office location stops being a constraint on who can answer a call.",
+        "Your phone system runs in the SipLink cloud and is administered through a web-based interface. Extensions, call flows, business hours, ring groups and users are configured centrally through a straightforward GUI and take effect immediately — no plug-ins to install, no on-site engineer required.",
+        "Employees connect from IP phones, desktop softphones, browsers or mobile devices, so where someone sits stops being a constraint on who can answer a call. Find Me / Follow Me chases a caller across devices, while conferencing and voicemail-to-email keep conversations moving whether or not anyone is at a desk.",
       ],
     },
     features: [
@@ -218,11 +219,11 @@ export const productDetails: ProductDetail[] = [
     categorySlug: "business-voice",
     tagline: "We host and manage it end to end.",
     intro:
-      "SipLink Hosted PBX is a cloud-based business phone system delivered over the internet, giving employees, branches and remote users a common communications environment without operating a traditional on-premises PBX.",
+      "SipLink Hosted PBX is a cloud-based business phone system delivered over the internet and managed end to end by SipLink. It gives head office, branches and remote staff a single common communications environment — with continuous feature upgrades, disaster recovery and business continuity handled for you — so nobody has to run a traditional on-premises PBX.",
     icon: ServerCog,
     problem: {
       heading: "Not every business wants to run a phone system",
-      body: "Maintaining a PBX means firmware, patches, capacity planning and someone on call when it breaks — work that rarely belongs on a small IT team's plate.",
+      body: "Maintaining a PBX means firmware, patches, capacity planning, and someone on call when it breaks. That is real, specialist work, and it rarely belongs on a small IT team's plate — yet the business still needs a phone system that simply works.",
     },
     approach: {
       heading: "How SipLink handles it",
@@ -277,7 +278,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "Enterprise phone-system capability without the operational burden — and a support team that answers when something needs attention.",
+      body: "Enterprise phone-system capability without the operational burden of owning one — continuously updated, monitored around the clock, and backed by a support team that answers when something needs attention.",
     },
   },
   {
@@ -287,14 +288,18 @@ export const productDetails: ProductDetail[] = [
     categorySlug: "business-voice",
     tagline: "On-premise PBX, SIP enabled.",
     intro:
-      "On-premise IP-PBX deployments for organisations that need to keep call control inside their own network, connected to external voice services over SIP.",
+      "An IP-PBX connects your phone extensions to the public network over the internet rather than through traditional lines. For organisations that need call control to stay on-site — inside their own network and under their own administration — SipLink connects an on-premise IP-PBX to our voice services over SIP.",
     icon: Cpu,
     sparseSource: true,
+    problem: {
+      heading: "Some environments cannot move call control off-site",
+      body: "Policy, regulation or an existing hardware investment can require the phone system to remain inside your own network, even as the connectivity beneath it modernises.",
+    },
     approach: {
       heading: "How SipLink handles it",
       body: [
-        "Where policy, regulation or existing investment requires call control to stay on site, SipLink connects your on-premise IP-PBX to our voice network over SIP.",
-        "The same trunking, number management and routing capabilities apply, while the PBX itself remains under your control inside your own network.",
+        "The on-premise IP-PBX keeps handling internal and external calls and stays under your control, while SipLink provides the SIP connectivity that links it to the wider voice network.",
+        "The same trunking, DID and number management and routing capabilities apply, and a hybrid model lets you keep call control on-site while adopting cloud services where they add value.",
       ],
     },
     features: [
@@ -650,22 +655,37 @@ export const productDetails: ProductDetail[] = [
       {
         title: "Automated dialling",
         description:
-          "The system paces outbound calls against agent availability.",
+          "The system paces outbound calls against agent availability and connects answered calls straight through.",
         icon: PhoneOutgoing,
       },
       {
         title: "Campaign management",
-        description: "Organise, run and measure outbound calling campaigns.",
+        description:
+          "Organise, run and measure inbound and outbound calling campaigns from one place.",
         icon: Workflow,
       },
       {
-        title: "Outcome tracking",
-        description: "Record dispositions and results against each contact.",
+        title: "Contact list handling",
+        description:
+          "Load and manage the numbers a campaign works through, in the order you decide.",
         icon: ListOrdered,
       },
       {
+        title: "Call disposition",
+        description:
+          "Record outcomes and wrap-up notes against every contact for follow-up and reporting.",
+        icon: ListOrdered,
+      },
+      {
+        title: "Agent availability tracking",
+        description:
+          "Monitor which agents are free so the system connects live calls to a ready person.",
+        icon: Users,
+      },
+      {
         title: "Performance reporting",
-        description: "Measure campaign effectiveness and agent talk time.",
+        description:
+          "Measure campaign effectiveness, connect rates and agent talk time.",
         icon: Gauge,
       },
     ],
@@ -947,25 +967,38 @@ export const productDetails: ProductDetail[] = [
     features: [
       {
         title: "Programmatic calling",
-        description: "Place and receive calls from your own application code.",
+        description: "Place and receive calls directly from your own application code.",
         icon: Code2,
       },
       {
         title: "Call control",
         description:
-          "Manage voice interactions and call flow programmatically.",
+          "Manage voice interactions and call flow programmatically as a call progresses.",
         icon: Workflow,
       },
       {
         title: "Agent connection",
         description:
-          "Connect customers to the right agent from within your product.",
+          "Connect customers to the right agent or department from within your product.",
         icon: Users,
       },
       {
+        title: "Workflow automation",
+        description:
+          "Trigger calls from business events — reminders, alerts and outbound follow-up.",
+        icon: Workflow,
+      },
+      {
         title: "Webhooks",
-        description: "Subscribe to call events and drive your own workflows.",
+        description:
+          "Subscribe to call events and drive your own workflows in real time.",
         icon: Webhook,
+      },
+      {
+        title: "REST and SDK integration",
+        description:
+          "Build on documented REST APIs and SDKs that fit your existing stack.",
+        icon: Boxes,
       },
     ],
     idealFor: [
@@ -1013,12 +1046,24 @@ export const productDetails: ProductDetail[] = [
       },
       {
         title: "Transactional messaging",
-        description: "Confirmations, reminders and status updates at volume.",
+        description: "Confirmations, reminders and status updates sent at volume.",
         icon: MessageCircle,
       },
       {
+        title: "Two-way messaging",
+        description:
+          "Receive replies and handle inbound messages, not just one-way sends.",
+        icon: MessagesSquare,
+      },
+      {
+        title: "Event-driven automation",
+        description:
+          "Fire the right message the moment a business event happens in your systems.",
+        icon: Workflow,
+      },
+      {
         title: "Delivery reporting",
-        description: "Track what was sent and what arrived.",
+        description: "Track what was sent and confirm what arrived.",
         icon: BarChart3,
       },
     ],
@@ -1097,11 +1142,11 @@ export const productDetails: ProductDetail[] = [
     categorySlug: "communication-apis",
     tagline: "Enable real-time calling directly in your applications.",
     intro:
-      "SipLink WebRTC SDK lets developers add real-time voice communication directly into web and application environments, with nothing for customers to install.",
+      "SipLink WebRTC SDK lets developers add real-time voice communication directly into web and application environments — browser-based calling, click-to-call, embedded softphones and support interfaces — with nothing for customers to download or install.",
     icon: MonitorSmartphone,
     problem: {
       heading: "Installing software loses customers",
-      body: "Asking someone to download a softphone before they can speak to you adds friction at exactly the moment they wanted help.",
+      body: "Asking someone to download a softphone before they can speak to you adds friction at exactly the moment they had decided to reach out. Many never complete the step, and the conversation you wanted never happens.",
     },
     approach: {
       heading: "How SipLink handles it",
@@ -1177,13 +1222,25 @@ export const productDetails: ProductDetail[] = [
         icon: Network,
       },
       {
+        title: "Endpoint and registration",
+        description:
+          "Manage SIP registration and endpoint support across your voice architecture.",
+        icon: Router,
+      },
+      {
+        title: "Carrier routing",
+        description:
+          "Handle inbound and outbound carrier routing with least-cost and prefix rules.",
+        icon: GitBranch,
+      },
+      {
         title: "Workflow management",
-        description: "Build custom voice communication workflows.",
+        description: "Build custom voice communication workflows in code.",
         icon: Workflow,
       },
       {
         title: "Legacy integration",
-        description: "Connect modern applications to existing SIP systems.",
+        description: "Connect modern applications to the SIP systems you already run.",
         icon: ArrowLeftRight,
       },
     ],
@@ -1241,6 +1298,18 @@ export const productDetails: ProductDetail[] = [
         icon: PhoneIncoming,
       },
       {
+        title: "External calling from Teams",
+        description:
+          "Employees place calls to customers, suppliers and any phone number without leaving Teams.",
+        icon: PhoneOutgoing,
+      },
+      {
+        title: "Managed voice connectivity",
+        description:
+          "SipLink runs the underlying call routing and voice connectivity in both directions.",
+        icon: Network,
+      },
+      {
         title: "Centralised management",
         description: "Administer business telephony from one architecture.",
         icon: ServerCog,
@@ -1290,12 +1359,24 @@ export const productDetails: ProductDetail[] = [
       },
       {
         title: "Interoperability",
-        description: "Help different SIP-enabled platforms work together.",
+        description: "Help different SIP-enabled platforms understand one another and work together.",
         icon: ArrowLeftRight,
       },
       {
+        title: "Trunk and route failover",
+        description:
+          "Route around a failed trunk or path where the deployment supports it, keeping voice available.",
+        icon: Repeat,
+      },
+      {
+        title: "Secure signalling",
+        description:
+          "TLS-encrypted SIP signalling and SRTP media at the edge where supported.",
+        icon: Lock,
+      },
+      {
         title: "Voice visibility",
-        description: "A central point of insight into the voice environment.",
+        description: "A central point of insight into how traffic moves across the voice environment.",
         icon: Activity,
       },
     ],
@@ -1479,9 +1560,21 @@ export const productDetails: ProductDetail[] = [
         icon: GitBranch,
       },
       {
-        title: "Transcription",
+        title: "Automated resolution",
         description:
-          "Call and voicemail transcription with conversation summaries.",
+          "Handle suitable routine requests end to end, so the caller is helped without waiting for an agent.",
+        icon: Sparkles,
+      },
+      {
+        title: "Speech and text-to-speech",
+        description:
+          "Speech-to-text understanding and generated voice responses drive natural spoken exchanges.",
+        icon: Mic,
+      },
+      {
+        title: "Transcription and summaries",
+        description:
+          "Call and voicemail transcription with conversation summaries for authorised review.",
         icon: FileAudio,
       },
     ],
