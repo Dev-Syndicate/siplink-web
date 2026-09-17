@@ -1,4 +1,5 @@
 import {
+  BatteryFull,
   Check,
   Cloud,
   Headset,
@@ -6,7 +7,9 @@ import {
   MessageCircle,
   PhoneCall,
   ServerCog,
+  Signal,
   Smartphone,
+  Wifi,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -164,16 +167,65 @@ const SCREENS = [NoHardware, SameNumber, OneExtension, NamedTeam];
 export function SwitchingDevice({ active }: { active: number }) {
   return (
     <div className="relative flex justify-center perspective-[1600px]">
-      {/* Light behind the object, so the tilt reads as depth rather than a
-          flat shape that happens to be skewed. */}
+      {/* A disc behind the handset, set low and left of it as in the
+          reference, rather than a glow centred on it. A soft-edged circle
+          reads as a shape the phone is standing on; a symmetrical blur reads
+          as a lamp pointed at the camera. Two layers: the disc that holds an
+          edge, and a wider bloom that keeps that edge from looking cut. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute top-1/2 left-1/2 size-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/45 blur-[110px] sm:size-[30rem]"
+        className="pointer-events-none absolute top-[58%] left-[38%] size-[17rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/50 blur-[70px] sm:size-[26rem]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-[58%] left-[38%] size-[21rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/25 blur-[120px] sm:size-[32rem]"
       />
 
       <div className="relative transform-3d scale-90 rotate-x-[7deg] rotate-y-[-17deg] rotate-z-[-3deg] sm:scale-100">
-        <div className="w-64 overflow-hidden rounded-[2rem] bg-background p-2 shadow-2xl ring-1 ring-background/20">
-          <div className="grid aspect-[9/15] overflow-hidden rounded-3xl bg-card">
+        {/* The handset. A dark body around a lit screen rather than a white
+            panel: the bezel, the island, the status bar and the home
+            indicator are what make it read as a phone instead of a card.
+            The rim light is what keeps a near-black body from disappearing
+            into a near-black section. */}
+        <div className="relative w-64 rounded-[2.6rem] bg-foreground p-[7px] shadow-2xl ring-1 ring-background/25">
+          {/* Volume and wake, on the edges where a hand expects them. */}
+          <span
+            aria-hidden
+            className="absolute top-24 -left-[2px] h-9 w-[3px] rounded-l-sm bg-background/20"
+          />
+          <span
+            aria-hidden
+            className="absolute top-36 -left-[2px] h-9 w-[3px] rounded-l-sm bg-background/20"
+          />
+          <span
+            aria-hidden
+            className="absolute top-28 -right-[2px] h-14 w-[3px] rounded-r-sm bg-background/20"
+          />
+
+          <div className="relative overflow-hidden rounded-[2.1rem] bg-card">
+            {/* Status bar. Constant while the screens turn behind it, which
+                is what sells the screens as one device rather than four
+                pictures. */}
+            <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 pt-3 text-[10px] font-semibold text-foreground">
+              <span className="font-mono tracking-tight">9:41</span>
+              <span className="flex items-center gap-1">
+                <Signal className="size-3" aria-hidden />
+                <Wifi className="size-3" aria-hidden />
+                <BatteryFull className="size-3.5" aria-hidden />
+              </span>
+            </div>
+
+            <span
+              aria-hidden
+              className="absolute top-2.5 left-1/2 z-30 h-[22px] w-[74px] -translate-x-1/2 rounded-full bg-foreground"
+            />
+
+            <span
+              aria-hidden
+              className="absolute bottom-2 left-1/2 z-20 h-1 w-24 -translate-x-1/2 rounded-full bg-foreground/30"
+            />
+
+            <div className="grid aspect-[9/15] overflow-hidden pt-9 pb-6">
             {SCREENS.map((Screen, index) => (
               <div
                 key={index}
@@ -190,23 +242,8 @@ export function SwitchingDevice({ active }: { active: number }) {
                 <Screen />
               </div>
             ))}
+            </div>
           </div>
-        </div>
-
-        {/* The card in front. Pulled toward the viewer on Z so it separates
-            from the device rather than sitting flat against it, and hung off
-            the lower-left corner so it never covers the screen. */}
-        <div
-          aria-hidden
-          className="absolute -bottom-6 -left-8 w-36 translate-z-[80px] rounded-2xl bg-background p-3.5 shadow-2xl ring-1 ring-background/20 sm:-left-20 sm:w-40"
-        >
-          <p className="text-[11px] text-muted-foreground">This month</p>
-          <p className="font-heading mt-1 text-2xl font-semibold tracking-tight text-foreground">
-            0
-          </p>
-          <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
-            Site visits needed
-          </p>
         </div>
       </div>
     </div>

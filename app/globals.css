@@ -418,7 +418,7 @@
      active index in the markup so it restarts with each change instead of
      continuing from wherever the last one left off. */
   .dwell-bar {
-    animation: dwell-fill 6000ms linear forwards;
+    animation: dwell-fill var(--dwell-duration, 6000ms) linear forwards;
   }
 
   @keyframes dwell-fill {
@@ -427,6 +427,21 @@
     }
     to {
       transform: scaleX(1);
+    }
+  }
+
+  /* The same timer stood on its end, for a rail that runs down rather than
+     across. Shares `--dwell-duration` so a stage and its bar cannot drift. */
+  .dwell-bar-y {
+    animation: dwell-fill-y var(--dwell-duration, 6000ms) linear forwards;
+  }
+
+  @keyframes dwell-fill-y {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
     }
   }
 
@@ -453,6 +468,12 @@
    * seam is visible. */
   .review-track {
     --review-gap: 1.5rem;
+    /* How many times the row is repeated in the track. Two is the minimum
+       that can loop, but two only works while a single copy is wider than
+       the screen — narrow the cards enough and a 4K display runs out of row
+       mid-drift and shows the seam. The markup sets this; the keyframe below
+       divides by it. */
+    --review-copies: 2;
     display: flex;
     width: max-content;
     gap: var(--review-gap);
@@ -468,12 +489,23 @@
     }
   }
 
+  /* Shift by exactly one copy of the row.
+   *
+   * For N copies of n cards the track is N·n·c + (N·n − 1)·g wide, and one
+   * copy advances n·c + n·g — which works out to (100% + one gap) / N. The
+   * extra gap is the seam between copies: it belongs to the distance, and
+   * dropping it is what makes a long marquee creep a little further left on
+   * every lap until the join walks into view.
+   *
+   * At N = 2 this is the familiar `-50% - gap/2`. */
   @keyframes review-drift {
     from {
       transform: translateX(0);
     }
     to {
-      transform: translateX(calc(-50% - (var(--review-gap) / 2)));
+      transform: translateX(
+        calc((-100% - var(--review-gap)) / var(--review-copies))
+      );
     }
   }
 
@@ -697,6 +729,319 @@
 
   @media (prefers-reduced-motion: reduce) {
     .trace-pulse {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* The soft bloom rising out of a card's lower corner, as on the reference
+     cards. Two offset radials rather than one, so the light has a direction
+     instead of sitting as a symmetrical disc in the middle of the card. */
+  .card-bloom {
+    background-image:
+      radial-gradient(
+        ellipse 92% 62% at 12% 108%,
+        var(--brand-to) 0%,
+        transparent 62%
+      ),
+      radial-gradient(
+        ellipse 78% 52% at 72% 118%,
+        var(--brand-from) 0%,
+        transparent 58%
+      );
+  }
+}
+
+@layer components {
+  /* Loops used by the scenes inside the migration cards. Each takes a
+     `--cycle-delay` so several copies of the same loop can be staggered
+     without a keyframe per item. */
+
+  /* Something switching off and coming back: the racks going dark. */
+  .dim-cycle {
+    animation: dim-cycle 4.8s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes dim-cycle {
+    0%,
+    10% {
+      opacity: 1;
+    }
+    42%,
+    88% {
+      opacity: 0.16;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* A pair that trade places — the carrier label under the number. */
+  .swap-out {
+    animation: swap-out 5s ease-in-out infinite;
+  }
+
+  .swap-in {
+    animation: swap-in 5s ease-in-out infinite;
+  }
+
+  /* The two never fade through each other. Both sit in one grid cell, so any
+     overlap stacks two labels in the same place and reads as a smudge — the
+     outgoing one is gone before the incoming one starts. */
+  @keyframes swap-out {
+    0%,
+    40% {
+      opacity: 1;
+    }
+    45%,
+    93% {
+      opacity: 0;
+    }
+    98%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes swap-in {
+    0%,
+    48% {
+      opacity: 0;
+    }
+    53%,
+    88% {
+      opacity: 1;
+    }
+    93%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* The ring landing on one device at a time. */
+  .ring-cycle {
+    animation: ring-cycle 4.2s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes ring-cycle {
+    0%,
+    4% {
+      opacity: 0;
+    }
+    10%,
+    24% {
+      opacity: 1;
+    }
+    32%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Someone typing a reply. */
+  .dot-bounce {
+    animation: dot-bounce 1.3s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes dot-bounce {
+    0%,
+    55%,
+    100% {
+      opacity: 0.3;
+      transform: translateY(0);
+    }
+    28% {
+      opacity: 1;
+      transform: translateY(-3px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dim-cycle,
+    .swap-out,
+    .swap-in,
+    .ring-cycle,
+    .dot-bounce {
+      animation: none;
+    }
+    /* The pair that trade places would otherwise stack on each other. */
+    .swap-in {
+      opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* The transcript arriving a word at a time.
+     
+     Transcription lands in fragments rather than all at once, so the words
+     resolve one after another instead of the line fading in whole. The blur
+     is what makes it read as resolving rather than merely appearing — a
+     plain opacity ramp looks like a fade, not like speech being recognised.
+
+     `both` matters: the words hold at opacity 0 until their turn, otherwise
+     the whole line is legible on the first frame and the stagger is wasted. */
+  @keyframes word-in {
+    from {
+      opacity: 0;
+      filter: blur(3px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+
+  .word-in {
+    animation: word-in 240ms ease-out both;
+    animation-delay: var(--word-delay, 0ms);
+  }
+
+  /* What the understanding stage pulls out, arriving after the line it came
+     from. Slides in from the side the connector rule is on, so it reads as
+     being attached to the transcript rather than listed beneath it. */
+  @keyframes note-attach {
+    from {
+      opacity: 0;
+      transform: translateX(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .note-attach {
+    animation: note-attach 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: var(--note-delay, 0ms);
+  }
+
+  /* Nothing here is load-bearing: every one of these draws something the
+     heading and the capability list already say in words. Under reduced
+     motion they land in their finished state instead of animating. */
+  @media (prefers-reduced-motion: reduce) {
+    .word-in,
+    .note-attach {
+      animation: none;
+    }
+
+    .dwell-bar-y {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* The AI marker's sheen.
+     
+     Every element in the AI section that stands for the AI itself — the
+     lettermark, the console's label, the capability markers — carries this,
+     and nothing else on the site does. That is the whole job: one moving
+     highlight that means "this is the AI", so the reader picks the AI
+     features out of the page without having to read a label on each one.
+
+     Drawn as a moving background rather than a translucent child so it rides
+     on top of the brand gradient without flattening it. White in both themes
+     on purpose: it is a highlight on a saturated ground, matching the
+     `white/…` overlays already used on the closing CTA's gradient. */
+  @keyframes ai-sheen {
+    from {
+      background-position: 160% 0;
+    }
+    to {
+      background-position: -60% 0;
+    }
+  }
+
+  .ai-sheen {
+    background-image: linear-gradient(
+      100deg,
+      transparent 34%,
+      oklch(1 0 0 / 0.5) 48%,
+      transparent 62%
+    );
+    background-size: 220% 100%;
+    background-repeat: no-repeat;
+    animation: ai-sheen 3.6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-sheen {
+      animation: none;
+      background-image: none;
+    }
+  }
+}
+
+@layer components {
+  /* A dashed placeholder standing where content has not arrived yet.
+     
+     Taken from the reference illustrations, where a dashed outline is the
+     shape of a thing that is missing and the solid form beside it is the
+     thing itself. Here it does the same job literally: the outline holds the
+     space the AI is about to fill, reads as a gap for long enough to be
+     noticed, then dissolves upward as the real words land in its place.
+
+     `--ghost-span` is how long one placeholder lives and `--ghost-delay` is
+     when it starts, so a caller's two lines can resolve one after the other
+     rather than both at once. */
+  @keyframes ghost-line {
+    0% {
+      opacity: 0;
+      transform: translateY(3px) scaleX(0.97);
+    }
+    16% {
+      opacity: 1;
+      transform: none;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-3px);
+    }
+  }
+
+  .ghost-line {
+    transform-origin: left center;
+    animation: ghost-line var(--ghost-span, 900ms) ease-out both;
+    animation-delay: var(--ghost-delay, 0ms);
+  }
+
+  /* The reference's other half: a dashed copy of a shape, offset from the
+     solid one it belongs to. It detaches from the AI mark and rises while
+     the console is working, so the mark reads as generating something rather
+     than merely sitting in the corner. */
+  @keyframes ghost-lift {
+    0% {
+      opacity: 0;
+      transform: translateY(0) scale(1);
+    }
+    22% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-0.75rem) scale(1.2);
+    }
+  }
+
+  .ghost-lift {
+    animation: ghost-lift 2.8s ease-out infinite;
+  }
+
+  /* Both are pure illustration — the rail's words carry every claim — so
+     under reduced motion they simply are not drawn. */
+  @media (prefers-reduced-motion: reduce) {
+    .ghost-line,
+    .ghost-lift {
       animation: none;
       opacity: 0;
     }

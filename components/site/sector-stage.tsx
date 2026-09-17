@@ -73,7 +73,12 @@ export function SectorStage() {
 
   return (
     <section
-      className="group/stage bg-primary text-primary-foreground"
+      // White at the top so the seam with the light section above disappears,
+      // deepening to pink at the bottom. The section below this one is
+      // `bg-foreground` — near-black — so the ramp is what carries the page
+      // from the light half into the dark one instead of butting two heavy
+      // blocks together. Change the section order and this wants revisiting.
+      className="group/stage bg-gradient-to-b from-background via-accent to-brand-from/25"
       onPointerEnter={() => setHeld(true)}
       onPointerLeave={() => setHeld(false)}
       onFocusCapture={() => setHeld(true)}
@@ -84,7 +89,7 @@ export function SectorStage() {
           <h2 className="font-heading text-4xl leading-[1.08] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
             Configured for how your sector works
           </h2>
-          <p className="mx-auto mt-6 max-w-lg text-lg text-pretty text-primary-foreground/90">
+          <p className="mx-auto mt-6 max-w-lg text-lg text-pretty text-muted-foreground">
             A billing desk and a recruiting team need very different things from
             a phone system. Pick yours to see what changes.
           </p>
@@ -103,7 +108,7 @@ export function SectorStage() {
               onClick={() => choose(active + step)}
               aria-label={step < 0 ? "Previous sector" : "Next sector"}
               className={cn(
-                "reveal-on-hover absolute top-1/2 z-10 -translate-y-1/2 p-2 text-primary-foreground/70 transition-colors hover:text-primary-foreground focus-visible:rounded-lg focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:outline-none",
+                "reveal-on-hover absolute top-1/2 z-10 -translate-y-1/2 p-2 text-muted-foreground transition-colors hover:text-foreground focus-visible:rounded-lg focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
                 step < 0 ? "left-0" : "right-0",
               )}
             >
@@ -135,25 +140,24 @@ export function SectorStage() {
                 >
                   <div key={`${sector.title}-${active}`} className={cn(index === active && "panel-enter")}>
                     {sector.badge ? (
-                      <Badge className="mb-5 bg-primary-foreground text-primary">
-                        {sector.badge}
-                      </Badge>
+                      <Badge className="mb-5">{sector.badge}</Badge>
                     ) : null}
 
                     <h3 className="font-heading text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
                       {sector.title}
                     </h3>
 
-                    <p className="mt-6 max-w-lg text-lg leading-relaxed text-pretty text-primary-foreground/90 lg:text-xl">
+                    <p className="mt-6 max-w-lg text-lg leading-relaxed text-pretty text-muted-foreground lg:text-xl">
                       {sector.description}
                     </p>
                   </div>
 
-                  {/* Straight onto the crimson, no panel. These are cut-out
-                      artwork on pink accent shapes, so the palest of those
-                      shapes lose most of their contrast against the ground —
-                      that is the trade this makes on purpose. Wrapping the
-                      image in a light panel is the way back. */}
+                  {/* Straight onto the ground, no panel. These are cut-out
+                      artwork on pink accent shapes, which is why the pale
+                      ground suits them: on the old crimson the palest of those
+                      shapes lost most of their contrast, and here they keep
+                      it. The `edge-fade` mask is what lets the artwork meet
+                      the gradient without a visible edge. */}
                   <Image
                     src={sector.image.src}
                     alt={sector.image.alt}
@@ -198,12 +202,10 @@ export function SectorStage() {
                 aria-controls={`sector-panel-${index}`}
                 tabIndex={current ? 0 : -1}
                 onClick={() => choose(index)}
-                className={cn(
-                  "relative overflow-hidden",
-                  current
-                    ? "bg-primary-foreground text-primary hover:bg-primary-foreground"
-                    : "border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground",
-                )}
+                // The `default` and `outline` variants already carry the right
+                // colours now the ground is pale: a crimson pill for the
+                // chosen sector, a white one with a hairline for the rest.
+                className="relative overflow-hidden"
               >
                 {item.title}
 
@@ -211,7 +213,8 @@ export function SectorStage() {
                   <span
                     aria-hidden
                     key={active}
-                    className="dwell-bar absolute inset-x-0 bottom-0 h-0.5 origin-left bg-primary"
+                    // White, because the bar runs across the crimson pill.
+                    className="dwell-bar absolute inset-x-0 bottom-0 h-0.5 origin-left bg-primary-foreground"
                   />
                 ) : null}
               </Button>
@@ -220,12 +223,7 @@ export function SectorStage() {
         </div>
 
         <div className="mt-10 flex justify-center">
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary"
-          >
+          <Button asChild size="lg" variant="outline">
             <Link href="/industries">View all industries</Link>
           </Button>
         </div>

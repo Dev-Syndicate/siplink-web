@@ -2359,32 +2359,167 @@ export const whyPoints: Simple[] = [
 ];
 
 /**
+ * The positioning paragraphs under the Why SipLink heading, as supplied.
+ *
+ * Two paragraphs rather than the one that was handed over: the break falls
+ * where the subject changes, from what the platform is to what it does for
+ * the people running it. Sixty-five words in a single block is a wall.
+ *
+ * The source writes the brand "SIPLINK". It is set here the way it is set
+ * everywhere else on the site, since the heading directly above it reads
+ * "Why SipLink" and the two would otherwise disagree on the same screen.
+ */
+export const whyIntro = [
+  "Your phone system should do more than make and receive calls. SipLink delivers a complete business communications environment that can combine voice, contact center, collaboration, messaging and business applications.",
+  "We help organizations improve customer experience, empower remote teams, simplify administration and build reliable communications infrastructure.",
+];
+
+/**
+ * What the environment includes. Supplied copy, wording and order unchanged.
+ *
+ * Deliberately framed as an inventory rather than as more reasons to buy:
+ * several of these restate `whyPoints` above — scale, security, support — and
+ * a list that argued the same four points a second time would read as
+ * padding. Presented as "what that includes", the repetition is the point.
+ */
+export const whyIncludes = [
+  "Flexible deployment options based on business requirements",
+  "Scalable from small offices to multi-site and high-volume environments",
+  "Advanced call routing and automation",
+  "Contact-center capabilities for customer-facing teams",
+  "Mobile, desktop and browser communication",
+  "CRM and business application integration",
+  "Security, redundancy and business continuity options",
+  "Monitoring, analytics and reporting",
+  "Migration, implementation, integration and ongoing support",
+];
+
+/**
+ * The AI layer, as the path a single call takes through it.
+ *
+ * The eleven capabilities are not a flat set: three turn sound into text,
+ * three turn that text into something you can act on, and five answer or act
+ * in the other direction. Grouping them that way is what makes eleven bullet
+ * points readable, and it is also simply what happens to a call — which is
+ * why the section can carry a sequence without numbering anything.
+ *
+ * `conditional` marks the three the source material qualifies with "where
+ * enabled" — licence or deployment dependent. They render with a hollow
+ * marker and say so to a screen reader, rather than being quietly levelled
+ * with the rest. Same principle as the note on `certifications` above: the
+ * site does not claim what has not been confirmed. If one of these becomes
+ * standard on every plan, drop the flag here and it stops being marked.
+ */
+export type AiStage = {
+  stage: string;
+  gloss: string;
+  items: { label: string; conditional?: boolean }[];
+};
+
+export const aiStages: AiStage[] = [
+  {
+    stage: "AI listens",
+    gloss: "Speech becomes text while the call is still going.",
+    items: [
+      { label: "Speech-to-text" },
+      { label: "Call transcription" },
+      { label: "Voicemail transcription" },
+    ],
+  },
+  {
+    stage: "AI understands",
+    gloss: "That text becomes a summary and a list of things to follow up.",
+    items: [
+      { label: "Call summaries" },
+      { label: "Conversation intelligence" },
+      { label: "AI-assisted call analysis", conditional: true },
+    ],
+  },
+  {
+    stage: "AI answers",
+    gloss: "And when you want it to, it takes the call itself.",
+    items: [
+      { label: "AI-powered virtual receptionist", conditional: true },
+      { label: "AI call answering", conditional: true },
+      { label: "Text-to-speech" },
+      { label: "Automated voice prompts" },
+      { label: "Intelligent workflow automation" },
+    ],
+  },
+];
+
+/**
+ * The call the AI console plays through, one stage at a time.
+ *
+ * Wireframe filler, on the same terms as the console fragments in
+ * `homeFeatures`: nothing here is a claim. There is no real customer, no
+ * accuracy figure and no timing claim — it is a plainly ordinary call, chosen
+ * because rescheduling is the most common thing a receptionist actually
+ * handles, and because it needs all three stages to resolve. The timestamps
+ * are there to make it read as a transcript rather than a chat log.
+ *
+ * Keep it dull. A dramatic example would invite the reader to judge whether
+ * the AI could really manage it, which is not the argument the section makes.
+ */
+export const aiDemo = {
+  transcript: [
+    {
+      at: "0:02",
+      text: "Hi, I need to move my appointment to next week.",
+    },
+    {
+      at: "0:07",
+      text: "Any time on Tuesday or Thursday works for me.",
+    },
+  ],
+  /** What the understanding stage draws out of the lines above. */
+  notes: [
+    { label: "Summary", text: "Caller asked to move an appointment." },
+    { label: "To follow up", text: "Confirm the new time by SMS." },
+  ],
+  /** The answering stage, speaking back. */
+  reply: "I can do that. I have Tuesday at ten, or Thursday at two.",
+} as const;
+
+/**
  * "What changes on Monday" — the migration story told as a before/after,
  * because the real buying objection is disruption, not features.
  */
 export const switchingStory: {
+  /** What this pair is about. Sits small above the statement. */
+  label: string;
   before: string;
   after: string;
+  /** The phrase inside `after` that carries the colour. Must appear in it. */
+  accent: string;
   icon: LucideIcon;
 }[] = [
   {
+    label: "The hardware",
     before: "A PBX box in the telecom closet that someone has to maintain",
     after: "Nothing on site. We handle every update and all maintenance.",
+    accent: "Nothing on site.",
     icon: ServerCog,
   },
   {
+    label: "Your numbers",
     before: "New numbers, reprinted cards, updated listings",
     after: "Keep the numbers your customers already dial. We port them.",
+    accent: "Keep the numbers",
     icon: PhoneCall,
   },
   {
+    label: "Where it rings",
     before: "Desk phones that only work at the desk",
     after: "Your extension on iOS, Android and desktop, wherever you are.",
+    accent: "wherever you are",
     icon: Laptop,
   },
   {
+    label: "When it breaks",
     before: "A support ticket into the void",
     after: "A named team on WhatsApp, phone and email, around the clock.",
+    accent: "around the clock",
     icon: HeartHandshake,
   },
 ];

@@ -2,12 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
+  Check,
   PhoneCall,
   Quote,
   ShieldCheck,
   Star,
 } from "lucide-react";
 
+import { AiConsole } from "@/components/site/ai-console";
 import { CustomerStories } from "@/components/site/customer-stories";
 import { FeatureCards } from "@/components/site/feature-cards";
 import { IntegrationWall } from "@/components/site/integration-wall";
@@ -25,6 +27,8 @@ import {
   plans,
   reviews,
   site,
+  whyIncludes,
+  whyIntro,
   whyPoints,
 } from "@/lib/site";
 
@@ -34,7 +38,8 @@ import {
  * The argument, in order: enterprise-grade voice (hero) → the four questions
  * that answer holds up to (why) → which product is
  * yours (pillars) → what actually changes when you switch (migration) → what
- * it does once it is in (capabilities) → the support claim, evidenced once
+ * it does once it is in (capabilities) → what the AI layer adds on top of
+ * that (AI) → the support claim, evidenced once
  * (film and one review) → which sector you are in (industries) → does it fit
  * your stack (integrations, apps) → who else went through with it (customer
  * stories) → talk to us (CTA).
@@ -258,10 +263,10 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------------------------
-          Why SipLink. The hinge between the hero and the pillars, and
-          deliberately the quietest thing on the page: it sits between a
-          full-height hero and four crimson cards, so a third loud block
-          here would leave the top of the page with no rest in it.
+          Why SipLink. Three beats that each do a different job: the
+          thesis, then four reasons to believe it, then what is actually
+          in the box. Running them together would be three answers to the
+          same question.
 
           Everything that would normally box this content is left off. No
           card, no radius, no shadow, no tray behind the icons — the only
@@ -269,17 +274,29 @@ export default function Home() {
           simply absent below it. Four boxes stacked directly above the
           pillars' four boxes is the failure this avoids.
 
-          It is also the one section head on the page with no eyebrow and
-          no supporting sentence. That is the choice, not an oversight:
-          the single line is what makes this read as a hinge rather than
-          as a seventh full section. Padding is tighter than the page's
-          usual py-20/28 for the same reason.
+          The heading sits in its own column rather than above the text.
+          Two words set against a paragraph is the cheapest way to give a
+          section an opening without adding an eyebrow, and this is the
+          one head on the page that does without one.
          --------------------------------------------------------------- */}
       <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
-          <h2 className="font-heading text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-            Why {site.name}
-          </h2>
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-16">
+            <h2 className="font-heading text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
+              Why {site.name}
+            </h2>
+
+            <div className="max-w-2xl space-y-4">
+              {whyIntro.map((paragraph) => (
+                <p
+                  key={paragraph.slice(0, 32)}
+                  className="text-pretty text-muted-foreground"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </div>
 
           {/* Below `lg` this is an ordinary spaced grid with no rules at
               all; at `lg` the left borders turn it into the band. Doing it
@@ -305,6 +322,31 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          {/* Named, because nine bare lines after four explained ones read
+              as an afterthought rather than an inventory. The heading is
+              what tells you these are contents, not more arguments. */}
+          <div className="mt-14 border-t border-border pt-10 lg:mt-16">
+            <h3 className="font-heading text-base font-semibold tracking-tight">
+              What that includes
+            </h3>
+
+            <ul className="mt-6 grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+              {whyIncludes.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span
+                    className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10"
+                    aria-hidden
+                  >
+                    <Check className="size-3 text-primary" />
+                  </span>
+                  <span className="text-sm leading-relaxed text-pretty text-muted-foreground">
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -328,20 +370,20 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Every card the same shape and the same crimson, two to a row.
+          {/* Every card the same shape, two to a row, white with the pink
+              blooming out of the corner the illustration sits in.
 
-              The illustrations sit straight on that crimson with no light
-              tray behind them. They are pink artwork on a transparent ground,
-              so the paler parts — the clouds, the chat bubbles, the chart
-              bars — lose most of their contrast against it. That is the
-              trade this design makes on purpose; putting a white panel back
-              under `<Image>` is the one-line way to undo it. */}
+              The bloom is placed there on purpose rather than spread over
+              the whole card: these are pink drawings, and a soft pink ground
+              is what they were made to stand on, while the copy stays on
+              plain white where it reads hardest. Same gradient language as
+              the card on /pricing, so the two are recognisably a pair. */}
           <div className="mt-14 grid gap-5 sm:grid-cols-2">
             {homePillars.map(({ eyebrow, title, description, href, image }) => (
               <Link
                 key={title}
                 href={href}
-                className="group flex flex-col overflow-hidden rounded-3xl bg-primary text-primary-foreground shadow-md transition duration-300 hover:shadow-2xl focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none sm:min-h-64 sm:flex-row sm:items-stretch motion-safe:hover:-translate-y-1 motion-safe:focus-visible:-translate-y-1"
+                className="group flex flex-col overflow-hidden rounded-3xl border border-primary/12 bg-gradient-to-br from-brand-from/20 via-background via-45% to-background shadow-sm transition duration-300 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none sm:min-h-64 sm:flex-row sm:items-stretch motion-safe:hover:-translate-y-1 motion-safe:focus-visible:-translate-y-1"
               >
                 <div className="flex h-44 shrink-0 items-center justify-center overflow-hidden sm:h-auto sm:w-[40%]">
                   <Image
@@ -355,11 +397,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex flex-1 flex-col justify-center p-6 lg:p-7">
-                  {/* /90 rather than lower: measured against the crimson this
-                      lands at 4.6:1, and anything dimmer drops under the
-                      4.5:1 floor for text this size. Hierarchy comes from the
-                      heading's size and weight instead. */}
-                  <span className="text-sm text-primary-foreground/90">
+                  <span className="text-sm text-muted-foreground">
                     {eyebrow}
                   </span>
 
@@ -367,13 +405,13 @@ export default function Home() {
                     {title}
                   </h3>
 
-                  <p className="mt-2.5 text-sm leading-relaxed text-pretty text-primary-foreground/90">
+                  <p className="mt-2.5 text-sm leading-relaxed text-pretty text-muted-foreground">
                     {description}
                   </p>
 
                   {/* The rule draws in from the left on hover — the whole
                       card is the link, so an arrow would say it twice. */}
-                  <span className="relative mt-5 inline-block self-start pt-0.5 text-sm font-medium after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100">
+                  <span className="relative mt-5 inline-block self-start pt-0.5 text-sm font-medium text-primary after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100">
                     Explore {title}
                   </span>
                 </div>
@@ -386,6 +424,8 @@ export default function Home() {
       <SwitchingStory />
 
       <FeatureCards />
+
+      <AiConsole />
 
       {/* ---------------------------------------------------------------
           The support claim, evidenced. The hero promises people who pick
