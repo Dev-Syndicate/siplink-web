@@ -7,7 +7,7 @@ import { aiDemo, aiStages } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /** How long a stage holds before the console moves on. */
-const DWELL = 7000;
+const DWELL = 5000;
 
 /**
  * The AI lettermark.
@@ -77,7 +77,9 @@ const LINE_STEP = 1050;
  * The console advances by itself, on the same contract as the sector stage,
  * because WCAG 2.2.2 wants a way to stop anything that moves on its own:
  *
- * - It pauses while the pointer is over the section or focus is inside it.
+ * - It pauses while keyboard focus is inside the section, so a visitor
+ *   navigating the stage controls is not carried off mid-keystroke. It does
+ *   not pause on pointer hover — the demo keeps advancing under the mouse.
  * - Choosing a stage stops it for the session. Having picked, you should not
  *   be carried somewhere else a moment later.
  * - Under `prefers-reduced-motion` it neither advances nor streams.
@@ -170,8 +172,6 @@ export function AiConsole() {
     <section
       ref={section}
       className="border-b border-border"
-      onPointerEnter={() => setHeld(true)}
-      onPointerLeave={() => setHeld(false)}
       onFocusCapture={() => setHeld(true)}
       onBlurCapture={() => setHeld(false)}
     >
