@@ -70,8 +70,16 @@ export default function Home() {
       <section className="relative -mt-20 pt-20 sm:-mt-30 sm:pt-30 overflow-hidden border-b border-border">
         {/* The photograph is the section's backdrop, not a column item: it
             occupies the right half on desktop and sits behind the copy,
-            which stays legible via the scrim below. */}
-        <div className="absolute inset-y-0 right-0 hidden w-[64%] lg:block">
+            which stays legible via the scrim below.
+
+            It starts at `--header-h`, not at the section's top edge. The
+            section runs up behind the header so its background is continuous
+            up to y=0, but the docked nav is a solid bar — anything of the
+            picture up there would simply be covered, and the top of the
+            photograph would read as cut off. Starting it at the header's
+            bottom border means the bar and the picture meet on a hairline
+            instead. */}
+        <div className="absolute right-0 bottom-0 top-[var(--header-h)] hidden w-[64%] lg:block">
           <Image
             src="/images/hero-agent-headset.png"
             alt="Support agent wearing a headset at a desk with a laptop and desk phone, city skyline behind her"

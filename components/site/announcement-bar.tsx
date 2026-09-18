@@ -8,10 +8,15 @@ import { announcement, site } from "@/lib/site";
  * Thin inverted bar above the header: what shipped on the left, standing
  * credentials and the sales line on the right.
  *
- * It rides inside the fixed header stack rather than scrolling away, so the
- * height here is part of the `--header-height` offset applied to `main`.
+ * It rides inside the fixed header stack rather than scrolling away with the
+ * page, and retracts once the nav starts floating — see `NavShell`, which
+ * owns that. The height here is still part of the offset applied to `main`,
+ * because that offset is sized for the docked state.
+ *
  * Everything but the message itself drops on small screens — a 12px status
- * list wrapping to three lines costs more than it tells anyone.
+ * list wrapping to three lines costs more than it tells anyone. The strip is
+ * hidden outright below `sm`, which is why `NavShell` only retracts it from
+ * `sm` up.
  */
 export function AnnouncementBar() {
   return (
