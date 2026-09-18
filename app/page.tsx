@@ -37,12 +37,17 @@ import {
  *
  * The argument, in order: enterprise-grade voice (hero) → the four questions
  * that answer holds up to (why) → which product is
- * yours (pillars) → what actually changes when you switch (migration) → what
- * it does once it is in (capabilities) → what the AI layer adds on top of
- * that (AI) → the support claim, evidenced once
+ * yours (pillars) → what makes us different, the AI layer over every call
+ * (AI) → what actually changes when you switch (migration) → what it does
+ * once it is in (capabilities) → the support claim, evidenced once
  * (film and one review) → which sector you are in (industries) → does it fit
  * your stack (integrations, apps) → who else went through with it (customer
  * stories) → talk to us (CTA).
+ *
+ * AI leads the differentiator run, above migration and the capabilities grid:
+ * it is the thing competitors selling the same four products do not have, so
+ * it is met while attention is still high rather than in the reassurance zone
+ * further down.
  *
  * Price is not argued here any more, only quoted once in the hero. The plan
  * cards live on /pricing, which the hero and the nav both link to.
@@ -421,11 +426,11 @@ export default function Home() {
         </div>
       </section>
 
+      <AiConsole />
+
       <SwitchingStory />
 
       <FeatureCards />
-
-      <AiConsole />
 
       {/* ---------------------------------------------------------------
           The support claim, evidenced. The hero promises people who pick
