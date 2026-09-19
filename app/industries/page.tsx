@@ -24,7 +24,7 @@ export default function IndustriesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative -mt-20 pt-20 sm:-mt-30 sm:pt-30 overflow-hidden border-b border-border">
+      <section className="relative overflow-hidden border-b border-border">
         <div
           aria-hidden
           className="pointer-events-none absolute -top-40 -right-32 size-[540px] rounded-full bg-brand-to/10 blur-3xl"

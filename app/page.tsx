@@ -67,7 +67,7 @@ export default function Home() {
           Hero. One dominant focal point: the claim, the two CTAs, and
           proof the visitor can verify. Everything below is subordinate.
          --------------------------------------------------------------- */}
-      <section className="relative -mt-20 pt-20 sm:-mt-30 sm:pt-30 overflow-hidden border-b border-border">
+      <section className="relative overflow-hidden border-b border-border">
         {/* The photograph is the section's backdrop, not a column item: it
             occupies the right half on desktop and sits behind the copy,
             which stays legible via the scrim below. */}
@@ -97,8 +97,8 @@ export default function Home() {
             fixed 120px header, so the whole pitch — headline through proof
             strip — lands above the fold on short laptop screens instead of
             depending on padding values adding up to less than the height.
-            With the section's own 7.5rem top padding (it runs up behind the
-            floating nav) this makes the hero exactly one viewport tall. */}
+            The section starts below the header, so 7.5rem is the header's
+            own height — keep it in sync with the offset in app/layout.tsx. */}
         <div className="relative mx-auto flex max-w-7xl flex-col justify-center px-6 py-12 lg:min-h-[calc(100svh-7.5rem)] lg:px-10 lg:py-8">
           <div className="grid gap-14 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:items-center lg:gap-12 xl:gap-16">
             <div>

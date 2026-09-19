@@ -44,12 +44,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             hidden below `sm`, so the offset drops with it — keep these in
             sync with SiteHeader.
 
-            The nav pill floats, so every page's first section cancels this
-            offset with `-mt-20 pt-20 sm:-mt-30 sm:pt-30` and gives the space
-            straight back as padding. Content lands in exactly the same place;
-            the section's background simply runs up behind the pill instead of
-            leaving a bare strip above it. Change the values here and those
-            ten sections have to move with them. */}
+            This matches the docked header exactly (80px, or 120px with the
+            bar), so at the top of a page the first section begins right on
+            the header's bottom rule. Once scrolled the header lifts into its
+            pill and gets 4px shorter, but this padding is static so nothing
+            reflows — content simply passes under the floating pill, which is
+            the point of it. */}
         <main className="flex-1 pt-20 sm:pt-30">{children}</main>
         <SiteFooter />
       </body>
