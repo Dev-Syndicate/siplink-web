@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import {
   Activity,
   ArrowLeftRight,
+  AudioLines,
   BarChart3,
   Bot,
   Boxes,
@@ -19,7 +20,6 @@ import {
   Layers,
   ListOrdered,
   Lock,
-  type LucideIcon,
   MessagesSquare,
   MonitorSmartphone,
   Network,
@@ -28,7 +28,6 @@ import {
   PhoneIncoming,
   PhoneOutgoing,
   Play,
-  Radio,
   Router,
   Send,
   Server,
@@ -37,6 +36,7 @@ import {
   Smartphone,
   Sparkles,
   Store,
+  type LucideIcon,
   Users,
   Workflow,
 } from "lucide-react";
@@ -962,7 +962,20 @@ function BroadcastLayout({ uid, spec }: { uid: string; spec: BroadcastSpec }) {
           <p className="mt-2 text-[11px] leading-tight font-semibold">
             {spec.message.title}
           </p>
-          <p className="mt-1 text-[9px] leading-snug text-pretty text-muted-foreground">
+          {/* The recording, shown playing, so the card reads as a voice
+              message rather than as text going out. */}
+          <span className="mt-2 flex h-4 items-center justify-center gap-[3px]">
+            {[0, 1, 2, 3, 4, 5, 6].map((barIndex) => (
+              <span
+                key={barIndex}
+                style={
+                  { "--cycle-delay": `${barIndex * 0.1}s` } as React.CSSProperties
+                }
+                className="talk-bar w-[3px] rounded-full bg-primary"
+              />
+            ))}
+          </span>
+          <p className="mt-1.5 text-[9px] leading-snug text-pretty text-muted-foreground">
             {spec.message.note}
           </p>
           <div className="mt-3 h-1 overflow-hidden rounded-full bg-primary/15">
@@ -1490,9 +1503,9 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     layout: "broadcast",
     status: "Campaign running",
     message: {
-      icon: Radio,
-      title: "Your message",
-      note: "Recorded once, played on every answered call",
+      icon: AudioLines,
+      title: "Your recorded voice message",
+      note: "Recorded once, played aloud on every answered call",
     },
     sent: 348,
     total: 500,
