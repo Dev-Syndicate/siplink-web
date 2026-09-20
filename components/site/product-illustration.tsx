@@ -21,6 +21,7 @@ import {
   ListOrdered,
   Lock,
   MessagesSquare,
+  MessageCircle,
   MonitorSmartphone,
   Network,
   Phone,
@@ -333,6 +334,20 @@ type BroadcastSpec = {
   outcomes: { icon: LucideIcon; label: string }[];
 };
 
+type SystemSpec = {
+  layout: "system";
+  status: string;
+  /** The call arriving from outside. */
+  caller: { icon: LucideIcon; label: string; number: string };
+  /** How the system decides where the call goes. */
+  routing: { icon: LucideIcon; label: string }[];
+  /** Where the call can land; `live` marks the one being rung now. */
+  extensions: { icon: LucideIcon; label: string; ext: string; live?: boolean }[];
+  /** Everything else the system keeps doing in the background. */
+  alsoLabel: string;
+  also: { icon: LucideIcon; label: string }[];
+};
+
 type CodeSpec = {
   layout: "code";
   status: string;
@@ -367,6 +382,7 @@ type SceneSpec =
   | PanelSpec
   | WaveSpec
   | DialerSpec
+  | SystemSpec
   | BroadcastSpec
   | CodeSpec
   | SwapSpec
@@ -1239,6 +1255,134 @@ function SwapLayout({ uid, spec }: { uid: string; spec: SwapSpec }) {
 }
 
 /**
+ * SYSTEM — the phone system doing its job: a call comes in, the system
+ * decides where it belongs, and it rings the right extension. Used where the
+ * product IS the system, so the picture shows it running rather than showing
+ * what it replaced.
+ */
+function SystemLayout({ uid, spec }: { uid: string; spec: SystemSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-stretch gap-3">
+        {/* The call coming in from outside */}
+        <div className="flex w-[7.5rem] shrink-0 flex-col pt-[1.6rem]">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+            Incoming call
+          </span>
+          <div className="mt-2 rounded-xl border border-border bg-background p-2.5 shadow-sm">
+            <span className="flex size-7 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <spec.caller.icon className="size-3.5" aria-hidden />
+            </span>
+            <p className="mt-1.5 font-mono text-[10px] leading-tight tabular-nums">
+              {spec.caller.number}
+            </p>
+            <p className="text-[9px] leading-tight text-muted-foreground">
+              {spec.caller.label}
+            </p>
+          </div>
+        </div>
+
+        {/* The system itself, raised: it is the product */}
+        <div className="min-w-0 flex-1 rounded-2xl border border-primary/30 bg-linear-to-b from-brand-from/12 via-background via-45% to-background p-3 shadow-md ring-1 ring-primary/10">
+          <div className="flex items-center justify-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-primary" />
+            <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase">
+              Your phone system
+            </span>
+          </div>
+
+          {/* The routing decisions, stacked as steps the call passes */}
+          <ul className="mt-2.5 space-y-1">
+            {spec.routing.map(({ icon: Icon, label }, i) => (
+              <li
+                key={label}
+                style={{ "--cycle-delay": `${i * 0.8}s` } as React.CSSProperties}
+                className="route-step flex items-center gap-2 rounded-lg border border-primary/20 bg-background px-2 py-1.5"
+              >
+                <span className="flex size-5 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
+                  <Icon className="size-2.5" aria-hidden />
+                </span>
+                <span className="text-[10px] leading-tight font-medium">
+                  {label}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          {/* What the system keeps doing regardless of this one call */}
+          <div className="mt-2.5 border-t border-primary/15 pt-2">
+            <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+              {spec.alsoLabel}
+            </span>
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+              {spec.also.map(({ icon: Icon, label }) => (
+                <span key={label} className="flex items-center gap-1">
+                  <Icon className="size-2.5 text-muted-foreground" aria-hidden />
+                  <span className="text-[9px] text-muted-foreground">
+                    {label}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Where it lands. Extensions are people, not places, so they carry
+            no office label — that is the point of the product. */}
+        <div className="flex w-[8.25rem] shrink-0 flex-col gap-1.5 pt-[1.6rem]">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+            Extensions
+          </span>
+          {spec.extensions.map(({ icon: Icon, label, ext, live }) => (
+            <div
+              key={ext}
+              className={cn(
+                "flex items-center gap-2 rounded-lg border bg-background px-2 py-1.5",
+                live
+                  ? "border-primary/40 shadow-sm ring-1 ring-primary/10"
+                  : "border-border",
+              )}
+            >
+              <span
+                className={cn(
+                  "flex size-6 shrink-0 items-center justify-center rounded-md",
+                  live
+                    ? "ring-shake bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground",
+                )}
+              >
+                <Icon className="size-3" aria-hidden />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[10px] leading-tight font-medium">
+                  {label}
+                </span>
+                <span className="font-mono text-[9px] leading-tight text-muted-foreground tabular-nums">
+                  {ext}
+                </span>
+              </span>
+              {live ? (
+                <span className="flex shrink-0 gap-[3px]">
+                  {[0, 1, 2].map((d) => (
+                    <span
+                      key={d}
+                      style={
+                        { "--cycle-delay": `${d * 0.16}s` } as React.CSSProperties
+                      }
+                      className="ring-dot size-1 rounded-full bg-primary"
+                    />
+                  ))}
+                </span>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
  * ORBIT — one hub with everything else arranged around it. For products
  * whose job is to sit in the middle of things other people already run.
  */
@@ -1647,22 +1791,26 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
   },
 
   "cloud-pbx": {
-    layout: "swap",
+    layout: "system",
     status: "System online",
-    beforeLabel: "On-premise system",
-    before: [
-      { icon: Server, label: "A box to maintain" },
-      { icon: Building2, label: "Tied to one office" },
-      { icon: Lock, label: "Upgrades deferred" },
+    caller: { icon: PhoneIncoming, label: "Customer", number: "+44 20 7946 ···" },
+    routing: [
+      { icon: ListOrdered, label: "IVR menu answers" },
+      { icon: Clock, label: "Checks business hours" },
+      { icon: Users, label: "Rings the sales queue" },
     ],
-    verb: "Move",
-    afterLabel: "Cloud PBX",
-    after: [
-      { icon: Cloud, label: "Nothing on site" },
-      { icon: Users, label: "Extensions anywhere" },
-      { icon: ListOrdered, label: "IVR, queues, voicemail" },
+    extensions: [
+      { icon: MonitorSmartphone, label: "Priya", ext: "Ext 201", live: true },
+      { icon: Users, label: "Sam", ext: "Ext 202" },
+      { icon: Users, label: "Alex", ext: "Ext 203" },
+    ],
+    alsoLabel: "Always on",
+    also: [
+      { icon: MessageCircle, label: "Voicemail to email" },
+      { icon: BarChart3, label: "CDR reporting" },
     ],
   },
+
 
   "hosted-pbx": {
     layout: "swap",
@@ -1756,6 +1904,9 @@ export function ProductIllustration({ slug, className }: Props) {
       ) : null}
       {spec.layout === "code" ? <CodeLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "swap" ? <SwapLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "system" ? (
+        <SystemLayout uid={slug} spec={spec} />
+      ) : null}
       {spec.layout === "orbit" ? <OrbitLayout uid={slug} spec={spec} /> : null}
     </div>
   );
