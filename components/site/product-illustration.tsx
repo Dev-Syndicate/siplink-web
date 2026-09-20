@@ -24,6 +24,7 @@ import {
   MessagesSquare,
   MessageCircle,
   MonitorSmartphone,
+  Music,
   Network,
   Phone,
   PhoneCall,
@@ -284,6 +285,10 @@ type QueueSpec = {
   waitingIcon: LucideIcon;
   waitingLabel: string;
   queueLabel: string;
+  /** Callers in line, front first. Each is a real caller, not a bar. */
+  waiting: { number: string; waited: string }[];
+  /** What the queue does while people hold. */
+  handling: { icon: LucideIcon; label: string }[];
   agents: { icon: LucideIcon; label: string; state: "free" | "busy" }[];
 };
 
@@ -599,50 +604,75 @@ function FanLayout({ uid, spec }: { uid: string; spec: FanSpec }) {
 function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
   return (
     <Stage uid={uid} status={spec.status}>
-      <div className="flex items-center gap-3">
-        {/* Waiting callers — a real line, fading toward the back */}
-        <div className="flex shrink-0 flex-col items-center gap-2">
-          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+      <div className="flex items-center gap-2.5">
+        {/* Callers arriving, more than there are agents to take them */}
+        <div className="flex w-[3.25rem] shrink-0 flex-col items-center gap-1.5">
+          <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
             {spec.waitingLabel}
           </span>
-          <div className="flex flex-col gap-1.5">
-            {[0, 1, 2, 3].map((i) => (
-              <span
-                key={i}
-                className="flex size-8 items-center justify-center rounded-full border border-primary/40 bg-background text-primary"
-                style={{ opacity: 1 - i * 0.2 }}
-              >
-                <spec.waitingIcon className="size-3.5" aria-hidden />
-              </span>
-            ))}
-          </div>
+          {[0, 1, 2, 3].map((i) => (
+            <span
+              key={i}
+              style={
+                {
+                  "--cycle-delay": `${i * 0.5}s`,
+                  opacity: 1 - i * 0.18,
+                } as React.CSSProperties
+              }
+              className="queue-arrive flex size-7 items-center justify-center rounded-full border border-primary/40 bg-background text-primary"
+            >
+              <spec.waitingIcon className="size-3" aria-hidden />
+            </span>
+          ))}
         </div>
 
-        {/* The queue itself — a dashed holding pen */}
-        <div className="flex min-w-0 flex-1 flex-col items-center gap-2">
-          <div className="w-full rounded-xl border border-dashed border-primary/50 bg-primary/[0.04] px-3 py-4">
-            <div className="flex flex-col gap-2">
-              {[0, 1, 2].map((i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <span className="font-mono text-[9px] text-primary/60 tabular-nums">
+        {/* The queue. Each caller is identified and shows how long they have
+            held, because a line of blank bars reads as a loading state. */}
+        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+          <div className="rounded-xl border border-dashed border-primary/50 bg-primary/[0.04] p-2">
+            <div className="flex flex-col gap-1">
+              {spec.waiting.map(({ number, waited }, i) => (
+                <div
+                  key={number}
+                  style={
+                    { "--cycle-delay": `${i * 0.6}s` } as React.CSSProperties
+                  }
+                  className="queue-row flex items-center gap-2 rounded-md border border-border bg-background px-2 py-1"
+                >
+                  <span className="flex size-4 shrink-0 items-center justify-center rounded bg-primary/10 font-mono text-[8px] font-semibold text-primary tabular-nums">
                     {i + 1}
                   </span>
-                  <span
-                    className="h-1.5 rounded-full bg-primary/30"
-                    style={{ width: `${70 - i * 16}%` }}
-                  />
+                  <span className="min-w-0 flex-1 truncate font-mono text-[9px] tabular-nums">
+                    {number}
+                  </span>
+                  <span className="shrink-0 font-mono text-[8px] text-muted-foreground tabular-nums">
+                    {waited}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
-          <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-primary uppercase">
+
+          {/* What the caller experiences while holding */}
+          <div className="flex items-center justify-center gap-2.5">
+            {spec.handling.map(({ icon: Icon, label }) => (
+              <span key={label} className="flex items-center gap-1">
+                <Icon className="size-2.5 shrink-0 text-primary" aria-hidden />
+                <span className="text-[8px] whitespace-nowrap text-muted-foreground">
+                  {label}
+                </span>
+              </span>
+            ))}
+          </div>
+
+          <span className="text-center font-mono text-[9px] font-semibold tracking-[0.16em] text-primary uppercase">
             {spec.queueLabel}
           </span>
         </div>
 
-        {/* Arrow into the agents */}
+        {/* Handed to whoever comes free */}
         <div aria-hidden className="shrink-0">
-          <svg viewBox="0 0 28 10" className="w-7" role="presentation">
+          <svg viewBox="0 0 28 10" className="w-6" role="presentation">
             <path
               d="M0 5h20M16 1l5 4-5 4"
               fill="none"
@@ -655,17 +685,24 @@ function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
         </div>
 
         {/* Agents */}
-        <div className="flex shrink-0 flex-col gap-2">
+        <div className="flex shrink-0 flex-col gap-1.5">
           {spec.agents.map(({ icon: Icon, label, state }) => (
             <div
               key={label}
-              className="flex w-32 items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-2 shadow-sm"
+              className="flex w-[7rem] items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
             >
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <Icon className="size-3.5" aria-hidden />
+              <span
+                className={cn(
+                  "flex size-6 shrink-0 items-center justify-center rounded-md",
+                  state === "free"
+                    ? "bg-primary/10 text-primary"
+                    : "bg-muted text-muted-foreground",
+                )}
+              >
+                <Icon className="size-3" aria-hidden />
               </span>
               <span className="min-w-0">
-                <span className="block text-[10px] leading-tight font-semibold">
+                <span className="block text-[9px] leading-tight font-semibold">
                   {label}
                 </span>
                 <span className="flex items-center gap-1">
@@ -675,7 +712,7 @@ function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
                       state === "busy" ? "bg-muted-foreground/40" : "bg-primary",
                     )}
                   />
-                  <span className="text-[9px] text-muted-foreground">
+                  <span className="text-[8px] text-muted-foreground">
                     {state === "busy" ? "On a call" : "Available"}
                   </span>
                 </span>
@@ -1937,8 +1974,17 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     layout: "queue",
     status: "Callers waiting",
     waitingIcon: PhoneIncoming,
-    waitingLabel: "Callers",
+    waitingLabel: "Calls",
     queueLabel: "In the queue",
+    waiting: [
+      { number: "+44 20 7946", waited: "0:42" },
+      { number: "+44 161 496", waited: "1:15" },
+      { number: "+44 121 234", waited: "2:03" },
+    ],
+    handling: [
+      { icon: Music, label: "On hold music" },
+      { icon: ListOrdered, label: "Position announced" },
+    ],
     agents: [
       { icon: Headset, label: "Agent 1", state: "busy" },
       { icon: Headset, label: "Agent 2", state: "free" },
@@ -1946,18 +1992,29 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     ],
   },
 
+
   "call-center": {
     layout: "queue",
     status: "Queue healthy",
     waitingIcon: Users,
-    waitingLabel: "Customers",
+    waitingLabel: "Calls",
     queueLabel: "Routed by your rules",
+    waiting: [
+      { number: "Sales enquiry", waited: "0:18" },
+      { number: "Support case", waited: "0:51" },
+      { number: "Billing query", waited: "1:07" },
+    ],
+    handling: [
+      { icon: ListOrdered, label: "Skills matched" },
+      { icon: BarChart3, label: "Wait tracked" },
+    ],
     agents: [
       { icon: Headset, label: "Sales", state: "free" },
       { icon: Headset, label: "Support", state: "busy" },
       { icon: Activity, label: "Supervisor", state: "free" },
     ],
   },
+
 
   "predictive-dialer": {
     layout: "dialer",

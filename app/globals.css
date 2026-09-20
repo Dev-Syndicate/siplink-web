@@ -1272,9 +1272,53 @@
     }
   }
 
+  /* Callers arriving at the back of the line, one after another. */
+  .queue-arrive {
+    animation: queue-arrive 3.2s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes queue-arrive {
+    0%,
+    70%,
+    100% {
+      transform: translateY(0);
+    }
+    12% {
+      transform: translateY(-2px);
+    }
+    24% {
+      transform: translateY(0);
+    }
+  }
+
+  /* The line moving up as the front caller is answered. */
+  .queue-row {
+    animation: queue-row 3.2s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes queue-row {
+    0%,
+    62%,
+    100% {
+      transform: translateY(0);
+      border-color: var(--color-border);
+    }
+    18% {
+      border-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
+    }
+    40% {
+      transform: translateY(-1px);
+      border-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
+    }
+  }
+
   /* Each call row says its own stage in words, so the loops are decoration
      and simply stop rather than needing a still-frame substitute. */
   @media (prefers-reduced-motion: reduce) {
+    .queue-arrive,
+    .queue-row,
     .ring-shake,
     .ring-dot,
     .route-step,
