@@ -1263,62 +1263,58 @@ function SwapLayout({ uid, spec }: { uid: string; spec: SwapSpec }) {
 function SystemLayout({ uid, spec }: { uid: string; spec: SystemSpec }) {
   return (
     <Stage uid={uid} status={spec.status}>
-      <div className="flex items-stretch gap-3">
-        {/* The call coming in from outside */}
-        <div className="flex w-[7.5rem] shrink-0 flex-col pt-[1.6rem]">
-          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
-            Incoming call
-          </span>
-          <div className="mt-2 rounded-xl border border-border bg-background p-2.5 shadow-sm">
-            <span className="flex size-7 items-center justify-center rounded-md bg-primary/10 text-primary">
-              <spec.caller.icon className="size-3.5" aria-hidden />
-            </span>
-            <p className="mt-1.5 font-mono text-[10px] leading-tight tabular-nums">
-              {spec.caller.number}
-            </p>
-            <p className="text-[9px] leading-tight text-muted-foreground">
-              {spec.caller.label}
-            </p>
-          </div>
-        </div>
+      {/* The cloud sits over everything, because that is where the system
+          lives. The call goes up into it and the ring comes back down. */}
+      <div className="relative mx-auto w-full max-w-[22rem]">
+        <div className="relative">
+          {/* Cloud outline, drawn at its own aspect so the lobes stay round */}
+          <svg
+            viewBox="0 0 320 168"
+            role="presentation"
+            aria-hidden
+            className="w-full"
+          >
+            <path
+              d="M72 162C38 162 12 138 12 107c0-28 21-51 49-55 9-26 34-44 63-44 28 0 53 16 65 40 5-1 10-2 15-2 32 0 58 25 60 57 17 9 29 26 29 45 0 7-2 13-5 19z"
+              className="fill-background stroke-primary/45"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+            />
+          </svg>
 
-        {/* The system itself, raised: it is the product */}
-        <div className="min-w-0 flex-1 rounded-2xl border border-primary/30 bg-linear-to-b from-brand-from/12 via-background via-45% to-background p-3 shadow-md ring-1 ring-primary/10">
-          <div className="flex items-center justify-center gap-1.5">
-            <span className="size-1.5 rounded-full bg-primary" />
-            <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase">
-              Your phone system
-            </span>
-          </div>
+          {/* What the system does, laid out inside the cloud */}
+          <div className="absolute inset-x-0 top-[28%] px-12">
+            <div className="flex items-center justify-center gap-1.5">
+              <Cloud className="size-3 text-primary" aria-hidden />
+              <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase">
+                Your phone system
+              </span>
+            </div>
 
-          {/* The routing decisions, stacked as steps the call passes */}
-          <ul className="mt-2.5 space-y-1">
-            {spec.routing.map(({ icon: Icon, label }, i) => (
-              <li
-                key={label}
-                style={{ "--cycle-delay": `${i * 0.8}s` } as React.CSSProperties}
-                className="route-step flex items-center gap-2 rounded-lg border border-primary/20 bg-background px-2 py-1.5"
-              >
-                <span className="flex size-5 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
-                  <Icon className="size-2.5" aria-hidden />
-                </span>
-                <span className="text-[10px] leading-tight font-medium">
-                  {label}
-                </span>
-              </li>
-            ))}
-          </ul>
+            <ul className="mt-2 flex items-stretch justify-center gap-1.5">
+              {spec.routing.map(({ icon: Icon, label }, idx) => (
+                <li
+                  key={label}
+                  style={
+                    { "--cycle-delay": `${idx * 0.8}s` } as React.CSSProperties
+                  }
+                  className="route-step flex flex-1 flex-col items-center gap-1 rounded-lg border border-primary/20 bg-background px-1 py-1.5 text-center"
+                >
+                  <span className="flex size-5 items-center justify-center rounded bg-primary/10 text-primary">
+                    <Icon className="size-2.5" aria-hidden />
+                  </span>
+                  <span className="text-[8px] leading-tight font-medium text-balance">
+                    {label}
+                  </span>
+                </li>
+              ))}
+            </ul>
 
-          {/* What the system keeps doing regardless of this one call */}
-          <div className="mt-2.5 border-t border-primary/15 pt-2">
-            <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
-              {spec.alsoLabel}
-            </span>
-            <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+            <div className="mt-1.5 flex items-center justify-center gap-3">
               {spec.also.map(({ icon: Icon, label }) => (
                 <span key={label} className="flex items-center gap-1">
                   <Icon className="size-2.5 text-muted-foreground" aria-hidden />
-                  <span className="text-[9px] text-muted-foreground">
+                  <span className="text-[8px] text-muted-foreground">
                     {label}
                   </span>
                 </span>
@@ -1327,55 +1323,104 @@ function SystemLayout({ uid, spec }: { uid: string; spec: SystemSpec }) {
           </div>
         </div>
 
-        {/* Where it lands. Extensions are people, not places, so they carry
-            no office label — that is the point of the product. */}
-        <div className="flex w-[8.25rem] shrink-0 flex-col gap-1.5 pt-[1.6rem]">
-          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
-            Extensions
-          </span>
-          {spec.extensions.map(({ icon: Icon, label, ext, live }) => (
-            <div
-              key={ext}
-              className={cn(
-                "flex items-center gap-2 rounded-lg border bg-background px-2 py-1.5",
-                live
-                  ? "border-primary/40 shadow-sm ring-1 ring-primary/10"
-                  : "border-border",
-              )}
-            >
-              <span
-                className={cn(
-                  "flex size-6 shrink-0 items-center justify-center rounded-md",
-                  live
-                    ? "ring-shake bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground",
-                )}
-              >
-                <Icon className="size-3" aria-hidden />
+        {/* Up into the cloud on one side, back down on the other */}
+        <svg
+          viewBox="0 0 320 34"
+          role="presentation"
+          aria-hidden
+          className="-mt-1 w-full"
+        >
+          <path
+            d="M52 32V16c0-6 5-10 11-10h50"
+            fill="none"
+            className="stroke-primary/40"
+            strokeWidth="1.5"
+            strokeDasharray="3 3"
+            strokeLinecap="round"
+          />
+          <path
+            d="M268 32V16c0-6-5-10-11-10h-50"
+            fill="none"
+            className="stroke-primary"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+
+        {/* The call on one side, the extensions it can reach on the other */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="w-[8.25rem]">
+            <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+              Incoming call
+            </span>
+            <div className="mt-1 flex items-center gap-2 rounded-xl border border-border bg-background px-2 py-1.5 shadow-sm">
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <spec.caller.icon className="size-3" aria-hidden />
               </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[10px] leading-tight font-medium">
-                  {label}
+              <span className="min-w-0">
+                <span className="block font-mono text-[9px] leading-tight whitespace-nowrap tabular-nums">
+                  {spec.caller.number}
                 </span>
-                <span className="font-mono text-[9px] leading-tight text-muted-foreground tabular-nums">
-                  {ext}
+                <span className="text-[8px] leading-tight text-muted-foreground">
+                  {spec.caller.label}
                 </span>
               </span>
-              {live ? (
-                <span className="flex shrink-0 gap-[3px]">
-                  {[0, 1, 2].map((d) => (
-                    <span
-                      key={d}
-                      style={
-                        { "--cycle-delay": `${d * 0.16}s` } as React.CSSProperties
-                      }
-                      className="ring-dot size-1 rounded-full bg-primary"
-                    />
-                  ))}
-                </span>
-              ) : null}
             </div>
-          ))}
+          </div>
+
+          {/* Extensions are people, not places — that is the product. */}
+          <div className="w-[8.25rem]">
+            <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+              Extensions
+            </span>
+            <div className="mt-1 flex flex-col gap-1">
+              {spec.extensions.map(({ icon: Icon, label, ext, live }) => (
+                <div
+                  key={ext}
+                  className={cn(
+                    "flex items-center gap-2 rounded-lg border bg-background px-2 py-1",
+                    live
+                      ? "border-primary/40 shadow-sm ring-1 ring-primary/10"
+                      : "border-border",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "flex size-5 shrink-0 items-center justify-center rounded",
+                      live
+                        ? "ring-shake bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground",
+                    )}
+                  >
+                    <Icon className="size-2.5" aria-hidden />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[9px] leading-tight font-medium">
+                      {label}
+                    </span>
+                    <span className="font-mono text-[8px] leading-tight text-muted-foreground tabular-nums">
+                      {ext}
+                    </span>
+                  </span>
+                  {live ? (
+                    <span className="flex shrink-0 gap-[2px]">
+                      {[0, 1, 2].map((d) => (
+                        <span
+                          key={d}
+                          style={
+                            {
+                              "--cycle-delay": `${d * 0.16}s`,
+                            } as React.CSSProperties
+                          }
+                          className="ring-dot size-1 rounded-full bg-primary"
+                        />
+                      ))}
+                    </span>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </Stage>
@@ -1793,7 +1838,7 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
   "cloud-pbx": {
     layout: "system",
     status: "System online",
-    caller: { icon: PhoneIncoming, label: "Customer", number: "+44 20 7946 ···" },
+    caller: { icon: PhoneIncoming, label: "Customer", number: "+44 20 7946" },
     routing: [
       { icon: ListOrdered, label: "IVR menu answers" },
       { icon: Clock, label: "Checks business hours" },
