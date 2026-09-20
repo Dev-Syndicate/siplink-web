@@ -312,11 +312,12 @@ type DialerSpec = {
   layout: "dialer";
   status: string;
   listLabel: string;
-  /** Contacts shown in the list; `state` drives how each row reads. */
-  contacts: { number: string; state: "done" | "dialling" | "queued" }[];
+  /** Contacts worked through in order; the scene animates the progress. */
+  contacts: { number: string }[];
   /** The pacing engine, raised as the centre of the picture. */
   engine: { icon: LucideIcon; title: string; note: string; metric: string };
-  agents: { icon: LucideIcon; label: string; state: "free" | "busy" }[];
+  /** True where the row is a person whose availability changes. */
+  agents: { icon: LucideIcon; label: string; cycles?: boolean }[];
 };
 
 type CodeSpec = {
@@ -788,46 +789,38 @@ function WaveLayout({ uid, spec }: { uid: string; spec: WaveSpec }) {
  * the only element that carries a solid fill.
  */
 function DialerLayout({ uid, spec }: { uid: string; spec: DialerSpec }) {
+  const rows = spec.contacts.length;
   return (
     <Stage uid={uid} status={spec.status}>
       <div className="flex items-center gap-2.5">
-        {/* The list being worked through */}
+        {/* The list being worked through. Each row runs the same loop a beat
+            later than the one above, so the campaign reads as travelling
+            down the list rather than every row blinking at once. */}
         <div className="flex w-[6.75rem] shrink-0 flex-col gap-1">
           <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
             {spec.listLabel}
           </span>
-          {spec.contacts.map(({ number, state }) => (
-            <div
-              key={number}
-              className={cn(
-                "flex items-center gap-1.5 rounded-md border px-2 py-1",
-                state === "dialling"
-                  ? "border-primary/40 bg-primary/5"
-                  : "border-border bg-background",
-              )}
-            >
-              <span
-                className={cn(
-                  "size-1.5 shrink-0 rounded-full",
-                  state === "done" && "bg-primary/30",
-                  state === "dialling" && "bg-primary",
-                  state === "queued" && "bg-muted-foreground/25",
-                )}
-              />
-              <span
-                className={cn(
-                  "font-mono text-[9px] tabular-nums",
-                  state === "done"
-                    ? "text-muted-foreground/50 line-through"
-                    : state === "dialling"
-                      ? "font-semibold text-primary"
-                      : "text-muted-foreground",
-                )}
+          {spec.contacts.map(({ number }, i) => {
+            const delay = `${(i / rows) * 8}s`;
+            return (
+              <div
+                key={number}
+                style={{ "--cycle-delay": delay } as React.CSSProperties}
+                className="dial-row flex items-center gap-1.5 rounded-md border border-border px-2 py-1"
               >
-                {number}
-              </span>
-            </div>
-          ))}
+                <span
+                  style={{ "--cycle-delay": delay } as React.CSSProperties}
+                  className="dial-dot size-1.5 shrink-0 rounded-full"
+                />
+                <span
+                  style={{ "--cycle-delay": delay } as React.CSSProperties}
+                  className="dial-number font-mono text-[9px] tabular-nums"
+                >
+                  {number}
+                </span>
+              </div>
+            );
+          })}
         </div>
 
         <svg
@@ -858,15 +851,16 @@ function DialerLayout({ uid, spec }: { uid: string; spec: DialerSpec }) {
             {spec.engine.note}
           </p>
 
-          {/* A pacing readout, so the engine looks like it is deciding */}
+          {/* The meter runs faster than the list, so the engine looks like it
+              is making a decision between calls rather than with them. */}
           <div className="mt-2.5 flex items-center justify-center gap-1">
             {[0, 1, 2, 3, 4].map((i) => (
               <span
                 key={i}
-                className={cn(
-                  "h-3.5 w-1.5 rounded-full",
-                  i < 3 ? "bg-primary" : "bg-primary/20",
-                )}
+                style={
+                  { "--cycle-delay": `${i * 0.16}s` } as React.CSSProperties
+                }
+                className="pace-bar h-3.5 w-1.5 rounded-full"
               />
             ))}
           </div>
@@ -891,20 +885,16 @@ function DialerLayout({ uid, spec }: { uid: string; spec: DialerSpec }) {
           />
         </svg>
 
+        {/* Agents. `cycles` agents free and busy in turn; anything else — an
+            outcome, a recorded message — is a fixed row, because a campaign
+            outcome is never "on a call". */}
         <div className="flex shrink-0 flex-col gap-1.5">
-          {spec.agents.map(({ icon: Icon, label, state }) => (
+          {spec.agents.map(({ icon: Icon, label, cycles }, i) => (
             <div
               key={label}
               className="flex w-[7.25rem] items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
             >
-              <span
-                className={cn(
-                  "flex size-6 shrink-0 items-center justify-center rounded-md",
-                  state === "free"
-                    ? "bg-primary/10 text-primary"
-                    : "bg-muted text-muted-foreground",
-                )}
-              >
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
                 <Icon className="size-3" aria-hidden />
               </span>
               <span className="min-w-0">
@@ -912,14 +902,20 @@ function DialerLayout({ uid, spec }: { uid: string; spec: DialerSpec }) {
                   {label}
                 </span>
                 <span className="flex items-center gap-1">
-                  <span
-                    className={cn(
-                      "size-1.5 rounded-full",
-                      state === "busy" ? "bg-muted-foreground/40" : "bg-primary",
-                    )}
-                  />
+                  {cycles ? (
+                    <span
+                      style={
+                        {
+                          "--cycle-delay": `${i * 2.6}s`,
+                        } as React.CSSProperties
+                      }
+                      className="agent-state size-1.5 rounded-full"
+                    />
+                  ) : (
+                    <span className="size-1.5 rounded-full bg-primary" />
+                  )}
                   <span className="text-[9px] text-muted-foreground">
-                    {state === "busy" ? "On a call" : "Ready"}
+                    {cycles ? "In rotation" : "Ready"}
                   </span>
                 </span>
               </span>
@@ -1326,11 +1322,11 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     status: "Campaign running",
     listLabel: "Dial list",
     contacts: [
-      { number: "+1 415 ···", state: "done" },
-      { number: "+1 628 ···", state: "done" },
-      { number: "+1 917 ···", state: "dialling" },
-      { number: "+1 212 ···", state: "queued" },
-      { number: "+1 646 ···", state: "queued" },
+      { number: "+1 415 ···" },
+      { number: "+1 628 ···" },
+      { number: "+1 917 ···" },
+      { number: "+1 212 ···" },
+      { number: "+1 646 ···" },
     ],
     engine: {
       icon: Activity,
@@ -1339,9 +1335,9 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
       metric: "Paced to availability",
     },
     agents: [
-      { icon: Headset, label: "Agent 1", state: "busy" },
-      { icon: Headset, label: "Agent 2", state: "free" },
-      { icon: Headset, label: "Agent 3", state: "free" },
+      { icon: Headset, label: "Agent 1", cycles: true },
+      { icon: Headset, label: "Agent 2", cycles: true },
+      { icon: Headset, label: "Agent 3", cycles: true },
     ],
   },
 
@@ -1350,11 +1346,11 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     status: "Campaign queued",
     listLabel: "Contacts",
     contacts: [
-      { number: "+44 20 ···", state: "done" },
-      { number: "+44 161 ···", state: "dialling" },
-      { number: "+44 121 ···", state: "queued" },
-      { number: "+44 113 ···", state: "queued" },
-      { number: "+44 131 ···", state: "queued" },
+      { number: "+44 20 ···" },
+      { number: "+44 161 ···" },
+      { number: "+44 121 ···" },
+      { number: "+44 113 ···" },
+      { number: "+44 131 ···" },
     ],
     engine: {
       icon: Radio,
@@ -1363,9 +1359,9 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
       metric: "Announcement ready",
     },
     agents: [
-      { icon: Radio, label: "Recorded message", state: "free" },
-      { icon: Headset, label: "Or an agent", state: "free" },
-      { icon: BarChart3, label: "Outcome logged", state: "free" },
+      { icon: Radio, label: "Recorded message" },
+      { icon: Headset, label: "Or an agent", cycles: true },
+      { icon: BarChart3, label: "Outcome logged" },
     ],
   },
 

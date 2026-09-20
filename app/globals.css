@@ -1047,3 +1047,134 @@
     }
   }
 }
+
+@layer components {
+  /* The dialler scene runs on its own: the campaign works down the list
+     while the engine paces against whoever is free. Each loop shares one
+     8s cycle so the list, the engine and the agents stay in step, and each
+     takes a `--cycle-delay` rather than needing a keyframe per row. */
+
+  /* A contact row moving from queued, to dialling, to done. */
+  .dial-row {
+    animation: dial-row 8s linear infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes dial-row {
+    0%,
+    18% {
+      border-color: var(--border);
+      background-color: transparent;
+    }
+    24%,
+    36% {
+      border-color: color-mix(in oklab, var(--primary) 40%, transparent);
+      background-color: color-mix(in oklab, var(--primary) 5%, transparent);
+    }
+    44%,
+    100% {
+      border-color: var(--border);
+      background-color: transparent;
+    }
+  }
+
+  /* The number itself: dim while queued, brand while dialling, struck
+     through once the call has been made. */
+  .dial-number {
+    animation: dial-number 8s linear infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes dial-number {
+    0%,
+    18% {
+      color: var(--muted-foreground);
+      opacity: 0.75;
+      text-decoration-line: none;
+    }
+    24%,
+    36% {
+      color: var(--primary);
+      opacity: 1;
+      text-decoration-line: none;
+    }
+    44%,
+    100% {
+      color: var(--muted-foreground);
+      opacity: 0.45;
+      text-decoration-line: line-through;
+    }
+  }
+
+  /* The status dot beside each contact. */
+  .dial-dot {
+    animation: dial-dot 8s linear infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes dial-dot {
+    0%,
+    18% {
+      background-color: color-mix(in oklab, var(--muted-foreground) 25%, transparent);
+    }
+    24%,
+    36% {
+      background-color: var(--primary);
+    }
+    44%,
+    100% {
+      background-color: color-mix(in oklab, var(--primary) 30%, transparent);
+    }
+  }
+
+  /* The pacing meter: bars fill and fall back as the engine decides how
+     hard to dial. */
+  .pace-bar {
+    animation: pace-bar 2.4s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes pace-bar {
+    0%,
+    100% {
+      background-color: color-mix(in oklab, var(--primary) 20%, transparent);
+    }
+    45% {
+      background-color: var(--primary);
+    }
+  }
+
+  /* An agent going from on-a-call to ready and back, so the right-hand
+     column is visibly responding to the campaign. */
+  .agent-state {
+    animation: agent-state 8s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes agent-state {
+    0%,
+    40% {
+      background-color: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
+    }
+    50%,
+    90% {
+      background-color: var(--primary);
+    }
+    100% {
+      background-color: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
+    }
+  }
+
+  /* The scene states its case in words — the list, the engine and the agent
+     labels are all readable standing still — so under reduced motion every
+     loop simply stops at its resting state. */
+  @media (prefers-reduced-motion: reduce) {
+    .dial-row,
+    .dial-number,
+    .dial-dot,
+    .pace-bar,
+    .agent-state {
+      animation: none;
+    }
+  }
+}
