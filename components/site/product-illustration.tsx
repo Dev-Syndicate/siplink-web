@@ -1269,13 +1269,13 @@ function SystemLayout({ uid, spec }: { uid: string; spec: SystemSpec }) {
         <div className="relative">
           {/* Cloud outline, drawn at its own aspect so the lobes stay round */}
           <svg
-            viewBox="0 0 320 168"
+            viewBox="0 0 320 196"
             role="presentation"
             aria-hidden
             className="w-full"
           >
             <path
-              d="M72 162C38 162 12 138 12 107c0-28 21-51 49-55 9-26 34-44 63-44 28 0 53 16 65 40 5-1 10-2 15-2 32 0 58 25 60 57 17 9 29 26 29 45 0 7-2 13-5 19z"
+              d="M62 186a46 46 0 0 1 0-92 48 48 0 0 1 7 .5A58 58 0 0 1 160 44a58 58 0 0 1 91 50.5 48 48 0 0 1 7-.5 46 46 0 0 1 0 92z"
               className="fill-background stroke-primary/45"
               strokeWidth="1.5"
               strokeLinejoin="round"
@@ -1283,7 +1283,7 @@ function SystemLayout({ uid, spec }: { uid: string; spec: SystemSpec }) {
           </svg>
 
           {/* What the system does, laid out inside the cloud */}
-          <div className="absolute inset-x-0 top-[28%] px-12">
+          <div className="absolute inset-x-0 top-[22%] px-[6.25rem]">
             <div className="flex items-center justify-center gap-1.5">
               <Cloud className="size-3 text-primary" aria-hidden />
               <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase">
@@ -1291,30 +1291,34 @@ function SystemLayout({ uid, spec }: { uid: string; spec: SystemSpec }) {
               </span>
             </div>
 
-            <ul className="mt-2 flex items-stretch justify-center gap-1.5">
+            {/* Stacked, so each step keeps one line and reads as an order */}
+            <ul className="mt-1.5 space-y-1">
               {spec.routing.map(({ icon: Icon, label }, idx) => (
                 <li
                   key={label}
                   style={
                     { "--cycle-delay": `${idx * 0.8}s` } as React.CSSProperties
                   }
-                  className="route-step flex flex-1 flex-col items-center gap-1 rounded-lg border border-primary/20 bg-background px-1 py-1.5 text-center"
+                  className="route-step flex items-center gap-2 rounded-lg border border-primary/20 bg-background px-2 py-1"
                 >
-                  <span className="flex size-5 items-center justify-center rounded bg-primary/10 text-primary">
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
                     <Icon className="size-2.5" aria-hidden />
                   </span>
-                  <span className="text-[8px] leading-tight font-medium text-balance">
+                  <span className="text-[9px] leading-tight font-medium whitespace-nowrap">
                     {label}
                   </span>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-1.5 flex items-center justify-center gap-3">
+            <div className="-mx-8 mt-2 flex items-center justify-center gap-4">
               {spec.also.map(({ icon: Icon, label }) => (
                 <span key={label} className="flex items-center gap-1">
-                  <Icon className="size-2.5 text-muted-foreground" aria-hidden />
-                  <span className="text-[8px] text-muted-foreground">
+                  <Icon
+                    className="size-2.5 shrink-0 text-muted-foreground"
+                    aria-hidden
+                  />
+                  <span className="text-[8px] whitespace-nowrap text-muted-foreground">
                     {label}
                   </span>
                 </span>
@@ -1325,25 +1329,28 @@ function SystemLayout({ uid, spec }: { uid: string; spec: SystemSpec }) {
 
         {/* Up into the cloud on one side, back down on the other */}
         <svg
-          viewBox="0 0 320 34"
+          viewBox="0 0 320 28"
           role="presentation"
           aria-hidden
-          className="-mt-1 w-full"
+          className="w-full"
         >
+          {/* Up into the cloud: dashed, because the call is not handled yet */}
           <path
-            d="M52 32V16c0-6 5-10 11-10h50"
+            d="M66 26V12a6 6 0 0 1 6-6h58"
             fill="none"
             className="stroke-primary/40"
             strokeWidth="1.5"
             strokeDasharray="3 3"
             strokeLinecap="round"
           />
+          {/* Back down to the extension: solid, the call is placed */}
           <path
-            d="M268 32V16c0-6-5-10-11-10h-50"
+            d="M190 6h58a6 6 0 0 1 6 6v8l-4-4m4 4 4-4"
             fill="none"
             className="stroke-primary"
             strokeWidth="1.5"
             strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
 
