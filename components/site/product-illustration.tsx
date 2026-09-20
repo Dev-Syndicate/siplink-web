@@ -320,6 +320,19 @@ type DialerSpec = {
   agents: { icon: LucideIcon; label: string; cycles?: boolean }[];
 };
 
+type BroadcastSpec = {
+  layout: "broadcast";
+  status: string;
+  /** The message being delivered, shown as the thing that goes out. */
+  message: { icon: LucideIcon; title: string; note: string };
+  /** Campaign progress, so the scene reads as partway through a run. */
+  sent: number;
+  total: number;
+  /** Recipients receiving the same call, lit in turn. */
+  recipients: { icon: LucideIcon; label: string }[];
+  outcomes: { icon: LucideIcon; label: string }[];
+};
+
 type CodeSpec = {
   layout: "code";
   status: string;
@@ -354,6 +367,7 @@ type SceneSpec =
   | PanelSpec
   | WaveSpec
   | DialerSpec
+  | BroadcastSpec
   | CodeSpec
   | SwapSpec
   | OrbitSpec;
@@ -928,6 +942,122 @@ function DialerLayout({ uid, spec }: { uid: string; spec: DialerSpec }) {
 }
 
 /**
+ * BROADCAST — one recorded message going out to a whole list at once. The
+ * auto dialler is not pacing against anybody, so it gets a one-to-many
+ * picture rather than the predictive dialler's list-engine-agents chain.
+ */
+function BroadcastLayout({ uid, spec }: { uid: string; spec: BroadcastSpec }) {
+  const pct = Math.round((spec.sent / spec.total) * 100);
+  const n = spec.recipients.length;
+
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-center gap-3">
+        {/* The message, and how far through the run it is */}
+        <div className="w-[8.5rem] shrink-0">
+          <div className="rounded-2xl border border-primary/30 bg-linear-to-br from-brand-from/25 via-background via-65% to-background p-3.5 text-center shadow-md ring-1 ring-primary/10">
+            <span className="mx-auto flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+              <spec.message.icon className="size-4.5" aria-hidden />
+            </span>
+            <p className="mt-2 text-[11px] leading-tight font-semibold">
+              {spec.message.title}
+            </p>
+            <p className="mt-1 text-[9px] leading-snug text-pretty text-muted-foreground">
+              {spec.message.note}
+            </p>
+
+            {/* Progress through the list, stated as a share rather than a
+                claim about how fast it goes. */}
+            <div className="mt-3 h-1 overflow-hidden rounded-full bg-primary/15">
+              <span
+                className="block h-full rounded-full bg-primary"
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+            <p className="mt-1.5 font-mono text-[8px] tracking-widest text-primary tabular-nums">
+              {spec.sent} / {spec.total} CALLED
+            </p>
+          </div>
+        </div>
+
+        {/* Signal going out to everyone at once */}
+        <div className="h-[150px] min-w-8 flex-1">
+          <svg
+            viewBox="0 0 120 150"
+            preserveAspectRatio="none"
+            role="presentation"
+            aria-hidden
+            className="size-full"
+          >
+            {spec.recipients.map((_, i) => {
+              const y = ((i + 0.5) / n) * 150;
+              const d = `M0 75 C 56 75, 64 ${y}, 120 ${y}`;
+              return (
+                <g key={i}>
+                  <path
+                    d={d}
+                    fill="none"
+                    vectorEffect="non-scaling-stroke"
+                    strokeWidth="1.5"
+                    className="stroke-primary/25"
+                  />
+                  <path
+                    d={d}
+                    fill="none"
+                    vectorEffect="non-scaling-stroke"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    style={
+                      { "--cycle-delay": `${i * 0.5}s` } as React.CSSProperties
+                    }
+                    className="blast-path stroke-primary"
+                  />
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+
+        {/* Everyone gets the same call */}
+        <div className="flex shrink-0 flex-col gap-1.5">
+          {spec.recipients.map(({ icon: Icon, label }, i) => (
+            <div
+              key={label}
+              style={{ "--cycle-delay": `${i * 0.5}s` } as React.CSSProperties}
+              className="blast-card flex w-[7.5rem] items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
+            >
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <Icon className="size-3" aria-hidden />
+              </span>
+              <span className="font-mono text-[10px] leading-tight tabular-nums">
+                {label}
+              </span>
+            </div>
+          ))}
+
+          {/* What comes back, kept visually separate from the recipients */}
+          <div className="mt-0.5 flex gap-1 border-t border-border pt-1.5">
+            {spec.outcomes.map(({ icon: Icon, label }) => (
+              <div
+                key={label}
+                className="flex w-[2.4rem] flex-col items-center gap-0.5 text-center"
+              >
+                <span className="flex size-5 items-center justify-center rounded-md bg-muted text-muted-foreground">
+                  <Icon className="size-2.5" aria-hidden />
+                </span>
+                <span className="text-[7px] leading-tight text-muted-foreground">
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
  * CODE — a request going out and something happening as a result. For the
  * developer products, where the interesting part is that your own software
  * is driving it.
@@ -1342,28 +1472,28 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
   },
 
   "auto-dialer": {
-    layout: "dialer",
-    status: "Campaign queued",
-    listLabel: "Contacts",
-    contacts: [
-      { number: "+44 20 ···" },
-      { number: "+44 161 ···" },
-      { number: "+44 121 ···" },
-      { number: "+44 113 ···" },
-      { number: "+44 131 ···" },
-    ],
-    engine: {
+    layout: "broadcast",
+    status: "Campaign running",
+    message: {
       icon: Radio,
-      title: "Campaign runner",
-      note: "Works the list at the pace you configure",
-      metric: "Announcement ready",
+      title: "Your message",
+      note: "Recorded once, delivered to the whole list",
     },
-    agents: [
-      { icon: Radio, label: "Recorded message" },
-      { icon: Headset, label: "Or an agent", cycles: true },
-      { icon: BarChart3, label: "Outcome logged" },
+    sent: 348,
+    total: 500,
+    recipients: [
+      { icon: Smartphone, label: "+44 20 ···" },
+      { icon: Smartphone, label: "+44 161 ···" },
+      { icon: Smartphone, label: "+44 121 ···" },
+      { icon: Smartphone, label: "+44 113 ···" },
+    ],
+    outcomes: [
+      { icon: PhoneCall, label: "Answered" },
+      { icon: Headset, label: "To an agent" },
+      { icon: BarChart3, label: "Logged" },
     ],
   },
+
 
   /* -------------------------------------------- panel: a surface to read */
   "call-analytics": {
@@ -1592,6 +1722,9 @@ export function ProductIllustration({ slug, className }: Props) {
       {spec.layout === "wave" ? <WaveLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "dialer" ? (
         <DialerLayout uid={slug} spec={spec} />
+      ) : null}
+      {spec.layout === "broadcast" ? (
+        <BroadcastLayout uid={slug} spec={spec} />
       ) : null}
       {spec.layout === "code" ? <CodeLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "swap" ? <SwapLayout uid={slug} spec={spec} /> : null}

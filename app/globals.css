@@ -1178,3 +1178,55 @@
     }
   }
 }
+
+@layer components {
+  /* The auto dialler's broadcast: one recorded message reaching the list.
+     The pulse travels outward from the message to each recipient in turn,
+     so the scene reads as a run in progress rather than a single call. */
+  .blast-path {
+    stroke-dasharray: 8 200;
+    animation: blast-path 2.4s linear infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes blast-path {
+    from {
+      stroke-dashoffset: 208;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Each recipient lights as the call lands on it. */
+  .blast-card {
+    animation: blast-card 2.4s ease-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes blast-card {
+    0%,
+    72% {
+      border-color: var(--border);
+    }
+    82% {
+      border-color: color-mix(in oklab, var(--primary) 45%, transparent);
+    }
+    100% {
+      border-color: var(--border);
+    }
+  }
+
+  /* Both are decoration over labels that already say it, so they stop. */
+  @media (prefers-reduced-motion: reduce) {
+    .blast-path {
+      animation: none;
+      stroke-dasharray: none;
+      opacity: 0;
+    }
+
+    .blast-card {
+      animation: none;
+    }
+  }
+}
