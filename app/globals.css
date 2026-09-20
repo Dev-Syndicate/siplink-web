@@ -211,6 +211,84 @@
 }
 
 @layer components {
+  /* Mega-menu panel motion.
+   *
+   * To the supplied spec: the panel enters 33px above its resting place and
+   * settles over 1.1s, with opacity on its own shorter 0.8s curve so it is
+   * readable well before it stops travelling.
+   *
+   * Keyframes rather than the `transition` + `visibility` the original
+   * snippet used. Radix unmounts the panel on close and its presence layer
+   * waits for an *animation* to finish before doing so — with a transition
+   * there is nothing to wait on, and the panel would vanish instantly with
+   * no exit at all. Same timings, expressed so the close survives.
+   */
+  @keyframes menu-panel-in {
+    from {
+      transform: translate3d(0, -33px, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes menu-panel-out {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(0, -18px, 0);
+    }
+  }
+
+  @keyframes menu-panel-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes menu-panel-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* First open animates the panel itself. Moving between triggers keeps that
+     panel mounted, so there the incoming body carries the same motion. */
+  [data-slot="navigation-menu-viewport"][data-state="open"],
+  [data-slot="navigation-menu-content"][data-motion^="from-"] {
+    animation:
+      menu-panel-in 1.1s ease both,
+      menu-panel-fade-in 0.8s ease both;
+  }
+
+  /* Both exit animations run the same length on purpose. Radix's presence
+     layer unmounts on the FIRST `animationend` it matches, so a shorter fade
+     alongside a longer slide would cut the slide off mid-flight. */
+  [data-slot="navigation-menu-viewport"][data-state="closed"],
+  [data-slot="navigation-menu-content"][data-motion^="to-"] {
+    animation:
+      menu-panel-out 0.45s ease both,
+      menu-panel-fade-out 0.45s ease both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="navigation-menu-viewport"][data-state="open"],
+    [data-slot="navigation-menu-viewport"][data-state="closed"],
+    [data-slot="navigation-menu-content"][data-motion^="from-"],
+    [data-slot="navigation-menu-content"][data-motion^="to-"] {
+      animation: none;
+    }
+  }
+}
+
+@layer components {
   /* Mega-menu rows deal themselves in when a panel opens, rather than the
      whole block appearing at once. The stagger is capped so a 24-link panel
      finishes about as fast as a 7-link one — past ~14 rows the eye reads it
