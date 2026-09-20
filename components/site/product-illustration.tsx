@@ -1,581 +1,1418 @@
+import { Fragment } from "react";
+
+import {
+  Activity,
+  ArrowLeftRight,
+  BarChart3,
+  Bot,
+  Boxes,
+  Building2,
+  Clock,
+  Cloud,
+  Code2,
+  FileAudio,
+  Filter,
+  Globe,
+  Headset,
+  Inbox,
+  Laptop,
+  Layers,
+  ListOrdered,
+  Lock,
+  type LucideIcon,
+  MessagesSquare,
+  MonitorSmartphone,
+  Network,
+  Phone,
+  PhoneCall,
+  PhoneIncoming,
+  PhoneOutgoing,
+  Play,
+  Radio,
+  Router,
+  Send,
+  Server,
+  ServerCog,
+  ShieldCheck,
+  Smartphone,
+  Sparkles,
+  Store,
+  Users,
+  Workflow,
+} from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 /**
- * Schematic illustrations for the product pages.
+ * Illustrations for the product pages — one scene per product.
  *
- * Each category gets a diagram of the thing it actually does. Drawn as
- * inline SVG from theme tokens so both themes work and nothing is
- * downloaded. Depth comes from a faint grid field, layered strokes and a
- * single glowing active path, rather than from flat filled shapes.
+ * The brief: a visitor should recognise the product from the picture before
+ * they read the label. So each scene is built from labelled icon cards rather
+ * than abstract line art — what plugs in on the left, what SipLink does in the
+ * middle, what it reaches on the right. Composed from theme tokens and
+ * `lucide-react`, so both themes work and nothing extra is downloaded.
+ *
+ * Every product has its own scene, keyed by slug — no two products share a
+ * picture.
  */
 type Props = {
-  category: string;
+  /** Product slug — selects the scene. */
+  slug: string;
   className?: string;
 };
 
-/** Shared defs: grid, glow and the dash animation for the live path. */
-function Defs({ uid }: { uid: string }) {
+/* ------------------------------------------------------------------ *
+ * Shared kit
+ * ------------------------------------------------------------------ */
+
+type Endpoint = {
+  icon: LucideIcon;
+  label: string;
+};
+
+/**
+ * A labelled endpoint: icon in a soft card, caption underneath. These are the
+ * things a reader recognises at a glance — a desk phone, a mobile, a laptop.
+ */
+function EndpointCard({ icon: Icon, label }: Endpoint) {
   return (
-    <defs>
-      <pattern
-        id={`grid-${uid}`}
-        width="24"
-        height="24"
-        patternUnits="userSpaceOnUse"
-      >
-        <path
-          d="M24 0H0V24"
-          fill="none"
-          className="stroke-foreground/[0.06]"
-          strokeWidth="1"
-        />
-      </pattern>
-
-      <radialGradient id={`fade-${uid}`} cx="50%" cy="50%" r="60%">
-        <stop offset="0%" stopColor="white" stopOpacity="1" />
-        <stop offset="100%" stopColor="white" stopOpacity="0" />
-      </radialGradient>
-
-      <mask id={`gridmask-${uid}`}>
-        <rect x="0" y="0" width="440" height="280" fill={`url(#fade-${uid})`} />
-      </mask>
-
-      <filter id={`glow-${uid}`} x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="4" result="blur" />
-        <feMerge>
-          <feMergeNode in="blur" />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
-    </defs>
+    <div className="flex w-14 shrink-0 flex-col items-center gap-1.5 text-center">
+      <span className="flex size-9 items-center justify-center rounded-xl border border-border bg-background text-primary shadow-sm">
+        <Icon className="size-4" aria-hidden />
+      </span>
+      <span className="text-[9px] leading-tight font-medium text-muted-foreground">
+        {label}
+      </span>
+    </div>
   );
 }
 
-/** A device chassis: outline, header bar, and content rows. */
-function Chassis({
-  x,
-  y,
-  w,
-  h,
-  rows = 3,
-  active = false,
-  label,
+/** A larger card for the things in the scene's spine. */
+function PillarCard({
+  icon: Icon,
+  title,
+  lines,
 }: {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  rows?: number;
-  active?: boolean;
-  label?: string;
+  icon: LucideIcon;
+  title: string;
+  lines?: string[];
 }) {
-  const rowGap = (h - 26) / rows;
-
   return (
-    <g>
-      <rect
-        x={x}
-        y={y}
-        width={w}
-        height={h}
-        rx="8"
-        fill="var(--background, #fff)"
-        className={cn(
-          "fill-background",
-          active ? "stroke-primary" : "stroke-border",
-        )}
-        strokeWidth={active ? 1.75 : 1.25}
-      />
-      {/* Header strip */}
-      <path
-        d={`M${x} ${y + 18} H${x + w}`}
-        className={active ? "stroke-primary/40" : "stroke-border"}
-        strokeWidth="1.25"
-      />
-      <circle
-        cx={x + 12}
-        cy={y + 9}
-        r="2.5"
-        className={active ? "fill-primary" : "fill-muted-foreground/35"}
-      />
-      {label ? (
-        <text
-          x={x + 22}
-          y={y + 12.5}
-          className={cn(
-            "text-[8px] font-medium [font-family:var(--font-mono)]",
-            active ? "fill-primary" : "fill-muted-foreground/70",
-          )}
-        >
-          {label}
-        </text>
+    <div className="flex w-22 shrink-0 flex-col items-center gap-1.5 rounded-xl border border-border bg-background px-2 py-3 text-center shadow-sm">
+      <span className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        <Icon className="size-4" aria-hidden />
+      </span>
+      <span className="text-[11px] leading-tight font-semibold">{title}</span>
+      {lines?.length ? (
+        <span className="text-[9px] leading-snug text-muted-foreground">
+          {lines.map((line) => (
+            <span key={line} className="block">
+              {line}
+            </span>
+          ))}
+        </span>
       ) : null}
-
-      {Array.from({ length: rows }).map((_, index) => (
-        <path
-          key={index}
-          d={`M${x + 12} ${y + 30 + index * rowGap} H${x + w - 12 - (index % 2) * 14}`}
-          className={
-            active && index === 1 ? "stroke-primary/70" : "stroke-border"
-          }
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-      ))}
-    </g>
+    </div>
   );
 }
 
-/** The animated packet travelling the active path. */
-function Flow({ d }: { d: string }) {
+/** A straight link between two spine cards. */
+function SpineLink() {
+  return <div className="h-0.5 w-3 shrink-0 self-center bg-primary/70" />;
+}
+
+/** Status chip — a live dot and a short state. */
+function StatusPill({ text }: { text: string }) {
   return (
-    <path
-      d={d}
-      fill="none"
-      strokeLinecap="round"
-      strokeWidth="2.5"
-      className="flow-path stroke-primary"
-    />
+    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 shadow-sm">
+      <span className="relative flex size-2">
+        <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary/60 motion-reduce:animate-none" />
+        <span className="relative inline-flex size-2 rounded-full bg-primary" />
+      </span>
+      <span className="font-mono text-[10px] font-semibold tracking-widest text-foreground uppercase">
+        {text}
+      </span>
+    </span>
   );
 }
 
-/** Business Voice: many channels aggregating into one trunk. */
-function TrunkDiagram({ uid }: { uid: string }) {
-  const trunk = "M300 140 H352";
-
+/**
+ * The SipLink hub — a cloud carrying the brand mark. This is the one place the
+ * logo appears inside a scene, so it stays the focal point.
+ */
+function BrandCloud({ caption }: { caption?: string }) {
   return (
-    <>
-      <Chassis x={40} y={78} w={116} h={124} rows={4} active label="IP-PBX" />
-
-      {/* Channels converging */}
-      {[100, 124, 148, 172].map((y, index) => (
-        <path
-          key={y}
-          d={`M156 ${y} C 218 ${y}, 232 140, 296 140`}
-          fill="none"
-          strokeWidth={index === 1 ? "1.75" : "1.25"}
-          className={index === 1 ? "stroke-primary/70" : "stroke-primary/25"}
-        />
-      ))}
-
-      {/* Aggregation point */}
-      <circle
-        cx="298"
-        cy="140"
-        r="5"
-        className="fill-primary"
-        filter={`url(#glow-${uid})`}
-      />
-
-      {/* The trunk */}
-      <path
-        d={trunk}
-        className="stroke-primary"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <Flow d={`M156 124 C 218 124, 232 140, 296 140 ${trunk.slice(1)}`} />
-
-      {/* Carrier cloud — the trunk terminates at its edge */}
-      <path
-        d="M366 118c-9 0-16 7-16 16s7 16 16 16h44c11 0 20-9 20-20s-9-20-20-20c-4-9-13-15-23-15-12 0-22 8-24 18-1 0-1 0-1 0"
-        fill="var(--background, #fff)"
-        className="fill-background stroke-primary"
-        strokeWidth="1.75"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M368 136h44M368 144h28"
-        className="stroke-primary/35"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      />
-    </>
-  );
-}
-
-/** Phone Numbers: one published number reaching many destinations. */
-function NumbersDiagram() {
-  const rows = [72, 122, 172];
-
-  return (
-    <>
-      {/* The advertised number */}
-      <rect
-        x="36"
-        y="116"
-        width="132"
-        height="48"
-        rx="10"
-        fill="var(--background, #fff)"
-        className="fill-background stroke-primary"
-        strokeWidth="1.75"
-      />
-      <text
-        x="56"
-        y="146"
-        className="fill-primary text-[15px] font-semibold [font-family:var(--font-mono)]"
-      >
-        +1 800···
-      </text>
-
-      {rows.map((y, index) => {
-        const path = `M168 140 C 214 140, 220 ${y + 24}, 268 ${y + 24}`;
-        const active = index === 1;
-        return (
-          <g key={y}>
-            <path
-              d={path}
-              fill="none"
-              strokeWidth={active ? "1.75" : "1.25"}
-              className={active ? "stroke-primary/70" : "stroke-primary/25"}
-            />
-            {active ? <Flow d={path} /> : null}
-            <Chassis
-              x={268}
-              y={y}
-              w={136}
-              h={48}
-              rows={1}
-              active={active}
-              label={["SALES", "SUPPORT", "BILLING"][index]}
-            />
-          </g>
-        );
-      })}
-    </>
-  );
-}
-
-/** Contact Center: callers queue, then distribute to agents. */
-function QueueDiagram() {
-  const agents = [70, 122, 174];
-
-  return (
-    <>
-      {/* Waiting callers */}
-      {[92, 122, 152, 182].map((y, index) => (
-        <g key={y}>
-          <circle
-            cx="48"
-            cy={y}
-            r="9"
-            fill={index === 0 ? "currentColor" : "var(--background, #fff)"}
-            className={cn(
-              "stroke-primary",
-              index === 0 ? "fill-primary" : "fill-background",
-            )}
-            strokeWidth="1.5"
-            opacity={1 - index * 0.22}
+    <div className="flex shrink-0 flex-col items-center gap-2">
+      <div className="relative flex w-24 items-center justify-center">
+        <svg
+          viewBox="0 0 132 78"
+          className="w-full"
+          role="presentation"
+          aria-hidden
+        >
+          <path
+            d="M36 72C20 72 8 60 8 45s12-27 28-27c5-10 16-16 28-16 17 0 31 12 34 28 14 2 26 13 26 27 0 6-2 11-6 15z"
+            className="fill-background stroke-primary"
+            strokeWidth="2"
+            strokeLinejoin="round"
           />
-        </g>
-      ))}
-
-      {/* Queue */}
-      <rect
-        x="86"
-        y="76"
-        width="96"
-        height="128"
-        rx="12"
-        fill="var(--background, #fff)"
-        className="fill-background stroke-primary/60"
-        strokeWidth="1.5"
-        strokeDasharray="5 5"
-      />
-      <text
-        x="134"
-        y="70"
-        textAnchor="middle"
-        className="fill-primary text-[9px] font-medium [font-family:var(--font-mono)]"
-      >
-        QUEUE
-      </text>
-      {[104, 128, 152, 176].map((y, index) => (
-        <path
-          key={y}
-          d={`M104 ${y} H${164 - index * 10}`}
-          className={index === 0 ? "stroke-primary/70" : "stroke-border"}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-      ))}
-
-      {agents.map((y, index) => {
-        const path = `M182 140 C 220 140, 226 ${y + 23}, 260 ${y + 23}`;
-        const active = index === 1;
-        return (
-          <g key={y}>
-            <path
-              d={path}
-              fill="none"
-              strokeWidth={active ? "1.75" : "1.25"}
-              className={active ? "stroke-primary/70" : "stroke-primary/25"}
-            />
-            {active ? <Flow d={path} /> : null}
-            <Chassis
-              x={260}
-              y={y}
-              w={144}
-              h={46}
-              rows={1}
-              active={active}
-              label={`AGENT ${index + 1}`}
-            />
-          </g>
-        );
-      })}
-    </>
+        </svg>
+        {/* Wordmark as text, not the raster logo, so it stays legible in
+            both themes against the cloud fill. */}
+        <span className="absolute top-1/2 -translate-y-1/2 text-[13px] font-semibold tracking-tight">
+          <span className="text-primary">sip</span>
+          <span className="text-foreground">link</span>
+        </span>
+      </div>
+      {caption ? (
+        <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-primary uppercase">
+          {caption}
+        </span>
+      ) : null}
+    </div>
   );
 }
 
-/** Communication APIs: a request out, a response back. */
-function ApiDiagram({ uid }: { uid: string }) {
-  return (
-    <>
-      {/* Editor */}
-      <rect
-        x="34"
-        y="74"
-        width="168"
-        height="132"
-        rx="10"
-        fill="var(--background, #fff)"
-        className="fill-background stroke-primary"
-        strokeWidth="1.75"
-      />
-      <path d="M34 96 H202" className="stroke-primary/40" strokeWidth="1.25" />
-      {[46, 58, 70].map((cx, index) => (
-        <circle
-          key={cx}
-          cx={cx}
-          cy="85"
-          r="3"
-          className={index === 0 ? "fill-primary" : "fill-muted-foreground/30"}
-        />
-      ))}
-      {[
-        { w: 96, active: false },
-        { w: 62, active: false },
-        { w: 118, active: true },
-        { w: 74, active: false },
-        { w: 48, active: false },
-      ].map((row, index) => (
-        <path
-          key={index}
-          d={`M52 ${114 + index * 19} h${row.w}`}
-          className={row.active ? "stroke-primary" : "stroke-border"}
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-      ))}
-
-      {/* Request / response */}
-      <path
-        d="M202 122 H286"
-        className="stroke-primary/70"
-        strokeWidth="1.5"
-        fill="none"
-      />
-      <path
-        d="M279 116l8 6-8 6"
-        className="stroke-primary"
-        strokeWidth="1.75"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Flow d="M202 122 H286" />
-
-      <path
-        d="M286 162 H202"
-        className="stroke-primary/25"
-        strokeWidth="1.5"
-        strokeDasharray="5 4"
-        fill="none"
-      />
-      <path
-        d="M209 156l-8 6 8 6"
-        className="stroke-primary/50"
-        strokeWidth="1.75"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-
-      {/* Network */}
-      <circle
-        cx="348"
-        cy="140"
-        r="60"
-        fill="var(--background, #fff)"
-        className="fill-background stroke-primary/30"
-        strokeWidth="1.25"
-      />
-      <circle
-        cx="348"
-        cy="140"
-        r="38"
-        className="stroke-primary/20"
-        strokeWidth="1.25"
-        fill="none"
-      />
-      {[0, 60, 120, 180, 240, 300].map((angle) => {
-        const rad = (angle * Math.PI) / 180;
-        const x = 348 + Math.cos(rad) * 38;
-        const y = 140 + Math.sin(rad) * 38;
-        return (
-          <g key={angle}>
-            <path
-              d={`M348 140 L${x} ${y}`}
-              className="stroke-primary/25"
-              strokeWidth="1.25"
-            />
-            <circle cx={x} cy={y} r="4.5" className="fill-primary/50" />
-          </g>
-        );
-      })}
-      <circle
-        cx="348"
-        cy="140"
-        r="9"
-        className="fill-primary"
-        filter={`url(#glow-${uid})`}
-      />
-    </>
-  );
-}
-
-/** Enterprise: systems meeting at one controlled edge. */
-function EdgeDiagram({ uid }: { uid: string }) {
-  const systems = [
-    { y: 70, label: "TEAMS" },
-    { y: 122, label: "PBX" },
-    { y: 174, label: "CRM" },
-  ];
-
-  return (
-    <>
-      {systems.map(({ y, label }, index) => {
-        const active = index === 1;
-        const path = `M158 ${y + 23} C 190 ${y + 23}, 194 140, 216 140`;
-        return (
-          <g key={y}>
-            <Chassis
-              x={34}
-              y={y}
-              w={124}
-              h={46}
-              rows={1}
-              active={active}
-              label={label}
-            />
-            <path
-              d={path}
-              fill="none"
-              strokeWidth={active ? "1.75" : "1.25"}
-              className={active ? "stroke-primary/70" : "stroke-primary/25"}
-            />
-            {active ? <Flow d={path} /> : null}
-          </g>
-        );
-      })}
-
-      {/* The controlled edge */}
-      <rect
-        x="216"
-        y="80"
-        width="58"
-        height="120"
-        rx="14"
-        fill="var(--background, #fff)"
-        className="fill-background stroke-primary"
-        strokeWidth="2"
-      />
-      <text
-        x="245"
-        y="74"
-        textAnchor="middle"
-        className="fill-primary text-[9px] font-medium [font-family:var(--font-mono)]"
-      >
-        SBC
-      </text>
-      <path
-        d="M245 104v72"
-        className="stroke-primary/40"
-        strokeWidth="1.5"
-        strokeDasharray="4 4"
-        strokeLinecap="round"
-      />
-      <circle
-        cx="245"
-        cy="140"
-        r="6"
-        className="fill-primary"
-        filter={`url(#glow-${uid})`}
-      />
-
-      <path
-        d="M274 140 H330"
-        className="stroke-primary"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        fill="none"
-      />
-
-      <path
-        d="M344 120c-9 0-16 7-16 16s7 16 16 16h42c11 0 19-9 19-19s-8-19-19-19c-4-9-13-14-22-14-11 0-21 7-23 17"
-        fill="var(--background, #fff)"
-        className="fill-background stroke-primary"
-        strokeWidth="1.75"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M346 138h42M346 146h26"
-        className="stroke-primary/35"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      />
-    </>
-  );
-}
-
-const DIAGRAMS: Record<string, (props: { uid: string }) => React.JSX.Element> =
-  {
-    "business-voice": TrunkDiagram,
-    "phone-numbers": NumbersDiagram,
-    "contact-center": QueueDiagram,
-    "communication-apis": ApiDiagram,
-    "enterprise-features": EdgeDiagram,
-  };
-
-export function ProductIllustration({ category, className }: Props) {
-  const Diagram = DIAGRAMS[category] ?? TrunkDiagram;
-  // Stable per-category id so gradient and filter references stay unique
-  // without needing a client component.
-  const uid = category;
-
+/**
+ * Connector rails. Drawn as one stretched SVG behind the cards so the curves
+ * always meet the spine cleanly, whatever the column width works out to be.
+ */
+function Rails({ mirrored = false }: { mirrored?: boolean }) {
+  const rows = [16, 76, 136];
   return (
     <svg
-      viewBox="20 50 404 180"
+      viewBox="0 0 120 152"
+      preserveAspectRatio="none"
       role="presentation"
       aria-hidden
-      className={cn("h-auto w-full", className)}
+      className={cn("size-full", mirrored && "-scale-x-100")}
     >
-      <Defs uid={uid} />
-
-      {/* Grid field, faded at the edges, for depth behind the diagram. */}
-      <rect
-        x="0"
-        y="0"
-        width="440"
-        height="280"
-        fill={`url(#grid-${uid})`}
-        mask={`url(#gridmask-${uid})`}
-      />
-
-      <Diagram uid={uid} />
+      {rows.map((y, i) => {
+        const d = `M0 ${y} C 56 ${y}, 64 76, 120 76`;
+        return (
+          <g key={y}>
+            <path
+              d={d}
+              fill="none"
+              vectorEffect="non-scaling-stroke"
+              strokeWidth={i === 1 ? 2 : 1.5}
+              className={i === 1 ? "stroke-primary/70" : "stroke-primary/25"}
+            />
+            {i === 1 ? (
+              <path
+                d={d}
+                fill="none"
+                vectorEffect="non-scaling-stroke"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                className="flow-path stroke-primary"
+              />
+            ) : null}
+          </g>
+        );
+      })}
     </svg>
+  );
+}
+
+/** Faint dotted field behind the scene, faded out at the edges. */
+function DotField({ uid }: { uid: string }) {
+  return (
+    <svg
+      viewBox="0 0 400 180"
+      preserveAspectRatio="none"
+      role="presentation"
+      aria-hidden
+      className="size-full"
+    >
+      <defs>
+        <pattern
+          id={`dots-${uid}`}
+          width="10"
+          height="10"
+          patternUnits="userSpaceOnUse"
+        >
+          <circle cx="2" cy="2" r="1.6" className="fill-primary/30" />
+        </pattern>
+        <radialGradient id={`dotfade-${uid}`} cx="50%" cy="50%" r="58%">
+          <stop offset="0%" stopColor="white" stopOpacity="0.85" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </radialGradient>
+        <mask id={`dotmask-${uid}`}>
+          <rect width="400" height="180" fill={`url(#dotfade-${uid})`} />
+        </mask>
+      </defs>
+      <rect
+        width="400"
+        height="180"
+        fill={`url(#dots-${uid})`}
+        mask={`url(#dotmask-${uid})`}
+      />
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * Scene shapes
+ * ------------------------------------------------------------------ */
+
+type SpineCard =
+  | { kind: "brand"; caption: string }
+  | { kind: "pillar"; icon: LucideIcon; title: string; lines: [string, string] };
+
+type FlowSpec = {
+  layout: "flow";
+  status: string;
+  left: Endpoint[];
+  spine: SpineCard[];
+  right: Endpoint[];
+};
+
+type FanSpec = {
+  layout: "fan";
+  status: string;
+  source: { icon: LucideIcon; value: string; label: string };
+  out: { icon: LucideIcon; label: string; note?: string }[];
+};
+
+type QueueSpec = {
+  layout: "queue";
+  status: string;
+  waitingIcon: LucideIcon;
+  waitingLabel: string;
+  queueLabel: string;
+  agents: { icon: LucideIcon; label: string; state: "free" | "busy" }[];
+};
+
+type PanelSpec = {
+  layout: "panel";
+  status: string;
+  title: string;
+  /** Bar heights as percentages; `peak` is the one picked out in brand pink. */
+  bars: number[];
+  peak: number;
+  axis: [string, string];
+  readouts: { icon: LucideIcon; label: string; value: string }[];
+};
+
+type WaveSpec = {
+  layout: "wave";
+  status: string;
+  title: string;
+  /** Waveform bar heights as percentages, mirrored about the centre line. */
+  wave: number[];
+  /** How far through the recording the playhead sits, 0-1. */
+  playhead: number;
+  elapsed: string;
+  total: string;
+  readouts: { icon: LucideIcon; label: string; value: string }[];
+};
+
+type CodeSpec = {
+  layout: "code";
+  status: string;
+  lines: { text: string; accent?: boolean }[];
+  requestLabel: string;
+  responseLabel: string;
+  caption: string;
+  results: Endpoint[];
+};
+
+type SwapSpec = {
+  layout: "swap";
+  status: string;
+  beforeLabel: string;
+  before: Endpoint[];
+  verb: string;
+  afterLabel: string;
+  after: Endpoint[];
+};
+
+type OrbitSpec = {
+  layout: "orbit";
+  status: string;
+  caption: string;
+  around: Endpoint[];
+};
+
+type SceneSpec =
+  | FlowSpec
+  | FanSpec
+  | QueueSpec
+  | PanelSpec
+  | WaveSpec
+  | CodeSpec
+  | SwapSpec
+  | OrbitSpec;
+
+/* ------------------------------------------------------------------ *
+ * Layouts
+ *
+ * Six compositions, not one. A queue should look like a queue and a
+ * dashboard should look like a dashboard — products that do different
+ * things get different pictures, rather than the same diagram with the
+ * labels swapped.
+ * ------------------------------------------------------------------ */
+
+/** Ambient dot field + status chip, shared by every layout. */
+function Stage({
+  uid,
+  status,
+  children,
+}: {
+  uid: string;
+  status: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="relative isolate">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-8 bottom-0 -z-10"
+      >
+        <DotField uid={uid} />
+      </div>
+      <div className="flex justify-center pb-4">
+        <StatusPill text={status} />
+      </div>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * FLOW — a linear journey. Endpoints feed in on the left, cross the thing
+ * SipLink provides, and arrive on the right. For products that are a path
+ * between two worlds.
+ */
+function FlowLayout({ uid, spec }: { uid: string; spec: FlowSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-stretch">
+        <div className="flex shrink-0 flex-col justify-between gap-3">
+          {spec.left.map((item) => (
+            <EndpointCard key={item.label} {...item} />
+          ))}
+        </div>
+        <div className="min-w-5 flex-1">
+          <Rails />
+        </div>
+        <div className="flex shrink-0 items-center">
+          {spec.spine.map((card, i) => (
+            <Fragment key={i}>
+              {i > 0 ? <SpineLink /> : null}
+              {card.kind === "brand" ? (
+                <BrandCloud caption={card.caption} />
+              ) : (
+                <PillarCard
+                  icon={card.icon}
+                  title={card.title}
+                  lines={card.lines}
+                />
+              )}
+            </Fragment>
+          ))}
+        </div>
+        <div className="min-w-5 flex-1">
+          <Rails mirrored />
+        </div>
+        <div className="flex shrink-0 flex-col justify-between gap-3">
+          {spec.right.map((item) => (
+            <EndpointCard key={item.label} {...item} />
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * FAN — one thing on the left opening out to many on the right. The whole
+ * point of a published number or a menu is that one entry point reaches
+ * several destinations, so the picture says that and nothing else.
+ */
+function FanLayout({ uid, spec }: { uid: string; spec: FanSpec }) {
+  const n = spec.out.length;
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-center gap-2">
+        {/* The single entry point, stated large */}
+        <div className="flex w-28 shrink-0 flex-col items-center gap-2 text-center">
+          <span className="flex size-12 items-center justify-center rounded-2xl border border-primary/40 bg-background text-primary shadow-sm">
+            <spec.source.icon className="size-5" aria-hidden />
+          </span>
+          <span className="font-mono text-[11px] font-semibold tracking-tight text-primary">
+            {spec.source.value}
+          </span>
+          <span className="text-[9px] leading-tight text-muted-foreground">
+            {spec.source.label}
+          </span>
+        </div>
+
+        {/* Splitting rails */}
+        <div className="h-[168px] min-w-6 flex-1">
+          <svg
+            viewBox="0 0 120 168"
+            preserveAspectRatio="none"
+            role="presentation"
+            aria-hidden
+            className="size-full"
+          >
+            {spec.out.map((_, i) => {
+              const y = ((i + 0.5) / n) * 168;
+              const d = `M0 84 C 56 84, 64 ${y}, 120 ${y}`;
+              const live = i === Math.floor(n / 2);
+              return (
+                <g key={i}>
+                  <path
+                    d={d}
+                    fill="none"
+                    vectorEffect="non-scaling-stroke"
+                    strokeWidth={live ? 2 : 1.5}
+                    className={live ? "stroke-primary/70" : "stroke-primary/25"}
+                  />
+                  {live ? (
+                    <path
+                      d={d}
+                      fill="none"
+                      vectorEffect="non-scaling-stroke"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      className="flow-path stroke-primary"
+                    />
+                  ) : null}
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+
+        {/* Destinations, stacked as rows rather than icon chips */}
+        <div className="flex shrink-0 flex-col gap-2">
+          {spec.out.map(({ icon: Icon, label, note }) => (
+            <div
+              key={label}
+              className="flex w-40 items-center gap-2.5 rounded-lg border border-border bg-background px-3 py-2 shadow-sm"
+            >
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <Icon className="size-3.5" aria-hidden />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[11px] leading-tight font-semibold">
+                  {label}
+                </span>
+                {note ? (
+                  <span className="block text-[9px] leading-tight text-muted-foreground">
+                    {note}
+                  </span>
+                ) : null}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * QUEUE — callers waiting in line, then handed to agents. Drawn as an
+ * actual line of people, because that is the thing being described.
+ */
+function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-center gap-3">
+        {/* Waiting callers — a real line, fading toward the back */}
+        <div className="flex shrink-0 flex-col items-center gap-2">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+            {spec.waitingLabel}
+          </span>
+          <div className="flex flex-col gap-1.5">
+            {[0, 1, 2, 3].map((i) => (
+              <span
+                key={i}
+                className="flex size-8 items-center justify-center rounded-full border border-primary/40 bg-background text-primary"
+                style={{ opacity: 1 - i * 0.2 }}
+              >
+                <spec.waitingIcon className="size-3.5" aria-hidden />
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* The queue itself — a dashed holding pen */}
+        <div className="flex min-w-0 flex-1 flex-col items-center gap-2">
+          <div className="w-full rounded-xl border border-dashed border-primary/50 bg-primary/[0.04] px-3 py-4">
+            <div className="flex flex-col gap-2">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <span className="font-mono text-[9px] text-primary/60 tabular-nums">
+                    {i + 1}
+                  </span>
+                  <span
+                    className="h-1.5 rounded-full bg-primary/30"
+                    style={{ width: `${70 - i * 16}%` }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-primary uppercase">
+            {spec.queueLabel}
+          </span>
+        </div>
+
+        {/* Arrow into the agents */}
+        <div aria-hidden className="shrink-0">
+          <svg viewBox="0 0 28 10" className="w-7" role="presentation">
+            <path
+              d="M0 5h20M16 1l5 4-5 4"
+              fill="none"
+              className="stroke-primary"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+
+        {/* Agents */}
+        <div className="flex shrink-0 flex-col gap-2">
+          {spec.agents.map(({ icon: Icon, label, state }) => (
+            <div
+              key={label}
+              className="flex w-32 items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-2 shadow-sm"
+            >
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <Icon className="size-3.5" aria-hidden />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[10px] leading-tight font-semibold">
+                  {label}
+                </span>
+                <span className="flex items-center gap-1">
+                  <span
+                    className={cn(
+                      "size-1.5 rounded-full",
+                      state === "busy" ? "bg-muted-foreground/40" : "bg-primary",
+                    )}
+                  />
+                  <span className="text-[9px] text-muted-foreground">
+                    {state === "busy" ? "On a call" : "Available"}
+                  </span>
+                </span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * PANEL — a reporting surface. For products whose output is something you
+ * look at rather than something that travels somewhere.
+ */
+function PanelLayout({ uid, spec }: { uid: string; spec: PanelSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="rounded-xl border border-border bg-background shadow-sm">
+        {/* Window chrome */}
+        <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+          <span className="flex gap-1">
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className={cn(
+                  "size-1.5 rounded-full",
+                  i === 0 ? "bg-primary" : "bg-muted-foreground/25",
+                )}
+              />
+            ))}
+          </span>
+          <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+            {spec.title}
+          </span>
+        </div>
+
+        <div className="grid gap-4 p-4 sm:grid-cols-[minmax(0,1fr)_auto]">
+          {/* Bars — a deterministic shape, not random */}
+          <div>
+            <div className="flex h-24 items-end gap-1.5">
+              {spec.bars.map((h, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    "flex-1 rounded-t-sm",
+                    i === spec.peak ? "bg-primary" : "bg-primary/25",
+                  )}
+                  style={{ height: `${h}%` }}
+                />
+              ))}
+            </div>
+            <div className="mt-2 flex justify-between font-mono text-[9px] text-muted-foreground">
+              <span>{spec.axis[0]}</span>
+              <span>{spec.axis[1]}</span>
+            </div>
+          </div>
+
+          {/* Readouts beside the chart */}
+          <dl className="flex shrink-0 flex-col justify-center gap-2.5 sm:w-32">
+            {spec.readouts.map(({ icon: Icon, label, value }) => (
+              <div key={label} className="flex items-center gap-2">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Icon className="size-3.5" aria-hidden />
+                </span>
+                <span className="min-w-0">
+                  <dt className="text-[9px] leading-tight text-muted-foreground">
+                    {label}
+                  </dt>
+                  <dd className="text-[11px] leading-tight font-semibold">
+                    {value}
+                  </dd>
+                </span>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * WAVE — a recorded conversation as an audio waveform with a playhead, which
+ * is what a recording actually looks like when you go to review one. Kept
+ * distinct from PANEL so recording and analytics do not share a picture.
+ */
+function WaveLayout({ uid, spec }: { uid: string; spec: WaveSpec }) {
+  const played = Math.round(spec.wave.length * spec.playhead);
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="rounded-xl border border-border bg-background shadow-sm">
+        <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+          <span className="flex size-5 items-center justify-center rounded bg-primary/10 text-primary">
+            <FileAudio className="size-3" aria-hidden />
+          </span>
+          <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+            {spec.title}
+          </span>
+        </div>
+
+        <div className="grid gap-4 p-4 sm:grid-cols-[minmax(0,1fr)_auto]">
+          <div>
+            {/* The waveform, mirrored about a centre line. Bars before the
+                playhead are solid; the rest are waiting to be played. */}
+            <div className="relative flex h-20 items-center gap-[3px]">
+              {spec.wave.map((h, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    "flex-1 rounded-full",
+                    i < played ? "bg-primary" : "bg-primary/20",
+                  )}
+                  style={{ height: `${h}%` }}
+                />
+              ))}
+              {/* Playhead */}
+              <span
+                aria-hidden
+                className="absolute inset-y-0 w-px bg-foreground/50"
+                style={{ left: `${spec.playhead * 100}%` }}
+              >
+                <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-foreground/70" />
+              </span>
+            </div>
+
+            {/* Transport */}
+            <div className="mt-3 flex items-center gap-2.5">
+              <span className="flex size-6 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <Play className="size-2.5 fill-current" aria-hidden />
+              </span>
+              <span className="font-mono text-[9px] text-muted-foreground tabular-nums">
+                {spec.elapsed}
+              </span>
+              <span className="relative h-0.5 flex-1 rounded-full bg-border">
+                <span
+                  className="absolute inset-y-0 left-0 rounded-full bg-primary"
+                  style={{ width: `${spec.playhead * 100}%` }}
+                />
+              </span>
+              <span className="font-mono text-[9px] text-muted-foreground tabular-nums">
+                {spec.total}
+              </span>
+            </div>
+          </div>
+
+          <dl className="flex shrink-0 flex-col justify-center gap-2.5 sm:w-32">
+            {spec.readouts.map(({ icon: Icon, label, value }) => (
+              <div key={label} className="flex items-center gap-2">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Icon className="size-3.5" aria-hidden />
+                </span>
+                <span className="min-w-0">
+                  <dt className="text-[9px] leading-tight text-muted-foreground">
+                    {label}
+                  </dt>
+                  <dd className="text-[11px] leading-tight font-semibold">
+                    {value}
+                  </dd>
+                </span>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * CODE — a request going out and something happening as a result. For the
+ * developer products, where the interesting part is that your own software
+ * is driving it.
+ */
+function CodeLayout({ uid, spec }: { uid: string; spec: CodeSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-center gap-3">
+        {/* The call your application makes */}
+        <div className="min-w-0 flex-1 overflow-hidden rounded-xl border border-border bg-background shadow-sm">
+          <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+            <span className="flex size-5 items-center justify-center rounded bg-primary/10 text-primary">
+              <Code2 className="size-3" aria-hidden />
+            </span>
+            <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+              Your application
+            </span>
+          </div>
+          <div className="space-y-1 px-3 py-3 font-mono text-[10px] leading-relaxed">
+            {spec.lines.map((line, i) => (
+              <div key={i} className="flex gap-2">
+                <span className="w-3 shrink-0 text-right text-muted-foreground/40 tabular-nums">
+                  {i + 1}
+                </span>
+                <span
+                  className={cn(
+                    "min-w-0 truncate",
+                    line.accent ? "text-primary" : "text-muted-foreground",
+                  )}
+                >
+                  {line.text}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Request out, event back */}
+        <div className="flex w-14 shrink-0 flex-col items-center gap-1">
+          <svg viewBox="0 0 40 10" className="w-10" role="presentation" aria-hidden>
+            <path
+              d="M0 5h30M26 1l5 4-5 4"
+              fill="none"
+              className="stroke-primary"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span className="font-mono text-[8px] tracking-widest text-primary uppercase">
+            {spec.requestLabel}
+          </span>
+          <svg viewBox="0 0 40 10" className="w-10" role="presentation" aria-hidden>
+            <path
+              d="M40 5H10M14 1L9 5l5 4"
+              fill="none"
+              className="stroke-primary/40"
+              strokeWidth="1.5"
+              strokeDasharray="3 3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+            {spec.responseLabel}
+          </span>
+        </div>
+
+        {/* What SipLink does with it */}
+        <div className="flex shrink-0 flex-col items-center gap-3">
+          <BrandCloud caption={spec.caption} />
+          <div className="flex gap-2">
+            {spec.results.map(({ icon: Icon, label }) => (
+              <div
+                key={label}
+                className="flex w-16 flex-col items-center gap-1 text-center"
+              >
+                <span className="flex size-7 items-center justify-center rounded-lg border border-border bg-background text-primary shadow-sm">
+                  <Icon className="size-3.5" aria-hidden />
+                </span>
+                <span className="text-[8px] leading-tight text-muted-foreground">
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * SWAP — what you run today on one side, struck through, and what replaces
+ * it on the other. For migrations, where the story is the change itself.
+ */
+function SwapLayout({ uid, spec }: { uid: string; spec: SwapSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
+        {/* Before */}
+        <div className="rounded-xl border border-border bg-background/60 p-4">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+            {spec.beforeLabel}
+          </span>
+          <ul className="mt-3 space-y-2">
+            {spec.before.map(({ icon: Icon, label }) => (
+              <li key={label} className="flex items-center gap-2">
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground/70">
+                  <Icon className="size-3" aria-hidden />
+                </span>
+                <span className="text-[10px] leading-tight text-muted-foreground line-through decoration-muted-foreground/40">
+                  {label}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* The change */}
+        <div className="flex flex-col items-center gap-2">
+          <span className="flex size-9 items-center justify-center rounded-full border border-primary/40 bg-background text-primary shadow-sm">
+            <ArrowLeftRight className="size-4" aria-hidden />
+          </span>
+          <span className="font-mono text-[8px] tracking-widest text-primary uppercase">
+            {spec.verb}
+          </span>
+        </div>
+
+        {/* After */}
+        <div className="rounded-xl border border-primary/30 bg-background p-4 shadow-sm ring-1 ring-primary/10">
+          <span className="font-mono text-[9px] tracking-widest text-primary uppercase">
+            {spec.afterLabel}
+          </span>
+          <ul className="mt-3 space-y-2">
+            {spec.after.map(({ icon: Icon, label }) => (
+              <li key={label} className="flex items-center gap-2">
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Icon className="size-3" aria-hidden />
+                </span>
+                <span className="text-[10px] leading-tight font-medium">
+                  {label}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * ORBIT — one hub with everything else arranged around it. For products
+ * whose job is to sit in the middle of things other people already run.
+ */
+function OrbitLayout({ uid, spec }: { uid: string; spec: OrbitSpec }) {
+  const n = spec.around.length;
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="relative mx-auto h-[210px] w-full max-w-[340px]">
+        {/* Connecting spokes, drawn under the cards */}
+        <svg
+          viewBox="0 0 340 210"
+          className="absolute inset-0 size-full"
+          role="presentation"
+          aria-hidden
+        >
+          {spec.around.map((_, i) => {
+            const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+            const x = 170 + Math.cos(angle) * 132;
+            const y = 105 + Math.sin(angle) * 78;
+            return (
+              <line
+                key={i}
+                x1="170"
+                y1="105"
+                x2={x}
+                y2={y}
+                className={i === 0 ? "stroke-primary/70" : "stroke-primary/25"}
+                strokeWidth={i === 0 ? 2 : 1.5}
+              />
+            );
+          })}
+        </svg>
+
+        {/* The hub */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <BrandCloud caption={spec.caption} />
+        </div>
+
+        {/* Everything arranged around it */}
+        {spec.around.map(({ icon: Icon, label }, i) => {
+          const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+          const x = 50 + (Math.cos(angle) * 132 * 100) / 340;
+          const y = 50 + (Math.sin(angle) * 78 * 100) / 190;
+          return (
+            <div
+              key={label}
+              className="absolute flex w-16 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 text-center"
+              style={{ left: `${x}%`, top: `${y}%` }}
+            >
+              <span className="flex size-8 items-center justify-center rounded-xl border border-border bg-background text-primary shadow-sm">
+                <Icon className="size-4" aria-hidden />
+              </span>
+              <span className="text-[9px] leading-tight font-medium text-muted-foreground">
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </Stage>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * Scenes — one row per product, each pointed at the layout that suits
+ * what the product actually does.
+ * ------------------------------------------------------------------ */
+
+const SCENE_SPECS: Record<string, SceneSpec> = {
+  /* ------------------------------------------------- flow: a journey */
+  "sip-trunking": {
+    layout: "flow",
+    status: "Network active",
+    left: [
+      { icon: Phone, label: "IP Phones" },
+      { icon: PhoneCall, label: "Desk Phones" },
+      { icon: Laptop, label: "Softphones" },
+    ],
+    spine: [
+      {
+        kind: "pillar",
+        icon: Server,
+        title: "Your PBX",
+        lines: ["Extensions &", "phone system"],
+      },
+      { kind: "brand", caption: "SIP Trunk" },
+    ],
+    right: [
+      { icon: Building2, label: "Local Calls" },
+      { icon: Smartphone, label: "Mobile Networks" },
+      { icon: Globe, label: "International" },
+    ],
+  },
+
+  "teams-calling": {
+    layout: "flow",
+    status: "Teams connected",
+    left: [
+      { icon: Users, label: "Teams Users" },
+      { icon: Laptop, label: "Desktop App" },
+      { icon: Smartphone, label: "Mobile App" },
+    ],
+    spine: [
+      { kind: "brand", caption: "Teams Calling" },
+      {
+        kind: "pillar",
+        icon: Phone,
+        title: "Your numbers",
+        lines: ["Mapped to", "Teams users"],
+      },
+    ],
+    right: [
+      { icon: Building2, label: "Customers" },
+      { icon: Globe, label: "Suppliers" },
+      { icon: Smartphone, label: "Mobile Numbers" },
+    ],
+  },
+
+  sbc: {
+    layout: "flow",
+    status: "Border controlled",
+    left: [
+      { icon: Server, label: "Your PBX" },
+      { icon: Users, label: "Teams" },
+      { icon: Headset, label: "Contact Centre" },
+    ],
+    spine: [
+      {
+        kind: "pillar",
+        icon: ShieldCheck,
+        title: "SBC",
+        lines: ["One controlled", "crossing point"],
+      },
+    ],
+    right: [
+      { icon: Globe, label: "Carriers" },
+      { icon: Cloud, label: "Cloud Platforms" },
+      { icon: Activity, label: "Visibility" },
+    ],
+  },
+
+  "webrtc-sdk": {
+    layout: "flow",
+    status: "In-browser calling",
+    left: [
+      { icon: MonitorSmartphone, label: "Your Web App" },
+      { icon: Users, label: "Your Customers" },
+    ],
+    spine: [
+      {
+        kind: "pillar",
+        icon: PhoneCall,
+        title: "Click to call",
+        lines: ["Nothing to", "install"],
+      },
+      { kind: "brand", caption: "Connected" },
+    ],
+    right: [
+      { icon: Headset, label: "Your Agents" },
+      { icon: Network, label: "Same Numbers" },
+      { icon: Phone, label: "Any Destination" },
+    ],
+  },
+
+  /* ---------------------------------------- fan: one in, many out */
+  "did-numbers": {
+    layout: "fan",
+    status: "Numbers live",
+    source: { icon: PhoneIncoming, value: "+1 800···", label: "One published number" },
+    out: [
+      { icon: Users, label: "Sales", note: "Extension 201" },
+      { icon: Headset, label: "Support", note: "Extension 202" },
+      { icon: Building2, label: "Billing", note: "Extension 203" },
+    ],
+  },
+
+  "toll-free-numbers": {
+    layout: "fan",
+    status: "Free to call",
+    source: { icon: PhoneCall, value: "1 800···", label: "Caller is not charged" },
+    out: [
+      { icon: Headset, label: "Helpline", note: "Routed by region" },
+      { icon: ListOrdered, label: "IVR Menu", note: "Caller chooses" },
+      { icon: Clock, label: "After Hours", note: "Out-of-hours flow" },
+    ],
+  },
+
+  "virtual-numbers": {
+    layout: "fan",
+    status: "No line required",
+    source: { icon: Globe, value: "Local number", label: "No physical line" },
+    out: [
+      { icon: Laptop, label: "Softphone", note: "Wherever they work" },
+      { icon: Smartphone, label: "Mobile", note: "On the move" },
+      { icon: Users, label: "Any Extension", note: "Your call flows" },
+    ],
+  },
+
+  ivr: {
+    layout: "fan",
+    status: "Menu active",
+    source: { icon: ListOrdered, value: "Press 1–3", label: "Caller chooses" },
+    out: [
+      { icon: Users, label: "Sales", note: "Press 1" },
+      { icon: Headset, label: "Support", note: "Press 2" },
+      { icon: Building2, label: "Billing", note: "Press 3" },
+    ],
+  },
+
+  /* ------------------------------------- queue: waiting, then handled */
+  "call-queue": {
+    layout: "queue",
+    status: "Callers waiting",
+    waitingIcon: PhoneIncoming,
+    waitingLabel: "Callers",
+    queueLabel: "In the queue",
+    agents: [
+      { icon: Headset, label: "Agent 1", state: "busy" },
+      { icon: Headset, label: "Agent 2", state: "free" },
+      { icon: Headset, label: "Agent 3", state: "busy" },
+    ],
+  },
+
+  "call-center": {
+    layout: "queue",
+    status: "Queue healthy",
+    waitingIcon: Users,
+    waitingLabel: "Customers",
+    queueLabel: "Routed by your rules",
+    agents: [
+      { icon: Headset, label: "Sales", state: "free" },
+      { icon: Headset, label: "Support", state: "busy" },
+      { icon: Activity, label: "Supervisor", state: "free" },
+    ],
+  },
+
+  "predictive-dialer": {
+    layout: "queue",
+    status: "Campaign running",
+    waitingIcon: PhoneOutgoing,
+    waitingLabel: "Dial list",
+    queueLabel: "Paced to availability",
+    agents: [
+      { icon: Headset, label: "Agent 1", state: "busy" },
+      { icon: Headset, label: "Agent 2", state: "free" },
+      { icon: PhoneCall, label: "Answered", state: "free" },
+    ],
+  },
+
+  "auto-dialer": {
+    layout: "queue",
+    status: "Campaign queued",
+    waitingIcon: Smartphone,
+    waitingLabel: "Contacts",
+    queueLabel: "Dialled in order",
+    agents: [
+      { icon: Radio, label: "Announcement", state: "free" },
+      { icon: Headset, label: "Or an agent", state: "free" },
+      { icon: BarChart3, label: "Outcome", state: "busy" },
+    ],
+  },
+
+  /* -------------------------------------------- panel: a surface to read */
+  "call-analytics": {
+    layout: "panel",
+    status: "Data flowing",
+    title: "Call volume by hour",
+    bars: [28, 42, 55, 70, 88, 64, 48, 36, 52, 40, 30, 22],
+    peak: 4,
+    axis: ["09:00", "18:00"],
+    readouts: [
+      { icon: PhoneCall, label: "Answered", value: "Tracked" },
+      { icon: PhoneIncoming, label: "Missed", value: "Flagged" },
+      { icon: Layers, label: "Export", value: "Excel / CSV" },
+    ],
+  },
+
+  "call-recording": {
+    layout: "wave",
+    status: "Recording on",
+    title: "Conversation archive",
+    wave: [
+      18, 34, 52, 40, 66, 82, 58, 44, 72, 90, 64, 38, 56, 78, 48, 30, 62, 86,
+      54, 36, 70, 46, 26, 42,
+    ],
+    playhead: 0.42,
+    elapsed: "01:12",
+    total: "02:48",
+    readouts: [
+      { icon: Filter, label: "Search", value: "By date, agent" },
+      { icon: ShieldCheck, label: "Access", value: "Role-based" },
+      { icon: FileAudio, label: "Formats", value: "MP3 / WAV" },
+    ],
+  },
+
+  /* ------------------------------------------- code: your app drives it */
+  "voice-api": {
+    layout: "code",
+    status: "API connected",
+    lines: [
+      { text: "POST /calls", accent: true },
+      { text: '  to: "+1 800..."' },
+      { text: '  from: "sales"' },
+      { text: "  record: true" },
+    ],
+    requestLabel: "Request",
+    responseLabel: "Events",
+    caption: "Voice API",
+    results: [
+      { icon: PhoneOutgoing, label: "Call placed" },
+      { icon: Activity, label: "Status back" },
+    ],
+  },
+
+  "sms-api": {
+    layout: "code",
+    status: "Messages sending",
+    lines: [
+      { text: "POST /messages", accent: true },
+      { text: '  to: "+44 7..."' },
+      { text: '  body: "Your code"' },
+    ],
+    requestLabel: "Send",
+    responseLabel: "Delivered",
+    caption: "SMS API",
+    results: [
+      { icon: Smartphone, label: "Any mobile" },
+      { icon: ShieldCheck, label: "Passcodes" },
+    ],
+  },
+
+  "sip-api": {
+    layout: "code",
+    status: "SIP integrated",
+    lines: [
+      { text: "REGISTER sip:...", accent: true },
+      { text: "  endpoint: pbx-01" },
+      { text: "  route: least-cost" },
+      { text: "  failover: on" },
+    ],
+    requestLabel: "Signalling",
+    responseLabel: "Session",
+    caption: "SIP API",
+    results: [
+      { icon: Router, label: "Your routing" },
+      { icon: Globe, label: "Carriers" },
+    ],
+  },
+
+  "whatsapp-api": {
+    layout: "code",
+    status: "Inbox connected",
+    lines: [
+      { text: "POST /whatsapp", accent: true },
+      { text: '  to: "+91 98..."' },
+      { text: '  template: "order"' },
+    ],
+    requestLabel: "Send",
+    responseLabel: "Reply",
+    caption: "WhatsApp API",
+    results: [
+      { icon: Inbox, label: "Shared inbox" },
+      { icon: MessagesSquare, label: "Threaded" },
+    ],
+  },
+
+  /* ---------------------------------------------- swap: old for new */
+  "number-porting": {
+    layout: "swap",
+    status: "Continuity kept",
+    beforeLabel: "With your old carrier",
+    before: [
+      { icon: Building2, label: "Tied to one provider" },
+      { icon: Phone, label: "Change number to move" },
+      { icon: Store, label: "Reprint everything" },
+    ],
+    verb: "Port",
+    afterLabel: "On SipLink",
+    after: [
+      { icon: Phone, label: "Same numbers kept" },
+      { icon: ListOrdered, label: "Your call flows" },
+      { icon: ShieldCheck, label: "Customers unaffected" },
+    ],
+  },
+
+  "cloud-pbx": {
+    layout: "swap",
+    status: "System online",
+    beforeLabel: "On-premise system",
+    before: [
+      { icon: Server, label: "A box to maintain" },
+      { icon: Building2, label: "Tied to one office" },
+      { icon: Lock, label: "Upgrades deferred" },
+    ],
+    verb: "Move",
+    afterLabel: "Cloud PBX",
+    after: [
+      { icon: Cloud, label: "Nothing on site" },
+      { icon: Users, label: "Extensions anywhere" },
+      { icon: ListOrdered, label: "IVR, queues, voicemail" },
+    ],
+  },
+
+  "hosted-pbx": {
+    layout: "swap",
+    status: "Managed by SipLink",
+    beforeLabel: "Running it yourself",
+    before: [
+      { icon: ServerCog, label: "Your team patches it" },
+      { icon: Clock, label: "Updates wait for capacity" },
+      { icon: Activity, label: "You watch it" },
+    ],
+    verb: "Hand over",
+    afterLabel: "Hosted by SipLink",
+    after: [
+      { icon: ServerCog, label: "We run and update it" },
+      { icon: Store, label: "Every branch included" },
+      { icon: ShieldCheck, label: "You keep the controls" },
+    ],
+  },
+
+  "ip-pbx": {
+    layout: "swap",
+    status: "On premise",
+    beforeLabel: "Legacy trunks",
+    before: [
+      { icon: Phone, label: "PRI and analogue lines" },
+      { icon: Lock, label: "Fixed channel blocks" },
+      { icon: Network, label: "Hard to extend" },
+    ],
+    verb: "SIP-enable",
+    afterLabel: "Your IP PBX",
+    after: [
+      { icon: Server, label: "Call control stays on site" },
+      { icon: Cloud, label: "Hybrid where you want it" },
+      { icon: Globe, label: "SIP uplink to the world" },
+    ],
+  },
+
+  /* ------------------------------------------- orbit: sits in the middle */
+  "crm-integration": {
+    layout: "orbit",
+    status: "CRM linked",
+    caption: "Connected",
+    around: [
+      { icon: Boxes, label: "Your CRM" },
+      { icon: PhoneIncoming, label: "Call Arrives" },
+      { icon: Users, label: "Agent Sees Who" },
+      { icon: PhoneOutgoing, label: "Click to Dial" },
+      { icon: Layers, label: "Logged Back" },
+      { icon: Workflow, label: "Screen Pop" },
+    ],
+  },
+
+  "ai-voice-assistant": {
+    layout: "orbit",
+    status: "Assistant enabled",
+    caption: "AI Assistant",
+    around: [
+      { icon: PhoneIncoming, label: "Caller Speaks" },
+      { icon: Bot, label: "Understands" },
+      { icon: Sparkles, label: "Resolved" },
+      { icon: Headset, label: "Human Agent" },
+      { icon: FileAudio, label: "Summary" },
+      { icon: Send, label: "Routed On" },
+    ],
+  },
+};
+
+/* ------------------------------------------------------------------ *
+ * Registry
+ * ------------------------------------------------------------------ */
+
+export function ProductIllustration({ slug, className }: Props) {
+  const spec = SCENE_SPECS[slug];
+
+  // Every product has its own scene. A missing one is a data error rather
+  // than something to paper over with a stand-in picture.
+  if (!spec) return null;
+
+  return (
+    <div className={cn("w-full", className)}>
+      {spec.layout === "flow" ? <FlowLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "fan" ? <FanLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "queue" ? <QueueLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "panel" ? <PanelLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "wave" ? <WaveLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "code" ? <CodeLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "swap" ? <SwapLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "orbit" ? <OrbitLayout uid={slug} spec={spec} /> : null}
+    </div>
   );
 }
