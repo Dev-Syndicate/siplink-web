@@ -1180,52 +1180,75 @@
 }
 
 @layer components {
-  /* The auto dialler's broadcast: one recorded message reaching the list.
-     The pulse travels outward from the message to each recipient in turn,
-     so the scene reads as a run in progress rather than a single call. */
-  .blast-path {
-    stroke-dasharray: 8 200;
-    animation: blast-path 2.4s linear infinite;
+  /* The auto dialler's calls. A campaign is several calls at once, each at
+     its own stage, so the scene animates the stages rather than a signal
+     travelling outward — an outward burst reads as messaging, not dialling. */
+
+  /* A handset shaking while the call is being placed. */
+  .ring-shake {
+    animation: ring-shake 1.4s ease-in-out infinite;
     animation-delay: var(--cycle-delay, 0s);
   }
 
-  @keyframes blast-path {
-    from {
-      stroke-dashoffset: 208;
-    }
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  /* Each recipient lights as the call lands on it. */
-  .blast-card {
-    animation: blast-card 2.4s ease-out infinite;
-    animation-delay: var(--cycle-delay, 0s);
-  }
-
-  @keyframes blast-card {
+  @keyframes ring-shake {
     0%,
-    72% {
-      border-color: var(--border);
-    }
-    82% {
-      border-color: color-mix(in oklab, var(--primary) 45%, transparent);
-    }
+    62%,
     100% {
-      border-color: var(--border);
+      transform: rotate(0deg);
+    }
+    68% {
+      transform: rotate(-12deg);
+    }
+    74% {
+      transform: rotate(10deg);
+    }
+    80% {
+      transform: rotate(-7deg);
+    }
+    86% {
+      transform: rotate(5deg);
     }
   }
 
-  /* Both are decoration over labels that already say it, so they stop. */
-  @media (prefers-reduced-motion: reduce) {
-    .blast-path {
-      animation: none;
-      stroke-dasharray: none;
-      opacity: 0;
-    }
+  /* The ring-ring beside a call that has not been picked up yet. */
+  .ring-dot {
+    animation: ring-dot 1.4s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
 
-    .blast-card {
+  @keyframes ring-dot {
+    0%,
+    100% {
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  /* Audio bars on a call where the announcement is playing. */
+  .talk-bar {
+    height: 0.35rem;
+    animation: talk-bar 0.9s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes talk-bar {
+    0%,
+    100% {
+      height: 0.25rem;
+    }
+    50% {
+      height: 0.85rem;
+    }
+  }
+
+  /* Each call row says its own stage in words, so the loops are decoration
+     and simply stop rather than needing a still-frame substitute. */
+  @media (prefers-reduced-motion: reduce) {
+    .ring-shake,
+    .ring-dot,
+    .talk-bar {
       animation: none;
     }
   }

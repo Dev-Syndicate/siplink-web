@@ -323,13 +323,13 @@ type DialerSpec = {
 type BroadcastSpec = {
   layout: "broadcast";
   status: string;
-  /** The message being delivered, shown as the thing that goes out. */
+  /** The recorded announcement the campaign plays when a call connects. */
   message: { icon: LucideIcon; title: string; note: string };
-  /** Campaign progress, so the scene reads as partway through a run. */
+  /** How far through the list the campaign has worked. */
   sent: number;
   total: number;
-  /** Recipients receiving the same call, lit in turn. */
-  recipients: { icon: LucideIcon; label: string }[];
+  /** Calls currently in flight, each at its own stage. */
+  calls: { number: string; stage: "ringing" | "playing" | "done" }[];
   outcomes: { icon: LucideIcon; label: string }[];
 };
 
@@ -942,113 +942,128 @@ function DialerLayout({ uid, spec }: { uid: string; spec: DialerSpec }) {
 }
 
 /**
- * BROADCAST — one recorded message going out to a whole list at once. The
- * auto dialler is not pacing against anybody, so it gets a one-to-many
- * picture rather than the predictive dialler's list-engine-agents chain.
+ * BROADCAST — an outbound calling campaign. Several calls are placed at once
+ * and each is at its own stage: one ringing, one with the announcement
+ * playing, one already finished. Drawn as calls rather than as a message
+ * fanning out, because the auto dialler dials phones — it does not send
+ * messages, and a one-to-many burst reads as SMS.
  */
 function BroadcastLayout({ uid, spec }: { uid: string; spec: BroadcastSpec }) {
   const pct = Math.round((spec.sent / spec.total) * 100);
-  const n = spec.recipients.length;
 
   return (
     <Stage uid={uid} status={spec.status}>
-      <div className="flex items-center gap-3">
-        {/* The message, and how far through the run it is */}
-        <div className="w-[8.5rem] shrink-0">
-          <div className="rounded-2xl border border-primary/30 bg-linear-to-br from-brand-from/25 via-background via-65% to-background p-3.5 text-center shadow-md ring-1 ring-primary/10">
-            <span className="mx-auto flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-              <spec.message.icon className="size-4.5" aria-hidden />
-            </span>
-            <p className="mt-2 text-[11px] leading-tight font-semibold">
-              {spec.message.title}
-            </p>
-            <p className="mt-1 text-[9px] leading-snug text-pretty text-muted-foreground">
-              {spec.message.note}
-            </p>
-
-            {/* Progress through the list, stated as a share rather than a
-                claim about how fast it goes. */}
-            <div className="mt-3 h-1 overflow-hidden rounded-full bg-primary/15">
-              <span
-                className="block h-full rounded-full bg-primary"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-            <p className="mt-1.5 font-mono text-[8px] tracking-widest text-primary tabular-nums">
-              {spec.sent} / {spec.total} CALLED
-            </p>
+      <div className="flex items-center gap-4">
+        {/* The announcement, and how far through the list the run is */}
+        <div className="w-[8.5rem] shrink-0 rounded-2xl border border-primary/30 bg-linear-to-br from-brand-from/25 via-background via-65% to-background p-3.5 text-center shadow-md ring-1 ring-primary/10">
+          <span className="mx-auto flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+            <spec.message.icon className="size-4.5" aria-hidden />
+          </span>
+          <p className="mt-2 text-[11px] leading-tight font-semibold">
+            {spec.message.title}
+          </p>
+          <p className="mt-1 text-[9px] leading-snug text-pretty text-muted-foreground">
+            {spec.message.note}
+          </p>
+          <div className="mt-3 h-1 overflow-hidden rounded-full bg-primary/15">
+            <span
+              className="block h-full rounded-full bg-primary"
+              style={{ width: `${pct}%` }}
+            />
           </div>
+          <p className="mt-1.5 font-mono text-[8px] tracking-widest text-primary tabular-nums">
+            {spec.sent} / {spec.total} CALLED
+          </p>
         </div>
 
-        {/* Signal going out to everyone at once */}
-        <div className="h-[150px] min-w-8 flex-1">
-          <svg
-            viewBox="0 0 120 150"
-            preserveAspectRatio="none"
-            role="presentation"
-            aria-hidden
-            className="size-full"
-          >
-            {spec.recipients.map((_, i) => {
-              const y = ((i + 0.5) / n) * 150;
-              const d = `M0 75 C 56 75, 64 ${y}, 120 ${y}`;
-              return (
-                <g key={i}>
-                  <path
-                    d={d}
-                    fill="none"
-                    vectorEffect="non-scaling-stroke"
-                    strokeWidth="1.5"
-                    className="stroke-primary/25"
-                  />
-                  <path
-                    d={d}
-                    fill="none"
-                    vectorEffect="non-scaling-stroke"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    style={
-                      { "--cycle-delay": `${i * 0.5}s` } as React.CSSProperties
-                    }
-                    className="blast-path stroke-primary"
-                  />
-                </g>
-              );
-            })}
-          </svg>
-        </div>
+        {/* Calls in flight, each showing what stage it has reached */}
+        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+            Calls in progress
+          </span>
 
-        {/* Everyone gets the same call */}
-        <div className="flex shrink-0 flex-col gap-1.5">
-          {spec.recipients.map(({ icon: Icon, label }, i) => (
+          {spec.calls.map(({ number, stage }, i) => (
             <div
-              key={label}
-              style={{ "--cycle-delay": `${i * 0.5}s` } as React.CSSProperties}
-              className="blast-card flex w-[7.5rem] items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
+              key={number}
+              className="flex items-center gap-2.5 rounded-lg border border-border bg-background px-2.5 py-2 shadow-sm"
             >
-              <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <Icon className="size-3" aria-hidden />
+              {/* A handset that rings while the call is being placed */}
+              <span
+                style={{ "--cycle-delay": `${i * 0.45}s` } as React.CSSProperties}
+                className={cn(
+                  "flex size-7 shrink-0 items-center justify-center rounded-md",
+                  stage === "done"
+                    ? "bg-muted text-muted-foreground"
+                    : "bg-primary/10 text-primary",
+                  stage === "ringing" && "ring-shake",
+                )}
+              >
+                {stage === "done" ? (
+                  <PhoneCall className="size-3.5" aria-hidden />
+                ) : (
+                  <PhoneOutgoing className="size-3.5" aria-hidden />
+                )}
               </span>
-              <span className="font-mono text-[10px] leading-tight tabular-nums">
-                {label}
+
+              <span className="min-w-0 flex-1">
+                <span className="block font-mono text-[10px] leading-tight tabular-nums">
+                  {number}
+                </span>
+                <span className="text-[9px] leading-tight text-muted-foreground">
+                  {stage === "ringing"
+                    ? "Ringing"
+                    : stage === "playing"
+                      ? "Message playing"
+                      : "Call complete"}
+                </span>
               </span>
+
+              {/* Stage read out as sound, so the row is unmistakably a call */}
+              {stage === "playing" ? (
+                <span className="flex shrink-0 items-end gap-[2px]">
+                  {[0, 1, 2, 3].map((barIndex) => (
+                    <span
+                      key={barIndex}
+                      style={
+                        {
+                          "--cycle-delay": `${barIndex * 0.12}s`,
+                        } as React.CSSProperties
+                      }
+                      className="talk-bar w-[3px] rounded-full bg-primary"
+                    />
+                  ))}
+                </span>
+              ) : stage === "ringing" ? (
+                <span className="flex shrink-0 gap-[3px]">
+                  {[0, 1, 2].map((dotIndex) => (
+                    <span
+                      key={dotIndex}
+                      style={
+                        {
+                          "--cycle-delay": `${dotIndex * 0.16}s`,
+                        } as React.CSSProperties
+                      }
+                      className="ring-dot size-1.5 rounded-full bg-primary"
+                    />
+                  ))}
+                </span>
+              ) : (
+                <span className="shrink-0 font-mono text-[9px] text-muted-foreground/60 tabular-nums">
+                  00:18
+                </span>
+              )}
             </div>
           ))}
 
-          {/* What comes back, kept visually separate from the recipients */}
-          <div className="mt-0.5 flex gap-1 border-t border-border pt-1.5">
+          {/* What each finished call becomes */}
+          <div className="mt-0.5 flex items-center gap-3 border-t border-border pt-2">
             {spec.outcomes.map(({ icon: Icon, label }) => (
-              <div
-                key={label}
-                className="flex w-[2.4rem] flex-col items-center gap-0.5 text-center"
-              >
-                <span className="flex size-5 items-center justify-center rounded-md bg-muted text-muted-foreground">
+              <span key={label} className="flex items-center gap-1.5">
+                <span className="flex size-5 items-center justify-center rounded bg-muted text-muted-foreground">
                   <Icon className="size-2.5" aria-hidden />
                 </span>
-                <span className="text-[7px] leading-tight text-muted-foreground">
-                  {label}
-                </span>
-              </div>
+                <span className="text-[9px] text-muted-foreground">{label}</span>
+              </span>
             ))}
           </div>
         </div>
@@ -1477,15 +1492,14 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     message: {
       icon: Radio,
       title: "Your message",
-      note: "Recorded once, delivered to the whole list",
+      note: "Recorded once, played on every answered call",
     },
     sent: 348,
     total: 500,
-    recipients: [
-      { icon: Smartphone, label: "+44 20 ···" },
-      { icon: Smartphone, label: "+44 161 ···" },
-      { icon: Smartphone, label: "+44 121 ···" },
-      { icon: Smartphone, label: "+44 113 ···" },
+    calls: [
+      { number: "+44 20 7946 ···", stage: "playing" },
+      { number: "+44 161 496 ···", stage: "ringing" },
+      { number: "+44 121 234 ···", stage: "done" },
     ],
     outcomes: [
       { icon: PhoneCall, label: "Answered" },
@@ -1493,6 +1507,7 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
       { icon: BarChart3, label: "Logged" },
     ],
   },
+
 
 
   /* -------------------------------------------- panel: a surface to read */
