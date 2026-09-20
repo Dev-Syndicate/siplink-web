@@ -4,8 +4,11 @@ import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
 import { BusinessSizeSolution } from "@/components/site/business-size-solution";
+import { EnterpriseSolution } from "@/components/site/enterprise-solution";
+import { MidMarketSolution } from "@/components/site/mid-market-solution";
 import { SmallBusinessSolution } from "@/components/site/small-business-solution";
 import { SolutionIllustration } from "@/components/site/solution-illustration";
+import { UseCaseSolution } from "@/components/site/use-case-solution";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -65,7 +68,24 @@ export default async function SolutionDetailPage({
   if (size?.slug === "small-business")
     return <SmallBusinessSolution solution={solution} size={size} />;
 
+  // Enterprise argues from what survives rather than from what arrives, so
+  // its hero is the estate being connected in place rather than a figure of
+  // the product. It has its own page for the same reason.
+  if (size?.slug === "enterprise")
+    return <EnterpriseSolution solution={solution} size={size} />;
+
+  // Mid-Market argues from the caller who gives up waiting, and from nobody
+  // being able to say afterwards why — so the queue takes its hero.
+  if (size?.slug === "mid-market")
+    return <MidMarketSolution solution={solution} size={size} />;
+
   if (size) return <BusinessSizeSolution solution={solution} size={size} />;
+
+  // The six use cases answer the same questions in the same order and
+  // differ only in their content and the topology each one draws, so the
+  // group shares one treatment the way the business sizes do.
+  if (solution.group === "By Use Case")
+    return <UseCaseSolution solution={solution} />;
 
   const {
     group,

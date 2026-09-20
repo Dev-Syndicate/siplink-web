@@ -30,7 +30,7 @@ export function ReachFigure() {
   const play = seen && !still;
 
   return (
-    <div ref={ref} className="w-full max-w-md">
+    <div ref={ref} className="w-full max-w-lg">
       {/* The call, and the split. The trunk and the three branches are one
           path set so the junction reads as a single distribution point. */}
       <svg
@@ -69,15 +69,15 @@ export function ReachFigure() {
           <li key={device.label} className="flex flex-col items-center gap-2">
             <span
               className={cn(
-                "flex size-11 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground",
+                "flex size-14 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground",
                 play && "reach-device",
                 // All three at once: the point is that nothing waits its turn.
                 !play && seen && "border-primary/40 text-primary",
               )}
             >
-              <device.icon className="size-5" aria-hidden />
+              <device.icon className="size-6" aria-hidden />
             </span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-sm text-muted-foreground">
               {device.label}
             </span>
           </li>

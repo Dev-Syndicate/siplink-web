@@ -213,6 +213,39 @@ export const queueAgents = {
   atFirst: 4,
 } as const;
 
+/**
+ * The queue, before and after routing.
+ *
+ * `waiting` sums to the same total as the single line it comes from, and that
+ * is the honest part: routing does not make callers disappear, it sorts them.
+ * What changes is that you can finally say who is waiting for what, which is
+ * the thing this size is actually buying.
+ *
+ * No wait times anywhere. A figure like 0:48 would read as a performance
+ * promise, and the source documents flag every performance figure as
+ * unverified.
+ */
+export type QueueLane = { name: string; waiting: number; agents: number };
+
+export const queueTotal = 9;
+
+export const queueLanes: QueueLane[] = [
+  { name: "Sales", waiting: 4, agents: 3 },
+  { name: "Support", waiting: 3, agents: 4 },
+  { name: "Accounts", waiting: 2, agents: 2 },
+];
+
+export const queuePhases = [
+  {
+    label: "One line for everything",
+    note: "Every caller in the same queue. No way to tell who is waiting for what, or who should be answering.",
+  },
+  {
+    label: "Routed by what they need",
+    note: "The same callers, sorted. Each queue has its own people and its own report.",
+  },
+];
+
 /* ---------------------------------------------------------- the enterprise
  * The estate, as the layers a single call passes down through. */
 
@@ -252,6 +285,71 @@ export const estateLayers: EstateLayer[] = [
     detail:
       "Calling and customer information arrive together across sales, support and service, at whichever location answers.",
     icon: Smartphone,
+  },
+];
+
+/* ---------------------------------------------------------- the enterprise
+ * The estate, and the layer that joins it without taking any of it out. */
+
+export type EstateNode = { name: string; detail: string };
+
+/**
+ * The systems a large organisation already runs, named as the reader names
+ * them. Three sit above the SipLink layer in the figure and three below, but
+ * the split is only composition — the argument is that all six survive.
+ *
+ * Every one of these is drawn from the enterprise entry in lib/solutions.ts.
+ * Nothing here is a capacity, a count or a coverage claim, which the source
+ * documents flag as unverified.
+ */
+export const estateNodes: EstateNode[] = [
+  { name: "Microsoft Teams", detail: "Users call out from the client they already live in." },
+  { name: "IP-PBX platforms", detail: "The systems on site keep running as they are." },
+  { name: "SIP trunks", detail: "Existing carrier connections are brought in, not replaced." },
+  { name: "CRM", detail: "Calls and customer records arrive together." },
+  { name: "Contact centre", detail: "Queues, routing and reporting across departments." },
+  { name: "Branch sites", detail: "Every location answers on the same estate." },
+];
+
+/**
+ * Modernising the estate, one step at a time.
+ *
+ * The four verbs are the enterprise `gain` copy in lib/solutions.ts, which
+ * already names this as a sequence — so an ordered figure is the shape of the
+ * content rather than a decoration laid over it.
+ *
+ * The glosses say what each step does. None of them says anything about
+ * downtime, windows or continuity of service: the source documents flag
+ * availability claims as unverified, and gradually is as far as they go.
+ */
+export const estateSteps: { verb: string; detail: string }[] = [
+  {
+    verb: "Connect",
+    detail: "Existing telephony, trunks and platforms join the layer.",
+  },
+  {
+    verb: "Integrate",
+    detail: "Calling reaches the CRM and applications teams already use.",
+  },
+  {
+    verb: "Automate",
+    detail: "Routine interactions handled, the rest routed to a person.",
+  },
+  {
+    verb: "Scale",
+    detail: "More sites and teams added as administration, not as projects.",
+  },
+];
+
+/** The two beats of the hero figure, in the panel header. */
+export const estatePhases = [
+  {
+    label: "Your estate today",
+    note: "Six systems, each managed on its own. Nobody has the whole picture.",
+  },
+  {
+    label: "Your estate on SipLink",
+    note: "The same six systems. One layer between them, and one place to see them from.",
   },
 ];
 
@@ -338,6 +436,9 @@ export const businessSizes: SizeContent[] = [
     slug: "mid-market",
     label: "Mid-Market",
     short: "Mid-Market",
+    headline: "Know who is waiting, and why.",
+    standfirst:
+      "Routing puts each caller with the team that can help them. The reports afterwards tell you where to put your people next — across every department and site, on one platform.",
     visual: "queue",
     placement: "beside",
     includedAs: "list",
@@ -369,6 +470,9 @@ export const businessSizes: SizeContent[] = [
     slug: "enterprise",
     label: "Enterprise",
     short: "Enterprise",
+    headline: "Keep what you run. Connect all of it.",
+    standfirst:
+      "Teams, PBX platforms, SIP trunks, CRM and contact centres across every site, joined into one environment you can see and manage. Nothing is switched off to get there.",
     visual: "stack",
     placement: "beside",
     includedAs: "list",

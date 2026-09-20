@@ -93,14 +93,15 @@ export default function Home() {
           className="pointer-events-none absolute -top-48 -right-32 size-[680px] rounded-full bg-brand-to/10 blur-3xl"
         />
 
-        {/* On desktop the hero fills exactly the viewport left under the
-            fixed 120px header, so the whole pitch — headline through proof
-            strip — lands above the fold on short laptop screens instead of
-            depending on padding values adding up to less than the height.
-            The section starts below the header, so 7.5rem is the header's
-            own height — keep it in sync with the offset in app/layout.tsx. */}
-        <div className="relative mx-auto flex max-w-7xl flex-col justify-center px-6 py-12 lg:min-h-[calc(100svh-7.5rem)] lg:px-10 lg:py-8">
-          <div className="grid gap-14 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:items-center lg:gap-12 xl:gap-16">
+        {/* The only section on the page that does not sit on the shared
+            `max-w-7xl` grid: its inset and its height both come from
+            `.hero-frame` in globals.css, where the reasoning lives. The
+            gutter applies on both sides — the photograph bleeds past it
+            either way, but the cards floating over her are positioned off
+            this box, and a left-only rule left them eight pixels from the
+            window edge. */}
+        <div className="hero-frame relative mx-auto flex w-full flex-col justify-center py-12 lg:py-16">
+          <div className="grid gap-14 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:items-center lg:gap-12 xl:gap-16">
             <div>
               <Badge variant="secondary" className="font-mono tracking-widest">
                 <ShieldCheck className="size-3.5" aria-hidden />
@@ -206,7 +207,7 @@ export default function Home() {
               {/* What the caller hears, quoted — the other half of the live
                   call the chip on the left is timing. */}
               <div
-                className="card-float absolute -top-2 -right-6 flex w-64 items-center gap-3 rounded-xl border border-border bg-background/80 px-3 py-2.5 shadow-md backdrop-blur-md xl:top-2 xl:-right-10"
+                className="card-float absolute -top-2 -right-6 flex w-64 items-center gap-3 rounded-xl border border-border bg-background/80 px-3 py-2.5 shadow-md backdrop-blur-md xl:top-2"
                 style={
                   {
                     "--float-duration": "7s",
@@ -237,8 +238,11 @@ export default function Home() {
               </div>
 
               {/* Capability stack, pinned to the bottom edge and kept small
-                  so it frames the agent rather than covering her. */}
-              <div className="absolute -right-6 -bottom-6 w-52 space-y-1.5 xl:-right-10">
+                  so it frames the agent rather than covering her. The
+                  overhang stops at 1.5rem: the hero's frame is wider than
+                  the page grid, so a deeper one put these eight pixels
+                  from the window edge at 1280. */}
+              <div className="absolute -right-6 -bottom-6 w-52 space-y-1.5">
                 {heroHighlights.map(({ value, label, icon: Icon }, index) => (
                   <div
                     key={label}

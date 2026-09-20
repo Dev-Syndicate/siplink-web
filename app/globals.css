@@ -1331,6 +1331,40 @@
     animation-delay: 0.36s;
   }
 
+  /* ------------------------------------------------ enterprise: the rails
+
+     Traffic across the estate, under a list of steps being worked through.
+     Slow and thin on purpose: the thing that should draw the eye is a step
+     ticking to done, and the rails only have to say that the estate is
+     carrying calls while that happens. Three of them on a stagger, so it
+     reads as an estate rather than as one progress bar. */
+  @keyframes estate-rail {
+    from {
+      transform: translateX(-110%);
+    }
+    to {
+      transform: translateX(340%);
+    }
+  }
+
+  .estate-rail {
+    animation: estate-rail 7.8s linear infinite;
+  }
+
+  @keyframes estate-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.28;
+    }
+  }
+
+  .estate-pulse {
+    animation: estate-pulse 2.1s ease-in-out infinite;
+  }
+
   /* ------------------------------------------- small business: the reach
 
      One call arriving in three places. The trunk draws, then all three
@@ -1394,8 +1428,102 @@
       display: none;
     }
 
+    .estate-rail,
+    .estate-pulse {
+      animation: none;
+    }
+
     .phase-in {
       animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* The hero's frame: two measurements the page grid cannot express, kept
+     here rather than in the class list because Tailwind has to find an
+     arbitrary value by scanning source text, and a `max()` wrapped around
+     a `calc()` is exactly the kind it silently misses — when it did, the
+     hero fell back to the 1.5rem phone gutter on a desktop screen.
+
+     The inline padding is half the gutter the rest of the page uses. The
+     photograph bleeds to the right edge, so a full page gutter on the
+     left made the section lopsided; a fixed inset fixed that but came
+     unstuck from the headings below on a wide screen. Half scales with
+     the viewport, so the hero stays related to the page while sitting
+     clearly inside it.
+
+     The height is whatever the header leaves, so the hero ends at the
+     fold instead of showing a band of the next section beneath it. The
+     7.5rem is the header's own height — keep it in sync with the offset
+     in app/layout.tsx. */
+  .hero-frame {
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 64rem) {
+    .hero-frame {
+      min-height: calc(100svh - 7.5rem);
+      padding-inline: max(3rem, calc((100vw - 80rem) / 4 + 2.5rem));
+    }
+  }
+}
+
+@layer components {
+  /* ------------------------------ customer support: the call at risk
+
+     The wait growing, and the answer landing before it reaches the point the
+     caller gives up. The fill stops short of the dashed marker and holds
+     there — the whole figure is that gap. */
+  @keyframes wait-grow {
+    0% {
+      width: 4%;
+    }
+    58%,
+    100% {
+      width: 62%;
+    }
+  }
+
+  .wait-grow {
+    animation: wait-grow 4.6s cubic-bezier(0.32, 0, 0.2, 1) infinite;
+  }
+
+  /* Lands once the fill has stopped, not while it is still running: the
+     order is the argument. */
+  @keyframes answer-land {
+    0%,
+    56% {
+      opacity: 0;
+      transform: translateY(5px) scale(0.96);
+    }
+    70%,
+    93% {
+      opacity: 1;
+      transform: none;
+    }
+    100% {
+      opacity: 0;
+      transform: none;
+    }
+  }
+
+  .answer-land {
+    animation: answer-land 4.6s ease-out infinite;
+  }
+
+  /* Held at the answered state rather than dropped: this figure's resting
+     frame is the outcome, so stopping it loses nothing. */
+  @media (prefers-reduced-motion: reduce) {
+    .wait-grow {
+      animation: none;
+      width: 62%;
+    }
+
+    .answer-land {
+      animation: none;
+      opacity: 1;
+      transform: none;
     }
   }
 }
