@@ -308,6 +308,17 @@ type WaveSpec = {
   readouts: { icon: LucideIcon; label: string; value: string }[];
 };
 
+type DialerSpec = {
+  layout: "dialer";
+  status: string;
+  listLabel: string;
+  /** Contacts shown in the list; `state` drives how each row reads. */
+  contacts: { number: string; state: "done" | "dialling" | "queued" }[];
+  /** The pacing engine, raised as the centre of the picture. */
+  engine: { icon: LucideIcon; title: string; note: string; metric: string };
+  agents: { icon: LucideIcon; label: string; state: "free" | "busy" }[];
+};
+
 type CodeSpec = {
   layout: "code";
   status: string;
@@ -341,6 +352,7 @@ type SceneSpec =
   | QueueSpec
   | PanelSpec
   | WaveSpec
+  | DialerSpec
   | CodeSpec
   | SwapSpec
   | OrbitSpec;
@@ -770,6 +782,156 @@ function WaveLayout({ uid, spec }: { uid: string; spec: WaveSpec }) {
 }
 
 /**
+ * DIALER — a contact list on one side, agents on the other, and the pacing
+ * engine lifted between them. The engine is the product: it decides how fast
+ * to dial against who is free, so it sits raised on the brand ground and is
+ * the only element that carries a solid fill.
+ */
+function DialerLayout({ uid, spec }: { uid: string; spec: DialerSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-center gap-2.5">
+        {/* The list being worked through */}
+        <div className="flex w-[6.75rem] shrink-0 flex-col gap-1">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+            {spec.listLabel}
+          </span>
+          {spec.contacts.map(({ number, state }) => (
+            <div
+              key={number}
+              className={cn(
+                "flex items-center gap-1.5 rounded-md border px-2 py-1",
+                state === "dialling"
+                  ? "border-primary/40 bg-primary/5"
+                  : "border-border bg-background",
+              )}
+            >
+              <span
+                className={cn(
+                  "size-1.5 shrink-0 rounded-full",
+                  state === "done" && "bg-primary/30",
+                  state === "dialling" && "bg-primary",
+                  state === "queued" && "bg-muted-foreground/25",
+                )}
+              />
+              <span
+                className={cn(
+                  "font-mono text-[9px] tabular-nums",
+                  state === "done"
+                    ? "text-muted-foreground/50 line-through"
+                    : state === "dialling"
+                      ? "font-semibold text-primary"
+                      : "text-muted-foreground",
+                )}
+              >
+                {number}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <svg
+          viewBox="0 0 30 8"
+          className="w-6 shrink-0"
+          role="presentation"
+          aria-hidden
+        >
+          <path
+            d="M0 4h22M18 1l4 3-4 3"
+            fill="none"
+            className="stroke-primary/50"
+            strokeWidth="1.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+
+        {/* The pacing engine, raised */}
+        <div className="min-w-0 flex-1 rounded-2xl border border-primary/30 bg-linear-to-br from-brand-from/25 via-background via-65% to-background p-3.5 text-center shadow-md ring-1 ring-primary/10">
+          <span className="mx-auto flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+            <spec.engine.icon className="size-4.5" aria-hidden />
+          </span>
+          <p className="mt-2 text-[11px] leading-tight font-semibold">
+            {spec.engine.title}
+          </p>
+          <p className="mt-1 text-[9px] leading-snug text-pretty text-muted-foreground">
+            {spec.engine.note}
+          </p>
+
+          {/* A pacing readout, so the engine looks like it is deciding */}
+          <div className="mt-2.5 flex items-center justify-center gap-1">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <span
+                key={i}
+                className={cn(
+                  "h-3.5 w-1.5 rounded-full",
+                  i < 3 ? "bg-primary" : "bg-primary/20",
+                )}
+              />
+            ))}
+          </div>
+          <p className="mt-1.5 font-mono text-[8px] tracking-widest text-primary uppercase">
+            {spec.engine.metric}
+          </p>
+        </div>
+
+        <svg
+          viewBox="0 0 30 8"
+          className="w-6 shrink-0"
+          role="presentation"
+          aria-hidden
+        >
+          <path
+            d="M0 4h22M18 1l4 3-4 3"
+            fill="none"
+            className="stroke-primary"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+
+        <div className="flex shrink-0 flex-col gap-1.5">
+          {spec.agents.map(({ icon: Icon, label, state }) => (
+            <div
+              key={label}
+              className="flex w-[7.25rem] items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
+            >
+              <span
+                className={cn(
+                  "flex size-6 shrink-0 items-center justify-center rounded-md",
+                  state === "free"
+                    ? "bg-primary/10 text-primary"
+                    : "bg-muted text-muted-foreground",
+                )}
+              >
+                <Icon className="size-3" aria-hidden />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[10px] leading-tight font-semibold">
+                  {label}
+                </span>
+                <span className="flex items-center gap-1">
+                  <span
+                    className={cn(
+                      "size-1.5 rounded-full",
+                      state === "busy" ? "bg-muted-foreground/40" : "bg-primary",
+                    )}
+                  />
+                  <span className="text-[9px] text-muted-foreground">
+                    {state === "busy" ? "On a call" : "Ready"}
+                  </span>
+                </span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
  * CODE — a request going out and something happening as a result. For the
  * developer products, where the interesting part is that your own software
  * is driving it.
@@ -1160,28 +1322,50 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
   },
 
   "predictive-dialer": {
-    layout: "queue",
+    layout: "dialer",
     status: "Campaign running",
-    waitingIcon: PhoneOutgoing,
-    waitingLabel: "Dial list",
-    queueLabel: "Paced to availability",
+    listLabel: "Dial list",
+    contacts: [
+      { number: "+1 415 ···", state: "done" },
+      { number: "+1 628 ···", state: "done" },
+      { number: "+1 917 ···", state: "dialling" },
+      { number: "+1 212 ···", state: "queued" },
+      { number: "+1 646 ···", state: "queued" },
+    ],
+    engine: {
+      icon: Activity,
+      title: "Pacing engine",
+      note: "Dials ahead of the agents about to free up",
+      metric: "Paced to availability",
+    },
     agents: [
       { icon: Headset, label: "Agent 1", state: "busy" },
       { icon: Headset, label: "Agent 2", state: "free" },
-      { icon: PhoneCall, label: "Answered", state: "free" },
+      { icon: Headset, label: "Agent 3", state: "free" },
     ],
   },
 
   "auto-dialer": {
-    layout: "queue",
+    layout: "dialer",
     status: "Campaign queued",
-    waitingIcon: Smartphone,
-    waitingLabel: "Contacts",
-    queueLabel: "Dialled in order",
+    listLabel: "Contacts",
+    contacts: [
+      { number: "+44 20 ···", state: "done" },
+      { number: "+44 161 ···", state: "dialling" },
+      { number: "+44 121 ···", state: "queued" },
+      { number: "+44 113 ···", state: "queued" },
+      { number: "+44 131 ···", state: "queued" },
+    ],
+    engine: {
+      icon: Radio,
+      title: "Campaign runner",
+      note: "Works the list at the pace you configure",
+      metric: "Announcement ready",
+    },
     agents: [
-      { icon: Radio, label: "Announcement", state: "free" },
+      { icon: Radio, label: "Recorded message", state: "free" },
       { icon: Headset, label: "Or an agent", state: "free" },
-      { icon: BarChart3, label: "Outcome", state: "busy" },
+      { icon: BarChart3, label: "Outcome logged", state: "free" },
     ],
   },
 
@@ -1410,6 +1594,9 @@ export function ProductIllustration({ slug, className }: Props) {
       {spec.layout === "queue" ? <QueueLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "panel" ? <PanelLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "wave" ? <WaveLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "dialer" ? (
+        <DialerLayout uid={slug} spec={spec} />
+      ) : null}
       {spec.layout === "code" ? <CodeLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "swap" ? <SwapLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "orbit" ? <OrbitLayout uid={slug} spec={spec} /> : null}
