@@ -20,13 +20,11 @@ import {
   ListOrdered,
   Lock,
   type LucideIcon,
-  MessageCircle,
   MessagesSquare,
   MonitorSmartphone,
   Network,
   Phone,
   PhoneCall,
-  PhoneForwarded,
   PhoneIncoming,
   PhoneOutgoing,
   Radio,
@@ -39,7 +37,6 @@ import {
   Sparkles,
   Store,
   Users,
-  Webhook,
   Workflow,
 } from "lucide-react";
 
@@ -254,22 +251,103 @@ function DotField({ uid }: { uid: string }) {
   );
 }
 
-/**
- * The standard three-part scene: endpoints in, SipLink in the middle,
- * destinations out. Most products are some version of this.
- */
-function FlowScene({
+/* ------------------------------------------------------------------ *
+ * Scene shapes
+ * ------------------------------------------------------------------ */
+
+type SpineCard =
+  | { kind: "brand"; caption: string }
+  | { kind: "pillar"; icon: LucideIcon; title: string; lines: [string, string] };
+
+type FlowSpec = {
+  layout: "flow";
+  status: string;
+  left: Endpoint[];
+  spine: SpineCard[];
+  right: Endpoint[];
+};
+
+type FanSpec = {
+  layout: "fan";
+  status: string;
+  source: { icon: LucideIcon; value: string; label: string };
+  out: { icon: LucideIcon; label: string; note?: string }[];
+};
+
+type QueueSpec = {
+  layout: "queue";
+  status: string;
+  waitingIcon: LucideIcon;
+  waitingLabel: string;
+  queueLabel: string;
+  agents: { icon: LucideIcon; label: string; state: "free" | "busy" }[];
+};
+
+type PanelSpec = {
+  layout: "panel";
+  status: string;
+  title: string;
+  /** Bar heights as percentages; `peak` is the one picked out in brand pink. */
+  bars: number[];
+  peak: number;
+  axis: [string, string];
+  readouts: { icon: LucideIcon; label: string; value: string }[];
+};
+
+type CodeSpec = {
+  layout: "code";
+  status: string;
+  lines: { text: string; accent?: boolean }[];
+  requestLabel: string;
+  responseLabel: string;
+  caption: string;
+  results: Endpoint[];
+};
+
+type SwapSpec = {
+  layout: "swap";
+  status: string;
+  beforeLabel: string;
+  before: Endpoint[];
+  verb: string;
+  afterLabel: string;
+  after: Endpoint[];
+};
+
+type OrbitSpec = {
+  layout: "orbit";
+  status: string;
+  caption: string;
+  around: Endpoint[];
+};
+
+type SceneSpec =
+  | FlowSpec
+  | FanSpec
+  | QueueSpec
+  | PanelSpec
+  | CodeSpec
+  | SwapSpec
+  | OrbitSpec;
+
+/* ------------------------------------------------------------------ *
+ * Layouts
+ *
+ * Six compositions, not one. A queue should look like a queue and a
+ * dashboard should look like a dashboard — products that do different
+ * things get different pictures, rather than the same diagram with the
+ * labels swapped.
+ * ------------------------------------------------------------------ */
+
+/** Ambient dot field + status chip, shared by every layout. */
+function Stage({
   uid,
-  left,
-  right,
-  spine,
   status,
+  children,
 }: {
   uid: string;
-  left: Endpoint[];
-  right: Endpoint[];
-  spine: React.ReactNode;
   status: string;
+  children: React.ReactNode;
 }) {
   return (
     <div className="relative isolate">
@@ -279,66 +357,542 @@ function FlowScene({
       >
         <DotField uid={uid} />
       </div>
-
       <div className="flex justify-center pb-4">
         <StatusPill text={status} />
       </div>
-
-      <div className="flex items-stretch">
-        <div className="flex shrink-0 flex-col justify-between gap-3">
-          {left.map((item) => (
-            <EndpointCard key={item.label} {...item} />
-          ))}
-        </div>
-
-        <div className="min-w-5 flex-1">
-          <Rails />
-        </div>
-
-        <div className="flex shrink-0 items-center">{spine}</div>
-
-        <div className="min-w-5 flex-1">
-          <Rails mirrored />
-        </div>
-
-        <div className="flex shrink-0 flex-col justify-between gap-3">
-          {right.map((item) => (
-            <EndpointCard key={item.label} {...item} />
-          ))}
-        </div>
-      </div>
+      {children}
     </div>
   );
 }
 
-/* ------------------------------------------------------------------ *
- * Scenes
- * ------------------------------------------------------------------ */
+/**
+ * FLOW — a linear journey. Endpoints feed in on the left, cross the thing
+ * SipLink provides, and arrive on the right. For products that are a path
+ * between two worlds.
+ */
+function FlowLayout({ uid, spec }: { uid: string; spec: FlowSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-stretch">
+        <div className="flex shrink-0 flex-col justify-between gap-3">
+          {spec.left.map((item) => (
+            <EndpointCard key={item.label} {...item} />
+          ))}
+        </div>
+        <div className="min-w-5 flex-1">
+          <Rails />
+        </div>
+        <div className="flex shrink-0 items-center">
+          {spec.spine.map((card, i) => (
+            <Fragment key={i}>
+              {i > 0 ? <SpineLink /> : null}
+              {card.kind === "brand" ? (
+                <BrandCloud caption={card.caption} />
+              ) : (
+                <PillarCard
+                  icon={card.icon}
+                  title={card.title}
+                  lines={card.lines}
+                />
+              )}
+            </Fragment>
+          ))}
+        </div>
+        <div className="min-w-5 flex-1">
+          <Rails mirrored />
+        </div>
+        <div className="flex shrink-0 flex-col justify-between gap-3">
+          {spec.right.map((item) => (
+            <EndpointCard key={item.label} {...item} />
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * FAN — one thing on the left opening out to many on the right. The whole
+ * point of a published number or a menu is that one entry point reaches
+ * several destinations, so the picture says that and nothing else.
+ */
+function FanLayout({ uid, spec }: { uid: string; spec: FanSpec }) {
+  const n = spec.out.length;
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-center gap-2">
+        {/* The single entry point, stated large */}
+        <div className="flex w-28 shrink-0 flex-col items-center gap-2 text-center">
+          <span className="flex size-12 items-center justify-center rounded-2xl border border-primary/40 bg-background text-primary shadow-sm">
+            <spec.source.icon className="size-5" aria-hidden />
+          </span>
+          <span className="font-mono text-[11px] font-semibold tracking-tight text-primary">
+            {spec.source.value}
+          </span>
+          <span className="text-[9px] leading-tight text-muted-foreground">
+            {spec.source.label}
+          </span>
+        </div>
+
+        {/* Splitting rails */}
+        <div className="h-[168px] min-w-6 flex-1">
+          <svg
+            viewBox="0 0 120 168"
+            preserveAspectRatio="none"
+            role="presentation"
+            aria-hidden
+            className="size-full"
+          >
+            {spec.out.map((_, i) => {
+              const y = ((i + 0.5) / n) * 168;
+              const d = `M0 84 C 56 84, 64 ${y}, 120 ${y}`;
+              const live = i === Math.floor(n / 2);
+              return (
+                <g key={i}>
+                  <path
+                    d={d}
+                    fill="none"
+                    vectorEffect="non-scaling-stroke"
+                    strokeWidth={live ? 2 : 1.5}
+                    className={live ? "stroke-primary/70" : "stroke-primary/25"}
+                  />
+                  {live ? (
+                    <path
+                      d={d}
+                      fill="none"
+                      vectorEffect="non-scaling-stroke"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      className="flow-path stroke-primary"
+                    />
+                  ) : null}
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+
+        {/* Destinations, stacked as rows rather than icon chips */}
+        <div className="flex shrink-0 flex-col gap-2">
+          {spec.out.map(({ icon: Icon, label, note }) => (
+            <div
+              key={label}
+              className="flex w-40 items-center gap-2.5 rounded-lg border border-border bg-background px-3 py-2 shadow-sm"
+            >
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <Icon className="size-3.5" aria-hidden />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[11px] leading-tight font-semibold">
+                  {label}
+                </span>
+                {note ? (
+                  <span className="block text-[9px] leading-tight text-muted-foreground">
+                    {note}
+                  </span>
+                ) : null}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * QUEUE — callers waiting in line, then handed to agents. Drawn as an
+ * actual line of people, because that is the thing being described.
+ */
+function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-center gap-3">
+        {/* Waiting callers — a real line, fading toward the back */}
+        <div className="flex shrink-0 flex-col items-center gap-2">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+            {spec.waitingLabel}
+          </span>
+          <div className="flex flex-col gap-1.5">
+            {[0, 1, 2, 3].map((i) => (
+              <span
+                key={i}
+                className="flex size-8 items-center justify-center rounded-full border border-primary/40 bg-background text-primary"
+                style={{ opacity: 1 - i * 0.2 }}
+              >
+                <spec.waitingIcon className="size-3.5" aria-hidden />
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* The queue itself — a dashed holding pen */}
+        <div className="flex min-w-0 flex-1 flex-col items-center gap-2">
+          <div className="w-full rounded-xl border border-dashed border-primary/50 bg-primary/[0.04] px-3 py-4">
+            <div className="flex flex-col gap-2">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <span className="font-mono text-[9px] text-primary/60 tabular-nums">
+                    {i + 1}
+                  </span>
+                  <span
+                    className="h-1.5 rounded-full bg-primary/30"
+                    style={{ width: `${70 - i * 16}%` }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-primary uppercase">
+            {spec.queueLabel}
+          </span>
+        </div>
+
+        {/* Arrow into the agents */}
+        <div aria-hidden className="shrink-0">
+          <svg viewBox="0 0 28 10" className="w-7" role="presentation">
+            <path
+              d="M0 5h20M16 1l5 4-5 4"
+              fill="none"
+              className="stroke-primary"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+
+        {/* Agents */}
+        <div className="flex shrink-0 flex-col gap-2">
+          {spec.agents.map(({ icon: Icon, label, state }) => (
+            <div
+              key={label}
+              className="flex w-32 items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-2 shadow-sm"
+            >
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <Icon className="size-3.5" aria-hidden />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[10px] leading-tight font-semibold">
+                  {label}
+                </span>
+                <span className="flex items-center gap-1">
+                  <span
+                    className={cn(
+                      "size-1.5 rounded-full",
+                      state === "busy" ? "bg-muted-foreground/40" : "bg-primary",
+                    )}
+                  />
+                  <span className="text-[9px] text-muted-foreground">
+                    {state === "busy" ? "On a call" : "Available"}
+                  </span>
+                </span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * PANEL — a reporting surface. For products whose output is something you
+ * look at rather than something that travels somewhere.
+ */
+function PanelLayout({ uid, spec }: { uid: string; spec: PanelSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="rounded-xl border border-border bg-background shadow-sm">
+        {/* Window chrome */}
+        <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+          <span className="flex gap-1">
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className={cn(
+                  "size-1.5 rounded-full",
+                  i === 0 ? "bg-primary" : "bg-muted-foreground/25",
+                )}
+              />
+            ))}
+          </span>
+          <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+            {spec.title}
+          </span>
+        </div>
+
+        <div className="grid gap-4 p-4 sm:grid-cols-[minmax(0,1fr)_auto]">
+          {/* Bars — a deterministic shape, not random */}
+          <div>
+            <div className="flex h-24 items-end gap-1.5">
+              {spec.bars.map((h, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    "flex-1 rounded-t-sm",
+                    i === spec.peak ? "bg-primary" : "bg-primary/25",
+                  )}
+                  style={{ height: `${h}%` }}
+                />
+              ))}
+            </div>
+            <div className="mt-2 flex justify-between font-mono text-[9px] text-muted-foreground">
+              <span>{spec.axis[0]}</span>
+              <span>{spec.axis[1]}</span>
+            </div>
+          </div>
+
+          {/* Readouts beside the chart */}
+          <dl className="flex shrink-0 flex-col justify-center gap-2.5 sm:w-32">
+            {spec.readouts.map(({ icon: Icon, label, value }) => (
+              <div key={label} className="flex items-center gap-2">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Icon className="size-3.5" aria-hidden />
+                </span>
+                <span className="min-w-0">
+                  <dt className="text-[9px] leading-tight text-muted-foreground">
+                    {label}
+                  </dt>
+                  <dd className="text-[11px] leading-tight font-semibold">
+                    {value}
+                  </dd>
+                </span>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * CODE — a request going out and something happening as a result. For the
+ * developer products, where the interesting part is that your own software
+ * is driving it.
+ */
+function CodeLayout({ uid, spec }: { uid: string; spec: CodeSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-center gap-3">
+        {/* The call your application makes */}
+        <div className="min-w-0 flex-1 overflow-hidden rounded-xl border border-border bg-background shadow-sm">
+          <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+            <span className="flex size-5 items-center justify-center rounded bg-primary/10 text-primary">
+              <Code2 className="size-3" aria-hidden />
+            </span>
+            <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+              Your application
+            </span>
+          </div>
+          <div className="space-y-1 px-3 py-3 font-mono text-[10px] leading-relaxed">
+            {spec.lines.map((line, i) => (
+              <div key={i} className="flex gap-2">
+                <span className="w-3 shrink-0 text-right text-muted-foreground/40 tabular-nums">
+                  {i + 1}
+                </span>
+                <span
+                  className={cn(
+                    "min-w-0 truncate",
+                    line.accent ? "text-primary" : "text-muted-foreground",
+                  )}
+                >
+                  {line.text}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Request out, event back */}
+        <div className="flex w-14 shrink-0 flex-col items-center gap-1">
+          <svg viewBox="0 0 40 10" className="w-10" role="presentation" aria-hidden>
+            <path
+              d="M0 5h30M26 1l5 4-5 4"
+              fill="none"
+              className="stroke-primary"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span className="font-mono text-[8px] tracking-widest text-primary uppercase">
+            {spec.requestLabel}
+          </span>
+          <svg viewBox="0 0 40 10" className="w-10" role="presentation" aria-hidden>
+            <path
+              d="M40 5H10M14 1L9 5l5 4"
+              fill="none"
+              className="stroke-primary/40"
+              strokeWidth="1.5"
+              strokeDasharray="3 3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+            {spec.responseLabel}
+          </span>
+        </div>
+
+        {/* What SipLink does with it */}
+        <div className="flex shrink-0 flex-col items-center gap-3">
+          <BrandCloud caption={spec.caption} />
+          <div className="flex gap-2">
+            {spec.results.map(({ icon: Icon, label }) => (
+              <div
+                key={label}
+                className="flex w-16 flex-col items-center gap-1 text-center"
+              >
+                <span className="flex size-7 items-center justify-center rounded-lg border border-border bg-background text-primary shadow-sm">
+                  <Icon className="size-3.5" aria-hidden />
+                </span>
+                <span className="text-[8px] leading-tight text-muted-foreground">
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * SWAP — what you run today on one side, struck through, and what replaces
+ * it on the other. For migrations, where the story is the change itself.
+ */
+function SwapLayout({ uid, spec }: { uid: string; spec: SwapSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
+        {/* Before */}
+        <div className="rounded-xl border border-border bg-background/60 p-4">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+            {spec.beforeLabel}
+          </span>
+          <ul className="mt-3 space-y-2">
+            {spec.before.map(({ icon: Icon, label }) => (
+              <li key={label} className="flex items-center gap-2">
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground/70">
+                  <Icon className="size-3" aria-hidden />
+                </span>
+                <span className="text-[10px] leading-tight text-muted-foreground line-through decoration-muted-foreground/40">
+                  {label}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* The change */}
+        <div className="flex flex-col items-center gap-2">
+          <span className="flex size-9 items-center justify-center rounded-full border border-primary/40 bg-background text-primary shadow-sm">
+            <ArrowLeftRight className="size-4" aria-hidden />
+          </span>
+          <span className="font-mono text-[8px] tracking-widest text-primary uppercase">
+            {spec.verb}
+          </span>
+        </div>
+
+        {/* After */}
+        <div className="rounded-xl border border-primary/30 bg-background p-4 shadow-sm ring-1 ring-primary/10">
+          <span className="font-mono text-[9px] tracking-widest text-primary uppercase">
+            {spec.afterLabel}
+          </span>
+          <ul className="mt-3 space-y-2">
+            {spec.after.map(({ icon: Icon, label }) => (
+              <li key={label} className="flex items-center gap-2">
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Icon className="size-3" aria-hidden />
+                </span>
+                <span className="text-[10px] leading-tight font-medium">
+                  {label}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * ORBIT — one hub with everything else arranged around it. For products
+ * whose job is to sit in the middle of things other people already run.
+ */
+function OrbitLayout({ uid, spec }: { uid: string; spec: OrbitSpec }) {
+  const n = spec.around.length;
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="relative mx-auto h-[210px] w-full max-w-[340px]">
+        {/* Connecting spokes, drawn under the cards */}
+        <svg
+          viewBox="0 0 340 210"
+          className="absolute inset-0 size-full"
+          role="presentation"
+          aria-hidden
+        >
+          {spec.around.map((_, i) => {
+            const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+            const x = 170 + Math.cos(angle) * 132;
+            const y = 105 + Math.sin(angle) * 78;
+            return (
+              <line
+                key={i}
+                x1="170"
+                y1="105"
+                x2={x}
+                y2={y}
+                className={i === 0 ? "stroke-primary/70" : "stroke-primary/25"}
+                strokeWidth={i === 0 ? 2 : 1.5}
+              />
+            );
+          })}
+        </svg>
+
+        {/* The hub */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <BrandCloud caption={spec.caption} />
+        </div>
+
+        {/* Everything arranged around it */}
+        {spec.around.map(({ icon: Icon, label }, i) => {
+          const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+          const x = 50 + (Math.cos(angle) * 132 * 100) / 340;
+          const y = 50 + (Math.sin(angle) * 78 * 100) / 190;
+          return (
+            <div
+              key={label}
+              className="absolute flex w-16 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 text-center"
+              style={{ left: `${x}%`, top: `${y}%` }}
+            >
+              <span className="flex size-8 items-center justify-center rounded-xl border border-border bg-background text-primary shadow-sm">
+                <Icon className="size-4" aria-hidden />
+              </span>
+              <span className="text-[9px] leading-tight font-medium text-muted-foreground">
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </Stage>
+  );
+}
 
 /* ------------------------------------------------------------------ *
- * Scenes
- *
- * Each product is one row of data: what plugs in on the left, what SipLink
- * does in the middle, what it reaches on the right. Written as a table
- * rather than 24 near-identical components, so the differences between
- * products are visible at a glance and no two can silently end up with the
- * same picture.
+ * Scenes — one row per product, each pointed at the layout that suits
+ * what the product actually does.
  * ------------------------------------------------------------------ */
-
-type SpineCard =
-  | { kind: "brand"; caption: string }
-  | { kind: "pillar"; icon: LucideIcon; title: string; lines: [string, string] };
-
-type SceneSpec = {
-  status: string;
-  left: Endpoint[];
-  spine: SpineCard[];
-  right: Endpoint[];
-};
 
 const SCENE_SPECS: Record<string, SceneSpec> = {
-  /* ---------------------------------------------------------- voice */
+  /* ------------------------------------------------- flow: a journey */
   "sip-trunking": {
+    layout: "flow",
     status: "Network active",
     left: [
       { icon: Phone, label: "IP Phones" },
@@ -353,12 +907,6 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
         lines: ["Extensions &", "phone system"],
       },
       { kind: "brand", caption: "SIP Trunk" },
-      {
-        kind: "pillar",
-        icon: Globe,
-        title: "PSTN",
-        lines: ["Global telephone", "network"],
-      },
     ],
     right: [
       { icon: Building2, label: "Local Calls" },
@@ -367,407 +915,8 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     ],
   },
 
-  "cloud-pbx": {
-    status: "System online",
-    left: [
-      { icon: Users, label: "Extensions" },
-      { icon: Laptop, label: "Softphones" },
-      { icon: Smartphone, label: "Mobile App" },
-    ],
-    spine: [
-      { kind: "brand", caption: "Cloud PBX" },
-      {
-        kind: "pillar",
-        icon: ListOrdered,
-        title: "Call flows",
-        lines: ["IVR, queues &", "voicemail"],
-      },
-    ],
-    right: [
-      { icon: PhoneIncoming, label: "Inbound" },
-      { icon: PhoneOutgoing, label: "Outbound" },
-      { icon: BarChart3, label: "Reporting" },
-    ],
-  },
-
-  "hosted-pbx": {
-    status: "Managed by SipLink",
-    left: [
-      { icon: Building2, label: "Head Office" },
-      { icon: Store, label: "Branches" },
-      { icon: Laptop, label: "Remote Staff" },
-    ],
-    spine: [
-      { kind: "brand", caption: "Hosted PBX" },
-      {
-        kind: "pillar",
-        icon: ServerCog,
-        title: "We run it",
-        lines: ["Updates &", "maintenance"],
-      },
-    ],
-    right: [
-      { icon: Phone, label: "Business Lines" },
-      { icon: FileAudio, label: "Recordings" },
-      { icon: ShieldCheck, label: "Access Control" },
-    ],
-  },
-
-  "ip-pbx": {
-    status: "On premise",
-    left: [
-      { icon: Phone, label: "Desk Phones" },
-      { icon: Users, label: "Extensions" },
-      { icon: Network, label: "Gateways" },
-    ],
-    spine: [
-      {
-        kind: "pillar",
-        icon: Server,
-        title: "Your rack",
-        lines: ["Call control", "stays on site"],
-      },
-      { kind: "brand", caption: "SIP Uplink" },
-    ],
-    right: [
-      { icon: Globe, label: "External Calls" },
-      { icon: Cloud, label: "Hybrid Cloud" },
-      { icon: Lock, label: "Your Network" },
-    ],
-  },
-
-  /* -------------------------------------------------------- numbers */
-  "did-numbers": {
-    status: "Numbers live",
-    left: [{ icon: PhoneIncoming, label: "Customer Calls" }],
-    spine: [
-      {
-        kind: "pillar",
-        icon: Layers,
-        title: "DID range",
-        lines: ["One number", "per person"],
-      },
-      { kind: "brand", caption: "Direct Dial" },
-    ],
-    right: [
-      { icon: Users, label: "Sales" },
-      { icon: Headset, label: "Support" },
-      { icon: Building2, label: "Billing" },
-    ],
-  },
-
-  "toll-free-numbers": {
-    status: "Free to call",
-    left: [
-      { icon: Smartphone, label: "Mobile Callers" },
-      { icon: Phone, label: "Landline Callers" },
-      { icon: Globe, label: "Other Regions" },
-    ],
-    spine: [
-      {
-        kind: "pillar",
-        icon: PhoneCall,
-        title: "Toll-free",
-        lines: ["Caller is not", "charged"],
-      },
-      { kind: "brand", caption: "Routing" },
-    ],
-    right: [
-      { icon: Headset, label: "Helpline" },
-      { icon: ListOrdered, label: "IVR Menu" },
-      { icon: Users, label: "Your Teams" },
-    ],
-  },
-
-  "virtual-numbers": {
-    status: "No line required",
-    left: [
-      { icon: Globe, label: "New Market" },
-      { icon: Building2, label: "Local Presence" },
-    ],
-    spine: [
-      { kind: "brand", caption: "Virtual Number" },
-      {
-        kind: "pillar",
-        icon: PhoneForwarded,
-        title: "Route anywhere",
-        lines: ["No physical", "line needed"],
-      },
-    ],
-    right: [
-      { icon: Laptop, label: "Softphone" },
-      { icon: Smartphone, label: "Mobile" },
-      { icon: Users, label: "Any Extension" },
-    ],
-  },
-
-  "number-porting": {
-    status: "Continuity kept",
-    left: [
-      { icon: Building2, label: "Old Carrier" },
-      { icon: Phone, label: "Your Numbers" },
-    ],
-    spine: [
-      {
-        kind: "pillar",
-        icon: ArrowLeftRight,
-        title: "Porting",
-        lines: ["Validate &", "transfer"],
-      },
-      { kind: "brand", caption: "Same Numbers" },
-    ],
-    right: [
-      { icon: PhoneIncoming, label: "Customers Dial" },
-      { icon: ListOrdered, label: "Your Call Flows" },
-      { icon: ShieldCheck, label: "No Disruption" },
-    ],
-  },
-
-  /* -------------------------------------------------- contact centre */
-  "call-center": {
-    status: "Queue healthy",
-    left: [
-      { icon: PhoneIncoming, label: "Inbound" },
-      { icon: PhoneOutgoing, label: "Outbound" },
-    ],
-    spine: [
-      { kind: "brand", caption: "Contact Centre" },
-      {
-        kind: "pillar",
-        icon: Headset,
-        title: "Agents",
-        lines: ["Routed by", "your rules"],
-      },
-    ],
-    right: [
-      { icon: Activity, label: "Live Monitor" },
-      { icon: FileAudio, label: "Recording" },
-      { icon: BarChart3, label: "Reports" },
-    ],
-  },
-
-  "predictive-dialer": {
-    status: "Campaign running",
-    left: [
-      { icon: ListOrdered, label: "Contact List" },
-      { icon: Filter, label: "Segments" },
-    ],
-    spine: [
-      {
-        kind: "pillar",
-        icon: Activity,
-        title: "Pacing",
-        lines: ["Dials to agent", "availability"],
-      },
-      { kind: "brand", caption: "Connected" },
-    ],
-    right: [
-      { icon: Headset, label: "Free Agent" },
-      { icon: PhoneCall, label: "Live Answer" },
-      { icon: BarChart3, label: "Outcomes" },
-    ],
-  },
-
-  "auto-dialer": {
-    status: "Campaign queued",
-    left: [
-      { icon: ListOrdered, label: "Call List" },
-      { icon: Clock, label: "Schedule" },
-    ],
-    spine: [
-      { kind: "brand", caption: "Auto Dialer" },
-      {
-        kind: "pillar",
-        icon: Radio,
-        title: "Announcement",
-        lines: ["Recorded or", "generated"],
-      },
-    ],
-    right: [
-      { icon: Smartphone, label: "Customers" },
-      { icon: Headset, label: "Or an Agent" },
-      { icon: BarChart3, label: "Results" },
-    ],
-  },
-
-  ivr: {
-    status: "Menu active",
-    left: [{ icon: PhoneIncoming, label: "Caller Dials" }],
-    spine: [
-      {
-        kind: "pillar",
-        icon: ListOrdered,
-        title: "Press 1, 2, 3",
-        lines: ["Multi-level", "menu"],
-      },
-      { kind: "brand", caption: "Routed" },
-    ],
-    right: [
-      { icon: Users, label: "Sales" },
-      { icon: Headset, label: "Support" },
-      { icon: Clock, label: "After Hours" },
-    ],
-  },
-
-  "call-recording": {
-    status: "Recording on",
-    left: [
-      { icon: PhoneIncoming, label: "Inbound" },
-      { icon: PhoneOutgoing, label: "Outbound" },
-    ],
-    spine: [
-      { kind: "brand", caption: "Captured" },
-      {
-        kind: "pillar",
-        icon: FileAudio,
-        title: "Secure store",
-        lines: ["Role-based", "access"],
-      },
-    ],
-    right: [
-      { icon: Filter, label: "Search" },
-      { icon: Headset, label: "Playback" },
-      { icon: ShieldCheck, label: "Export" },
-    ],
-  },
-
-  "call-analytics": {
-    status: "Data flowing",
-    left: [
-      { icon: PhoneCall, label: "Every Call" },
-      { icon: Headset, label: "Agent Activity" },
-      { icon: Clock, label: "Durations" },
-    ],
-    spine: [
-      { kind: "brand", caption: "Analytics" },
-      {
-        kind: "pillar",
-        icon: BarChart3,
-        title: "Reports",
-        lines: ["Volumes, missed", "calls & trends"],
-      },
-    ],
-    right: [
-      { icon: Activity, label: "Busy Periods" },
-      { icon: Users, label: "Staffing" },
-      { icon: Layers, label: "Export" },
-    ],
-  },
-
-  /* ------------------------------------------------------------ APIs */
-  "voice-api": {
-    status: "API connected",
-    left: [
-      { icon: Code2, label: "Your App" },
-      { icon: Boxes, label: "Your CRM" },
-    ],
-    spine: [
-      {
-        kind: "pillar",
-        icon: Webhook,
-        title: "Voice API",
-        lines: ["Request a call,", "get events back"],
-      },
-      { kind: "brand", caption: "Voice Network" },
-    ],
-    right: [
-      { icon: PhoneOutgoing, label: "Place Calls" },
-      { icon: PhoneIncoming, label: "Receive Calls" },
-      { icon: Activity, label: "Call Events" },
-    ],
-  },
-
-  "sms-api": {
-    status: "Messages sending",
-    left: [
-      { icon: Code2, label: "Your App" },
-      { icon: Workflow, label: "Triggers" },
-    ],
-    spine: [
-      {
-        kind: "pillar",
-        icon: Send,
-        title: "SMS API",
-        lines: ["One request", "per message"],
-      },
-      { kind: "brand", caption: "Delivered" },
-    ],
-    right: [
-      { icon: ShieldCheck, label: "Passcodes" },
-      { icon: Clock, label: "Reminders" },
-      { icon: Smartphone, label: "Any Mobile" },
-    ],
-  },
-
-  "whatsapp-api": {
-    status: "Inbox connected",
-    left: [
-      { icon: MessageCircle, label: "Customer Chats" },
-      { icon: Code2, label: "Your Systems" },
-    ],
-    spine: [
-      { kind: "brand", caption: "WhatsApp API" },
-      {
-        kind: "pillar",
-        icon: Inbox,
-        title: "Shared inbox",
-        lines: ["Assigned to", "your agents"],
-      },
-    ],
-    right: [
-      { icon: Headset, label: "Support" },
-      { icon: MessagesSquare, label: "Order Updates" },
-      { icon: Layers, label: "Full History" },
-    ],
-  },
-
-  "webrtc-sdk": {
-    status: "In-browser calling",
-    left: [
-      { icon: MonitorSmartphone, label: "Your Web App" },
-      { icon: Code2, label: "Embedded SDK" },
-    ],
-    spine: [
-      {
-        kind: "pillar",
-        icon: PhoneCall,
-        title: "Click to call",
-        lines: ["Nothing to", "install"],
-      },
-      { kind: "brand", caption: "Connected" },
-    ],
-    right: [
-      { icon: Headset, label: "Your Agents" },
-      { icon: Users, label: "Your Customers" },
-      { icon: Network, label: "Same Numbers" },
-    ],
-  },
-
-  "sip-api": {
-    status: "SIP integrated",
-    left: [
-      { icon: Server, label: "Your PBX" },
-      { icon: Code2, label: "Your Platform" },
-      { icon: Network, label: "SIP Endpoints" },
-    ],
-    spine: [
-      {
-        kind: "pillar",
-        icon: Router,
-        title: "SIP API",
-        lines: ["Signalling you", "can control"],
-      },
-      { kind: "brand", caption: "Voice Network" },
-    ],
-    right: [
-      { icon: PhoneForwarded, label: "Routing" },
-      { icon: Layers, label: "Registration" },
-      { icon: Globe, label: "Carriers" },
-    ],
-  },
-
-  /* ------------------------------------------------------ enterprise */
   "teams-calling": {
+    layout: "flow",
     status: "Teams connected",
     left: [
       { icon: Users, label: "Teams Users" },
@@ -791,6 +940,7 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
   },
 
   sbc: {
+    layout: "flow",
     status: "Border controlled",
     left: [
       { icon: Server, label: "Your PBX" },
@@ -804,7 +954,6 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
         title: "SBC",
         lines: ["One controlled", "crossing point"],
       },
-      { kind: "brand", caption: "External SIP" },
     ],
     right: [
       { icon: Globe, label: "Carriers" },
@@ -813,91 +962,329 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     ],
   },
 
-  "call-queue": {
-    status: "Callers waiting",
+  "webrtc-sdk": {
+    layout: "flow",
+    status: "In-browser calling",
     left: [
-      { icon: PhoneIncoming, label: "All Lines Busy" },
-      { icon: Clock, label: "Callers Hold" },
+      { icon: MonitorSmartphone, label: "Your Web App" },
+      { icon: Users, label: "Your Customers" },
     ],
     spine: [
       {
         kind: "pillar",
-        icon: ListOrdered,
-        title: "The queue",
-        lines: ["Position &", "announcements"],
+        icon: PhoneCall,
+        title: "Click to call",
+        lines: ["Nothing to", "install"],
       },
-      { kind: "brand", caption: "Next Free Agent" },
+      { kind: "brand", caption: "Connected" },
     ],
     right: [
-      { icon: Headset, label: "Agent Answers" },
-      { icon: PhoneForwarded, label: "Callback" },
-      { icon: Activity, label: "Supervisor View" },
+      { icon: Headset, label: "Your Agents" },
+      { icon: Network, label: "Same Numbers" },
+      { icon: Phone, label: "Any Destination" },
     ],
   },
 
+  /* ---------------------------------------- fan: one in, many out */
+  "did-numbers": {
+    layout: "fan",
+    status: "Numbers live",
+    source: { icon: PhoneIncoming, value: "+1 800···", label: "One published number" },
+    out: [
+      { icon: Users, label: "Sales", note: "Extension 201" },
+      { icon: Headset, label: "Support", note: "Extension 202" },
+      { icon: Building2, label: "Billing", note: "Extension 203" },
+    ],
+  },
+
+  "toll-free-numbers": {
+    layout: "fan",
+    status: "Free to call",
+    source: { icon: PhoneCall, value: "1 800···", label: "Caller is not charged" },
+    out: [
+      { icon: Headset, label: "Helpline", note: "Routed by region" },
+      { icon: ListOrdered, label: "IVR Menu", note: "Caller chooses" },
+      { icon: Clock, label: "After Hours", note: "Out-of-hours flow" },
+    ],
+  },
+
+  "virtual-numbers": {
+    layout: "fan",
+    status: "No line required",
+    source: { icon: Globe, value: "Local number", label: "No physical line" },
+    out: [
+      { icon: Laptop, label: "Softphone", note: "Wherever they work" },
+      { icon: Smartphone, label: "Mobile", note: "On the move" },
+      { icon: Users, label: "Any Extension", note: "Your call flows" },
+    ],
+  },
+
+  ivr: {
+    layout: "fan",
+    status: "Menu active",
+    source: { icon: ListOrdered, value: "Press 1–3", label: "Caller chooses" },
+    out: [
+      { icon: Users, label: "Sales", note: "Press 1" },
+      { icon: Headset, label: "Support", note: "Press 2" },
+      { icon: Building2, label: "Billing", note: "Press 3" },
+    ],
+  },
+
+  /* ------------------------------------- queue: waiting, then handled */
+  "call-queue": {
+    layout: "queue",
+    status: "Callers waiting",
+    waitingIcon: PhoneIncoming,
+    waitingLabel: "Callers",
+    queueLabel: "In the queue",
+    agents: [
+      { icon: Headset, label: "Agent 1", state: "busy" },
+      { icon: Headset, label: "Agent 2", state: "free" },
+      { icon: Headset, label: "Agent 3", state: "busy" },
+    ],
+  },
+
+  "call-center": {
+    layout: "queue",
+    status: "Queue healthy",
+    waitingIcon: Users,
+    waitingLabel: "Customers",
+    queueLabel: "Routed by your rules",
+    agents: [
+      { icon: Headset, label: "Sales", state: "free" },
+      { icon: Headset, label: "Support", state: "busy" },
+      { icon: Activity, label: "Supervisor", state: "free" },
+    ],
+  },
+
+  "predictive-dialer": {
+    layout: "queue",
+    status: "Campaign running",
+    waitingIcon: PhoneOutgoing,
+    waitingLabel: "Dial list",
+    queueLabel: "Paced to availability",
+    agents: [
+      { icon: Headset, label: "Agent 1", state: "busy" },
+      { icon: Headset, label: "Agent 2", state: "free" },
+      { icon: PhoneCall, label: "Answered", state: "free" },
+    ],
+  },
+
+  "auto-dialer": {
+    layout: "queue",
+    status: "Campaign queued",
+    waitingIcon: Smartphone,
+    waitingLabel: "Contacts",
+    queueLabel: "Dialled in order",
+    agents: [
+      { icon: Radio, label: "Announcement", state: "free" },
+      { icon: Headset, label: "Or an agent", state: "free" },
+      { icon: BarChart3, label: "Outcome", state: "busy" },
+    ],
+  },
+
+  /* -------------------------------------------- panel: a surface to read */
+  "call-analytics": {
+    layout: "panel",
+    status: "Data flowing",
+    title: "Call volume by hour",
+    bars: [28, 42, 55, 70, 88, 64, 48, 36, 52, 40, 30, 22],
+    peak: 4,
+    axis: ["09:00", "18:00"],
+    readouts: [
+      { icon: PhoneCall, label: "Answered", value: "Tracked" },
+      { icon: PhoneIncoming, label: "Missed", value: "Flagged" },
+      { icon: Layers, label: "Export", value: "Excel / CSV" },
+    ],
+  },
+
+  "call-recording": {
+    layout: "panel",
+    status: "Recording on",
+    title: "Conversation archive",
+    bars: [30, 52, 38, 66, 44, 78, 50, 34, 60, 42, 56, 36],
+    peak: 5,
+    axis: ["Waveform", "Playback"],
+    readouts: [
+      { icon: Filter, label: "Search", value: "By date, agent" },
+      { icon: ShieldCheck, label: "Access", value: "Role-based" },
+      { icon: FileAudio, label: "Formats", value: "MP3 / WAV" },
+    ],
+  },
+
+  /* ------------------------------------------- code: your app drives it */
+  "voice-api": {
+    layout: "code",
+    status: "API connected",
+    lines: [
+      { text: "POST /calls", accent: true },
+      { text: '  to: "+1 800..."' },
+      { text: '  from: "sales"' },
+      { text: "  record: true" },
+    ],
+    requestLabel: "Request",
+    responseLabel: "Events",
+    caption: "Voice API",
+    results: [
+      { icon: PhoneOutgoing, label: "Call placed" },
+      { icon: Activity, label: "Status back" },
+    ],
+  },
+
+  "sms-api": {
+    layout: "code",
+    status: "Messages sending",
+    lines: [
+      { text: "POST /messages", accent: true },
+      { text: '  to: "+44 7..."' },
+      { text: '  body: "Your code"' },
+    ],
+    requestLabel: "Send",
+    responseLabel: "Delivered",
+    caption: "SMS API",
+    results: [
+      { icon: Smartphone, label: "Any mobile" },
+      { icon: ShieldCheck, label: "Passcodes" },
+    ],
+  },
+
+  "sip-api": {
+    layout: "code",
+    status: "SIP integrated",
+    lines: [
+      { text: "REGISTER sip:...", accent: true },
+      { text: "  endpoint: pbx-01" },
+      { text: "  route: least-cost" },
+      { text: "  failover: on" },
+    ],
+    requestLabel: "Signalling",
+    responseLabel: "Session",
+    caption: "SIP API",
+    results: [
+      { icon: Router, label: "Your routing" },
+      { icon: Globe, label: "Carriers" },
+    ],
+  },
+
+  "whatsapp-api": {
+    layout: "code",
+    status: "Inbox connected",
+    lines: [
+      { text: "POST /whatsapp", accent: true },
+      { text: '  to: "+91 98..."' },
+      { text: '  template: "order"' },
+    ],
+    requestLabel: "Send",
+    responseLabel: "Reply",
+    caption: "WhatsApp API",
+    results: [
+      { icon: Inbox, label: "Shared inbox" },
+      { icon: MessagesSquare, label: "Threaded" },
+    ],
+  },
+
+  /* ---------------------------------------------- swap: old for new */
+  "number-porting": {
+    layout: "swap",
+    status: "Continuity kept",
+    beforeLabel: "With your old carrier",
+    before: [
+      { icon: Building2, label: "Tied to one provider" },
+      { icon: Phone, label: "Change number to move" },
+      { icon: Store, label: "Reprint everything" },
+    ],
+    verb: "Port",
+    afterLabel: "On SipLink",
+    after: [
+      { icon: Phone, label: "Same numbers kept" },
+      { icon: ListOrdered, label: "Your call flows" },
+      { icon: ShieldCheck, label: "Customers unaffected" },
+    ],
+  },
+
+  "cloud-pbx": {
+    layout: "swap",
+    status: "System online",
+    beforeLabel: "On-premise system",
+    before: [
+      { icon: Server, label: "A box to maintain" },
+      { icon: Building2, label: "Tied to one office" },
+      { icon: Lock, label: "Upgrades deferred" },
+    ],
+    verb: "Move",
+    afterLabel: "Cloud PBX",
+    after: [
+      { icon: Cloud, label: "Nothing on site" },
+      { icon: Users, label: "Extensions anywhere" },
+      { icon: ListOrdered, label: "IVR, queues, voicemail" },
+    ],
+  },
+
+  "hosted-pbx": {
+    layout: "swap",
+    status: "Managed by SipLink",
+    beforeLabel: "Running it yourself",
+    before: [
+      { icon: ServerCog, label: "Your team patches it" },
+      { icon: Clock, label: "Updates wait for capacity" },
+      { icon: Activity, label: "You watch it" },
+    ],
+    verb: "Hand over",
+    afterLabel: "Hosted by SipLink",
+    after: [
+      { icon: ServerCog, label: "We run and update it" },
+      { icon: Store, label: "Every branch included" },
+      { icon: ShieldCheck, label: "You keep the controls" },
+    ],
+  },
+
+  "ip-pbx": {
+    layout: "swap",
+    status: "On premise",
+    beforeLabel: "Legacy trunks",
+    before: [
+      { icon: Phone, label: "PRI and analogue lines" },
+      { icon: Lock, label: "Fixed channel blocks" },
+      { icon: Network, label: "Hard to extend" },
+    ],
+    verb: "SIP-enable",
+    afterLabel: "Your IP PBX",
+    after: [
+      { icon: Server, label: "Call control stays on site" },
+      { icon: Cloud, label: "Hybrid where you want it" },
+      { icon: Globe, label: "SIP uplink to the world" },
+    ],
+  },
+
+  /* ------------------------------------------- orbit: sits in the middle */
   "crm-integration": {
+    layout: "orbit",
     status: "CRM linked",
-    left: [
-      { icon: PhoneIncoming, label: "Call Arrives" },
+    caption: "Connected",
+    around: [
       { icon: Boxes, label: "Your CRM" },
-    ],
-    spine: [
-      { kind: "brand", caption: "Connected" },
-      {
-        kind: "pillar",
-        icon: Workflow,
-        title: "Screen pop",
-        lines: ["Record opens", "as it rings"],
-      },
-    ],
-    right: [
+      { icon: PhoneIncoming, label: "Call Arrives" },
       { icon: Users, label: "Agent Sees Who" },
       { icon: PhoneOutgoing, label: "Click to Dial" },
       { icon: Layers, label: "Logged Back" },
+      { icon: Workflow, label: "Screen Pop" },
     ],
   },
 
   "ai-voice-assistant": {
+    layout: "orbit",
     status: "Assistant enabled",
-    left: [{ icon: PhoneIncoming, label: "Caller Speaks" }],
-    spine: [
-      {
-        kind: "pillar",
-        icon: Bot,
-        title: "AI assistant",
-        lines: ["Handles routine", "requests"],
-      },
-      { kind: "brand", caption: "Or Hands Over" },
-    ],
-    right: [
+    caption: "AI Assistant",
+    around: [
+      { icon: PhoneIncoming, label: "Caller Speaks" },
+      { icon: Bot, label: "Understands" },
       { icon: Sparkles, label: "Resolved" },
       { icon: Headset, label: "Human Agent" },
       { icon: FileAudio, label: "Summary" },
+      { icon: Send, label: "Routed On" },
     ],
   },
 };
-
-/** Renders one row of SCENE_SPECS. */
-function Scene({ uid, spec }: { uid: string; spec: SceneSpec }) {
-  return (
-    <FlowScene
-      uid={uid}
-      status={spec.status}
-      left={spec.left}
-      right={spec.right}
-      spine={spec.spine.map((card, index) => (
-        <Fragment key={index}>
-          {index > 0 ? <SpineLink /> : null}
-          {card.kind === "brand" ? (
-            <BrandCloud caption={card.caption} />
-          ) : (
-            <PillarCard icon={card.icon} title={card.title} lines={card.lines} />
-          )}
-        </Fragment>
-      ))}
-    />
-  );
-}
 
 /* ------------------------------------------------------------------ *
  * Registry
@@ -912,7 +1299,13 @@ export function ProductIllustration({ slug, className }: Props) {
 
   return (
     <div className={cn("w-full", className)}>
-      <Scene uid={slug} spec={spec} />
+      {spec.layout === "flow" ? <FlowLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "fan" ? <FanLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "queue" ? <QueueLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "panel" ? <PanelLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "code" ? <CodeLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "swap" ? <SwapLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "orbit" ? <OrbitLayout uid={slug} spec={spec} /> : null}
     </div>
   );
 }
