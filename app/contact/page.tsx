@@ -25,7 +25,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative -mt-20 pt-20 sm:-mt-30 sm:pt-30 overflow-hidden border-b border-border bg-muted/30">
+      <section className="relative overflow-hidden border-b border-border bg-muted/30">
         <div
           aria-hidden
           className="pointer-events-none absolute -top-40 left-1/2 size-[560px] -translate-x-1/2 rounded-full bg-brand-to/10 blur-3xl"

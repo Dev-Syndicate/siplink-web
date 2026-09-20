@@ -39,21 +39,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col">
         <SiteHeader />
-        {/* Offset matches the fixed header: the h-16 nav bar, and above `sm`
-            the h-10 announcement bar as well. The bar is hidden below `sm`,
-            so the offset drops with it — keep these in sync with SiteHeader.
+        {/* Offset matches the fixed header: the h-16 nav pill plus its pt-3
+            gap, and above `sm` the h-10 announcement bar as well. The bar is
+            hidden below `sm`, so the offset drops with it — keep these in
+            sync with SiteHeader.
 
-            Sized for the nav's docked state, which is the taller of the two.
-            The nav morphs as you scroll — docked at the top, a floating pill
-            below it — but it is `fixed` in both, so neither state is in page
-            flow and this number does not move with it.
-
-            Every page's first section cancels this offset with
-            `-mt-20 pt-20 sm:-mt-30 sm:pt-30` and gives the space straight
-            back as padding. Content lands in exactly the same place; the
-            section's background simply runs up behind the nav instead of
-            leaving a bare strip above it. Change the values here and those
-            ten sections have to move with them. */}
+            This matches the docked header exactly (80px, or 120px with the
+            bar), so at the top of a page the first section begins right on
+            the header's bottom rule. Once scrolled the header lifts into its
+            pill and gets 4px shorter, but this padding is static so nothing
+            reflows — content simply passes under the floating pill, which is
+            the point of it. */}
         <main className="flex-1 pt-20 sm:pt-30">{children}</main>
         <SiteFooter />
       </body>

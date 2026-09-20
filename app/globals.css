@@ -124,26 +124,6 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-/* How tall the docked header actually is: the h-16 nav row, plus the h-10
-   announcement strip from `sm` up, where that strip stops being hidden.
-
-   This is the line the nav's bottom border sits on, and anything that must
-   start *below* the nav rather than behind it reads it from here — the
-   homepage hero's backdrop photograph is the one that matters. It is not the
-   same number as the `pt-20 sm:pt-30` offset on `main`, which is deliberately
-   larger: that one sets where copy begins and carries breathing room with it.
-   Change the nav row's height and this follows; the offset in layout.tsx is a
-   separate decision. */
-:root {
-  --header-h: 4rem;
-}
-
-@media (min-width: 40rem) {
-  :root {
-    --header-h: 6.5rem;
-  }
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
