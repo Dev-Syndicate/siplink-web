@@ -27,6 +27,7 @@ import {
   PhoneCall,
   PhoneIncoming,
   PhoneOutgoing,
+  Play,
   Radio,
   Router,
   Send,
@@ -294,6 +295,19 @@ type PanelSpec = {
   readouts: { icon: LucideIcon; label: string; value: string }[];
 };
 
+type WaveSpec = {
+  layout: "wave";
+  status: string;
+  title: string;
+  /** Waveform bar heights as percentages, mirrored about the centre line. */
+  wave: number[];
+  /** How far through the recording the playhead sits, 0-1. */
+  playhead: number;
+  elapsed: string;
+  total: string;
+  readouts: { icon: LucideIcon; label: string; value: string }[];
+};
+
 type CodeSpec = {
   layout: "code";
   status: string;
@@ -326,6 +340,7 @@ type SceneSpec =
   | FanSpec
   | QueueSpec
   | PanelSpec
+  | WaveSpec
   | CodeSpec
   | SwapSpec
   | OrbitSpec;
@@ -644,6 +659,93 @@ function PanelLayout({ uid, spec }: { uid: string; spec: PanelSpec }) {
           </div>
 
           {/* Readouts beside the chart */}
+          <dl className="flex shrink-0 flex-col justify-center gap-2.5 sm:w-32">
+            {spec.readouts.map(({ icon: Icon, label, value }) => (
+              <div key={label} className="flex items-center gap-2">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Icon className="size-3.5" aria-hidden />
+                </span>
+                <span className="min-w-0">
+                  <dt className="text-[9px] leading-tight text-muted-foreground">
+                    {label}
+                  </dt>
+                  <dd className="text-[11px] leading-tight font-semibold">
+                    {value}
+                  </dd>
+                </span>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * WAVE — a recorded conversation as an audio waveform with a playhead, which
+ * is what a recording actually looks like when you go to review one. Kept
+ * distinct from PANEL so recording and analytics do not share a picture.
+ */
+function WaveLayout({ uid, spec }: { uid: string; spec: WaveSpec }) {
+  const played = Math.round(spec.wave.length * spec.playhead);
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="rounded-xl border border-border bg-background shadow-sm">
+        <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+          <span className="flex size-5 items-center justify-center rounded bg-primary/10 text-primary">
+            <FileAudio className="size-3" aria-hidden />
+          </span>
+          <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+            {spec.title}
+          </span>
+        </div>
+
+        <div className="grid gap-4 p-4 sm:grid-cols-[minmax(0,1fr)_auto]">
+          <div>
+            {/* The waveform, mirrored about a centre line. Bars before the
+                playhead are solid; the rest are waiting to be played. */}
+            <div className="relative flex h-20 items-center gap-[3px]">
+              {spec.wave.map((h, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    "flex-1 rounded-full",
+                    i < played ? "bg-primary" : "bg-primary/20",
+                  )}
+                  style={{ height: `${h}%` }}
+                />
+              ))}
+              {/* Playhead */}
+              <span
+                aria-hidden
+                className="absolute inset-y-0 w-px bg-foreground/50"
+                style={{ left: `${spec.playhead * 100}%` }}
+              >
+                <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-foreground/70" />
+              </span>
+            </div>
+
+            {/* Transport */}
+            <div className="mt-3 flex items-center gap-2.5">
+              <span className="flex size-6 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <Play className="size-2.5 fill-current" aria-hidden />
+              </span>
+              <span className="font-mono text-[9px] text-muted-foreground tabular-nums">
+                {spec.elapsed}
+              </span>
+              <span className="relative h-0.5 flex-1 rounded-full bg-border">
+                <span
+                  className="absolute inset-y-0 left-0 rounded-full bg-primary"
+                  style={{ width: `${spec.playhead * 100}%` }}
+                />
+              </span>
+              <span className="font-mono text-[9px] text-muted-foreground tabular-nums">
+                {spec.total}
+              </span>
+            </div>
+          </div>
+
           <dl className="flex shrink-0 flex-col justify-center gap-2.5 sm:w-32">
             {spec.readouts.map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-center gap-2">
@@ -1099,12 +1201,16 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
   },
 
   "call-recording": {
-    layout: "panel",
+    layout: "wave",
     status: "Recording on",
     title: "Conversation archive",
-    bars: [30, 52, 38, 66, 44, 78, 50, 34, 60, 42, 56, 36],
-    peak: 5,
-    axis: ["Waveform", "Playback"],
+    wave: [
+      18, 34, 52, 40, 66, 82, 58, 44, 72, 90, 64, 38, 56, 78, 48, 30, 62, 86,
+      54, 36, 70, 46, 26, 42,
+    ],
+    playhead: 0.42,
+    elapsed: "01:12",
+    total: "02:48",
     readouts: [
       { icon: Filter, label: "Search", value: "By date, agent" },
       { icon: ShieldCheck, label: "Access", value: "Role-based" },
@@ -1303,6 +1409,7 @@ export function ProductIllustration({ slug, className }: Props) {
       {spec.layout === "fan" ? <FanLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "queue" ? <QueueLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "panel" ? <PanelLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "wave" ? <WaveLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "code" ? <CodeLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "swap" ? <SwapLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "orbit" ? <OrbitLayout uid={slug} spec={spec} /> : null}
