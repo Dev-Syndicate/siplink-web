@@ -348,6 +348,17 @@ type SystemSpec = {
   also: { icon: LucideIcon; label: string }[];
 };
 
+type HubSpec = {
+  layout: "hub";
+  status: string;
+  /** The platform SipLink operates on the customer's behalf. */
+  platform: { title: string; note: string };
+  /** What SipLink does to keep it running, shown as the managed part. */
+  managed: { icon: LucideIcon; label: string }[];
+  /** Places and people that all share the one system. */
+  sites: { icon: LucideIcon; label: string; detail: string }[];
+};
+
 type CodeSpec = {
   layout: "code";
   status: string;
@@ -383,6 +394,7 @@ type SceneSpec =
   | WaveSpec
   | DialerSpec
   | SystemSpec
+  | HubSpec
   | BroadcastSpec
   | CodeSpec
   | SwapSpec
@@ -1435,6 +1447,119 @@ function SystemLayout({ uid, spec }: { uid: string; spec: SystemSpec }) {
 }
 
 /**
+ * HUB — one platform that SipLink runs, with every site and worker hanging
+ * off it. For the hosted product, where the point is not how a call routes
+ * but that head office, branches and home workers are on the same system
+ * and none of them operate it.
+ */
+function HubLayout({ uid, spec }: { uid: string; spec: HubSpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="mx-auto w-full max-w-[23rem]">
+        {/* The platform, raised: SipLink runs this part */}
+        <div className="rounded-2xl border border-primary/30 bg-linear-to-b from-brand-from/15 via-background via-60% to-background p-3 shadow-md ring-1 ring-primary/10">
+          <div className="flex items-center justify-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-primary" />
+            <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase">
+              {spec.platform.title}
+            </span>
+          </div>
+          <p className="mt-1 text-center text-[9px] leading-snug text-pretty text-muted-foreground">
+            {spec.platform.note}
+          </p>
+
+          {/* The work that is ours rather than theirs */}
+          <div className="mt-2.5 flex items-stretch gap-1.5">
+            {spec.managed.map(({ icon: Icon, label }, idx) => (
+              <span
+                key={label}
+                style={
+                  { "--cycle-delay": `${idx * 0.8}s` } as React.CSSProperties
+                }
+                className="route-step flex flex-1 flex-col items-center gap-1 rounded-lg border border-primary/20 bg-background px-1 py-1.5 text-center"
+              >
+                <Icon className="size-3 text-primary" aria-hidden />
+                <span className="text-[8px] leading-tight font-medium text-balance">
+                  {label}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Spokes down to everyone on the system */}
+        <svg
+          viewBox="0 0 340 30"
+          role="presentation"
+          aria-hidden
+          className="w-full"
+        >
+          {(() => {
+            const n = spec.sites.length;
+            const xs = spec.sites.map((_, idx) => (340 / n) * (idx + 0.5));
+            const r = 6;
+            return (
+              <>
+                <path
+                  d={`M170 0V${14 - r}`}
+                  fill="none"
+                  className="stroke-primary/35"
+                  strokeWidth="1.25"
+                  strokeLinecap="round"
+                />
+                {xs.map((x, idx) => {
+                  const d =
+                    Math.abs(x - 170) < 1
+                      ? `M170 ${14 - r}V30`
+                      : x < 170
+                        ? `M170 ${14 - r}q0 ${r} -${r} ${r}H${x + r}q-${r} 0 -${r} ${r}V30`
+                        : `M170 ${14 - r}q0 ${r} ${r} ${r}H${x - r}q${r} 0 ${r} ${r}V30`;
+                  return (
+                    <path
+                      key={idx}
+                      d={d}
+                      fill="none"
+                      className="stroke-primary/35"
+                      strokeWidth="1.25"
+                      strokeLinecap="round"
+                    />
+                  );
+                })}
+              </>
+            );
+          })()}
+        </svg>
+
+        {/* One system, several places — the labels carry the difference */}
+        <div className="flex items-start gap-1.5">
+          {spec.sites.map(({ icon: Icon, label, detail }) => (
+            <div
+              key={label}
+              className="flex flex-1 flex-col items-center gap-1 rounded-xl border border-border bg-background px-1.5 py-2 text-center shadow-sm"
+            >
+              <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Icon className="size-3.5" aria-hidden />
+              </span>
+              <span className="text-[9px] leading-tight font-semibold text-balance">
+                {label}
+              </span>
+              <span className="text-[8px] leading-tight text-balance text-muted-foreground">
+                {detail}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* The shared thing, stated once rather than repeated per site */}
+        <p className="mt-2 text-center font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+          Same extensions · Same call flows · One portal
+        </p>
+      </div>
+    </Stage>
+  );
+}
+
+/**
  * ORBIT — one hub with everything else arranged around it. For products
  * whose job is to sit in the middle of things other people already run.
  */
@@ -1865,22 +1990,24 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
 
 
   "hosted-pbx": {
-    layout: "swap",
+    layout: "hub",
     status: "Managed by SipLink",
-    beforeLabel: "Running it yourself",
-    before: [
-      { icon: ServerCog, label: "Your team patches it" },
-      { icon: Clock, label: "Updates wait for capacity" },
-      { icon: Activity, label: "You watch it" },
+    platform: {
+      title: "Hosted by SipLink",
+      note: "No PBX in your building to patch, replace or monitor",
+    },
+    managed: [
+      { icon: ServerCog, label: "We host it" },
+      { icon: Activity, label: "We monitor it" },
+      { icon: ShieldCheck, label: "We update it" },
     ],
-    verb: "Hand over",
-    afterLabel: "Hosted by SipLink",
-    after: [
-      { icon: ServerCog, label: "We run and update it" },
-      { icon: Store, label: "Every branch included" },
-      { icon: ShieldCheck, label: "You keep the controls" },
+    sites: [
+      { icon: Building2, label: "Head office", detail: "Desk phones" },
+      { icon: Store, label: "Branches", detail: "Same system" },
+      { icon: MonitorSmartphone, label: "Remote staff", detail: "App or browser" },
     ],
   },
+
 
   "ip-pbx": {
     layout: "swap",
@@ -1959,6 +2086,7 @@ export function ProductIllustration({ slug, className }: Props) {
       {spec.layout === "system" ? (
         <SystemLayout uid={slug} spec={spec} />
       ) : null}
+      {spec.layout === "hub" ? <HubLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "orbit" ? <OrbitLayout uid={slug} spec={spec} /> : null}
     </div>
   );
