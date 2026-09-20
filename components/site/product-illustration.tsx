@@ -2,13 +2,14 @@ import { Fragment } from "react";
 
 import {
   Activity,
-  ArrowLeftRight,
   AudioLines,
   BarChart3,
   Bot,
   Boxes,
   Building2,
   Clock,
+  CalendarClock,
+  ClipboardList,
   Cloud,
   Cpu,
   Code2,
@@ -20,7 +21,6 @@ import {
   Laptop,
   Layers,
   ListOrdered,
-  Lock,
   MessagesSquare,
   MessageCircle,
   MonitorSmartphone,
@@ -376,6 +376,20 @@ type PerimeterSpec = {
   outside: { icon: LucideIcon; label: string }[];
 };
 
+type JourneySpec = {
+  layout: "journey";
+  status: string;
+  /** The number itself — the one thing that does not change. */
+  subject: { number: string; note: string };
+  /** Where it starts and where it ends up. */
+  from: string;
+  to: string;
+  /** The stages of the port, in the order they happen. */
+  stages: { icon: LucideIcon; label: string }[];
+  /** What is true once it lands. */
+  outcome: { icon: LucideIcon; label: string }[];
+};
+
 type CodeSpec = {
   layout: "code";
   status: string;
@@ -384,16 +398,6 @@ type CodeSpec = {
   responseLabel: string;
   caption: string;
   results: Endpoint[];
-};
-
-type SwapSpec = {
-  layout: "swap";
-  status: string;
-  beforeLabel: string;
-  before: Endpoint[];
-  verb: string;
-  afterLabel: string;
-  after: Endpoint[];
 };
 
 type OrbitSpec = {
@@ -413,9 +417,9 @@ type SceneSpec =
   | SystemSpec
   | HubSpec
   | PerimeterSpec
+  | JourneySpec
   | BroadcastSpec
   | CodeSpec
-  | SwapSpec
   | OrbitSpec;
 
 /* ------------------------------------------------------------------ *
@@ -1225,66 +1229,6 @@ function CodeLayout({ uid, spec }: { uid: string; spec: CodeSpec }) {
 }
 
 /**
- * SWAP — what you run today on one side, struck through, and what replaces
- * it on the other. For migrations, where the story is the change itself.
- */
-function SwapLayout({ uid, spec }: { uid: string; spec: SwapSpec }) {
-  return (
-    <Stage uid={uid} status={spec.status}>
-      <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
-        {/* Before */}
-        <div className="rounded-xl border border-border bg-background/60 p-4">
-          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
-            {spec.beforeLabel}
-          </span>
-          <ul className="mt-3 space-y-2">
-            {spec.before.map(({ icon: Icon, label }) => (
-              <li key={label} className="flex items-center gap-2">
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground/70">
-                  <Icon className="size-3" aria-hidden />
-                </span>
-                <span className="text-[10px] leading-tight text-muted-foreground line-through decoration-muted-foreground/40">
-                  {label}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* The change */}
-        <div className="flex flex-col items-center gap-2">
-          <span className="flex size-9 items-center justify-center rounded-full border border-primary/40 bg-background text-primary shadow-sm">
-            <ArrowLeftRight className="size-4" aria-hidden />
-          </span>
-          <span className="font-mono text-[8px] tracking-widest text-primary uppercase">
-            {spec.verb}
-          </span>
-        </div>
-
-        {/* After */}
-        <div className="rounded-xl border border-primary/30 bg-background p-4 shadow-sm ring-1 ring-primary/10">
-          <span className="font-mono text-[9px] tracking-widest text-primary uppercase">
-            {spec.afterLabel}
-          </span>
-          <ul className="mt-3 space-y-2">
-            {spec.after.map(({ icon: Icon, label }) => (
-              <li key={label} className="flex items-center gap-2">
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                  <Icon className="size-3" aria-hidden />
-                </span>
-                <span className="text-[10px] leading-tight font-medium">
-                  {label}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </Stage>
-  );
-}
-
-/**
  * SYSTEM — the phone system doing its job: a call comes in, the system
  * decides where it belongs, and it rings the right extension. Used where the
  * product IS the system, so the picture shows it running rather than showing
@@ -1693,6 +1637,92 @@ function PerimeterLayout({
 }
 
 /**
+ * JOURNEY — one thing moving through a sequence of stages. For porting,
+ * where the product is the process and the number is the constant: it is
+ * shown once, above the track, because the point is that it never changes.
+ */
+function JourneyLayout({ uid, spec }: { uid: string; spec: JourneySpec }) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="mx-auto w-full max-w-[23rem]">
+        {/* The number, stated once and held still */}
+        <div className="mx-auto w-fit rounded-2xl border border-primary/30 bg-linear-to-b from-brand-from/15 to-background px-5 py-2.5 text-center shadow-md ring-1 ring-primary/10">
+          <p className="font-mono text-[15px] leading-none font-semibold tracking-tight tabular-nums">
+            {spec.subject.number}
+          </p>
+          <p className="mt-1 text-[8px] tracking-widest text-muted-foreground uppercase">
+            {spec.subject.note}
+          </p>
+        </div>
+
+        {/* Who holds it, before and after */}
+        <div className="mt-2.5 flex items-center gap-2">
+          <span className="shrink-0 font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+            {spec.from}
+          </span>
+          <span className="h-px flex-1 bg-border" />
+          <span className="shrink-0 font-mono text-[8px] tracking-widest text-primary uppercase">
+            {spec.to}
+          </span>
+        </div>
+
+        {/* The track. Each stage lights in turn, so the port reads as a
+            sequence that runs rather than a list of guarantees. */}
+        <div className="mt-2 flex items-stretch gap-1">
+          {spec.stages.map(({ icon: Icon, label }, idx) => (
+            <div key={label} className="flex min-w-0 flex-1 items-center">
+              <div
+                style={{ "--cycle-delay": `${idx * 0.7}s` } as React.CSSProperties}
+                className="route-step flex min-w-0 flex-1 flex-col items-center gap-1 rounded-lg border border-primary/20 bg-background px-1 py-2 text-center"
+              >
+                <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Icon className="size-3" aria-hidden />
+                </span>
+                <span className="font-mono text-[8px] text-muted-foreground tabular-nums">
+                  {idx + 1}
+                </span>
+                <span className="text-[8px] leading-tight font-medium text-balance">
+                  {label}
+                </span>
+              </div>
+              {idx < spec.stages.length - 1 ? (
+                <svg
+                  viewBox="0 0 10 8"
+                  className="w-2 shrink-0"
+                  role="presentation"
+                  aria-hidden
+                >
+                  <path
+                    d="M1 4h6M5 1.5l2 2.5-2 2.5"
+                    fill="none"
+                    className="stroke-primary/40"
+                    strokeWidth="1.25"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              ) : null}
+            </div>
+          ))}
+        </div>
+
+        {/* What is true on the other side */}
+        <div className="mt-2 flex items-center justify-center gap-3 border-t border-border pt-2">
+          {spec.outcome.map(({ icon: Icon, label }) => (
+            <span key={label} className="flex items-center gap-1">
+              <Icon className="size-2.5 shrink-0 text-primary" aria-hidden />
+              <span className="text-[8px] whitespace-nowrap text-muted-foreground">
+                {label}
+              </span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
  * ORBIT — one hub with everything else arranged around it. For products
  * whose job is to sit in the middle of things other people already run.
  */
@@ -2083,22 +2113,26 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
 
   /* ---------------------------------------------- swap: old for new */
   "number-porting": {
-    layout: "swap",
+    layout: "journey",
     status: "Continuity kept",
-    beforeLabel: "With your old carrier",
-    before: [
-      { icon: Building2, label: "Tied to one provider" },
-      { icon: Phone, label: "Change number to move" },
-      { icon: Store, label: "Reprint everything" },
+    subject: {
+      number: "+44 20 7946 0123",
+      note: "Your number, unchanged",
+    },
+    from: "Old carrier",
+    to: "SipLink",
+    stages: [
+      { icon: ClipboardList, label: "Coordinate details" },
+      { icon: ShieldCheck, label: "Validate numbers" },
+      { icon: CalendarClock, label: "Plan the move" },
+      { icon: ListOrdered, label: "Configure routing" },
     ],
-    verb: "Port",
-    afterLabel: "On SipLink",
-    after: [
-      { icon: Phone, label: "Same numbers kept" },
-      { icon: ListOrdered, label: "Your call flows" },
-      { icon: ShieldCheck, label: "Customers unaffected" },
+    outcome: [
+      { icon: Phone, label: "Same number" },
+      { icon: Users, label: "Customers unaffected" },
     ],
   },
+
 
   "cloud-pbx": {
     layout: "system",
@@ -2219,13 +2253,15 @@ export function ProductIllustration({ slug, className }: Props) {
         <BroadcastLayout uid={slug} spec={spec} />
       ) : null}
       {spec.layout === "code" ? <CodeLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "swap" ? <SwapLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "system" ? (
         <SystemLayout uid={slug} spec={spec} />
       ) : null}
       {spec.layout === "hub" ? <HubLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "perimeter" ? (
         <PerimeterLayout uid={slug} spec={spec} />
+      ) : null}
+      {spec.layout === "journey" ? (
+        <JourneyLayout uid={slug} spec={spec} />
       ) : null}
       {spec.layout === "orbit" ? <OrbitLayout uid={slug} spec={spec} /> : null}
     </div>
