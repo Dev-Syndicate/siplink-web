@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
+import { BusinessSizeSolution } from "@/components/site/business-size-solution";
+import { SmallBusinessSolution } from "@/components/site/small-business-solution";
 import { SolutionIllustration } from "@/components/site/solution-illustration";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { getBusinessSize } from "@/lib/business-size";
 import {
   getSolutionDetail,
   solutionDetails,
@@ -49,6 +52,20 @@ export default async function SolutionDetailPage({
 
   const solution = getSolutionDetail(slug);
   if (!solution) notFound();
+
+  // The four business-size pages each get the moment that is characteristic
+  // of that size — a ring, a working day, a queue, a stack of systems — so
+  // they have their own treatment. Every other solution keeps the shared
+  // template below.
+  const size = getBusinessSize(slug);
+
+  // Small Business takes that furthest: the working day is not an
+  // illustration beside the pitch, it is the pitch, so the page is built
+  // around it rather than fitted into the shared size shell.
+  if (size?.slug === "small-business")
+    return <SmallBusinessSolution solution={solution} size={size} />;
+
+  if (size) return <BusinessSizeSolution solution={solution} size={size} />;
 
   const {
     group,
