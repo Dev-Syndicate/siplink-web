@@ -10,6 +10,7 @@ import {
   Building2,
   Clock,
   Cloud,
+  Cpu,
   Code2,
   FileAudio,
   Filter,
@@ -26,6 +27,7 @@ import {
   Network,
   Phone,
   PhoneCall,
+  PhoneForwarded,
   PhoneIncoming,
   PhoneOutgoing,
   Play,
@@ -359,6 +361,21 @@ type HubSpec = {
   sites: { icon: LucideIcon; label: string; detail: string }[];
 };
 
+type PerimeterSpec = {
+  layout: "perimeter";
+  status: string;
+  /** The boundary everything inside it stays within. */
+  boundary: string;
+  /** The on-site system, and what it keeps hold of. */
+  core: { icon: LucideIcon; title: string; note: string };
+  /** Kept inside the perimeter, listed so "inside" is concrete. */
+  inside: { icon: LucideIcon; label: string }[];
+  /** The one link that crosses the boundary. */
+  link: { label: string; note: string };
+  /** What that link reaches. */
+  outside: { icon: LucideIcon; label: string }[];
+};
+
 type CodeSpec = {
   layout: "code";
   status: string;
@@ -395,6 +412,7 @@ type SceneSpec =
   | DialerSpec
   | SystemSpec
   | HubSpec
+  | PerimeterSpec
   | BroadcastSpec
   | CodeSpec
   | SwapSpec
@@ -1560,6 +1578,121 @@ function HubLayout({ uid, spec }: { uid: string; spec: HubSpec }) {
 }
 
 /**
+ * PERIMETER — a drawn boundary with the system inside it and a single link
+ * crossing out. The inverse of the cloud scene: for the on-premise product,
+ * where the claim is that call control never leaves the network you run.
+ */
+function PerimeterLayout({
+  uid,
+  spec,
+}: {
+  uid: string;
+  spec: PerimeterSpec;
+}) {
+  return (
+    <Stage uid={uid} status={spec.status}>
+      <div className="flex items-stretch gap-0">
+        {/* Inside the boundary. The dashed rule is the perimeter itself, so
+            everything it encloses is visibly on the customer's side. */}
+        <div className="min-w-0 flex-1 rounded-2xl border-2 border-dashed border-primary/40 bg-background/60 p-3">
+          <div className="flex items-center justify-center gap-1.5">
+            <Building2 className="size-3 text-primary" aria-hidden />
+            <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase">
+              {spec.boundary}
+            </span>
+          </div>
+
+          {/* The box they own, raised inside their own walls */}
+          <div className="mt-2 rounded-xl border border-primary/30 bg-linear-to-b from-brand-from/15 to-background p-2.5 text-center shadow-sm">
+            <span className="mx-auto flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+              <spec.core.icon className="size-4" aria-hidden />
+            </span>
+            <p className="mt-1.5 text-[10px] leading-tight font-semibold">
+              {spec.core.title}
+            </p>
+            <p className="mt-0.5 text-[8px] leading-snug text-pretty text-muted-foreground">
+              {spec.core.note}
+            </p>
+          </div>
+
+          <div className="mt-2 flex items-stretch gap-1.5">
+            {spec.inside.map(({ icon: Icon, label }) => (
+              <span
+                key={label}
+                className="flex flex-1 flex-col items-center gap-1 rounded-lg border border-border bg-background px-1 py-1.5 text-center"
+              >
+                <Icon className="size-3 text-primary" aria-hidden />
+                <span className="text-[8px] leading-tight font-medium text-balance">
+                  {label}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* The single crossing. Drawn as one link because that is the whole
+            point: one way out, and call state does not go with it. */}
+        <div className="flex w-[5.25rem] shrink-0 flex-col items-center justify-center gap-1">
+          <span className="font-mono text-[8px] tracking-widest text-primary uppercase">
+            {spec.link.label}
+          </span>
+          <svg
+            viewBox="0 0 64 16"
+            role="presentation"
+            aria-hidden
+            className="w-full"
+          >
+            <path
+              d="M2 8h60M56 4l6 4-6 4"
+              fill="none"
+              className="stroke-primary"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M2 8h60"
+              fill="none"
+              className="stroke-primary"
+              strokeWidth="1.5"
+              strokeDasharray="4 56"
+              strokeLinecap="round"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="60;0"
+                dur="2.4s"
+                repeatCount="indefinite"
+              />
+            </path>
+          </svg>
+          <span className="text-center text-[8px] leading-tight text-balance text-muted-foreground">
+            {spec.link.note}
+          </span>
+        </div>
+
+        {/* Outside: what the link reaches, kept deliberately plain */}
+        <div className="flex w-[7rem] shrink-0 flex-col justify-center gap-1.5">
+          {spec.outside.map(({ icon: Icon, label }) => (
+            <div
+              key={label}
+              className="flex items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
+            >
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
+                <Icon className="size-3" aria-hidden />
+              </span>
+              <span className="text-[9px] leading-tight font-medium text-balance">
+                {label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
  * ORBIT — one hub with everything else arranged around it. For products
  * whose job is to sit in the middle of things other people already run.
  */
@@ -2010,22 +2143,26 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
 
 
   "ip-pbx": {
-    layout: "swap",
+    layout: "perimeter",
     status: "On premise",
-    beforeLabel: "Legacy trunks",
-    before: [
-      { icon: Phone, label: "PRI and analogue lines" },
-      { icon: Lock, label: "Fixed channel blocks" },
-      { icon: Network, label: "Hard to extend" },
+    boundary: "Your network",
+    core: {
+      icon: Cpu,
+      title: "Your IP PBX",
+      note: "Call processing and internal dialling stay here",
+    },
+    inside: [
+      { icon: Phone, label: "Extensions" },
+      { icon: PhoneForwarded, label: "Transfer and park" },
+      { icon: Users, label: "Company phonebook" },
     ],
-    verb: "SIP-enable",
-    afterLabel: "Your IP PBX",
-    after: [
-      { icon: Server, label: "Call control stays on site" },
-      { icon: Cloud, label: "Hybrid where you want it" },
-      { icon: Globe, label: "SIP uplink to the world" },
+    link: { label: "SIP", note: "Only the trunk leaves" },
+    outside: [
+      { icon: Globe, label: "SipLink voice network" },
+      { icon: Network, label: "DIDs and routing" },
     ],
   },
+
 
   /* ------------------------------------------- orbit: sits in the middle */
   "crm-integration": {
@@ -2087,6 +2224,9 @@ export function ProductIllustration({ slug, className }: Props) {
         <SystemLayout uid={slug} spec={spec} />
       ) : null}
       {spec.layout === "hub" ? <HubLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "perimeter" ? (
+        <PerimeterLayout uid={slug} spec={spec} />
+      ) : null}
       {spec.layout === "orbit" ? <OrbitLayout uid={slug} spec={spec} /> : null}
     </div>
   );
