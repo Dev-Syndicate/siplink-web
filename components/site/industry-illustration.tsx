@@ -14,16 +14,16 @@ import {
   Headset,
   HeartPulse,
   Landmark,
-  MapPin,
   MessageSquare,
-  Navigation,
+  Mic,
+  PhoneCall,
   PhoneIncoming,
-  Play,
   RadioTower,
   Router,
   ScrollText,
   ServerCog,
   ShieldCheck,
+  ShoppingBag,
   Stethoscope,
   Store,
   Truck,
@@ -161,6 +161,91 @@ function Window({
   );
 }
 
+/**
+ * A party at the edge of a flow — the customer, agent, driver etc. that
+ * SipLink connects. Icon in a soft round chip with a caption under it.
+ */
+function Party({
+  icon: Icon,
+  label,
+  sub,
+  live,
+}: {
+  icon: LucideIcon;
+  label: string;
+  sub?: string;
+  live?: boolean;
+}) {
+  return (
+    <div className="flex w-16 shrink-0 flex-col items-center gap-1 text-center">
+      <span
+        className={cn(
+          "relative flex size-11 items-center justify-center rounded-2xl border shadow-sm",
+          live ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-primary",
+        )}
+      >
+        <Icon className="size-5" aria-hidden />
+        {live ? <span className="absolute -inset-1 -z-10 animate-ping rounded-2xl bg-primary/30 motion-reduce:animate-none" /> : null}
+      </span>
+      <span className="text-[9px] leading-tight font-semibold">{label}</span>
+      {sub ? <span className="text-[7px] leading-tight text-muted-foreground">{sub}</span> : null}
+    </div>
+  );
+}
+
+/**
+ * The SipLink system as the visible ACTOR in the middle of a flow — a branded
+ * card carrying the wordmark and the specific job it is doing (routing,
+ * recording, messaging). This is what makes each scene read as "SipLink doing
+ * the work", not just an artifact.
+ */
+function SipLinkActor({
+  doing,
+  detail,
+}: {
+  doing: { icon: LucideIcon; label: string }[];
+  detail?: string;
+}) {
+  return (
+    <div className="flex w-[9rem] shrink-0 flex-col items-center gap-2">
+      <div className="w-full rounded-2xl border-2 border-primary bg-background px-3 py-2.5 shadow-md">
+        <div className="mb-1.5 flex items-center justify-center gap-1 text-[11px] font-semibold tracking-tight">
+          <span className="text-primary">sip</span>
+          <span className="text-foreground">link</span>
+        </div>
+        <div className="flex flex-col gap-1">
+          {doing.map(({ icon: Icon, label }) => (
+            <div key={label} className="flex items-center gap-1.5 rounded-md bg-primary/[0.07] px-1.5 py-1">
+              <Icon className="size-3 shrink-0 text-primary" aria-hidden />
+              <span className="truncate text-[8.5px] font-medium">{label}</span>
+              <span className="ml-auto shrink-0"><LiveDot /></span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {detail ? (
+        <span className="font-mono text-[7px] tracking-[0.16em] text-muted-foreground uppercase">{detail}</span>
+      ) : null}
+    </div>
+  );
+}
+
+/**
+ * A wire between a Party and the SipLink actor, showing a call/message
+ * travelling. `dir` flips the animated packet direction visually via mirror.
+ */
+function Wire({ label, mirror = false }: { label?: string; mirror?: boolean }) {
+  return (
+    <div className="flex min-w-8 flex-1 flex-col items-center gap-0.5">
+      <svg viewBox="0 0 100 24" preserveAspectRatio="none" role="presentation" aria-hidden className={cn("h-6 w-full", mirror && "-scale-x-100")}>
+        <path d="M2 12 H98" className="stroke-primary/25" strokeWidth="1.5" vectorEffect="non-scaling-stroke" fill="none" />
+        <path d="M2 12 H98" className="flow-path stroke-primary" strokeWidth="2.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" fill="none" />
+      </svg>
+      {label ? <span className="font-mono text-[7px] tracking-wide text-muted-foreground uppercase">{label}</span> : null}
+    </div>
+  );
+}
+
 /* ============================================================ 1. call-centers
    QUEUE BOARD — numbered callers waiting with hold times → agent status column.
    ============================================================================ */
@@ -292,51 +377,34 @@ function Healthcare({ uid }: { uid: string }) {
 }
 
 /* ============================================================ 3. banking-finance
-   WAVEFORM — a recorded call with a playhead and compliance readouts.
+   CALL THROUGH SIPLINK — the customer↔advisor conversation flows THROUGH the
+   SipLink actor, which records, transcribes and analyses it live. SipLink is
+   the layer doing the work, not just a stored file.
    ============================================================================ */
 function BankingFinance({ uid }: { uid: string }) {
-  const wave = [30, 52, 40, 68, 88, 60, 44, 74, 96, 66, 48, 80, 58, 38, 62, 46, 30, 54, 42, 70];
-  const playhead = 0.55;
-  const played = Math.round(wave.length * playhead);
+  const wave = [40, 68, 52, 88, 60, 74, 96, 66, 80, 58, 46, 70];
   return (
-    <Stage uid={uid} status="Recorded for compliance">
-      <Window icon={Banknote} title="Call · acct ···· 4471">
-        <div className="grid gap-4 p-4 sm:grid-cols-[minmax(0,1fr)_auto]">
-          <div>
-            <div className="relative flex h-16 items-center gap-[3px]">
-              {wave.map((h, i) => (
-                <span key={i} className={cn("flex-1 rounded-full", i < played ? "bg-primary" : "bg-primary/20")} style={{ height: `${h}%` }} />
-              ))}
-              <span aria-hidden className="absolute inset-y-0 w-px bg-foreground/50" style={{ left: `${playhead * 100}%` }}>
-                <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-foreground/70" />
-              </span>
-            </div>
-            <div className="mt-3 flex items-center gap-2">
-              <span className="flex size-5 items-center justify-center rounded-full bg-primary text-primary-foreground"><Play className="size-2 fill-current" aria-hidden /></span>
-              <span className="font-mono text-[9px] text-muted-foreground tabular-nums">02:12</span>
-              <span className="relative h-0.5 flex-1 rounded-full bg-border">
-                <span className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: `${playhead * 100}%` }} />
-              </span>
-              <span className="font-mono text-[9px] text-muted-foreground tabular-nums">03:58</span>
-            </div>
-          </div>
-          <dl className="flex shrink-0 flex-col justify-center gap-2.5 sm:w-28">
-            {[
-              { icon: ShieldCheck, label: "Retention", value: "Locked" },
-              { icon: ScrollText, label: "Transcript", value: "Ready" },
-              { icon: Gauge, label: "Analytics", value: "Live" },
-            ].map(({ icon: Icon, label, value }) => (
-              <div key={label} className="flex items-center gap-2">
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary"><Icon className="size-3.5" aria-hidden /></span>
-                <span className="min-w-0">
-                  <dt className="text-[9px] leading-tight text-muted-foreground">{label}</dt>
-                  <dd className="text-[11px] leading-tight font-semibold">{value}</dd>
-                </span>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </Window>
+    <Stage uid={uid} status="Call in progress · secured">
+      <div className="flex items-center">
+        <Party icon={UserRound} label="Customer" sub="On the line" live />
+        <Wire label="voice" />
+        <SipLinkActor
+          doing={[
+            { icon: Mic, label: "Recording" },
+            { icon: ScrollText, label: "Transcribing" },
+            { icon: Gauge, label: "Analysing" },
+          ]}
+          detail="captured for compliance"
+        />
+        <Wire label="voice" mirror />
+        <Party icon={Headset} label="Advisor" sub="Sales · service" />
+      </div>
+      {/* a live voice-wave under the flow so it reads as an active call */}
+      <div className="mx-auto mt-3 flex h-8 max-w-[16rem] items-center justify-center gap-[3px]">
+        {wave.map((h, i) => (
+          <span key={i} className="w-[3px] rounded-full bg-primary/60" style={{ height: `${h}%` }} />
+        ))}
+      </div>
     </Stage>
   );
 }
@@ -391,78 +459,66 @@ function Education({ uid }: { uid: string }) {
 }
 
 /* ============================================================ 5. retail
-   SIPLINK SMS AT WORK — from the "How SipLink helps" copy: SMS supports
-   customer notifications, sent from per-store business numbers. The scene shows
-   the product working: a real customer phone receiving live order updates, each
-   stamped as sent by SipLink from a specific store line. One clear hero object,
-   not competing cards.
+   SIPLINK SENDS IT — an order event reaches the SipLink actor, which sends the
+   status SMS from the store's business number and routes any reply back to
+   store staff. SipLink is the sender in the middle; the customer's phone on the
+   right is the outcome. Matches the actor pattern used across the set.
    ============================================================================ */
 function Retail({ uid }: { uid: string }) {
-  const bubbles = [
-    { text: "Order #7741 confirmed", time: "09:02" },
-    { text: "Packed — ships today", time: "11:20" },
-    { text: "Out for delivery — arriving 2pm", time: "13:15", live: true },
-  ];
   return (
-    <Stage uid={uid} status="SMS sent · Store 04">
-      <div className="flex items-center justify-center gap-6">
-        {/* the customer's phone — the hero */}
-        <div className="w-[11.5rem] shrink-0 rounded-[1.6rem] border-[3px] border-foreground/80 bg-background p-2 shadow-md">
-          {/* status bar + notch */}
-          <div className="mb-1.5 flex items-center justify-between px-1.5">
-            <span className="font-mono text-[7px] font-semibold tabular-nums">9:41</span>
-            <span className="h-1 w-8 rounded-full bg-foreground/20" />
-            <span className="flex items-center gap-0.5">
-              <span className="h-1.5 w-1 rounded-[1px] bg-foreground/40" />
-              <span className="h-1.5 w-1.5 rounded-full border border-foreground/40" />
-            </span>
-          </div>
-          {/* SMS conversation header — from the store's business number */}
-          <div className="flex items-center gap-1.5 rounded-t-lg bg-primary/[0.06] px-2 py-1.5">
-            <span className="flex size-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
-              <Store className="size-2.5" aria-hidden />
-            </span>
-            <span className="min-w-0 leading-none">
-              <span className="block text-[8px] font-semibold">Northgate Store</span>
-              <span className="block font-mono text-[6px] text-muted-foreground">+1 415 ···· 04</span>
-            </span>
-          </div>
-          {/* incoming order-update texts */}
-          <div className="flex flex-col gap-1 rounded-b-lg bg-muted/30 px-2 py-2">
-            {bubbles.map(({ text, time, live }, i) => (
-              <span key={i} className="flex max-w-[92%] flex-col self-start">
-                <span
-                  className={cn(
-                    "rounded-2xl rounded-bl-sm px-2 py-1 text-[8px] leading-snug shadow-sm",
-                    live ? "bg-primary text-primary-foreground" : "bg-background text-foreground",
-                  )}
-                >
-                  {text}
-                </span>
-                <span className="mt-0.5 flex items-center gap-1 pl-1">
-                  <span className="font-mono text-[6px] text-muted-foreground tabular-nums">{time}</span>
-                  {live ? <LiveDot /> : null}
-                </span>
-              </span>
-            ))}
-          </div>
+    <Stage uid={uid} status="Order #7741 · update">
+      <div className="flex items-center">
+        {/* trigger: an order status change */}
+        <div className="flex w-[5.5rem] shrink-0 flex-col items-center gap-1 text-center">
+          <span className="flex size-11 items-center justify-center rounded-2xl border border-border bg-background text-primary shadow-sm">
+            <ShoppingBag className="size-5" aria-hidden />
+          </span>
+          <span className="text-[9px] leading-tight font-semibold">Order shipped</span>
+          <span className="text-[7px] leading-tight text-muted-foreground">store event</span>
         </div>
 
-        {/* quiet support: what SipLink is doing behind the message */}
-        <div className="flex flex-col gap-2">
-          {[
-            { icon: MessageSquare, label: "Business SMS", note: "Auto-sent on each status" },
-            { icon: Store, label: "Per-store numbers", note: "A line for every branch" },
-            { icon: Headset, label: "Reply routes to staff", note: "Two-way to the store" },
-          ].map(({ icon: Icon, label, note }) => (
-            <div key={label} className="flex w-[9.5rem] items-start gap-2 rounded-lg border border-border bg-background px-2.5 py-2 shadow-sm">
-              <Icon className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden />
-              <span className="leading-tight">
-                <span className="block text-[9px] font-semibold">{label}</span>
-                <span className="block text-[8px] text-muted-foreground">{note}</span>
+        <Wire label="event" />
+
+        <SipLinkActor
+          doing={[
+            { icon: MessageSquare, label: "Sends SMS" },
+            { icon: Store, label: "Store number" },
+          ]}
+          detail="reply routes to staff"
+        />
+
+        <Wire label="sms" mirror />
+
+        {/* outcome: the customer's phone receives the text */}
+        <div className="w-[8.5rem] shrink-0 rounded-[1.3rem] border-[3px] border-foreground/80 bg-background p-1.5 shadow-md">
+          <div className="mb-1 flex items-center justify-between px-1">
+            <span className="font-mono text-[6px] font-semibold tabular-nums">9:41</span>
+            <span className="h-0.5 w-5 rounded-full bg-foreground/20" />
+            <span className="size-1 rounded-full border border-foreground/40" />
+          </div>
+          <div className="flex items-center gap-1 rounded-t-md bg-primary/[0.06] px-1.5 py-1">
+            <span className="flex size-4 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <Store className="size-2" aria-hidden />
+            </span>
+            <span className="min-w-0 leading-none">
+              <span className="block text-[7px] font-semibold">Northgate Store</span>
+              <span className="block font-mono text-[5px] text-muted-foreground">+1 415 ···· 04</span>
+            </span>
+          </div>
+          <div className="flex flex-col gap-1 rounded-b-md bg-muted/30 px-1.5 py-1.5">
+            <span className="max-w-[92%] self-start rounded-lg rounded-bl-sm bg-background px-1.5 py-1 text-[7px] leading-snug shadow-sm">
+              Order #7741 confirmed
+            </span>
+            <span className="flex max-w-[95%] flex-col self-start">
+              <span className="rounded-lg rounded-bl-sm bg-primary px-1.5 py-1 text-[7px] leading-snug text-primary-foreground shadow-sm">
+                Out for delivery — arriving 2pm
               </span>
-            </div>
-          ))}
+              <span className="mt-0.5 flex items-center gap-1 pl-1">
+                <span className="font-mono text-[5px] text-muted-foreground tabular-nums">13:15</span>
+                <LiveDot />
+              </span>
+            </span>
+          </div>
         </div>
       </div>
     </Stage>
@@ -502,57 +558,56 @@ function Hospitality({ uid }: { uid: string }) {
 }
 
 /* ============================================================ 7. logistics
-   TRACKING TIMELINE — the inventive concept: a shipment moving through the
-   comms checkpoints a customer actually experiences (picked up → in transit →
-   SMS'd → arriving). Communication IS the tracking events, not a road on a
-   map. A progress spine with stamped, timed nodes; the current step is live.
+   DISPATCH THROUGH SIPLINK — a delivery event ("out for delivery") arrives at
+   the SipLink actor, which does two things at once: texts the customer the
+   update and connects the driver's call. SipLink is the dispatcher in the
+   middle, not a passive tracking list.
    ============================================================================ */
 function Logistics({ uid }: { uid: string }) {
-  const steps = [
-    { icon: Warehouse, label: "Picked up", time: "09:02", done: true },
-    { icon: Truck, label: "In transit", time: "11:40", done: true },
-    { icon: MessageSquare, label: "SMS to customer", time: "13:15", live: true },
-    { icon: Navigation, label: "Arriving · ETA 14:20", time: "", done: false },
-  ];
   return (
-    <Stage uid={uid} status="Shipment #7741 · live">
-      <Window icon={MapPin} title="Tracking · route 7">
-        <div className="relative py-3 pr-3 pl-4">
-          {/* progress spine */}
-          <span aria-hidden className="absolute top-6 bottom-6 left-[1.65rem] w-0.5 bg-primary/20" />
-          <span aria-hidden className="absolute top-6 left-[1.65rem] h-[52%] w-0.5 bg-primary" />
-          <div className="flex flex-col gap-2.5">
-            {steps.map(({ icon: Icon, label, time, done, live }) => (
-              <div key={label} className="relative flex items-center gap-3">
-                <span
-                  className={cn(
-                    "relative z-10 flex size-7 shrink-0 items-center justify-center rounded-full border-2 shadow-sm",
-                    live
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : done
-                        ? "border-primary bg-background text-primary"
-                        : "border-dashed border-border bg-background text-muted-foreground",
-                  )}
-                >
-                  <Icon className="size-3.5" aria-hidden />
-                  {live ? (
-                    <span className="absolute -inset-1 -z-10 animate-ping rounded-full bg-primary/40 motion-reduce:animate-none" />
-                  ) : null}
-                </span>
-                <span
-                  className={cn(
-                    "flex flex-1 items-center justify-between rounded-lg border px-2.5 py-1.5",
-                    live ? "border-primary bg-primary/[0.04]" : "border-border bg-background",
-                  )}
-                >
-                  <span className={cn("text-[10px] font-semibold", !done && !live && "text-muted-foreground")}>{label}</span>
-                  {time ? <span className="font-mono text-[8px] text-muted-foreground tabular-nums">{time}</span> : null}
-                </span>
-              </div>
-            ))}
+    <Stage uid={uid} status="Dispatch · shipment #7741">
+      <div className="flex items-center">
+        {/* the trigger: a delivery event from the depot */}
+        <div className="flex w-[5.5rem] shrink-0 flex-col items-center gap-1 text-center">
+          <span className="flex size-11 items-center justify-center rounded-2xl border border-border bg-background text-primary shadow-sm">
+            <Warehouse className="size-5" aria-hidden />
+          </span>
+          <span className="text-[9px] leading-tight font-semibold">Out for delivery</span>
+          <span className="text-[7px] leading-tight text-muted-foreground">event from depot</span>
+        </div>
+
+        <Wire label="trigger" />
+
+        <SipLinkActor
+          doing={[
+            { icon: MessageSquare, label: "Texts customer" },
+            { icon: PhoneCall, label: "Connects driver" },
+          ]}
+          detail="one platform"
+        />
+
+        {/* two outcomes SipLink produces, stacked */}
+        <div className="flex w-8 shrink-0 flex-col items-center gap-4" aria-hidden>
+          <svg viewBox="0 0 100 24" preserveAspectRatio="none" className="h-5 w-full" role="presentation"><path d="M2 18 C 40 18, 60 6, 98 6" className="flow-path stroke-primary" strokeWidth="2.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" fill="none" /></svg>
+          <svg viewBox="0 0 100 24" preserveAspectRatio="none" className="h-5 w-full" role="presentation"><path d="M2 6 C 40 6, 60 18, 98 18" className="flow-path stroke-primary" strokeWidth="2.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" fill="none" /></svg>
+        </div>
+        <div className="flex shrink-0 flex-col gap-2.5">
+          <div className="flex w-[7.5rem] items-center gap-2 rounded-lg border border-primary bg-primary/[0.04] px-2.5 py-2 shadow-sm">
+            <MessageSquare className="size-3.5 shrink-0 text-primary" aria-hidden />
+            <span className="leading-tight">
+              <span className="block text-[9px] font-semibold">Customer</span>
+              <span className="block text-[7px] text-muted-foreground">SMS · ETA 14:20</span>
+            </span>
+          </div>
+          <div className="flex w-[7.5rem] items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-2 shadow-sm">
+            <Truck className="size-3.5 shrink-0 text-primary" aria-hidden />
+            <span className="leading-tight">
+              <span className="block text-[9px] font-semibold">Driver</span>
+              <span className="block text-[7px] text-muted-foreground">Call connected</span>
+            </span>
           </div>
         </div>
-      </Window>
+      </div>
     </Stage>
   );
 }
