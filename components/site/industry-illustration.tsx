@@ -1,16 +1,14 @@
 import {
   Ambulance,
-  ArrowRight,
+  ArrowDown,
   Banknote,
   Bed,
   BellRing,
   Boxes,
   Building2,
-  CalendarClock,
-  Cloud,
   Code2,
-  Factory,
   FileAudio,
+  FileText,
   Gauge,
   GraduationCap,
   Headset,
@@ -19,30 +17,38 @@ import {
   MapPin,
   MessageSquare,
   Navigation,
+  PhoneIncoming,
+  Play,
   RadioTower,
   Router,
+  ScrollText,
+  ServerCog,
   ShieldCheck,
   ShoppingBag,
   Stethoscope,
+  Store,
   Truck,
   UserRound,
   Utensils,
   Warehouse,
+  Workflow,
   type LucideIcon,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 /**
- * Illustrations for the industry pages — one scene per sector, and every
- * scene a different KIND of picture, not one composition with the labels
- * swapped. A call-centre reads as a queue wallboard; healthcare as a patient
- * record behind a lock; finance as a recorded waveform; logistics as a route
- * map; and so on. Built from the same visual language as ProductIllustration
- * — labelled cards over a faint dot field, a live status chip, theme tokens
- * and lucide-react only, so both themes work and nothing extra is downloaded.
+ * Hero illustrations for the industry pages.
  *
- * Keyed by slug; a missing scene renders nothing rather than a stand-in.
+ * Each sector gets a genuinely DIFFERENT composition — a queue board, a
+ * recorded-call waveform, an SMS phone thread, a room-extension grid, a route
+ * map, a code window, a ticket board, a site-network map, a capacity meter, a
+ * sealed record, a routing fan — not one flow diagram with the labels swapped.
+ * Built in the same craft as the product illustrations: labelled icon cards
+ * over a faint dot field, theme tokens only, one animated stroke via
+ * `.flow-path` (respects reduced motion). Every scene shares one content
+ * height so all 11 fill their panel identically. Numbers are obvious
+ * placeholders, never fabricated metrics.
  */
 type Props = {
   slug: string;
@@ -65,32 +71,42 @@ function StatusPill({ text }: { text: string }) {
   );
 }
 
+function LiveDot() {
+  return (
+    <span className="relative flex size-1.5">
+      <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary/60 motion-reduce:animate-none" />
+      <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
+    </span>
+  );
+}
+
 function DotField({ uid }: { uid: string }) {
   return (
     <svg
-      viewBox="0 0 400 180"
+      viewBox="0 0 400 200"
       preserveAspectRatio="none"
       role="presentation"
       aria-hidden
-      className="size-full"
+      className="absolute inset-0 size-full"
     >
       <defs>
-        <pattern id={`id-${uid}`} width="10" height="10" patternUnits="userSpaceOnUse">
-          <circle cx="2" cy="2" r="1.6" className="fill-primary/30" />
+        <pattern id={`id-${uid}`} width="11" height="11" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1.5" className="fill-primary/25" />
         </pattern>
-        <radialGradient id={`idf-${uid}`} cx="50%" cy="50%" r="58%">
+        <radialGradient id={`idf-${uid}`} cx="50%" cy="50%" r="62%">
           <stop offset="0%" stopColor="white" stopOpacity="0.85" />
           <stop offset="100%" stopColor="white" stopOpacity="0" />
         </radialGradient>
         <mask id={`idm-${uid}`}>
-          <rect width="400" height="180" fill={`url(#idf-${uid})`} />
+          <rect width="400" height="200" fill={`url(#idf-${uid})`} />
         </mask>
       </defs>
-      <rect width="400" height="180" fill={`url(#id-${uid})`} mask={`url(#idm-${uid})`} />
+      <rect width="400" height="200" fill={`url(#id-${uid})`} mask={`url(#idm-${uid})`} />
     </svg>
   );
 }
 
+/** Scene frame: dot field, centred status pill, fixed-height content well. */
 function Stage({
   uid,
   status,
@@ -101,31 +117,33 @@ function Stage({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative isolate">
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-8 bottom-0 -z-10">
-        <DotField uid={uid} />
-      </div>
-      <div className="flex justify-center pb-4">
+    <div className="relative isolate w-full">
+      <DotField uid={uid} />
+      <div className="relative flex justify-center pt-1 pb-3">
         <StatusPill text={status} />
       </div>
-      {children}
+      <div className="relative flex min-h-[12rem] flex-col justify-center">
+        {children}
+      </div>
     </div>
   );
 }
 
-/** A titled window frame with mac-style dots — used by the panel-like scenes. */
+/** Titled window frame (mac dots). Full width by default. */
 function Window({
   icon: Icon,
   title,
+  className,
   children,
 }: {
   icon?: LucideIcon;
   title: string;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-background shadow-sm">
-      <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+    <div className={cn("w-full rounded-xl border border-border bg-background shadow-sm", className)}>
+      <div className="flex items-center gap-2 border-b border-border px-3.5 py-2.5">
         {Icon ? (
           <span className="flex size-5 items-center justify-center rounded bg-primary/10 text-primary">
             <Icon className="size-3" aria-hidden />
@@ -133,30 +151,21 @@ function Window({
         ) : (
           <span className="flex gap-1">
             {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                className={cn(
-                  "size-1.5 rounded-full",
-                  i === 0 ? "bg-primary" : "bg-muted-foreground/25",
-                )}
-              />
+              <span key={i} className={cn("size-1.5 rounded-full", i === 0 ? "bg-primary" : "bg-muted-foreground/25")} />
             ))}
           </span>
         )}
-        <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
-          {title}
-        </span>
+        <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">{title}</span>
       </div>
       {children}
     </div>
   );
 }
 
-/* ================================================================ 1. call-centers
-   A live queue wallboard: callers holding in line (with wait times) on the
-   left, the routing verb in the middle, a grid of agent seats on the right.
+/* ============================================================ 1. call-centers
+   QUEUE BOARD — numbered callers waiting with hold times → agent status column.
    ============================================================================ */
-function CallCentersScene({ uid }: { uid: string }) {
+function CallCenters({ uid }: { uid: string }) {
   const waiting = [
     { n: "+1 415 ···· 210", t: "0:42" },
     { n: "+1 312 ···· 884", t: "1:15" },
@@ -172,9 +181,7 @@ function CallCentersScene({ uid }: { uid: string }) {
     <Stage uid={uid} status="12 in queue · 4 agents">
       <div className="flex items-stretch gap-3">
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-          <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
-            In queue
-          </span>
+          <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">In queue</span>
           <div className="rounded-xl border border-dashed border-primary/50 bg-primary/[0.04] p-2">
             <div className="flex flex-col gap-1">
               {waiting.map(({ n, t }, i) => (
@@ -183,47 +190,26 @@ function CallCentersScene({ uid }: { uid: string }) {
                   style={{ "--cycle-delay": `${i * 0.6}s` } as React.CSSProperties}
                   className="queue-row flex items-center gap-2 rounded-md border border-border bg-background px-2 py-1"
                 >
-                  <span className="flex size-4 shrink-0 items-center justify-center rounded bg-primary/10 font-mono text-[8px] font-semibold text-primary tabular-nums">
-                    {i + 1}
-                  </span>
-                  <span className="min-w-0 flex-1 truncate font-mono text-[9px] tabular-nums">
-                    {n}
-                  </span>
-                  <span className="shrink-0 font-mono text-[8px] text-muted-foreground tabular-nums">
-                    {t}
-                  </span>
+                  <span className="flex size-4 shrink-0 items-center justify-center rounded bg-primary/10 font-mono text-[8px] font-semibold text-primary tabular-nums">{i + 1}</span>
+                  <span className="min-w-0 flex-1 truncate font-mono text-[9px] tabular-nums">{n}</span>
+                  <span className="shrink-0 font-mono text-[8px] text-muted-foreground tabular-nums">{t}</span>
                 </div>
               ))}
             </div>
           </div>
-          <span className="text-center font-mono text-[9px] font-semibold tracking-[0.16em] text-primary uppercase">
-            ACD routing
-          </span>
+          <span className="text-center font-mono text-[8px] font-semibold tracking-[0.16em] text-primary uppercase">Routed by skill</span>
         </div>
-
-        <div className="flex shrink-0 items-center" aria-hidden>
-          <ArrowRight className="size-4 text-primary" />
-        </div>
-
-        <div className="grid shrink-0 grid-cols-2 content-center gap-1.5">
+        <div className="flex flex-col justify-center gap-1.5">
           {agents.map(({ name, free }) => (
-            <div
-              key={name}
-              className="flex w-[4.6rem] items-center gap-1.5 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
-            >
-              <span
-                className={cn(
-                  "flex size-5 shrink-0 items-center justify-center rounded-md",
-                  free ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground",
-                )}
-              >
-                <Headset className="size-2.5" aria-hidden />
+            <div key={name} className="flex w-[6.2rem] items-center gap-1.5 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm">
+              <span className={cn("flex size-6 shrink-0 items-center justify-center rounded-md", free ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground")}>
+                <Headset className="size-3" aria-hidden />
               </span>
               <span className="min-w-0">
                 <span className="block text-[9px] leading-tight font-semibold">{name}</span>
                 <span className="flex items-center gap-1">
                   <span className={cn("size-1.5 rounded-full", free ? "bg-primary" : "bg-muted-foreground/40")} />
-                  <span className="text-[7px] text-muted-foreground">{free ? "Free" : "Busy"}</span>
+                  <span className="text-[7px] text-muted-foreground">{free ? "Available" : "On a call"}</span>
                 </span>
               </span>
             </div>
@@ -234,74 +220,85 @@ function CallCentersScene({ uid }: { uid: string }) {
   );
 }
 
-/* ================================================================ 2. healthcare
-   A patient appointment card sealed behind a HIPAA lock, with the callback /
-   reminder that goes out. The lock is the point.
+/* ============================================================ 2. healthcare
+   VITALS MONITOR — the inventive concept: communication drawn as a vital sign.
+   A patient monitor whose ECG trace IS the call path; each peak carries a
+   contact on the line (patient → clinic → pharmacy), a BPM-style readout says
+   the line is "in rhythm" and secure. Built in the product card idiom, not
+   hand-drawn art: a titled monitor window, an SVG trace, node chips on the
+   peaks, and a vitals sidebar.
    ============================================================================ */
-function HealthcareScene({ uid }: { uid: string }) {
+function Healthcare({ uid }: { uid: string }) {
+  // ECG-style trace across a 300×90 field. Peaks sit under the three contacts.
+  const trace =
+    "M4 60 H40 l6 -4 8 8 6 -40 7 66 6 -30 5 12 H108 l6 -4 8 8 6 -40 7 66 6 -30 5 12 H212 l6 -4 8 8 6 -40 7 66 6 -30 5 12 H296";
+  const nodes = [
+    { icon: UserRound, label: "Patient", x: 20 },
+    { icon: Stethoscope, label: "Clinic", x: 55, live: true },
+    { icon: HeartPulse, label: "Pharmacy", x: 88 },
+  ];
   return (
     <Stage uid={uid} status="HIPAA-compliant line">
-      <div className="flex items-center gap-3">
-        <Window icon={HeartPulse} title="Patient record">
-          <div className="space-y-2 p-3">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <UserRound className="size-3.5" aria-hidden />
-              </span>
-              <span className="min-w-0">
-                <span className="block h-2 w-20 rounded-full bg-muted-foreground/30" />
-                <span className="mt-1 block h-1.5 w-12 rounded-full bg-muted-foreground/20" />
-              </span>
+      <Window icon={HeartPulse} title="Care line · in rhythm">
+        <div className="grid gap-3 p-3 sm:grid-cols-[minmax(0,1fr)_auto]">
+          {/* the monitor: contacts riding an ECG trace that never flatlines */}
+          <div className="relative">
+            <div className="flex items-center justify-between px-1">
+              {nodes.map(({ icon: Icon, label, live }) => (
+                <span key={label} className="flex flex-col items-center gap-1">
+                  <span
+                    className={cn(
+                      "flex size-8 items-center justify-center rounded-full border shadow-sm",
+                      live
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border bg-background text-primary",
+                    )}
+                  >
+                    <Icon className="size-4" aria-hidden />
+                  </span>
+                  <span className="text-[8px] leading-none font-medium text-muted-foreground">{label}</span>
+                </span>
+              ))}
             </div>
-            <div className="flex items-center gap-2 rounded-lg border border-border px-2 py-1.5">
-              <CalendarClock className="size-3.5 shrink-0 text-primary" aria-hidden />
-              <span className="text-[9px] leading-tight">
-                <span className="block font-semibold">Appt · Thu 10:30</span>
-                <span className="block text-muted-foreground">Reminder queued</span>
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-[8px] text-muted-foreground">
-              <Stethoscope className="size-3 text-primary" aria-hidden /> Clinic
-              <FileAudio className="ml-1 size-3 text-primary" aria-hidden /> Secure fax
-            </div>
+            <svg viewBox="0 0 300 90" preserveAspectRatio="none" role="presentation" aria-hidden className="mt-1 h-14 w-full">
+              <path d={trace} fill="none" vectorEffect="non-scaling-stroke" className="stroke-primary/20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d={trace} fill="none" vectorEffect="non-scaling-stroke" className="flow-path stroke-primary" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
-        </Window>
 
-        <div className="flex shrink-0 flex-col items-center gap-2">
-          <span className="relative flex size-14 items-center justify-center rounded-2xl border-2 border-primary bg-background text-primary shadow-sm">
-            <ShieldCheck className="size-6" aria-hidden />
-            <span className="absolute -inset-2 -z-10 rounded-3xl border border-dashed border-primary/30" />
-          </span>
-          <span className="text-center font-mono text-[8px] font-semibold tracking-widest text-primary uppercase">
-            Encrypted
-            <br />
-            end to end
-          </span>
+          {/* vitals sidebar — the "reading" for the line */}
+          <dl className="flex shrink-0 flex-col justify-center gap-2 sm:w-[6.5rem]">
+            <div className="rounded-lg border border-primary/60 bg-primary/[0.05] px-2.5 py-1.5">
+              <dt className="text-[8px] leading-none tracking-widest text-muted-foreground uppercase">Line</dt>
+              <dd className="mt-0.5 flex items-baseline gap-1">
+                <span className="font-mono text-base leading-none font-semibold text-primary tabular-nums">72</span>
+                <span className="text-[8px] text-muted-foreground">bpm · steady</span>
+              </dd>
+            </div>
+            {[
+              { icon: ShieldCheck, label: "Encrypted" },
+              { icon: FileAudio, label: "Voice · fax" },
+              { icon: Ambulance, label: "Urgent line" },
+            ].map(({ icon: Icon, label }) => (
+              <div key={label} className="flex items-center gap-1.5">
+                <Icon className="size-3 shrink-0 text-primary" aria-hidden />
+                <span className="text-[9px] font-medium">{label}</span>
+              </div>
+            ))}
+          </dl>
         </div>
-
-        <div className="flex shrink-0 flex-col items-center gap-1 text-center">
-          <span className="flex size-9 items-center justify-center rounded-xl border border-border bg-background text-primary shadow-sm">
-            <Ambulance className="size-4" aria-hidden />
-          </span>
-          <span className="text-[8px] leading-tight text-muted-foreground">Urgent line</span>
-        </div>
-      </div>
+      </Window>
     </Stage>
   );
 }
 
-/* ================================================================ 3. banking-finance
-   A recorded call: the waveform with a playhead, and the compliance readouts
-   beside it. Accountability you can replay.
+/* ============================================================ 3. banking-finance
+   WAVEFORM — a recorded call with a playhead and compliance readouts.
    ============================================================================ */
-function BankingFinanceScene({ uid }: { uid: string }) {
-  const wave = [30, 52, 40, 68, 88, 60, 44, 74, 96, 66, 48, 80, 58, 38, 62, 46, 30, 54];
+function BankingFinance({ uid }: { uid: string }) {
+  const wave = [30, 52, 40, 68, 88, 60, 44, 74, 96, 66, 48, 80, 58, 38, 62, 46, 30, 54, 42, 70];
   const playhead = 0.55;
   const played = Math.round(wave.length * playhead);
-  const readouts = [
-    { icon: ShieldCheck, label: "Retention", value: "Locked" },
-    { icon: FileAudio, label: "Transcript", value: "Ready" },
-  ];
   return (
     <Stage uid={uid} status="Recorded for compliance">
       <Window icon={Banknote} title="Call · acct ···· 4471">
@@ -309,21 +306,14 @@ function BankingFinanceScene({ uid }: { uid: string }) {
           <div>
             <div className="relative flex h-16 items-center gap-[3px]">
               {wave.map((h, i) => (
-                <span
-                  key={i}
-                  className={cn("flex-1 rounded-full", i < played ? "bg-primary" : "bg-primary/20")}
-                  style={{ height: `${h}%` }}
-                />
+                <span key={i} className={cn("flex-1 rounded-full", i < played ? "bg-primary" : "bg-primary/20")} style={{ height: `${h}%` }} />
               ))}
-              <span
-                aria-hidden
-                className="absolute inset-y-0 w-px bg-foreground/50"
-                style={{ left: `${playhead * 100}%` }}
-              >
+              <span aria-hidden className="absolute inset-y-0 w-px bg-foreground/50" style={{ left: `${playhead * 100}%` }}>
                 <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-foreground/70" />
               </span>
             </div>
             <div className="mt-3 flex items-center gap-2">
+              <span className="flex size-5 items-center justify-center rounded-full bg-primary text-primary-foreground"><Play className="size-2 fill-current" aria-hidden /></span>
               <span className="font-mono text-[9px] text-muted-foreground tabular-nums">02:12</span>
               <span className="relative h-0.5 flex-1 rounded-full bg-border">
                 <span className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: `${playhead * 100}%` }} />
@@ -332,11 +322,13 @@ function BankingFinanceScene({ uid }: { uid: string }) {
             </div>
           </div>
           <dl className="flex shrink-0 flex-col justify-center gap-2.5 sm:w-28">
-            {readouts.map(({ icon: Icon, label, value }) => (
+            {[
+              { icon: ShieldCheck, label: "Retention", value: "Locked" },
+              { icon: ScrollText, label: "Transcript", value: "Ready" },
+              { icon: Gauge, label: "Analytics", value: "Live" },
+            ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-center gap-2">
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                  <Icon className="size-3.5" aria-hidden />
-                </span>
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary"><Icon className="size-3.5" aria-hidden /></span>
                 <span className="min-w-0">
                   <dt className="text-[9px] leading-tight text-muted-foreground">{label}</dt>
                   <dd className="text-[11px] leading-tight font-semibold">{value}</dd>
@@ -350,12 +342,11 @@ function BankingFinanceScene({ uid }: { uid: string }) {
   );
 }
 
-/* ================================================================ 4. education
-   A campus directory tree: one line branching down into the offices a
-   student, parent or staff member actually needs.
+/* ============================================================ 4. education
+   ROUTING FAN — one campus line fanning through stretch-SVG rails to desks.
    ============================================================================ */
-function EducationScene({ uid }: { uid: string }) {
-  const branches = [
+function Education({ uid }: { uid: string }) {
+  const desks = [
     { icon: GraduationCap, label: "Admissions", note: "Enquiries & intake" },
     { icon: Headset, label: "Student support", note: "Help & guidance", live: true },
     { icon: Banknote, label: "Fees office", note: "Billing desk" },
@@ -363,48 +354,34 @@ function EducationScene({ uid }: { uid: string }) {
   ];
   return (
     <Stage uid={uid} status="Routed to the right desk">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center">
         <div className="flex w-24 shrink-0 flex-col items-center gap-2 text-center">
           <span className="flex size-11 items-center justify-center rounded-2xl border border-primary/40 bg-background text-primary shadow-sm">
             <GraduationCap className="size-5" aria-hidden />
           </span>
-          <span className="text-[9px] leading-tight text-muted-foreground">
-            Campus line
-            <br />
-            students · parents
-          </span>
+          <span className="text-[9px] leading-tight text-muted-foreground">Campus line<br />students · parents</span>
         </div>
-
-        {/* directory tree: a vertical spine with elbows to each branch */}
-        <div className="relative w-8 shrink-0 self-stretch" aria-hidden>
-          <span className="absolute top-[12%] bottom-[12%] left-0 w-px bg-primary/30" />
-          {branches.map((_, i) => {
-            const top = ((i + 0.5) / branches.length) * 100;
-            return (
-              <span
-                key={i}
-                className={cn("absolute left-0 h-px", branches[i].live ? "bg-primary" : "bg-primary/30")}
-                style={{ top: `${top}%`, width: "100%" }}
-              />
-            );
-          })}
+        <div className="relative w-14 shrink-0 self-stretch" aria-hidden>
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="size-full" role="presentation">
+            {desks.map((b, i) => {
+              const y = ((i + 0.5) / desks.length) * 100;
+              const d = `M0 50 C 45 50, 55 ${y}, 100 ${y}`;
+              return (
+                <g key={b.label}>
+                  <path d={d} fill="none" vectorEffect="non-scaling-stroke" strokeWidth={b.live ? 2 : 1.25} className={b.live ? "stroke-primary/70" : "stroke-primary/25"} />
+                  {b.live ? <path d={d} fill="none" vectorEffect="non-scaling-stroke" strokeWidth="2.5" strokeLinecap="round" className="flow-path stroke-primary" /> : null}
+                </g>
+              );
+            })}
+          </svg>
         </div>
-
-        <div className="flex shrink-0 flex-col gap-1.5">
-          {branches.map(({ icon: Icon, label, note, live }) => (
-            <div
-              key={label}
-              className={cn(
-                "flex w-40 items-center gap-2.5 rounded-lg border bg-background px-3 py-2 shadow-sm",
-                live ? "border-primary" : "border-border",
-              )}
-            >
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <Icon className="size-3.5" aria-hidden />
-              </span>
+        <div className="flex flex-1 flex-col gap-2">
+          {desks.map(({ icon: Icon, label, note, live }) => (
+            <div key={label} className={cn("flex items-center gap-2.5 rounded-lg border bg-background px-3 py-2 shadow-sm", live ? "border-primary" : "border-border")}>
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary"><Icon className="size-3.5" aria-hidden /></span>
               <span className="min-w-0">
-                <span className="block text-[11px] leading-tight font-semibold">{label}</span>
-                <span className="block text-[9px] leading-tight text-muted-foreground">{note}</span>
+                <span className="block text-[10px] leading-tight font-semibold">{label}</span>
+                <span className="block text-[8px] leading-tight text-muted-foreground">{note}</span>
               </span>
             </div>
           ))}
@@ -414,11 +391,10 @@ function EducationScene({ uid }: { uid: string }) {
   );
 }
 
-/* ================================================================ 5. retail
-   An order-status SMS thread on a phone, next to the store-hours card. The
-   channel a shopper actually sees.
+/* ============================================================ 5. retail
+   SMS THREAD — order-status chat on a phone, beside channel chips.
    ============================================================================ */
-function RetailScene({ uid }: { uid: string }) {
+function Retail({ uid }: { uid: string }) {
   const bubbles = [
     { them: true, text: "Order #7741 confirmed" },
     { them: true, text: "Packed — ships today" },
@@ -427,9 +403,8 @@ function RetailScene({ uid }: { uid: string }) {
   ];
   return (
     <Stage uid={uid} status="Order updates by SMS">
-      <div className="flex items-end justify-center gap-4">
-        {/* phone with the thread */}
-        <div className="w-[9.5rem] shrink-0 rounded-[1.4rem] border-2 border-border bg-background p-1.5 shadow-sm">
+      <div className="flex items-center justify-center gap-7">
+        <div className="w-[10.5rem] shrink-0 rounded-[1.4rem] border-2 border-border bg-background p-1.5 shadow-sm">
           <div className="rounded-[1rem] bg-muted/40 px-2 py-2">
             <div className="mb-1.5 flex items-center gap-1.5 px-1">
               <ShoppingBag className="size-3 text-primary" aria-hidden />
@@ -437,45 +412,35 @@ function RetailScene({ uid }: { uid: string }) {
             </div>
             <div className="flex flex-col gap-1">
               {bubbles.map(({ them, text }, i) => (
-                <span
-                  key={i}
-                  className={cn(
-                    "max-w-[85%] rounded-2xl px-2 py-1 text-[8px] leading-snug",
-                    them
-                      ? "self-start rounded-bl-sm bg-background text-foreground shadow-sm"
-                      : "self-end rounded-br-sm bg-primary text-primary-foreground",
-                  )}
-                >
-                  {text}
-                </span>
+                <span key={i} className={cn("max-w-[85%] rounded-2xl px-2 py-1 text-[8px] leading-snug", them ? "self-start rounded-bl-sm bg-background text-foreground shadow-sm" : "self-end rounded-br-sm bg-primary text-primary-foreground")}>{text}</span>
               ))}
             </div>
           </div>
         </div>
-
-        <div className="mb-4 flex flex-col gap-2">
-          <div className="flex w-32 items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 shadow-sm">
-            <MessageSquare className="size-3.5 shrink-0 text-primary" aria-hidden />
-            <span className="text-[9px] font-semibold">Business SMS</span>
-          </div>
-          <div className="flex w-32 items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 shadow-sm">
-            <Headset className="size-3.5 shrink-0 text-primary" aria-hidden />
-            <span className="text-[9px] leading-tight">
-              <span className="block font-semibold">Store support</span>
-              <span className="block text-muted-foreground">Per-branch line</span>
-            </span>
-          </div>
+        <div className="flex flex-col gap-2.5">
+          {[
+            { icon: MessageSquare, label: "Business SMS", note: "Order updates" },
+            { icon: Store, label: "Per-store numbers", note: "Every branch" },
+            { icon: Headset, label: "Store support", note: "Routed to staff" },
+          ].map(({ icon: Icon, label, note }) => (
+            <div key={label} className="flex w-36 items-center gap-2.5 rounded-lg border border-border bg-background px-3 py-2.5 shadow-sm">
+              <Icon className="size-4 shrink-0 text-primary" aria-hidden />
+              <span className="text-[10px] leading-tight">
+                <span className="block font-semibold">{label}</span>
+                <span className="block text-muted-foreground">{note}</span>
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </Stage>
   );
 }
 
-/* ================================================================ 6. hospitality
-   A front-desk extension board: room extensions lighting up with requests.
-   A PBX the way a hotel actually uses it.
+/* ============================================================ 6. hospitality
+   ROOM GRID — a front-desk board of room extensions, one ringing.
    ============================================================================ */
-function HospitalityScene({ uid }: { uid: string }) {
+function Hospitality({ uid }: { uid: string }) {
   const rooms = [
     { ext: "204", req: "Housekeeping", icon: Bed, live: false },
     { ext: "318", req: "Room service", icon: Utensils, live: true },
@@ -487,30 +452,12 @@ function HospitalityScene({ uid }: { uid: string }) {
       <Window icon={BellRing} title="Front desk · extensions">
         <div className="grid grid-cols-2 gap-2 p-3">
           {rooms.map(({ ext, req, icon: Icon, live }) => (
-            <div
-              key={ext}
-              className={cn(
-                "flex items-center gap-2 rounded-lg border bg-background px-2.5 py-2",
-                live ? "border-primary shadow-sm" : "border-border",
-              )}
-            >
-              <span
-                className={cn(
-                  "flex size-7 shrink-0 items-center justify-center rounded-md",
-                  live ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary",
-                )}
-              >
-                <Icon className="size-3.5" aria-hidden />
-              </span>
+            <div key={ext} className={cn("flex items-center gap-2 rounded-lg border bg-background px-2.5 py-2.5", live ? "border-primary shadow-sm" : "border-border")}>
+              <span className={cn("flex size-7 shrink-0 items-center justify-center rounded-md", live ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary")}><Icon className="size-3.5" aria-hidden /></span>
               <span className="min-w-0">
                 <span className="flex items-center gap-1">
                   <span className="font-mono text-[10px] font-semibold tabular-nums">Rm {ext}</span>
-                  {live ? (
-                    <span className="relative flex size-1.5">
-                      <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary/60 motion-reduce:animate-none" />
-                      <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
-                    </span>
-                  ) : null}
+                  {live ? <LiveDot /> : null}
                 </span>
                 <span className="block text-[8px] leading-tight text-muted-foreground">{req}</span>
               </span>
@@ -522,52 +469,66 @@ function HospitalityScene({ uid }: { uid: string }) {
   );
 }
 
-/* ================================================================ 7. logistics
-   A live route map: dispatch at the centre, stops along a road, a vehicle en
-   route, and the ETA that texts the customer.
+/* ============================================================ 7. logistics
+   TRACKING TIMELINE — the inventive concept: a shipment moving through the
+   comms checkpoints a customer actually experiences (picked up → in transit →
+   SMS'd → arriving). Communication IS the tracking events, not a road on a
+   map. A progress spine with stamped, timed nodes; the current step is live.
    ============================================================================ */
-function LogisticsScene({ uid }: { uid: string }) {
+function Logistics({ uid }: { uid: string }) {
+  const steps = [
+    { icon: Warehouse, label: "Picked up", time: "09:02", done: true },
+    { icon: Truck, label: "In transit", time: "11:40", done: true },
+    { icon: MessageSquare, label: "SMS to customer", time: "13:15", live: true },
+    { icon: Navigation, label: "Arriving · ETA 14:20", time: "", done: false },
+  ];
   return (
-    <Stage uid={uid} status="Drivers & dispatch live">
-      <Window icon={MapPin} title="Dispatch · route 7">
-        <div className="relative h-[8.5rem] overflow-hidden p-3">
-          {/* faint road grid */}
-          <svg viewBox="0 0 320 130" className="absolute inset-3 h-auto w-[calc(100%-1.5rem)]" role="presentation" aria-hidden>
-            <path d="M10 96 C 90 96, 90 40, 170 40 S 250 96, 310 70" fill="none" className="stroke-primary/25" strokeWidth="2.5" strokeDasharray="1 6" strokeLinecap="round" />
-            <path d="M10 96 C 90 96, 90 40, 170 40" fill="none" className="flow-path stroke-primary" strokeWidth="2.5" strokeLinecap="round" />
-          </svg>
-          {/* warehouse origin */}
-          <span className="absolute bottom-6 left-3 flex flex-col items-center gap-0.5">
-            <span className="flex size-8 items-center justify-center rounded-lg border border-border bg-background text-primary shadow-sm">
-              <Warehouse className="size-4" aria-hidden />
-            </span>
-            <span className="text-[7px] text-muted-foreground">Depot</span>
-          </span>
-          {/* vehicle mid-route */}
-          <span className="absolute top-[26%] left-[46%] flex flex-col items-center gap-0.5">
-            <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm">
-              <Truck className="size-4" aria-hidden />
-            </span>
-          </span>
-          {/* destination + ETA text */}
-          <span className="absolute top-[42%] right-3 flex items-center gap-1.5 rounded-lg border border-primary bg-background px-2 py-1 shadow-sm">
-            <Navigation className="size-3 text-primary" aria-hidden />
-            <span className="text-[8px] leading-tight">
-              <span className="block font-semibold">ETA 14:20</span>
-              <span className="block text-muted-foreground">SMS sent</span>
-            </span>
-          </span>
+    <Stage uid={uid} status="Shipment #7741 · live">
+      <Window icon={MapPin} title="Tracking · route 7">
+        <div className="relative py-3 pr-3 pl-4">
+          {/* progress spine */}
+          <span aria-hidden className="absolute top-6 bottom-6 left-[1.65rem] w-0.5 bg-primary/20" />
+          <span aria-hidden className="absolute top-6 left-[1.65rem] h-[52%] w-0.5 bg-primary" />
+          <div className="flex flex-col gap-2.5">
+            {steps.map(({ icon: Icon, label, time, done, live }) => (
+              <div key={label} className="relative flex items-center gap-3">
+                <span
+                  className={cn(
+                    "relative z-10 flex size-7 shrink-0 items-center justify-center rounded-full border-2 shadow-sm",
+                    live
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : done
+                        ? "border-primary bg-background text-primary"
+                        : "border-dashed border-border bg-background text-muted-foreground",
+                  )}
+                >
+                  <Icon className="size-3.5" aria-hidden />
+                  {live ? (
+                    <span className="absolute -inset-1 -z-10 animate-ping rounded-full bg-primary/40 motion-reduce:animate-none" />
+                  ) : null}
+                </span>
+                <span
+                  className={cn(
+                    "flex flex-1 items-center justify-between rounded-lg border px-2.5 py-1.5",
+                    live ? "border-primary bg-primary/[0.04]" : "border-border bg-background",
+                  )}
+                >
+                  <span className={cn("text-[10px] font-semibold", !done && !live && "text-muted-foreground")}>{label}</span>
+                  {time ? <span className="font-mono text-[8px] text-muted-foreground tabular-nums">{time}</span> : null}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </Window>
     </Stage>
   );
 }
 
-/* ================================================================ 8. it-saas
-   Their code calling the SipLink SDK, the request out and the JSON-ish
-   response back — communication built into the product.
+/* ============================================================ 8. it-saas
+   CODE WINDOW — an SDK call, a response, and result chips.
    ============================================================================ */
-function ItSaasScene({ uid }: { uid: string }) {
+function ItSaas({ uid }: { uid: string }) {
   const lines = [
     { text: "import { siplink } from 'sdk'", accent: false },
     { text: "await siplink.calls.create({", accent: true },
@@ -578,82 +539,94 @@ function ItSaasScene({ uid }: { uid: string }) {
   return (
     <Stage uid={uid} status="Built into your product">
       <div className="flex items-center gap-3">
-        <div className="min-w-0 flex-1 overflow-hidden rounded-xl border border-border bg-background shadow-sm">
-          <div className="flex items-center gap-2 border-b border-border px-3 py-2">
-            <span className="flex size-5 items-center justify-center rounded bg-primary/10 text-primary">
-              <Code2 className="size-3" aria-hidden />
-            </span>
-            <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
-              your app
-            </span>
-          </div>
+        <Window icon={Code2} title="your app" className="min-w-0 flex-1">
           <div className="space-y-1 px-3 py-3 font-mono text-[10px] leading-relaxed">
             {lines.map((line, i) => (
               <div key={i} className="flex gap-2">
                 <span className="w-3 shrink-0 text-right text-muted-foreground/40 tabular-nums">{i + 1}</span>
-                <span className={cn("min-w-0 truncate", line.accent ? "text-primary" : "text-muted-foreground")}>
-                  {line.text}
-                </span>
+                <span className={cn("min-w-0 truncate", line.accent ? "text-primary" : "text-muted-foreground")}>{line.text}</span>
               </div>
             ))}
           </div>
-        </div>
-
+        </Window>
         <div className="flex w-12 shrink-0 flex-col items-center gap-1" aria-hidden>
-          <svg viewBox="0 0 40 10" className="w-9" role="presentation">
-            <path d="M0 5h30M26 1l5 4-5 4" fill="none" className="stroke-primary" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <svg viewBox="0 0 40 10" className="w-9" role="presentation"><path d="M0 5h30M26 1l5 4-5 4" fill="none" className="stroke-primary" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           <span className="font-mono text-[7px] tracking-widest text-primary uppercase">200 ok</span>
         </div>
-
-        <div className="flex shrink-0 flex-col items-center gap-1.5 text-center">
-          <span className="flex size-10 items-center justify-center rounded-2xl border border-primary/40 bg-background text-primary shadow-sm">
-            <Cloud className="size-5" aria-hidden />
-          </span>
-          <span className="text-[8px] leading-tight text-muted-foreground">
-            Voice · SMS
-            <br />
-            WebRTC
-          </span>
+        <div className="flex shrink-0 flex-col gap-1.5">
+          {[
+            { icon: UserRound, label: "End users" },
+            { icon: MessageSquare, label: "Notify" },
+            { icon: Code2, label: "WebRTC" },
+          ].map(({ icon: Icon, label }) => (
+            <div key={label} className="flex w-[5.4rem] items-center gap-1.5 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm">
+              <Icon className="size-3.5 shrink-0 text-primary" aria-hidden />
+              <span className="text-[9px] font-semibold">{label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </Stage>
   );
 }
 
-/* ================================================================ 9. government
-   A service-desk ticket queue on a licensed-network banner: "now serving",
-   numbered citizen tickets waiting.
+/* ============================================================ 9. government
+   HELPLINE THAT NEVER DROPS A CITIZEN — the inventive, comms-anchored concept:
+   one public helpline number, an IVR that routes each caller to the right
+   department lane, and an assurance that no one is dropped. The subject is the
+   call getting through (SipLink IVR + queues), set in civic services — not a
+   ticket machine.
    ============================================================================ */
-function GovernmentScene({ uid }: { uid: string }) {
-  const tickets = ["A-104", "A-105", "A-106", "A-107"];
+function Government({ uid }: { uid: string }) {
+  const lanes = [
+    { icon: FileText, label: "Records", live: false },
+    { icon: Headset, label: "Support", live: true },
+    { icon: Building2, label: "Departments", live: false },
+  ];
   return (
     <Stage uid={uid} status="DoT-licensed network">
-      <Window icon={Landmark} title="Citizen services">
-        <div className="p-3">
-          <div className="mb-2 flex items-center justify-between rounded-lg bg-primary px-3 py-2 text-primary-foreground">
-            <span className="text-[8px] font-medium tracking-widest uppercase opacity-80">Now serving</span>
-            <span className="font-mono text-lg font-semibold tabular-nums">A-103</span>
+      <Window icon={Landmark} title="Citizen helpline">
+        <div className="flex items-center gap-2 p-3">
+          {/* the single public line */}
+          <div className="flex w-[4.6rem] shrink-0 flex-col items-center gap-1 text-center">
+            <span className="flex size-10 items-center justify-center rounded-2xl border border-primary/50 bg-background text-primary shadow-sm">
+              <PhoneIncoming className="size-4" aria-hidden />
+            </span>
+            <span className="text-[8px] leading-tight font-semibold">Citizen call</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">Next</span>
-            <div className="flex flex-1 gap-1.5">
-              {tickets.map((t, i) => (
-                <span
-                  key={t}
-                  className={cn(
-                    "flex-1 rounded-md border py-1 text-center font-mono text-[9px] font-semibold tabular-nums",
-                    i === 0 ? "border-primary text-primary" : "border-border text-muted-foreground",
-                  )}
-                >
-                  {t}
-                </span>
-              ))}
+
+          {/* IVR splitter */}
+          <div className="relative h-[5.5rem] w-10 shrink-0" aria-hidden>
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="size-full" role="presentation">
+              {lanes.map((l, i) => {
+                const y = ((i + 0.5) / lanes.length) * 100;
+                const d = `M0 50 C 45 50, 55 ${y}, 100 ${y}`;
+                return (
+                  <g key={l.label}>
+                    <path d={d} fill="none" vectorEffect="non-scaling-stroke" strokeWidth={l.live ? 2 : 1.25} className={l.live ? "stroke-primary/70" : "stroke-primary/25"} />
+                    {l.live ? <path d={d} fill="none" vectorEffect="non-scaling-stroke" strokeWidth="2.5" strokeLinecap="round" className="flow-path stroke-primary" /> : null}
+                  </g>
+                );
+              })}
+            </svg>
+            <span className="absolute top-1/2 left-1/2 flex size-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-md border border-primary bg-background text-primary shadow-sm">
+              <Workflow className="size-2.5" aria-hidden />
+            </span>
+          </div>
+
+          {/* department lanes + the assurance */}
+          <div className="flex flex-1 flex-col gap-1.5">
+            {lanes.map(({ icon: Icon, label, live }) => (
+              <div key={label} className={cn("flex items-center gap-2 rounded-lg border bg-background px-2.5 py-1.5 shadow-sm", live ? "border-primary" : "border-border")}>
+                <Icon className={cn("size-3.5 shrink-0", live ? "text-primary" : "text-muted-foreground")} aria-hidden />
+                <span className="text-[9px] font-semibold">{label}</span>
+                {live ? <span className="ml-auto"><LiveDot /></span> : null}
+              </div>
+            ))}
+            <div className="mt-0.5 flex items-center gap-1.5 rounded-lg bg-primary/[0.06] px-2.5 py-1">
+              <ShieldCheck className="size-3 shrink-0 text-primary" aria-hidden />
+              <span className="text-[8px] font-medium">0 calls dropped · all logged</span>
             </div>
-          </div>
-          <div className="mt-2 flex items-center gap-3 text-[8px] text-muted-foreground">
-            <span className="flex items-center gap-1"><Headset className="size-3 text-primary" aria-hidden /> Service centre</span>
-            <span className="flex items-center gap-1"><Building2 className="size-3 text-primary" aria-hidden /> Right department</span>
           </div>
         </div>
       </Window>
@@ -661,101 +634,109 @@ function GovernmentScene({ uid }: { uid: string }) {
   );
 }
 
-/* ================================================================ 10. manufacturing
-   A multi-site network: HQ, plant and warehouse nodes joined over SIP into
-   one estate, suppliers hanging off the edge.
+/* ============================================================ 10. manufacturing
+   SITE NETWORK — HQ/plant/warehouse nodes wired to a central SIP hub, aligned
+   in a single 0–100 coordinate space so lines always meet nodes.
    ============================================================================ */
-function ManufacturingScene({ uid }: { uid: string }) {
+function Manufacturing({ uid }: { uid: string }) {
+  const hub = { x: 50, y: 50 };
   const sites = [
-    { icon: Building2, label: "HQ", x: 8, y: 20 },
-    { icon: Factory, label: "Plant", x: 62, y: 8 },
-    { icon: Warehouse, label: "Warehouse", x: 60, y: 66 },
+    { icon: Building2, label: "HQ", x: 15, y: 22, live: false },
+    { icon: ServerCog, label: "Plant", x: 84, y: 20, live: true },
+    { icon: Warehouse, label: "Warehouse", x: 82, y: 82, live: false },
+    { icon: Boxes, label: "Suppliers", x: 18, y: 82, live: false, dashed: true },
   ];
   return (
     <Stage uid={uid} status="Sites on one SIP network">
-      <div className="relative h-[9rem]">
-        <svg viewBox="0 0 320 150" className="absolute inset-0 size-full" role="presentation" aria-hidden>
-          {/* links from the central router to each site */}
-          <path d="M160 78 L52 44" className="stroke-primary/30" strokeWidth="1.5" fill="none" />
-          <path d="M160 78 L210 30" className="stroke-primary" strokeWidth="2" fill="none" />
-          <path d="M160 78 L206 108" className="stroke-primary/30" strokeWidth="1.5" fill="none" />
-          <path d="M160 78 L210 30" className="flow-path stroke-primary" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+      <div className="relative h-[12rem] w-full">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 size-full" role="presentation" aria-hidden>
+          {sites.map((s) => {
+            const d = `M${hub.x} ${hub.y} L${s.x} ${s.y}`;
+            return (
+              <g key={s.label}>
+                <path d={d} fill="none" vectorEffect="non-scaling-stroke" strokeWidth={s.live ? 2 : 1.25} strokeDasharray={s.dashed ? "3 4" : undefined} className={s.live ? "stroke-primary/70" : "stroke-primary/25"} />
+                {s.live ? <path d={d} fill="none" vectorEffect="non-scaling-stroke" strokeWidth="2.5" strokeLinecap="round" className="flow-path stroke-primary" /> : null}
+              </g>
+            );
+          })}
         </svg>
-
-        {/* central SIP router */}
-        <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1">
-          <span className="flex size-11 items-center justify-center rounded-xl border-2 border-primary bg-background text-primary shadow-sm">
-            <Router className="size-5" aria-hidden />
-          </span>
-          <span className="font-mono text-[8px] font-semibold tracking-widest text-primary uppercase">SIP</span>
+        <div className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1" style={{ left: `${hub.x}%`, top: `${hub.y}%` }}>
+          <span className="flex size-12 items-center justify-center rounded-xl border-2 border-primary bg-background text-primary shadow-sm"><Router className="size-5" aria-hidden /></span>
+          <span className="font-mono text-[8px] font-semibold tracking-widest text-primary uppercase">SIP hub</span>
         </div>
-
-        {sites.map(({ icon: Icon, label, x, y }) => (
-          <div
-            key={label}
-            className="absolute flex flex-col items-center gap-0.5"
-            style={{ left: `${x}%`, top: `${y}%` }}
-          >
-            <span className="flex size-9 items-center justify-center rounded-lg border border-border bg-background text-primary shadow-sm">
-              <Icon className="size-4" aria-hidden />
-            </span>
+        {sites.map(({ icon: Icon, label, x, y, dashed }) => (
+          <div key={label} className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-0.5" style={{ left: `${x}%`, top: `${y}%` }}>
+            <span className={cn("flex size-9 items-center justify-center rounded-lg border bg-background shadow-sm", dashed ? "border-dashed border-border text-muted-foreground" : "border-border text-primary")}><Icon className="size-4" aria-hidden /></span>
             <span className="text-[8px] font-medium text-muted-foreground">{label}</span>
           </div>
         ))}
-
-        {/* suppliers at the edge */}
-        <div className="absolute right-0 top-1/2 flex -translate-y-1/2 flex-col items-center gap-0.5">
-          <span className="flex size-8 items-center justify-center rounded-lg border border-dashed border-border bg-background text-muted-foreground">
-            <Boxes className="size-4" aria-hidden />
-          </span>
-          <span className="text-[8px] text-muted-foreground">Suppliers</span>
-        </div>
       </div>
     </Stage>
   );
 }
 
-/* ================================================================ 11. telecom-operators
-   A capacity readout: concurrent-channel gauge, the SBC guarding the edge,
-   and carrier peering — infrastructure at wholesale scale.
+/* ============================================================ 11. telecom-operators
+   LIVE SIP TRUNKS — legible, comms-anchored concept: a stack of trunk channels
+   each carrying a call in progress (a small voice-wave + "connected"), bundled
+   through the SBC edge out to the carrier network. Reads at a glance as "many
+   calls live on the network"; centres on SipLink's real products (SIP + SBC).
    ============================================================================ */
-function TelecomOperatorsScene({ uid }: { uid: string }) {
-  const bars = [58, 72, 64, 86, 78, 92, 70];
+function TrunkWave({ seed }: { seed: number }) {
+  // a short, deterministic voice-wave so each trunk looks like a live call
+  const bars = [3, 7, 5, 9, 6, 8, 4, 7, 5, 8, 6, 4];
   return (
-    <Stage uid={uid} status="Carrier-grade capacity">
-      <Window icon={Gauge} title="Voice infrastructure">
-        <div className="grid gap-4 p-4 sm:grid-cols-[minmax(0,1fr)_auto]">
-          <div>
-            <div className="flex items-end justify-between">
-              <span className="text-[8px] tracking-widest text-muted-foreground uppercase">Concurrent channels</span>
-              <span className="font-mono text-sm font-semibold text-primary tabular-nums">4,820</span>
-            </div>
-            <div className="mt-2 flex h-16 items-end gap-1.5">
-              {bars.map((h, i) => (
-                <span
-                  key={i}
-                  className={cn("flex-1 rounded-sm", i === bars.length - 1 ? "bg-primary" : "bg-primary/25")}
-                  style={{ height: `${h}%` }}
-                />
-              ))}
-            </div>
-          </div>
-          <dl className="flex shrink-0 flex-col justify-center gap-2.5 sm:w-28">
-            {[
-              { icon: ShieldCheck, label: "Edge", value: "SBC secured" },
-              { icon: RadioTower, label: "Peering", value: "Tier-1" },
-            ].map(({ icon: Icon, label, value }) => (
-              <div key={label} className="flex items-center gap-2">
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                  <Icon className="size-3.5" aria-hidden />
+    <span className="flex h-4 items-center gap-[2px]" aria-hidden>
+      {bars.map((b, i) => {
+        const h = 3 + ((b + seed * 3 + i) % 8);
+        return <span key={i} className="w-[2px] rounded-full bg-primary/70" style={{ height: `${h * 1.4}px` }} />;
+      })}
+    </span>
+  );
+}
+function TelecomOperators({ uid }: { uid: string }) {
+  const trunks = [
+    { id: "Trunk 01", seed: 0 },
+    { id: "Trunk 02", seed: 2 },
+    { id: "Trunk 03", seed: 4 },
+  ];
+  return (
+    <Stage uid={uid} status="Carrier-grade · calls live">
+      <Window icon={Router} title="Voice infrastructure">
+        <div className="flex items-stretch gap-3 p-3.5">
+          {/* the live trunks — each row is a call in progress */}
+          <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+            <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">SIP trunks · live</span>
+            {trunks.map(({ id, seed }) => (
+              <div key={id} className="flex items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-1.5 shadow-sm">
+                <span className="font-mono text-[9px] font-semibold tabular-nums">{id}</span>
+                <span className="flex-1">
+                  <TrunkWave seed={seed} />
                 </span>
-                <span className="min-w-0">
-                  <dt className="text-[9px] leading-tight text-muted-foreground">{label}</dt>
-                  <dd className="text-[11px] leading-tight font-semibold">{value}</dd>
+                <span className="flex items-center gap-1">
+                  <LiveDot />
+                  <span className="text-[8px] text-muted-foreground">connected</span>
                 </span>
               </div>
             ))}
-          </dl>
+          </div>
+
+          {/* bundled through the SBC edge to carriers */}
+          <div className="flex shrink-0 flex-col items-center justify-center gap-1.5">
+            <div className="flex items-center gap-1.5 rounded-lg border-2 border-primary bg-background px-2.5 py-2 shadow-sm">
+              <ShieldCheck className="size-4 text-primary" aria-hidden />
+              <span className="text-[9px] leading-tight font-semibold">SBC<br />edge</span>
+            </div>
+            <ArrowDown className="size-4 text-primary" aria-hidden />
+            <div className="flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 shadow-sm">
+              <RadioTower className="size-3.5 text-primary" aria-hidden />
+              <span className="text-[9px] font-semibold">Carriers</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-3 border-t border-border px-3.5 py-2 text-[8px] text-muted-foreground">
+          <span className="flex items-center gap-1"><Router className="size-3 text-primary" aria-hidden /> SIP connectivity</span>
+          <span className="flex items-center gap-1"><FileText className="size-3 text-primary" aria-hidden /> Number management</span>
+          <span className="flex items-center gap-1"><Code2 className="size-3 text-primary" aria-hidden /> Programmable</span>
         </div>
       </Window>
     </Stage>
@@ -765,17 +746,17 @@ function TelecomOperatorsScene({ uid }: { uid: string }) {
 /* --------------------------------------------------------------- registry */
 
 const SCENES: Record<string, (p: { uid: string }) => React.JSX.Element> = {
-  "call-centers": CallCentersScene,
-  healthcare: HealthcareScene,
-  "banking-finance": BankingFinanceScene,
-  education: EducationScene,
-  retail: RetailScene,
-  hospitality: HospitalityScene,
-  logistics: LogisticsScene,
-  "it-saas": ItSaasScene,
-  government: GovernmentScene,
-  manufacturing: ManufacturingScene,
-  "telecom-operators": TelecomOperatorsScene,
+  "call-centers": CallCenters,
+  healthcare: Healthcare,
+  "banking-finance": BankingFinance,
+  education: Education,
+  retail: Retail,
+  hospitality: Hospitality,
+  logistics: Logistics,
+  "it-saas": ItSaas,
+  government: Government,
+  manufacturing: Manufacturing,
+  "telecom-operators": TelecomOperators,
 };
 
 export function IndustryIllustration({ slug, className }: Props) {
