@@ -18,7 +18,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getProductDetail, productDetails } from "@/lib/products";
-import { navHighlights } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function generateStaticParams() {
@@ -493,25 +492,6 @@ export default async function ProductDetailPage({
           </div>
         </section>
       ) : null}
-
-      {/* Trust strip */}
-      <section className="border-y border-border bg-muted/30">
-        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:px-10">
-          {navHighlights.map(({ label, description, icon: HighlightIcon }) => (
-            <div key={label} className="flex items-center gap-4">
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-background text-primary shadow-sm">
-                <HighlightIcon className="size-5" aria-hidden />
-              </span>
-              <div className="min-w-0">
-                <p className="font-medium">{label}</p>
-                <p className="mt-0.5 text-sm text-pretty text-muted-foreground">
-                  {description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-6 py-16 text-center lg:px-10">
