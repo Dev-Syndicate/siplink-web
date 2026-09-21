@@ -219,43 +219,6 @@ function Rails({ mirrored = false }: { mirrored?: boolean }) {
   );
 }
 
-/** Faint dotted field behind the scene, faded out at the edges. */
-function DotField({ uid }: { uid: string }) {
-  return (
-    <svg
-      viewBox="0 0 400 180"
-      preserveAspectRatio="none"
-      role="presentation"
-      aria-hidden
-      className="size-full"
-    >
-      <defs>
-        <pattern
-          id={`dots-${uid}`}
-          width="10"
-          height="10"
-          patternUnits="userSpaceOnUse"
-        >
-          <circle cx="2" cy="2" r="1.6" className="fill-primary/30" />
-        </pattern>
-        <radialGradient id={`dotfade-${uid}`} cx="50%" cy="50%" r="58%">
-          <stop offset="0%" stopColor="white" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="white" stopOpacity="0" />
-        </radialGradient>
-        <mask id={`dotmask-${uid}`}>
-          <rect width="400" height="180" fill={`url(#dotfade-${uid})`} />
-        </mask>
-      </defs>
-      <rect
-        width="400"
-        height="180"
-        fill={`url(#dots-${uid})`}
-        mask={`url(#dotmask-${uid})`}
-      />
-    </svg>
-  );
-}
-
 /* ------------------------------------------------------------------ *
  * Scene shapes
  * ------------------------------------------------------------------ */
@@ -438,22 +401,14 @@ type SceneSpec =
 
 /** Ambient dot field + status chip, shared by every layout. */
 function Stage({
-  uid,
   status,
   children,
 }: {
-  uid: string;
   status: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative isolate">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-8 bottom-0 -z-10"
-      >
-        <DotField uid={uid} />
-      </div>
+    <div>
       <div className="flex justify-center pb-4">
         <StatusPill text={status} />
       </div>
@@ -467,9 +422,9 @@ function Stage({
  * SipLink provides, and arrive on the right. For products that are a path
  * between two worlds.
  */
-function FlowLayout({ uid, spec }: { uid: string; spec: FlowSpec }) {
+function FlowLayout({ spec }: { spec: FlowSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="flex items-stretch">
         <div className="flex shrink-0 flex-col justify-between gap-3">
           {spec.left.map((item) => (
@@ -513,10 +468,10 @@ function FlowLayout({ uid, spec }: { uid: string; spec: FlowSpec }) {
  * point of a published number or a menu is that one entry point reaches
  * several destinations, so the picture says that and nothing else.
  */
-function FanLayout({ uid, spec }: { uid: string; spec: FanSpec }) {
+function FanLayout({ spec }: { spec: FanSpec }) {
   const n = spec.out.length;
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="flex items-center gap-2">
         {/* The single entry point, stated large */}
         <div className="flex w-28 shrink-0 flex-col items-center gap-2 text-center">
@@ -601,9 +556,9 @@ function FanLayout({ uid, spec }: { uid: string; spec: FanSpec }) {
  * QUEUE — callers waiting in line, then handed to agents. Drawn as an
  * actual line of people, because that is the thing being described.
  */
-function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
+function QueueLayout({ spec }: { spec: QueueSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="flex items-center gap-2.5">
         {/* Callers arriving, more than there are agents to take them */}
         <div className="flex w-[3.25rem] shrink-0 flex-col items-center gap-1.5">
@@ -729,9 +684,9 @@ function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
  * PANEL — a reporting surface. For products whose output is something you
  * look at rather than something that travels somewhere.
  */
-function PanelLayout({ uid, spec }: { uid: string; spec: PanelSpec }) {
+function PanelLayout({ spec }: { spec: PanelSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="rounded-xl border border-border bg-background shadow-sm">
         {/* Window chrome */}
         <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
@@ -801,10 +756,10 @@ function PanelLayout({ uid, spec }: { uid: string; spec: PanelSpec }) {
  * is what a recording actually looks like when you go to review one. Kept
  * distinct from PANEL so recording and analytics do not share a picture.
  */
-function WaveLayout({ uid, spec }: { uid: string; spec: WaveSpec }) {
+function WaveLayout({ spec }: { spec: WaveSpec }) {
   const played = Math.round(spec.wave.length * spec.playhead);
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="rounded-xl border border-border bg-background shadow-sm">
         <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
           <span className="flex size-5 items-center justify-center rounded bg-primary/10 text-primary">
@@ -889,10 +844,10 @@ function WaveLayout({ uid, spec }: { uid: string; spec: WaveSpec }) {
  * to dial against who is free, so it sits raised on the brand ground and is
  * the only element that carries a solid fill.
  */
-function DialerLayout({ uid, spec }: { uid: string; spec: DialerSpec }) {
+function DialerLayout({ spec }: { spec: DialerSpec }) {
   const rows = spec.contacts.length;
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="flex items-center gap-2.5">
         {/* The list being worked through. Each row runs the same loop a beat
             later than the one above, so the campaign reads as travelling
@@ -1035,11 +990,11 @@ function DialerLayout({ uid, spec }: { uid: string; spec: DialerSpec }) {
  * fanning out, because the auto dialler dials phones — it does not send
  * messages, and a one-to-many burst reads as SMS.
  */
-function BroadcastLayout({ uid, spec }: { uid: string; spec: BroadcastSpec }) {
+function BroadcastLayout({ spec }: { spec: BroadcastSpec }) {
   const pct = Math.round((spec.sent / spec.total) * 100);
 
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="flex items-center gap-4">
         {/* The announcement, and how far through the list the run is */}
         <div className="w-[8.5rem] shrink-0 rounded-2xl border border-primary/30 bg-linear-to-br from-brand-from/25 via-background via-65% to-background p-3.5 text-center shadow-md ring-1 ring-primary/10">
@@ -1177,9 +1132,9 @@ function BroadcastLayout({ uid, spec }: { uid: string; spec: BroadcastSpec }) {
  * developer products, where the interesting part is that your own software
  * is driving it.
  */
-function CodeLayout({ uid, spec }: { uid: string; spec: CodeSpec }) {
+function CodeLayout({ spec }: { spec: CodeSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="flex items-center gap-3">
         {/* The call your application makes */}
         <div className="min-w-0 flex-1 overflow-hidden rounded-xl border border-border bg-background shadow-sm">
@@ -1271,9 +1226,9 @@ function CodeLayout({ uid, spec }: { uid: string; spec: CodeSpec }) {
  * product IS the system, so the picture shows it running rather than showing
  * what it replaced.
  */
-function SystemLayout({ uid, spec }: { uid: string; spec: SystemSpec }) {
+function SystemLayout({ spec }: { spec: SystemSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       {/* The cloud sits over everything, because that is where the system
           lives. The call goes up into it and the ring comes back down. */}
       <div className="relative mx-auto w-full max-w-[22rem]">
@@ -1451,9 +1406,9 @@ function SystemLayout({ uid, spec }: { uid: string; spec: SystemSpec }) {
  * but that head office, branches and home workers are on the same system
  * and none of them operate it.
  */
-function HubLayout({ uid, spec }: { uid: string; spec: HubSpec }) {
+function HubLayout({ spec }: { spec: HubSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="mx-auto w-full max-w-[23rem]">
         {/* The platform, raised: SipLink runs this part */}
         <div className="rounded-2xl border border-primary/30 bg-linear-to-b from-brand-from/15 via-background via-60% to-background p-3 shadow-md ring-1 ring-primary/10">
@@ -1563,15 +1518,11 @@ function HubLayout({ uid, spec }: { uid: string; spec: HubSpec }) {
  * crossing out. The inverse of the cloud scene: for the on-premise product,
  * where the claim is that call control never leaves the network you run.
  */
-function PerimeterLayout({
-  uid,
-  spec,
-}: {
-  uid: string;
-  spec: PerimeterSpec;
+function PerimeterLayout({ spec }: {
+    spec: PerimeterSpec;
 }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="flex items-stretch gap-0">
         {/* Inside the boundary. The dashed rule is the perimeter itself, so
             everything it encloses is visibly on the customer's side. */}
@@ -1678,9 +1629,9 @@ function PerimeterLayout({
  * where the product is the process and the number is the constant: it is
  * shown once, above the track, because the point is that it never changes.
  */
-function JourneyLayout({ uid, spec }: { uid: string; spec: JourneySpec }) {
+function JourneyLayout({ spec }: { spec: JourneySpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="mx-auto w-full max-w-[23rem]">
         {/* The number, stated once and held still */}
         <div className="mx-auto w-fit rounded-2xl border border-primary/30 bg-linear-to-b from-brand-from/15 to-background px-5 py-2.5 text-center shadow-md ring-1 ring-primary/10">
@@ -1763,10 +1714,10 @@ function JourneyLayout({ uid, spec }: { uid: string; spec: JourneySpec }) {
  * ORBIT — one hub with everything else arranged around it. For products
  * whose job is to sit in the middle of things other people already run.
  */
-function OrbitLayout({ uid, spec }: { uid: string; spec: OrbitSpec }) {
+function OrbitLayout({ spec }: { spec: OrbitSpec }) {
   const n = spec.around.length;
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="relative mx-auto h-[210px] w-full max-w-[340px]">
         {/* Connecting spokes, drawn under the cards */}
         <svg
@@ -2298,29 +2249,29 @@ export function ProductIllustration({ slug, className }: Props) {
 
   return (
     <div className={cn("w-full text-foreground", className)}>
-      {spec.layout === "flow" ? <FlowLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "fan" ? <FanLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "queue" ? <QueueLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "panel" ? <PanelLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "wave" ? <WaveLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "flow" ? <FlowLayout spec={spec} /> : null}
+      {spec.layout === "fan" ? <FanLayout spec={spec} /> : null}
+      {spec.layout === "queue" ? <QueueLayout spec={spec} /> : null}
+      {spec.layout === "panel" ? <PanelLayout spec={spec} /> : null}
+      {spec.layout === "wave" ? <WaveLayout spec={spec} /> : null}
       {spec.layout === "dialer" ? (
-        <DialerLayout uid={slug} spec={spec} />
+        <DialerLayout spec={spec} />
       ) : null}
       {spec.layout === "broadcast" ? (
-        <BroadcastLayout uid={slug} spec={spec} />
+        <BroadcastLayout spec={spec} />
       ) : null}
-      {spec.layout === "code" ? <CodeLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "code" ? <CodeLayout spec={spec} /> : null}
       {spec.layout === "system" ? (
-        <SystemLayout uid={slug} spec={spec} />
+        <SystemLayout spec={spec} />
       ) : null}
-      {spec.layout === "hub" ? <HubLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "hub" ? <HubLayout spec={spec} /> : null}
       {spec.layout === "perimeter" ? (
-        <PerimeterLayout uid={slug} spec={spec} />
+        <PerimeterLayout spec={spec} />
       ) : null}
       {spec.layout === "journey" ? (
-        <JourneyLayout uid={slug} spec={spec} />
+        <JourneyLayout spec={spec} />
       ) : null}
-      {spec.layout === "orbit" ? <OrbitLayout uid={slug} spec={spec} /> : null}
+      {spec.layout === "orbit" ? <OrbitLayout spec={spec} /> : null}
     </div>
   );
 }

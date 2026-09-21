@@ -120,7 +120,7 @@ export default async function ProductDetailPage({
                 as a screen showing the system rather than more page. The
                 `dark` class flips the tokens inside it — see the
                 `@custom-variant dark` rule in globals.css. */}
-            <div className="dark hidden rounded-2xl border border-border bg-background p-8 shadow-sm lg:block">
+            <div className="product-scene dark hidden rounded-2xl border border-border bg-background p-8 shadow-sm lg:block">
               <ProductIllustration slug={slug} />
             </div>
           </div>
