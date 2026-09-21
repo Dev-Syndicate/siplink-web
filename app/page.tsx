@@ -589,7 +589,7 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className="bg-background text-primary hover:bg-background/90"
+              className="w-full bg-background text-primary hover:bg-background/90 sm:w-auto"
             >
               <Link href="/contact">Book a demo</Link>
             </Button>
@@ -597,11 +597,13 @@ export default function Home() {
               asChild
               size="lg"
               variant="outline"
-              className="border-white/25 bg-white/10 text-primary-foreground hover:bg-white/20 hover:text-primary-foreground dark:border-white/25 dark:bg-white/10 dark:hover:bg-white/20"
+              className="h-auto w-full border-white/25 bg-white/10 py-3 text-primary-foreground hover:bg-white/20 hover:text-primary-foreground sm:w-auto sm:py-2 dark:border-white/25 dark:bg-white/10 dark:hover:bg-white/20"
             >
               <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
-                <PhoneCall aria-hidden />
-                Speak to an architect ({site.phone})
+                <PhoneCall className="shrink-0" aria-hidden />
+                <span className="text-center text-balance whitespace-normal">
+                  Speak to an architect ({site.phone})
+                </span>
               </a>
             </Button>
           </div>
