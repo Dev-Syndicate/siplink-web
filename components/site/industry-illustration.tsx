@@ -24,7 +24,6 @@ import {
   ScrollText,
   ServerCog,
   ShieldCheck,
-  ShoppingBag,
   Stethoscope,
   Store,
   Truck,
@@ -392,42 +391,75 @@ function Education({ uid }: { uid: string }) {
 }
 
 /* ============================================================ 5. retail
-   SMS THREAD — order-status chat on a phone, beside channel chips.
+   SIPLINK SMS AT WORK — from the "How SipLink helps" copy: SMS supports
+   customer notifications, sent from per-store business numbers. The scene shows
+   the product working: a real customer phone receiving live order updates, each
+   stamped as sent by SipLink from a specific store line. One clear hero object,
+   not competing cards.
    ============================================================================ */
 function Retail({ uid }: { uid: string }) {
   const bubbles = [
-    { them: true, text: "Order #7741 confirmed" },
-    { them: true, text: "Packed — ships today" },
-    { them: false, text: "Track my order" },
-    { them: true, text: "Out for delivery 🚚" },
+    { text: "Order #7741 confirmed", time: "09:02" },
+    { text: "Packed — ships today", time: "11:20" },
+    { text: "Out for delivery — arriving 2pm", time: "13:15", live: true },
   ];
   return (
-    <Stage uid={uid} status="Order updates by SMS">
-      <div className="flex items-center justify-center gap-7">
-        <div className="w-[10.5rem] shrink-0 rounded-[1.4rem] border-2 border-border bg-background p-1.5 shadow-sm">
-          <div className="rounded-[1rem] bg-muted/40 px-2 py-2">
-            <div className="mb-1.5 flex items-center gap-1.5 px-1">
-              <ShoppingBag className="size-3 text-primary" aria-hidden />
-              <span className="text-[8px] font-semibold">Store SMS</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              {bubbles.map(({ them, text }, i) => (
-                <span key={i} className={cn("max-w-[85%] rounded-2xl px-2 py-1 text-[8px] leading-snug", them ? "self-start rounded-bl-sm bg-background text-foreground shadow-sm" : "self-end rounded-br-sm bg-primary text-primary-foreground")}>{text}</span>
-              ))}
-            </div>
+    <Stage uid={uid} status="SMS sent · Store 04">
+      <div className="flex items-center justify-center gap-6">
+        {/* the customer's phone — the hero */}
+        <div className="w-[11.5rem] shrink-0 rounded-[1.6rem] border-[3px] border-foreground/80 bg-background p-2 shadow-md">
+          {/* status bar + notch */}
+          <div className="mb-1.5 flex items-center justify-between px-1.5">
+            <span className="font-mono text-[7px] font-semibold tabular-nums">9:41</span>
+            <span className="h-1 w-8 rounded-full bg-foreground/20" />
+            <span className="flex items-center gap-0.5">
+              <span className="h-1.5 w-1 rounded-[1px] bg-foreground/40" />
+              <span className="h-1.5 w-1.5 rounded-full border border-foreground/40" />
+            </span>
+          </div>
+          {/* SMS conversation header — from the store's business number */}
+          <div className="flex items-center gap-1.5 rounded-t-lg bg-primary/[0.06] px-2 py-1.5">
+            <span className="flex size-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <Store className="size-2.5" aria-hidden />
+            </span>
+            <span className="min-w-0 leading-none">
+              <span className="block text-[8px] font-semibold">Northgate Store</span>
+              <span className="block font-mono text-[6px] text-muted-foreground">+1 415 ···· 04</span>
+            </span>
+          </div>
+          {/* incoming order-update texts */}
+          <div className="flex flex-col gap-1 rounded-b-lg bg-muted/30 px-2 py-2">
+            {bubbles.map(({ text, time, live }, i) => (
+              <span key={i} className="flex max-w-[92%] flex-col self-start">
+                <span
+                  className={cn(
+                    "rounded-2xl rounded-bl-sm px-2 py-1 text-[8px] leading-snug shadow-sm",
+                    live ? "bg-primary text-primary-foreground" : "bg-background text-foreground",
+                  )}
+                >
+                  {text}
+                </span>
+                <span className="mt-0.5 flex items-center gap-1 pl-1">
+                  <span className="font-mono text-[6px] text-muted-foreground tabular-nums">{time}</span>
+                  {live ? <LiveDot /> : null}
+                </span>
+              </span>
+            ))}
           </div>
         </div>
-        <div className="flex flex-col gap-2.5">
+
+        {/* quiet support: what SipLink is doing behind the message */}
+        <div className="flex flex-col gap-2">
           {[
-            { icon: MessageSquare, label: "Business SMS", note: "Order updates" },
-            { icon: Store, label: "Per-store numbers", note: "Every branch" },
-            { icon: Headset, label: "Store support", note: "Routed to staff" },
+            { icon: MessageSquare, label: "Business SMS", note: "Auto-sent on each status" },
+            { icon: Store, label: "Per-store numbers", note: "A line for every branch" },
+            { icon: Headset, label: "Reply routes to staff", note: "Two-way to the store" },
           ].map(({ icon: Icon, label, note }) => (
-            <div key={label} className="flex w-36 items-center gap-2.5 rounded-lg border border-border bg-background px-3 py-2.5 shadow-sm">
-              <Icon className="size-4 shrink-0 text-primary" aria-hidden />
-              <span className="text-[10px] leading-tight">
-                <span className="block font-semibold">{label}</span>
-                <span className="block text-muted-foreground">{note}</span>
+            <div key={label} className="flex w-[9.5rem] items-start gap-2 rounded-lg border border-border bg-background px-2.5 py-2 shadow-sm">
+              <Icon className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden />
+              <span className="leading-tight">
+                <span className="block text-[9px] font-semibold">{label}</span>
+                <span className="block text-[8px] text-muted-foreground">{note}</span>
               </span>
             </div>
           ))}
