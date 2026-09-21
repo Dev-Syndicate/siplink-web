@@ -12,7 +12,6 @@ import {
   Gauge,
   GraduationCap,
   Headset,
-  HeartPulse,
   Landmark,
   MessageSquare,
   Mic,
@@ -305,73 +304,45 @@ function CallCenters({ uid }: { uid: string }) {
 }
 
 /* ============================================================ 2. healthcare
-   VITALS MONITOR — the inventive concept: communication drawn as a vital sign.
-   A patient monitor whose ECG trace IS the call path; each peak carries a
-   contact on the line (patient → clinic → pharmacy), a BPM-style readout says
-   the line is "in rhythm" and secure. Built in the product card idiom, not
-   hand-drawn art: a titled monitor window, an SVG trace, node chips on the
-   peaks, and a vitals sidebar.
+   CALL ON A HIPAA LINE — matches the healthcare "How SipLink helps" copy:
+   a patient call flows THROUGH the SipLink actor on a HIPAA-compliant line,
+   which records, transcribes and carries fax alongside voice, then reaches the
+   care team. Same actor pattern as Banking/Logistics/Retail — SipLink is the
+   layer doing the work, not a patient vitals monitor.
    ============================================================================ */
 function Healthcare({ uid }: { uid: string }) {
-  // ECG-style trace across a 300×90 field. Peaks sit under the three contacts.
-  const trace =
-    "M4 60 H40 l6 -4 8 8 6 -40 7 66 6 -30 5 12 H108 l6 -4 8 8 6 -40 7 66 6 -30 5 12 H212 l6 -4 8 8 6 -40 7 66 6 -30 5 12 H296";
-  const nodes = [
-    { icon: UserRound, label: "Patient", x: 20 },
-    { icon: Stethoscope, label: "Clinic", x: 55, live: true },
-    { icon: HeartPulse, label: "Pharmacy", x: 88 },
-  ];
   return (
     <Stage uid={uid} status="HIPAA-compliant line">
-      <Window icon={HeartPulse} title="Care line · in rhythm">
-        <div className="grid gap-3 p-3 sm:grid-cols-[minmax(0,1fr)_auto]">
-          {/* the monitor: contacts riding an ECG trace that never flatlines */}
-          <div className="relative">
-            <div className="flex items-center justify-between px-1">
-              {nodes.map(({ icon: Icon, label, live }) => (
-                <span key={label} className="flex flex-col items-center gap-1">
-                  <span
-                    className={cn(
-                      "flex size-8 items-center justify-center rounded-full border shadow-sm",
-                      live
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-background text-primary",
-                    )}
-                  >
-                    <Icon className="size-4" aria-hidden />
-                  </span>
-                  <span className="text-[8px] leading-none font-medium text-muted-foreground">{label}</span>
-                </span>
-              ))}
-            </div>
-            <svg viewBox="0 0 300 90" preserveAspectRatio="none" role="presentation" aria-hidden className="mt-1 h-14 w-full">
-              <path d={trace} fill="none" vectorEffect="non-scaling-stroke" className="stroke-primary/20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d={trace} fill="none" vectorEffect="non-scaling-stroke" className="flow-path stroke-primary" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-
-          {/* vitals sidebar — the "reading" for the line */}
-          <dl className="flex shrink-0 flex-col justify-center gap-2 sm:w-[6.5rem]">
-            <div className="rounded-lg border border-primary/60 bg-primary/[0.05] px-2.5 py-1.5">
-              <dt className="text-[8px] leading-none tracking-widest text-muted-foreground uppercase">Line</dt>
-              <dd className="mt-0.5 flex items-baseline gap-1">
-                <span className="font-mono text-base leading-none font-semibold text-primary tabular-nums">72</span>
-                <span className="text-[8px] text-muted-foreground">bpm · steady</span>
-              </dd>
-            </div>
-            {[
-              { icon: ShieldCheck, label: "Encrypted" },
-              { icon: FileAudio, label: "Voice · fax" },
-              { icon: Ambulance, label: "Urgent line" },
-            ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-1.5">
-                <Icon className="size-3 shrink-0 text-primary" aria-hidden />
-                <span className="text-[9px] font-medium">{label}</span>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </Window>
+      <div className="flex items-center">
+        <Party icon={UserRound} label="Patient" sub="On the line" live />
+        <Wire label="voice" />
+        <SipLinkActor
+          doing={[
+            { icon: ShieldCheck, label: "Secure line" },
+            { icon: ScrollText, label: "Transcribing" },
+            { icon: FileAudio, label: "Voice + fax" },
+          ]}
+          detail="HIPAA-compliant"
+        />
+        <Wire label="voice" mirror />
+        <Party icon={Stethoscope} label="Care team" sub="Providers" />
+      </div>
+      {/* who else the same secure line reaches, kept quiet under the flow */}
+      <div className="mx-auto mt-4 flex max-w-[19rem] items-center justify-center gap-2">
+        {[
+          { icon: FileText, label: "Insurers" },
+          { icon: MessageSquare, label: "SMS reminders" },
+          { icon: Ambulance, label: "Urgent line" },
+        ].map(({ icon: Icon, label }) => (
+          <span
+            key={label}
+            className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-1 text-[8px] font-medium shadow-sm"
+          >
+            <Icon className="size-2.5 text-primary" aria-hidden />
+            {label}
+          </span>
+        ))}
+      </div>
     </Stage>
   );
 }
