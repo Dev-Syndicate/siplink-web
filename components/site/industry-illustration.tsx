@@ -58,10 +58,6 @@ type Props = {
 function StatusPill({ text }: { text: string }) {
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 shadow-sm">
-      <span className="relative flex size-2">
-        <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary/60 motion-reduce:animate-none" />
-        <span className="relative inline-flex size-2 rounded-full bg-primary" />
-      </span>
       <span className="font-mono text-[10px] font-semibold tracking-widest text-foreground uppercase">
         {text}
       </span>
@@ -78,45 +74,18 @@ function LiveDot() {
   );
 }
 
-function DotField({ uid }: { uid: string }) {
-  return (
-    <svg
-      viewBox="0 0 400 200"
-      preserveAspectRatio="none"
-      role="presentation"
-      aria-hidden
-      className="absolute inset-0 size-full"
-    >
-      <defs>
-        <pattern id={`id-${uid}`} width="11" height="11" patternUnits="userSpaceOnUse">
-          <circle cx="2" cy="2" r="1.5" className="fill-primary/25" />
-        </pattern>
-        <radialGradient id={`idf-${uid}`} cx="50%" cy="50%" r="62%">
-          <stop offset="0%" stopColor="white" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="white" stopOpacity="0" />
-        </radialGradient>
-        <mask id={`idm-${uid}`}>
-          <rect width="400" height="200" fill={`url(#idf-${uid})`} />
-        </mask>
-      </defs>
-      <rect width="400" height="200" fill={`url(#id-${uid})`} mask={`url(#idm-${uid})`} />
-    </svg>
-  );
-}
-
-/** Scene frame: dot field, centred status pill, fixed-height content well. */
+/** Scene frame: centred status pill, fixed-height content well. */
 function Stage({
-  uid,
   status,
   children,
 }: {
-  uid: string;
+  /** kept for call-site compatibility; no longer used for a background field */
+  uid?: string;
   status: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="relative isolate w-full">
-      <DotField uid={uid} />
       <div className="relative flex justify-center pt-1 pb-3">
         <StatusPill text={status} />
       </div>

@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ArrowRight, ArrowUpRight, Check, Phone } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, Phone, PhoneCall } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { IndustryIllustration } from "@/components/site/industry-illustration";
 import { getIndustryDetail, industryDetails } from "@/lib/industries-detail";
@@ -66,8 +65,11 @@ export default async function IndustryDetailPage({
     gain,
   } = industry;
 
-  const isHealthcare = slug === "healthcare";
-  const related = industryDetails.filter((item) => item.slug !== slug);
+  // Up to four other industries for the closing strip; the rest live on the
+  // /industries index, linked from the section header.
+  const related = industryDetails
+    .filter((item) => item.slug !== slug)
+    .slice(0, 4);
 
   /* Section anchors for the sticky rail's jump nav. */
   const sections = [
@@ -99,11 +101,7 @@ export default async function IndustryDetailPage({
           <div className="mt-8 grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16">
             {/* left: the pitch */}
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-primary shadow-sm">
-                <Icon className="size-3.5" aria-hidden />
-                SipLink for {title}
-              </span>
-              <h1 className="mt-5 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
                 {tagline}
               </h1>
               <p className="mt-5 max-w-xl text-lg text-pretty text-muted-foreground">
@@ -135,9 +133,36 @@ export default async function IndustryDetailPage({
               </div>
             </div>
 
-            {/* right: the working scene */}
-            <div className="rounded-3xl border border-border bg-muted/30 p-6 shadow-sm sm:p-8">
-              <IndustryIllustration slug={slug} />
+            {/* right: the working scene, in a "live console" frame that is
+                deliberately unlike the flat bordered card used on the product,
+                solution and internet heroes. */}
+            <div className="relative">
+              {/* ambient brand glow behind the console */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-tr from-brand-from/15 via-brand-to/10 to-transparent blur-2xl"
+              />
+              <div className="overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-brand-to/[0.16] via-muted to-muted shadow-[0_24px_70px_-24px_var(--color-brand-to)] ring-1 ring-border">
+                {/* console top bar — deep brand pink */}
+                <div className="flex items-center justify-between bg-brand-to px-4 py-2.5 text-white">
+                  <span className="flex gap-1.5" aria-hidden>
+                    <span className="size-2 rounded-full bg-white/90" />
+                    <span className="size-2 rounded-full bg-white/40" />
+                    <span className="size-2 rounded-full bg-white/40" />
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-medium tracking-widest text-white/85 uppercase">
+                    <span className="relative flex size-1.5">
+                      <span className="absolute inline-flex size-full animate-ping rounded-full bg-white/70 motion-reduce:animate-none" />
+                      <span className="relative inline-flex size-1.5 rounded-full bg-white" />
+                    </span>
+                    Live · {title} line
+                  </span>
+                </div>
+                {/* the scene sits directly on the console surface — no inner card */}
+                <div className="px-5 py-6 sm:px-7 sm:py-8">
+                  <IndustryIllustration slug={slug} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -148,20 +173,14 @@ export default async function IndustryDetailPage({
             product page. ──────────────────────────────────────────────────── */}
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid gap-10 py-16 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-16 lg:py-24">
-          {/* sticky rail */}
-          <aside className="lg:sticky lg:top-28 lg:self-start">
+          {/* sticky rail. top offset clears the fixed header (announcement bar
+              + floating nav pill) so the icon never slides behind it. */}
+          <aside className="lg:sticky lg:top-36 lg:self-start">
             <span className="flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
               <Icon className="size-7" aria-hidden />
             </span>
             <h2 className="mt-5 text-2xl font-semibold tracking-tight">{title}</h2>
             <p className="mt-2 text-sm text-pretty text-muted-foreground">{tagline}</p>
-
-            {isHealthcare ? (
-              <Badge variant="secondary" className="mt-4 rounded-full">
-                <Check className="size-3" aria-hidden />
-                HIPAA compliant
-              </Badge>
-            ) : null}
 
             {/* jump nav — echoes a documentation/dossier feel */}
             <nav className="mt-8 hidden border-l border-border lg:block">
@@ -403,22 +422,48 @@ export default async function IndustryDetailPage({
         </section>
       ) : null}
 
-      {/* ── CTA ──────────────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-6 py-20 text-center lg:px-10 lg:py-24">
-        <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-          Let&rsquo;s map this to your {title.toLowerCase()} workflows
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-          Tell us how your teams communicate today and we&rsquo;ll recommend a
-          configuration — including porting your existing numbers.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <Button asChild size="lg">
-            <Link href="/contact">Talk to us</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link href="/industries">All industries</Link>
-          </Button>
+      {/* ── CTA — the gradient card from the homepage close ──────────────── */}
+      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+        <div className="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-brand-to via-brand-to to-brand-from px-8 py-14 text-primary-foreground lg:px-14 lg:py-16">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-32 -right-24 -z-10 size-[520px] rounded-full bg-white/10 blur-3xl"
+          />
+
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 font-mono text-[11px] font-semibold tracking-widest uppercase">
+            <span className="size-1.5 rounded-full bg-current" aria-hidden />
+            Built for {title.toLowerCase()}
+          </span>
+
+          <h2 className="font-heading mt-6 max-w-xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+            Let&rsquo;s map this to your {title.toLowerCase()} workflows
+          </h2>
+
+          <p className="mt-5 max-w-xl text-pretty text-primary-foreground/85 lg:text-lg">
+            Tell us how your teams communicate today and we&rsquo;ll recommend a
+            configuration — including porting the numbers you already use.
+          </p>
+
+          <div className="mt-9 flex flex-wrap gap-4">
+            <Button
+              asChild
+              size="lg"
+              className="bg-background text-primary hover:bg-background/90"
+            >
+              <Link href="/contact">Book a demo</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-white/25 bg-white/10 text-primary-foreground hover:bg-white/20 hover:text-primary-foreground dark:border-white/25 dark:bg-white/10 dark:hover:bg-white/20"
+            >
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
+                <PhoneCall aria-hidden />
+                Talk to us ({site.phone})
+              </a>
+            </Button>
+          </div>
         </div>
       </section>
     </>
