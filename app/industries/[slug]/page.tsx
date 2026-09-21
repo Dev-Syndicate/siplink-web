@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { SectionIllustration } from "@/components/site/section-illustration";
+import { IndustryIllustration } from "@/components/site/industry-illustration";
 import { getIndustryDetail, industryDetails } from "@/lib/industries-detail";
 import { navHighlights } from "@/lib/site";
 
@@ -115,9 +115,9 @@ export default async function IndustryDetailPage({
               </div>
             </div>
 
-            {/* Schematic: one platform, shaped per sector. */}
+            {/* Scene showing how communication works in this sector. */}
             <div className="hidden rounded-2xl border border-border bg-muted/30 p-8 lg:block">
-              <SectionIllustration shape="sectors" />
+              <IndustryIllustration slug={slug} />
             </div>
           </div>
         </div>
