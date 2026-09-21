@@ -1148,7 +1148,7 @@ function BroadcastLayout({ uid, spec }: { uid: string; spec: BroadcastSpec }) {
                   ))}
                 </span>
               ) : (
-                <span className="shrink-0 font-mono text-[9px] text-muted-foreground/60 tabular-nums">
+                <span className="shrink-0 font-mono text-[9px] text-muted-foreground tabular-nums">
                   00:18
                 </span>
               )}
@@ -1194,7 +1194,7 @@ function CodeLayout({ uid, spec }: { uid: string; spec: CodeSpec }) {
           <div className="space-y-1 px-3 py-3 font-mono text-[10px] leading-relaxed">
             {spec.lines.map((line, i) => (
               <div key={i} className="flex gap-2">
-                <span className="w-3 shrink-0 text-right text-muted-foreground/40 tabular-nums">
+                <span className="w-3 shrink-0 text-right text-muted-foreground tabular-nums">
                   {i + 1}
                 </span>
                 <span
@@ -2297,7 +2297,7 @@ export function ProductIllustration({ slug, className }: Props) {
   if (!spec) return null;
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className={cn("w-full text-foreground", className)}>
       {spec.layout === "flow" ? <FlowLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "fan" ? <FanLayout uid={slug} spec={spec} /> : null}
       {spec.layout === "queue" ? <QueueLayout uid={slug} spec={spec} /> : null}

@@ -115,8 +115,12 @@ export default async function ProductDetailPage({
               </div>
             </div>
 
-            {/* Scene showing what this product actually does. */}
-            <div className="hidden rounded-2xl border border-border bg-muted/30 p-8 lg:block">
+            {/* Scene showing what this product actually does. Always on a
+                dark ground: the page around it is light, so the scene reads
+                as a screen showing the system rather than more page. The
+                `dark` class flips the tokens inside it — see the
+                `@custom-variant dark` rule in globals.css. */}
+            <div className="dark hidden rounded-2xl border border-border bg-background p-8 shadow-sm lg:block">
               <ProductIllustration slug={slug} />
             </div>
           </div>
