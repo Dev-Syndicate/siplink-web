@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 import { Check, MoonStar, PhoneIncoming, PhoneMissed } from "lucide-react";
 
-import { callDay, huntCaller, type HuntOutcome } from "@/lib/business-size";
+import {
+  businessHours,
+  callDay,
+  huntCaller,
+  type HuntOutcome,
+} from "@/lib/business-size";
 import { cn } from "@/lib/utils";
 
 /**
@@ -31,6 +36,65 @@ const OUTCOME_ICON: Record<HuntOutcome, typeof Check> = {
   answered: Check,
 };
 
+/** "09:58" as a position in the day. */
+function hourOf(when: string) {
+  const [hours, minutes] = when.split(":").map(Number);
+  return hours + minutes / 60;
+}
+
+/** Rounded, so the markup carries `41.53%` rather than sixteen decimals. */
+const pct = (hour: number) => `${((hour / 24) * 100).toFixed(2)}%`;
+
+/**
+ * The hour, told as a rule rather than as a mood.
+ *
+ * This replaces an evening ink that used to wash the whole panel after
+ * closing. The fact it carried was right — the desk is shut — but a card that
+ * turns itself navy and back every six seconds, unattended, beside a page
+ * holding still reads as a rendering fault, not as dusk.
+ *
+ * A day with the staffed hours lit says the same thing and says it better,
+ * because it is the thing a small business actually sets up: the marker is
+ * inside the lit span on the morning call and outside it on the evening one.
+ * It slides between the two, which is the only motion the change needs.
+ *
+ * Hidden from assistive tech: the stop underneath it already says "Closed, so
+ * nothing rings in the building", and the time is in the header.
+ */
+function DayStrip({ when, still }: { when: string; still: boolean }) {
+  const open = businessHours.open;
+
+  return (
+    <div aria-hidden className="mt-3.5 flex items-center gap-3">
+      <span className="relative h-1.5 flex-1 rounded-full bg-muted">
+        <span
+          className="absolute inset-y-0 rounded-full bg-primary/30"
+          style={{
+            left: pct(open),
+            width: pct(businessHours.close - open),
+          }}
+        />
+
+        <span
+          className={cn(
+            "absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-background bg-primary",
+            !still && "transition-[left] duration-700 ease-out",
+          )}
+          style={{ left: pct(hourOf(when)) }}
+        />
+      </span>
+
+      {/* Fixed width, so the strip beside it keeps one length across both
+          phases instead of growing by the difference between two labels. */}
+      <span className="w-20 shrink-0 text-right text-xs text-muted-foreground">
+        {hourOf(when) >= open && hourOf(when) < businessHours.close
+          ? "Desk open"
+          : "After hours"}
+      </span>
+    </div>
+  );
+}
+
 /**
  * A day in the life of the number.
  *
@@ -46,11 +110,9 @@ const OUTCOME_ICON: Record<HuntOutcome, typeof Check> = {
  * entirely. The day does the switching, which is why business hours need no
  * toggle to make their point.
  *
- * The evening ink is on this panel and not on the section around it. With a
- * loop and no controls, putting it on the section would flip the whole
- * viewport light to dark every ten seconds for as long as anyone stayed on
- * the page. Contained here it still says the lights are off, and the page
- * behind it holds still.
+ * The header sits outside the keyed phase wrapper on purpose. The stops are
+ * remounted on every phase so they can fade in cleanly, and a marker that
+ * remounted with them would jump to its new hour instead of travelling to it.
  */
 export function CallHunt({ still }: { still: boolean }) {
   const [frame, setFrame] = useState(0);
@@ -69,29 +131,29 @@ export function CallHunt({ still }: { still: boolean }) {
   // Anyone who has asked for less motion gets the morning call already
   // answered: the outcome is the content, the walk is only the telling.
   const { phase, step } = still ? { phase: 0, step: 2 } : FRAMES[frame];
-  const { when, open, stops } = callDay[phase];
+  const { when, stops } = callDay[phase];
   const last = stops.length - 1;
 
   return (
-    <div
-      data-open={open}
-      // `text-foreground` is not decorative here: the ink phase redefines
-      // `--foreground` on this scope, and without a class consuming it the
-      // panel's unstyled text keeps inheriting the page's dark ink from
-      // outside and renders dark-on-dark.
-      className="day-ground overflow-hidden rounded-2xl border border-border bg-background text-foreground"
-    >
-      <div key={phase} className="phase-in">
-        <div className="flex items-center gap-3 border-b border-border px-5 py-4">
+    <div className="overflow-hidden rounded-2xl border border-border bg-background">
+      <div className="border-b border-border px-5 py-4">
+        <div className="flex items-center gap-3">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <PhoneIncoming className="size-4.5" aria-hidden />
           </span>
           <span className="flex-1 font-medium">{huntCaller}</span>
-          <span className="font-mono text-sm text-muted-foreground tabular-nums">
+          <span
+            key={`when-${phase}`}
+            className="phase-in font-mono text-sm text-muted-foreground tabular-nums"
+          >
             {when}
           </span>
         </div>
 
+        <DayStrip when={when} still={still} />
+      </div>
+
+      <div key={phase} className="phase-in">
         <ol
           className="px-5 py-2"
           aria-live="polite"

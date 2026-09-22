@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { BusinessSizeSolution } from "@/components/site/business-size-solution";
 import { EnterpriseSolution } from "@/components/site/enterprise-solution";
 import { MidMarketSolution } from "@/components/site/mid-market-solution";
+import { MigrationSolution } from "@/components/site/migration-solution";
 import { SmallBusinessSolution } from "@/components/site/small-business-solution";
 import { SolutionIllustration } from "@/components/site/solution-illustration";
 import { UseCaseSolution } from "@/components/site/use-case-solution";
@@ -87,6 +88,12 @@ export default async function SolutionDetailPage({
   if (solution.group === "By Use Case")
     return <UseCaseSolution solution={solution} />;
 
+  // Migration sells a project rather than a product: the reader is deciding
+  // whether to risk the phones, so the cutover takes the hero and the order
+  // of work is the spine of the page.
+  if (solution.group === "Migration")
+    return <MigrationSolution solution={solution} />;
+
   const {
     group,
     title,
@@ -111,10 +118,6 @@ export default async function SolutionDetailPage({
     <>
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-40 -right-24 size-[560px] rounded-full bg-brand-to/10 blur-3xl"
-        />
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <Link
             href="/solutions"
@@ -307,10 +310,6 @@ export default async function SolutionDetailPage({
           )}
 
           <div className="relative overflow-hidden rounded-2xl bg-background p-8 ring-1 ring-border">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -top-16 -right-10 size-48 rounded-full bg-brand-to/10 blur-2xl"
-            />
             <div className="relative">
               <h2 className="text-2xl font-semibold tracking-tight text-balance">
                 {gain.heading}

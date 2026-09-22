@@ -12,18 +12,9 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { businessSizes, type SizeContent } from "@/lib/business-size";
+import { integrationLogos } from "@/lib/site";
 import type { SolutionDetail } from "@/lib/solutions";
 import { cn } from "@/lib/utils";
-
-/** The wired integrations, as a quiet strip rather than the full wall. */
-const LOGOS = [
-  { name: "Salesforce", src: "/integration-logos/salesforce.png" },
-  { name: "Microsoft Teams", src: "/integration-logos/ms-teams.png" },
-  { name: "Google Workspace", src: "/integration-logos/google-workspace.png" },
-  { name: "Zendesk", src: "/integration-logos/zendesk.png" },
-  { name: "MS Outlook", src: "/integration-logos/outlook.png" },
-  { name: "Sugar CRM", src: "/integration-logos/sugar-crm.png" },
-] as const;
 
 /**
  * Small Business, given its own page rather than the shared size shell.
@@ -79,32 +70,39 @@ export function SmallBusinessSolution({
           thought. The reply sits under it at body weight and a narrower
           measure — two equal columns would have made them argue. */}
       <section className="mx-auto max-w-6xl px-6 pt-16 pb-14 lg:px-10 lg:pt-24 lg:pb-16">
-        <h2 className="max-w-[20ch] text-3xl leading-[1.12] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
-          {challenge.heading}
-        </h2>
-        <p className="mt-6 max-w-[56ch] text-lg text-pretty text-muted-foreground">
-          {challenge.body}
-        </p>
-
         {/* No rule between the objection and the reply. They are one thought
             — the reader's doubt and the answer to it — and a line across the
             middle made them read as two sections that happened to be next to
-            each other. The figure sits with the pair rather than only the
-            reply, which is why it is centred against the whole block. */}
-        <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:items-center lg:gap-16">
-          <div className="max-w-[56ch]">
-            <h3 className="text-xl font-semibold tracking-tight">
-              {handling.heading}
-            </h3>
-            <div className="mt-4 space-y-4">
-              {handling.body.map((paragraph) => (
-                <p
-                  key={paragraph.slice(0, 40)}
-                  className="text-pretty text-muted-foreground"
-                >
-                  {paragraph}
-                </p>
-              ))}
+            each other.
+
+            Both of them are in the left column now. The figure is what the
+            reply looks like, but it answers the objection too, so it stands
+            against the pair and is centred on the whole of it. Previously
+            the heading sat above this grid and the figure lined up with the
+            reply alone, which is not what the comment here claimed. */}
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,34rem)] lg:items-center lg:gap-16">
+          <div>
+            <h2 className="max-w-[20ch] text-3xl leading-[1.12] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+              {challenge.heading}
+            </h2>
+            <p className="mt-6 max-w-[56ch] text-lg text-pretty text-muted-foreground">
+              {challenge.body}
+            </p>
+
+            <div className="mt-10 max-w-[56ch]">
+              <h3 className="text-xl font-semibold tracking-tight">
+                {handling.heading}
+              </h3>
+              <div className="mt-4 space-y-4">
+                {handling.body.map((paragraph) => (
+                  <p
+                    key={paragraph.slice(0, 40)}
+                    className="text-pretty text-muted-foreground"
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -242,18 +240,24 @@ export function SmallBusinessSolution({
             </p>
           </div>
 
-          <ul className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-6">
-            {LOGOS.map((logo) => (
+          <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-5">
+            {integrationLogos.map((logo) => (
               <li
                 key={logo.name}
                 className="flex aspect-[3/2] items-center justify-center bg-card p-4"
               >
+                {/* Sized by width, not height. These files carry a lot of
+                    their own margin — most are wide lockups whose ink is a
+                    fifth as tall as it is wide — so a fixed height shrank the
+                    mark itself to a few pixels. `fill` is the measured
+                    correction; see `integrationLogos`. */}
                 <Image
                   src={logo.src}
                   alt={logo.name}
                   width={120}
-                  height={60}
-                  className="h-7 w-auto max-w-full object-contain"
+                  height={90}
+                  style={{ width: `${logo.fill}%` }}
+                  className="max-h-full object-contain"
                 />
               </li>
             ))}

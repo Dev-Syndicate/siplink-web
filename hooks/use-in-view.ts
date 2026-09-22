@@ -14,7 +14,10 @@ import { useEffect, useRef, useState } from "react";
  * point is to start the sequence at the right moment, not to gate the content
  * on it, so anything that cannot observe simply gets the finished state.
  */
-export function useInView<T extends HTMLElement>() {
+/* `Element` rather than `HTMLElement`: `IntersectionObserver.observe`
+   takes an Element, and the migration schematics put the ref on the
+   <svg> itself. Widening cannot break existing callers. */
+export function useInView<T extends Element>() {
   const ref = useRef<T>(null);
   const [seen, setSeen] = useState(false);
 

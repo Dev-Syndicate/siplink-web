@@ -15,18 +15,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { businessSizes, type SizeContent } from "@/lib/business-size";
+import { integrationLogos } from "@/lib/site";
 import type { SolutionDetail } from "@/lib/solutions";
 import { cn } from "@/lib/utils";
-
-/** The eight wired integrations, as a quiet strip rather than the full wall. */
-const LOGOS = [
-  { name: "Salesforce", src: "/integration-logos/salesforce.png" },
-  { name: "Microsoft Teams", src: "/integration-logos/ms-teams.png" },
-  { name: "Google Workspace", src: "/integration-logos/google-workspace.png" },
-  { name: "Zendesk", src: "/integration-logos/zendesk.png" },
-  { name: "MS Outlook", src: "/integration-logos/outlook.png" },
-  { name: "Sugar CRM", src: "/integration-logos/sugar-crm.png" },
-] as const;
 
 /**
  * One capability, beside the phone.
@@ -142,10 +133,6 @@ export function BusinessSizeSolution({
             {/* Gated to `lg` with the backdrop it belongs to: at phone width
                 a 600px blur is wider than the hero and washes the whole thing
                 pink instead of lifting one corner of a photograph. */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -top-40 -right-28 hidden size-[600px] rounded-full bg-brand-to/10 blur-3xl lg:block"
-            />
           </>
         ) : null}
 
@@ -413,18 +400,24 @@ export function BusinessSizeSolution({
             </p>
           </div>
 
-          <ul className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-6">
-            {LOGOS.map((logo) => (
+          <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-5">
+            {integrationLogos.map((logo) => (
               <li
                 key={logo.name}
                 className="flex aspect-[3/2] items-center justify-center bg-card p-4"
               >
+                {/* Sized by width, not height. These files carry a lot of
+                    their own margin — most are wide lockups whose ink is a
+                    fifth as tall as it is wide — so a fixed height shrank the
+                    mark itself to a few pixels. `fill` is the measured
+                    correction; see `integrationLogos`. */}
                 <Image
                   src={logo.src}
                   alt={logo.name}
                   width={120}
-                  height={60}
-                  className="h-7 w-auto max-w-full object-contain"
+                  height={90}
+                  style={{ width: `${logo.fill}%` }}
+                  className="max-h-full object-contain"
                 />
               </li>
             ))}

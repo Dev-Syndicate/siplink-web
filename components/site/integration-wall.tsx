@@ -1,61 +1,68 @@
 import Image from "next/image";
 
-import { integrations } from "@/lib/site";
+import { integrationLogos, integrations } from "@/lib/site";
 
 /**
- * The eight wired integrations, four a side.
+ * The ten wired integrations, five a side.
  *
- * Grouped rather than ordered arbitrarily: the left column is where a
- * customer record lives, the right column is where the team talks. That is
- * also the honest shape of the claim — records on one side, conversations on
- * the other, with the phone system in between.
+ * Grouped rather than ordered arbitrarily: the left column is the system that
+ * holds the customer, the right column is where the team actually works — the
+ * workplace suites, the channel people message on, and the two desks (support
+ * and recruiting) that are somebody's whole day. That is also the honest shape
+ * of the claim: records on one side, the places work happens on the other,
+ * with the phone system in between.
+ *
+ * The names, files and `fill` come from `integrationLogos` in lib/site.ts,
+ * which the four business-size pages read as well — the list used to exist
+ * five times over. Only the position belongs to this drawing, so only the
+ * position is written here: the first five sit left in order, the rest right.
  *
  * `x`/`y` are viewBox units. The plates are HTML positioned over the SVG at
  * the matching percentage rather than drawn inside it, so every logo goes
- * through next/image: eight unoptimised PNGs in `<image>` tags would put
- * about 670KB into this one section.
- *
- * `fill` is how much of the plate the artwork takes. The supplied files carry
- * very different amounts of their own whitespace — CEIPAL and Teams sit in a
- * wide margin, the Salesforce lockup runs to its edges — so a single size
- * would leave the row looking mis-set. These are tuned by eye against the
- * rendered section, not measured, and want revisiting if a file is replaced.
+ * through next/image: ten unoptimised PNGs in `<image>` tags would put about
+ * 720KB into this one section.
  */
-const NODES = [
-  { name: "Salesforce", logo: "/integration-logos/salesforce.png", x: 80, y: 65, fill: 84 },
-  { name: "Sugar CRM", logo: "/integration-logos/sugar-crm.png", x: 80, y: 195, fill: 92 },
-  { name: "Zendesk", logo: "/integration-logos/zendesk.png", x: 80, y: 325, fill: 88 },
-  { name: "CEIPAL", logo: "/integration-logos/ceipal.png", x: 80, y: 455, fill: 100 },
-  { name: "Microsoft Teams", logo: "/integration-logos/ms-teams.png", x: 820, y: 65, fill: 100 },
-  { name: "MS Outlook", logo: "/integration-logos/outlook.png", x: 820, y: 195, fill: 88 },
-  { name: "Microsoft Dynamics 365", logo: "/integration-logos/m365.png", x: 820, y: 325, fill: 88 },
-  { name: "Google Workspace", logo: "/integration-logos/google-workspace.png", x: 820, y: 455, fill: 84 },
-] as const;
+const ROWS = [45, 152, 260, 368, 475] as const;
+
+const NODES = integrationLogos.map((logo, index) => ({
+  ...logo,
+  x: index < 5 ? 80 : 820,
+  y: ROWS[index % 5],
+}));
 
 /**
- * Eight wires, node to hub, in the same order as `NODES`.
+ * Ten wires, node to hub, in the same order as `NODES`.
  *
  * Corners are quadratics at a 20-unit radius so every run stays orthogonal:
  * the thing being drawn is a patch panel, and a patch panel has right angles.
  * Written out rather than generated — the geometry is fixed, and a loop would
  * hide where each wire actually goes.
+ *
+ * The rows are symmetrical about the hub's own centre line, so the middle pair
+ * needs no corners at all: it runs straight in along the bus. The outer pairs
+ * turn wide at x=200/700 and the inner pairs turn close at x=250/650, which is
+ * what stops five runs a side from stacking into a single thick band.
  */
 const WIRES = [
-  "M 112 65 H 180 Q 200 65 200 85 V 196 Q 200 216 220 216 H 355",
-  "M 112 195 H 230 Q 250 195 250 215 V 224 Q 250 244 270 244 H 355",
-  "M 112 325 H 230 Q 250 325 250 305 V 296 Q 250 276 270 276 H 355",
-  "M 112 455 H 180 Q 200 455 200 435 V 324 Q 200 304 220 304 H 355",
-  "M 788 65 H 720 Q 700 65 700 85 V 196 Q 700 216 680 216 H 545",
-  "M 788 195 H 670 Q 650 195 650 215 V 224 Q 650 244 630 244 H 545",
-  "M 788 325 H 670 Q 650 325 650 305 V 296 Q 650 276 630 276 H 545",
-  "M 788 455 H 720 Q 700 455 700 435 V 324 Q 700 304 680 304 H 545",
+  "M 128 45 H 180 Q 200 45 200 65 V 192 Q 200 212 220 212 H 355",
+  "M 128 152 H 230 Q 250 152 250 172 V 216 Q 250 236 270 236 H 355",
+  "M 128 260 H 355",
+  "M 128 368 H 230 Q 250 368 250 348 V 304 Q 250 284 270 284 H 355",
+  "M 128 475 H 180 Q 200 475 200 455 V 328 Q 200 308 220 308 H 355",
+  "M 772 45 H 720 Q 700 45 700 65 V 192 Q 700 212 680 212 H 545",
+  "M 772 152 H 670 Q 650 152 650 172 V 216 Q 650 236 630 236 H 545",
+  "M 772 260 H 545",
+  "M 772 368 H 670 Q 650 368 650 348 V 304 Q 650 284 630 284 H 545",
+  "M 772 475 H 720 Q 700 475 700 455 V 328 Q 700 308 680 308 H 545",
 ] as const;
 
 /**
  * Negative, so every wire is already mid-cycle on the first paint — a
  * positive delay holds a wire at its un-animated state until it fires, which
  * renders as a crimson stub parked at the node. Spread unevenly across the
- * 3.2s cycle so the eight never pulse in formation.
+ * 3.2s cycle so the ten never pulse in formation, and the two straight middle
+ * runs are kept far apart in the cycle because they are the pair the eye
+ * follows most easily.
  */
 const DELAYS = [
   "0s",
@@ -66,6 +73,8 @@ const DELAYS = [
   "-2.9s",
   "-0.4s",
   "-2.2s",
+  "-1.5s",
+  "-3.05s",
 ] as const;
 
 /**
@@ -77,15 +86,15 @@ const DELAYS = [
  * corner, so each branch leaves the trunk on a curve the way the runs do on
  * the wide version.
  */
-const STACK = { w: 340, h: 510 } as const;
-const STACK_ROWS = [130, 235, 340, 445] as const;
+const STACK = { w: 340, h: 620 } as const;
+const STACK_ROWS = [130, 235, 340, 445, 550] as const;
 const STACK_TRUNK = 170;
 
 const STACK_TRUNK_PATH = `M ${STACK_TRUNK} 76 V ${STACK_ROWS[STACK_ROWS.length - 1]}`;
 
 const STACK_WIRES = STACK_ROWS.flatMap((y) => [
-  `M ${STACK_TRUNK} ${y - 36} Q ${STACK_TRUNK} ${y} ${STACK_TRUNK - 26} ${y} H 98`,
-  `M ${STACK_TRUNK} ${y - 36} Q ${STACK_TRUNK} ${y} ${STACK_TRUNK + 26} ${y} H 242`,
+  `M ${STACK_TRUNK} ${y - 36} Q ${STACK_TRUNK} ${y} ${STACK_TRUNK - 26} ${y} H 110`,
+  `M ${STACK_TRUNK} ${y - 36} Q ${STACK_TRUNK} ${y} ${STACK_TRUNK + 26} ${y} H 230`,
 ]);
 
 const VIEW = { w: 900, h: 520 } as const;
@@ -120,7 +129,7 @@ export function IntegrationWall() {
           >
             <defs>
               {/* The bus the hub sits on. It runs past both edges and fades,
-                  because the network does not stop at the eight tools there
+                  because the network does not stop at the ten tools there
                   was room to draw. */}
               <linearGradient id="integration-bus" x1="0" x2="1" y1="0" y2="0">
                 <stop offset="0" stopColor="currentColor" stopOpacity="0" />
@@ -173,7 +182,7 @@ export function IntegrationWall() {
                   className="stroke-background/30"
                 />
                 {/* `pathLength` normalises every wire to 100 units, so one
-                    dash definition fits all eight and each pulse crosses at
+                    dash definition fits all ten and each pulse crosses at
                     the same speed — without it the short middle wires would
                     fire twice while the long corner ones fired once. */}
                 <path
@@ -195,22 +204,26 @@ export function IntegrationWall() {
               they sit on one: the Zendesk teal and the black bar under the
               Microsoft mark would otherwise vanish into the section. */}
           <div className="absolute inset-0">
-            {NODES.map(({ name, logo, x, y, fill }) => (
+            {NODES.map(({ name, src, w, h, x, y, fill }) => (
               <span
                 key={name}
-                className="absolute flex aspect-square -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-background p-[1.3%] shadow-lg"
+                // 104 x 72 rather than square. Nine of the ten marks are
+                // wide lockups; on a square plate a 7:1 wordmark covers a
+                // tenth of it and reads as tiny however high the fill goes.
+                // Widening the plate is what actually makes them legible.
+                className="absolute flex aspect-[104/72] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-background px-[1.2%] shadow-lg"
                 style={{
                   left: pct(x, VIEW.w),
                   top: pct(y, VIEW.h),
-                  width: pct(72, VIEW.w),
+                  width: pct(104, VIEW.w),
                 }}
               >
                 <Image
-                  src={logo}
+                  src={src}
                   alt=""
-                  width={72}
-                  height={72}
-                  sizes="96px"
+                  width={w}
+                  height={h}
+                  sizes="140px"
                   style={{ width: `${fill}%` }}
                   className="h-auto object-contain"
                 />
@@ -241,7 +254,7 @@ export function IntegrationWall() {
 
         {/* The phone gets the same diagram, stood on its end.
 
-            Eight plates and eight wires at 390px wide are a smudge, so the
+            Ten plates and ten wires at 390px wide are a smudge, so the
             wide version stays behind `md`. This is not a different design:
             the same trunk, the same curving branches and the same travelling
             pulse, drawn in their own viewBox with the plates laid over them
@@ -304,7 +317,7 @@ export function IntegrationWall() {
               />
             </span>
 
-            {NODES.map(({ name, logo, fill }, index) => (
+            {NODES.map(({ name, src, w, h, fill }, index) => (
               <span
                 key={name}
                 // Anchored by the top of the plate rather than the middle of
@@ -317,13 +330,13 @@ export function IntegrationWall() {
                   width: pct(112, STACK.w),
                 }}
               >
-                <span className="flex aspect-square w-[57%] items-center justify-center rounded-2xl bg-background p-1.5 shadow-md">
+                <span className="flex aspect-[88/60] w-[79%] items-center justify-center rounded-2xl bg-background px-1.5 shadow-md">
                   <Image
-                    src={logo}
+                    src={src}
                     alt=""
-                    width={64}
-                    height={64}
-                    sizes="64px"
+                    width={w}
+                    height={h}
+                    sizes="96px"
                     style={{ width: `${fill}%` }}
                     className="h-auto object-contain"
                   />

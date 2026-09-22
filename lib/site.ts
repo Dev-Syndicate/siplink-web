@@ -1051,20 +1051,58 @@ export const explainerVideo = {
 } as const;
 
 /**
- * Integrations, from the plan comparison matrix supplied by SipLink.
- * The brochure additionally lists Zoho, Odoo and HubSpot; those are not
- * included until confirmed live. See details-content.md §20.6.
+ * The wired integrations, and how much of a plate each mark should take.
+ *
+ * This set supersedes the eight taken from the plan comparison matrix. That
+ * list deliberately held Zoho, Odoo and HubSpot back — the brochure named
+ * them, the matrix did not, and the note here said to wait for confirmation
+ * (details-content.md §20.6). All three are shown now, along with Bitrix24
+ * and WhatsApp, on the strength of the artwork supplied for them. Sugar CRM
+ * and JobDiva are no longer drawn. Five new integration claims and two
+ * withdrawn is a content decision, not a logo swap: if any of them is not
+ * live, it comes out of this list rather than being hidden in the drawing.
+ *
+ * One list, because there were five: the wall had its own and each of the four
+ * business-size pages carried an identical copy, so a logo swap meant editing
+ * the same six lines in five places and the Salesforce path had already gone
+ * stale in all of them.
+ *
+ * Every file is cropped to its own ink, so `w`/`h` are the mark's true
+ * proportions and `fill` is simply how much of the plate it takes. They
+ * arrived with 0–29% transparent padding baked in, which meant a fill of 100
+ * could still draw a small logo; trimming is what makes these numbers mean
+ * something. Re-trim anything that gets replaced.
+ *
+ * `fill` is capped on both axes — 92% of the plate's width, or 80% of its
+ * height, whichever binds first — because plate width alone does not govern
+ * how big a mark looks. Nine of these are wide lockups between 3:1 and 7:1,
+ * so width binds and they all sit at 92. Salesforce is the one square-ish
+ * mark, so height binds and it sits lower; left at 92 it would tower over
+ * the row. The plates are drawn wide for the same reason: a 7:1 wordmark on
+ * a square plate covers a tenth of it and reads as tiny however high the
+ * fill goes.
  */
-export const integrations = [
-  "Salesforce",
-  "Microsoft Teams",
-  "MS Outlook",
-  "Microsoft Dynamics 365",
-  "Google Workspace",
-  "Zendesk",
-  "Sugar CRM",
-  "CEIPAL",
+export const integrationLogos = [
+  { name: "Salesforce", src: "/new-integrations/salesforce.png", w: 616, h: 431, fill: 79 },
+  { name: "HubSpot", src: "/new-integrations/hubspot.png", w: 704, h: 201, fill: 92 },
+  { name: "Zoho", src: "/new-integrations/zoho.png", w: 386, h: 167, fill: 92 },
+  { name: "Bitrix24", src: "/new-integrations/bitrix.png", w: 408, h: 80, fill: 92 },
+  { name: "Odoo", src: "/new-integrations/odoo.png", w: 451, h: 145, fill: 92 },
+  { name: "Microsoft 365", src: "/new-integrations/microsoft2.png", w: 763, h: 127, fill: 92 },
+  { name: "Google Workspace", src: "/new-integrations/google2.png", w: 481, h: 65, fill: 92 },
+  { name: "WhatsApp", src: "/new-integrations/whatsapp.png", w: 323, h: 77, fill: 92 },
+  { name: "Zendesk", src: "/new-integrations/zendesk.png", w: 748, h: 151, fill: 92 },
+  { name: "CEIPAL", src: "/new-integrations/ceipal2.png", w: 515, h: 170, fill: 92 },
 ] as const;
+
+/** Just the names, for the places that list them rather than show them. */
+/**
+ * Just the names, for the list under the wall and anywhere else prose needs
+ * them. Derived rather than written out, so the words a screen reader hears
+ * cannot drift from the marks a sighted reader sees — which is what happened
+ * when the two were maintained separately.
+ */
+export const integrations = integrationLogos.map(({ name }) => name);
 
 export type NavLeaf = {
   label: string;

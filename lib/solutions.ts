@@ -93,6 +93,18 @@ export type SolutionDetail = {
    * source; feature grids are not, so they never get numbers.
    */
   process?: SolutionStep[];
+  /**
+   * One concrete run-through of this use case, as a reader would live it.
+   * Only "By Use Case" pages set this. It is ordered — a call really does
+   * happen in this order — so unlike `capabilities` it carries numbers.
+   */
+  scenario?: { heading: string; lead: string; steps: SolutionStep[] };
+  /**
+   * Product slugs this use case is assembled from. The page looks each one
+   * up in `productDetails` rather than restating it, so the product copy
+   * lives in exactly one file.
+   */
+  builtFrom?: string[];
 };
 
 /* ------------------------------------------------------------------ shared */
@@ -179,6 +191,25 @@ const useCase: SolutionDetail[] = [
       "Businesses hiring across locations",
       "Companies replacing personal phones for work calls",
     ],
+    scenario: {
+      heading: "A call to someone who isn’t at a desk",
+      lead: "The caller does one thing — dial the business number. Everything after that is the platform’s job.",
+      steps: [
+        {
+          title: "The business number rings",
+          body: "Not a mobile, not a personal line. The customer dials the number they have always had for you.",
+        },
+        {
+          title: "The extension follows the person",
+          body: "It rings wherever that employee is working today — desk phone, laptop softphone, browser or the app on their mobile.",
+        },
+        {
+          title: "They answer as the business",
+          body: "Same greeting, same transfer options, same recording and reporting. The caller never learns which room the call landed in.",
+        },
+      ],
+    },
+    builtFrom: ["cloud-pbx", "webrtc-sdk", "virtual-numbers", "call-analytics"],
     gain: {
       heading: "Flexible working, without the trade-off",
       body: "Support employees working anywhere while keeping one consistent, professional voice for every customer who calls.",
@@ -235,6 +266,25 @@ const useCase: SolutionDetail[] = [
       "Growing support operations",
       "Businesses tracking service quality",
     ],
+    scenario: {
+      heading: "One caller, from ring to resolution",
+      lead: "The shape of a support call when the routing is set up properly — nobody hears a busy tone and nothing goes uncounted.",
+      steps: [
+        {
+          title: "The menu asks once",
+          body: "An IVR greeting offers the departments you actually have, so the caller selects where they need to go instead of being passed around.",
+        },
+        {
+          title: "The queue holds the place",
+          body: "If every agent in that department is on a call, the caller waits in order with a message — rather than a busy tone or an unanswered ring.",
+        },
+        {
+          title: "The first free agent picks up",
+          body: "The call is delivered, recorded for quality and training, and added to the day’s figures the supervisor is watching.",
+        },
+      ],
+    },
+    builtFrom: ["ivr", "call-queue", "call-recording", "call-analytics"],
     gain: {
       heading: "A more consistent experience, every call",
       body: "Fewer missed calls, faster responses, and a support experience that stays consistent as your team grows.",
@@ -291,6 +341,25 @@ const useCase: SolutionDetail[] = [
       "High-volume calling operations",
       "Teams that live in a CRM",
     ],
+    scenario: {
+      heading: "An afternoon of outbound calling",
+      lead: "The same list, worked without the dead air between attempts that eats a sales day.",
+      steps: [
+        {
+          title: "The list loads into the dialler",
+          body: "Representatives stop keying numbers by hand and stop losing their place in a spreadsheet between calls.",
+        },
+        {
+          title: "Dead dials never reach a person",
+          body: "No answer, busy and unavailable are handled by the dialler. What arrives at a representative is a customer already on the line.",
+        },
+        {
+          title: "The conversation lands with its context",
+          body: "The customer record opens with the call, and the outcome writes back — so the follow-up is booked before the next number dials.",
+        },
+      ],
+    },
+    builtFrom: ["predictive-dialer", "auto-dialer", "crm-integration", "call-recording"],
     gain: {
       heading: "More selling time, less busywork",
       body: "Cut the manual work around every call so representatives can focus on building relationships and closing.",
@@ -347,6 +416,25 @@ const useCase: SolutionDetail[] = [
       "Businesses standardising collaboration",
       "Organisations wanting one platform to manage",
     ],
+    scenario: {
+      heading: "What stops being separate",
+      lead: "Nothing here is a new habit for your employees. It is the same work, with fewer systems underneath it.",
+      steps: [
+        {
+          title: "Collaboration keeps its home",
+          body: "Teams stays where internal conversation already happens — and gains the ability to place and take external business calls from inside it.",
+        },
+        {
+          title: "Customer channels arrive together",
+          body: "Voice, messaging and WhatsApp reach the same environment, so a customer who switches channel is not starting again with someone new.",
+        },
+        {
+          title: "Your applications join in",
+          body: "Voice and SIP APIs put calling inside the systems your teams already work in, rather than beside them in another window.",
+        },
+      ],
+    },
+    builtFrom: ["cloud-pbx", "teams-calling", "whatsapp-api", "sip-api"],
     gain: {
       heading: "Less switching, more connection",
       body: "A unified experience that's easier for teams to use and easier for the business to control.",
@@ -403,6 +491,25 @@ const useCase: SolutionDetail[] = [
       "Businesses entering new markets",
       "Teams serving customers across time zones",
     ],
+    scenario: {
+      heading: "Opening in a new market",
+      lead: "What it takes to be reachable in a country you have just started selling into.",
+      steps: [
+        {
+          title: "A number local to that market",
+          body: "Customers dial a number that looks domestic to them, which is often the difference between a call placed and a call abandoned.",
+        },
+        {
+          title: "It joins the platform you already run",
+          body: "The new market is a configuration, not a second phone system with its own vendor, its own portal and its own way of doing things.",
+        },
+        {
+          title: "Policy stays set in one place",
+          body: "Routing, opening hours and reporting for the new office are managed alongside every other office, in the same portal.",
+        },
+      ],
+    },
+    builtFrom: ["virtual-numbers", "did-numbers", "toll-free-numbers", "cloud-pbx"],
     gain: {
       heading: "Connected everywhere, managed in one place",
       body: "Serve every market with a consistent business presence, without building and maintaining a separate system for each office.",
@@ -459,6 +566,25 @@ const useCase: SolutionDetail[] = [
       "Businesses opening new locations",
       "Operations that transfer calls between sites",
     ],
+    scenario: {
+      heading: "A branch that keeps its own hours",
+      lead: "Central management is only worth having if it does not flatten the differences between locations.",
+      steps: [
+        {
+          title: "The branch stays itself",
+          body: "Its own number, its own greeting, its own opening hours — because a branch that closes at five should not answer like one that closes at nine.",
+        },
+        {
+          title: "Staff reach each other directly",
+          body: "Employees dial colleagues at other branches by extension. Internal calls stay internal, wherever the two people happen to be.",
+        },
+        {
+          title: "Head office sees all of it",
+          body: "One view across every location, and a policy change made once rather than repeated branch by branch.",
+        },
+      ],
+    },
+    builtFrom: ["hosted-pbx", "cloud-pbx", "ivr", "call-analytics"],
     gain: {
       heading: "One business, many branches, no seams",
       body: "Keep every location running its own way while managing communication — and seeing it — as one connected operation.",

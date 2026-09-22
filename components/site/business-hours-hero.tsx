@@ -21,9 +21,10 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
  * the front desk is skipped instead of rung. A toggle would have asked the
  * reader to do work before the page had said anything.
  *
- * The evening ink lives on the panel now rather than on this section — see
- * the note in `CallHunt`. The section keeps one ground so that a figure
- * looping on its own cannot strobe the whole viewport.
+ * There is no evening ink anywhere any more — not on this section and not on
+ * the panel. A figure looping unattended cannot change its own ground without
+ * reading as a fault, so the hour is drawn as a schedule strip instead. See
+ * the note in `CallHunt`.
  */
 export function BusinessHoursHero({
   group,

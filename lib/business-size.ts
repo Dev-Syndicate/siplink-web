@@ -167,6 +167,15 @@ export const huntCaller = "A customer calls";
  * has to be the same in the morning and the evening; equal stop counts make
  * that structural instead of propping it up with a minimum height.
  */
+/**
+ * The staffed hours drawn as the lit span on the hero's schedule strip.
+ *
+ * Illustrative, like the times on the two calls — a shape for "the desk is
+ * covered between these hours", not a support commitment. Nothing on the page
+ * quotes these numbers, and nothing should.
+ */
+export const businessHours = { open: 9, close: 18 };
+
 export const callDay: CallPhase[] = [
   {
     when: "09:58",

@@ -55,9 +55,10 @@
 :root {
   --brand-from: oklch(0.7 0.175 12.8);
   --brand-to: oklch(0.552 0.211 12.8);
-  /* After-hours ground for the small-business day. A blue-black evening
-     rather than a tinted near-black — it is six in the evening, not a
-     dark theme. Consumed only by `.day-ground` below. */
+  /* A blue-black evening rather than a tinted near-black. Nothing consumes
+     it at the moment: it was the after-hours ground for the small-business
+     hero, which now tells the hour with a schedule strip instead. Kept as a
+     palette value, and `bg-ink` / `text-ink` still resolve from it. */
   --ink: oklch(0.235 0.045 268);
   --background: oklch(1 0 0);
   --foreground: oklch(0.18 0.012 260);
@@ -1247,49 +1248,23 @@
 @layer components {
   /* ------------------------------------- small business: the working day
 
-     The hero's ground is the hour. Past closing time the section swaps to
-     the evening ink — and it does that by redefining the theme tokens on
-     the scope, exactly the way `.dark` does, rather than by overriding
-     colours element by element. Everything inside keeps using
-     `bg-background`, `text-muted-foreground`, `border-border` and follows
-     on its own, so the hero carries no `dark:`-style variant anywhere and
-     there is one place to adjust if the evening palette changes.
+     The hour used to be told by the ground: past closing, the panel
+     redefined `--background` to the evening ink the way `.dark` does. It
+     was contained to the panel rather than the section, so the viewport
+     never strobed — but the panel still flipped white to navy and back
+     every six seconds, unattended, beside a page holding perfectly still.
+     That reads as a rendering fault rather than as dusk.
 
-     `--primary` lifts and `--primary-foreground` darkens together: crimson
-     at its daytime lightness has no contrast left against ink, and white
-     on the lifted crimson has none either. */
-  .day-ground[data-open="false"] {
-    --background: var(--ink);
-    --foreground: oklch(0.97 0.008 268);
-    --card: oklch(1 0 0 / 6%);
-    --card-foreground: oklch(0.97 0.008 268);
-    --muted: oklch(1 0 0 / 8%);
-    --muted-foreground: oklch(0.75 0.022 268);
-    --border: oklch(1 0 0 / 14%);
-    --input: oklch(1 0 0 / 18%);
-    --accent: oklch(1 0 0 / 10%);
-    --accent-foreground: oklch(0.97 0.008 268);
-    --primary: oklch(0.72 0.185 12.8);
-    --primary-foreground: oklch(0.17 0.03 12.8);
-    --ring: oklch(0.72 0.185 12.8);
-  }
+     The hour is told by the schedule strip in the panel header now: the
+     open span lit, and a marker at the hour the call came in — inside that
+     span in the morning, outside it in the evening. Same fact, one ground,
+     and it is the rule a small business actually sets rather than a mood.
+     The marker travelling between the two is all the motion it needs.
 
-  /* Sunset and sunrise. Wrapped in `:where()` so the specificity stays at
-     zero and any Tailwind `transition-*` utility on a child still wins. */
-  .day-ground,
-  .day-ground :where(*) {
-    transition-property: background-color, border-color, fill;
-    transition-duration: 320ms;
-    transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
-  }
+     `--ink` is left defined in the theme; nothing consumes it now. */
 
-  /* Text colour is deliberately absent from that list.
-     Crossfading foreground and background together passes through a midpoint
-     where both are mid-grey and the contrast ratio is about 1.1:1 — the words
-     vanish. As a one-off under the reader's hand that was a blink; on a loop
-     it is a flash every ten seconds. So the ground changes on its own, and
-     the contents are keyed to the phase and faded back in after it has
-     settled, which means no frame ever holds old text over a new ground. */
+  /* Stops are keyed to the phase and faded in, so no frame holds the
+     morning's outcome over the evening's call. */
   @keyframes phase-in {
     from {
       opacity: 0;
@@ -1405,11 +1380,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .day-ground,
-    .day-ground :where(*) {
-      transition-duration: 1ms;
-    }
-
     /* The figures keep their finished state rather than their first frame:
        a drawn line and a lit device are the content, the drawing is not. */
     .hunt-ring,
@@ -1807,6 +1777,45 @@
     .route-step,
     .talk-bar {
       animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* ------------------------------------------------ migration: the cutover
+
+     Calls crossing the switch. `left` rather than a transform, so the run is
+     measured against the ribbon it crosses and adding width to the figure
+     lengthens the run by itself. The rate never changes and the dots never
+     stop: the system underneath changes hands, the calls do not. */
+  @keyframes cutover-run {
+    0% {
+      left: 0%;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+
+  .cutover-run {
+    animation: cutover-run 3.4s linear infinite backwards;
+  }
+
+  /* The ribbon is the claim, and the sides either end of it say the same
+     thing in words — so under reduced motion the dots simply are not drawn
+     and the figure rests on its migrated state. */
+  @media (prefers-reduced-motion: reduce) {
+    .cutover-run {
+      animation: none;
+      opacity: 0;
     }
   }
 }

@@ -12,18 +12,9 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { businessSizes, type SizeContent } from "@/lib/business-size";
+import { integrationLogos } from "@/lib/site";
 import type { SolutionDetail } from "@/lib/solutions";
 import { cn } from "@/lib/utils";
-
-/** The wired integrations, as a quiet strip rather than the full wall. */
-const LOGOS = [
-  { name: "Salesforce", src: "/integration-logos/salesforce.png" },
-  { name: "Microsoft Teams", src: "/integration-logos/ms-teams.png" },
-  { name: "Google Workspace", src: "/integration-logos/google-workspace.png" },
-  { name: "Zendesk", src: "/integration-logos/zendesk.png" },
-  { name: "MS Outlook", src: "/integration-logos/outlook.png" },
-  { name: "Sugar CRM", src: "/integration-logos/sugar-crm.png" },
-] as const;
 
 /**
  * Mid-Market, given its own page in the family with Small Business and
@@ -142,18 +133,24 @@ export function MidMarketSolution({
             </p>
           </div>
 
-          <ul className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-6">
-            {LOGOS.map((logo) => (
+          <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-5">
+            {integrationLogos.map((logo) => (
               <li
                 key={logo.name}
                 className="flex aspect-[3/2] items-center justify-center bg-card p-4"
               >
+                {/* Sized by width, not height. These files carry a lot of
+                    their own margin — most are wide lockups whose ink is a
+                    fifth as tall as it is wide — so a fixed height shrank the
+                    mark itself to a few pixels. `fill` is the measured
+                    correction; see `integrationLogos`. */}
                 <Image
                   src={logo.src}
                   alt={logo.name}
                   width={120}
-                  height={60}
-                  className="h-7 w-auto max-w-full object-contain"
+                  height={90}
+                  style={{ width: `${logo.fill}%` }}
+                  className="max-h-full object-contain"
                 />
               </li>
             ))}
