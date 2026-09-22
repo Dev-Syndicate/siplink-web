@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, PhoneCall } from "lucide-react";
 
 import {
   Accordion,
@@ -18,7 +18,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getProductDetail, productDetails } from "@/lib/products";
-import { navHighlights } from "@/lib/site";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function generateStaticParams() {
@@ -494,41 +494,53 @@ export default async function ProductDetailPage({
         </section>
       ) : null}
 
-      {/* Trust strip */}
-      <section className="border-y border-border bg-muted/30">
-        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:px-10">
-          {navHighlights.map(({ label, description, icon: HighlightIcon }) => (
-            <div key={label} className="flex items-center gap-4">
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-background text-primary shadow-sm">
-                <HighlightIcon className="size-5" aria-hidden />
-              </span>
-              <div className="min-w-0">
-                <p className="font-medium">{label}</p>
-                <p className="mt-0.5 text-sm text-pretty text-muted-foreground">
-                  {description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Closing CTA, matching the homepage treatment so the last ask on a
+          product page carries the same weight as the one on the front page. */}
+      <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+        <div className="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-brand-to via-brand-to to-brand-from px-8 py-14 text-primary-foreground lg:px-14 lg:py-16">
+          {/* Soft light falling from the top-right, so the flat gradient
+              reads as a lit surface rather than a solid fill. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-32 -right-24 -z-10 size-[520px] rounded-full bg-white/10 blur-3xl"
+          />
 
-      {/* CTA */}
-      <section className="mx-auto max-w-7xl px-6 py-16 text-center lg:px-10">
-        <h2 className="text-3xl font-semibold tracking-tight text-balance">
-          See {title} working for your business
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-          Tell us how your teams communicate today and we will recommend a
-          configuration — including porting your existing numbers.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <Button asChild size="lg">
-            <Link href="/contact">Book a demo</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link href="/products">All products</Link>
-          </Button>
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 font-mono text-[11px] font-semibold tracking-widest uppercase">
+            <span className="size-1.5 rounded-full bg-current" aria-hidden />
+            {category}
+          </span>
+
+          <h2 className="font-heading mt-6 max-w-xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+            See {title} working for your business
+          </h2>
+
+          <p className="mt-5 max-w-xl text-pretty text-primary-foreground/85 lg:text-lg">
+            Tell us how your teams communicate today and we will recommend a
+            configuration — including porting your existing numbers.
+          </p>
+
+          <div className="mt-9 flex flex-wrap gap-4">
+            <Button
+              asChild
+              size="lg"
+              className="w-full bg-background text-primary hover:bg-background/90 sm:w-auto"
+            >
+              <Link href="/contact">Book a demo</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="h-auto w-full border-white/25 bg-white/10 py-3 text-primary-foreground hover:bg-white/20 hover:text-primary-foreground sm:w-auto sm:py-2 dark:border-white/25 dark:bg-white/10 dark:hover:bg-white/20"
+            >
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
+                <PhoneCall className="shrink-0" aria-hidden />
+                <span className="text-center text-balance whitespace-normal">
+                  Speak to an architect ({site.phone})
+                </span>
+              </a>
+            </Button>
+          </div>
         </div>
       </section>
     </>

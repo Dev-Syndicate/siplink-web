@@ -214,6 +214,7 @@
       opacity: 0;
     }
   }
+
 }
 
 @layer components {
@@ -1054,7 +1055,6 @@
   }
 }
 
-
 @layer components {
   /* ------------------------------------------------ by business size: ring
 
@@ -1524,6 +1524,289 @@
       animation: none;
       opacity: 1;
       transform: none;
+    }
+  }
+}
+
+@layer components {
+  /* The dialler scene runs on its own: the campaign works down the list
+     while the engine paces against whoever is free. Each loop shares one
+     8s cycle so the list, the engine and the agents stay in step, and each
+     takes a `--cycle-delay` rather than needing a keyframe per row. */
+
+  /* A contact row moving from queued, to dialling, to done. */
+  .dial-row {
+    animation: dial-row 8s linear infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes dial-row {
+    0%,
+    18% {
+      border-color: var(--border);
+      background-color: transparent;
+    }
+    24%,
+    36% {
+      border-color: color-mix(in oklab, var(--primary) 40%, transparent);
+      background-color: color-mix(in oklab, var(--primary) 5%, transparent);
+    }
+    44%,
+    100% {
+      border-color: var(--border);
+      background-color: transparent;
+    }
+  }
+
+  /* The number itself: dim while queued, brand while dialling, struck
+     through once the call has been made. */
+  .dial-number {
+    animation: dial-number 8s linear infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes dial-number {
+    0%,
+    18% {
+      color: var(--muted-foreground);
+      opacity: 0.75;
+      text-decoration-line: none;
+    }
+    24%,
+    36% {
+      color: var(--primary);
+      opacity: 1;
+      text-decoration-line: none;
+    }
+    44%,
+    100% {
+      color: var(--muted-foreground);
+      /* The strike-through already says "done"; the opacity only needs to
+         recede, not disappear, or the number is unreadable on a dark
+         ground. */
+      opacity: 0.7;
+      text-decoration-line: line-through;
+    }
+  }
+
+  /* The status dot beside each contact. */
+  .dial-dot {
+    animation: dial-dot 8s linear infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes dial-dot {
+    0%,
+    18% {
+      background-color: color-mix(in oklab, var(--muted-foreground) 25%, transparent);
+    }
+    24%,
+    36% {
+      background-color: var(--primary);
+    }
+    44%,
+    100% {
+      background-color: color-mix(in oklab, var(--primary) 30%, transparent);
+    }
+  }
+
+  /* The pacing meter: bars fill and fall back as the engine decides how
+     hard to dial. */
+  .pace-bar {
+    animation: pace-bar 2.4s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes pace-bar {
+    0%,
+    100% {
+      background-color: color-mix(in oklab, var(--primary) 20%, transparent);
+    }
+    45% {
+      background-color: var(--primary);
+    }
+  }
+
+  /* An agent going from on-a-call to ready and back, so the right-hand
+     column is visibly responding to the campaign. */
+  .agent-state {
+    animation: agent-state 8s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes agent-state {
+    0%,
+    40% {
+      background-color: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
+    }
+    50%,
+    90% {
+      background-color: var(--primary);
+    }
+    100% {
+      background-color: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
+    }
+  }
+
+  /* The scene states its case in words — the list, the engine and the agent
+     labels are all readable standing still — so under reduced motion every
+     loop simply stops at its resting state. */
+  @media (prefers-reduced-motion: reduce) {
+    .dial-row,
+    .dial-number,
+    .dial-dot,
+    .pace-bar,
+    .agent-state {
+      animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* The auto dialler's calls. A campaign is several calls at once, each at
+     its own stage, so the scene animates the stages rather than a signal
+     travelling outward — an outward burst reads as messaging, not dialling. */
+
+  /* A handset shaking while the call is being placed. */
+  .ring-shake {
+    animation: ring-shake 1.4s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes ring-shake {
+    0%,
+    62%,
+    100% {
+      transform: rotate(0deg);
+    }
+    68% {
+      transform: rotate(-12deg);
+    }
+    74% {
+      transform: rotate(10deg);
+    }
+    80% {
+      transform: rotate(-7deg);
+    }
+    86% {
+      transform: rotate(5deg);
+    }
+  }
+
+  /* The ring-ring beside a call that has not been picked up yet. */
+  .ring-dot {
+    animation: ring-dot 1.4s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes ring-dot {
+    0%,
+    100% {
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  /* Audio bars on a call where the announcement is playing. */
+  .talk-bar {
+    height: 0.35rem;
+    animation: talk-bar 0.9s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes talk-bar {
+    0%,
+    100% {
+      height: 0.25rem;
+    }
+    50% {
+      height: 0.85rem;
+    }
+  }
+
+  /* A call moving through the routing steps: each step lights in turn, so
+     the system reads as handling the call rather than listing features. */
+  .route-step {
+    animation: route-step 2.4s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes route-step {
+    0%,
+    24% {
+      border-color: var(--border);
+      background-color: var(--background);
+    }
+    32%,
+    48% {
+      border-color: color-mix(in oklab, var(--primary) 45%, transparent);
+      background-color: color-mix(
+        in oklab,
+        var(--primary) 8%,
+        var(--background)
+      );
+    }
+    62%,
+    100% {
+      border-color: var(--border);
+      background-color: var(--background);
+    }
+  }
+
+  /* Callers arriving at the back of the line, one after another. */
+  .queue-arrive {
+    animation: queue-arrive 3.2s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes queue-arrive {
+    0%,
+    70%,
+    100% {
+      transform: translateY(0);
+    }
+    12% {
+      transform: translateY(-2px);
+    }
+    24% {
+      transform: translateY(0);
+    }
+  }
+
+  /* The line moving up as the front caller is answered. */
+  .queue-row {
+    animation: queue-row 3.2s ease-in-out infinite;
+    animation-delay: var(--cycle-delay, 0s);
+  }
+
+  @keyframes queue-row {
+    0%,
+    62%,
+    100% {
+      transform: translateY(0);
+      border-color: var(--border);
+    }
+    18% {
+      border-color: color-mix(in oklab, var(--primary) 40%, transparent);
+    }
+    40% {
+      transform: translateY(-1px);
+      border-color: color-mix(in oklab, var(--primary) 40%, transparent);
+    }
+  }
+
+  /* Each call row says its own stage in words, so the loops are decoration
+     and simply stop rather than needing a still-frame substitute. */
+  @media (prefers-reduced-motion: reduce) {
+    .queue-arrive,
+    .queue-row,
+    .ring-shake,
+    .ring-dot,
+    .route-step,
+    .talk-bar {
+      animation: none;
     }
   }
 }

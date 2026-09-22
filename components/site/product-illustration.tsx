@@ -2,13 +2,16 @@ import { Fragment } from "react";
 
 import {
   Activity,
-  ArrowLeftRight,
+  AudioLines,
   BarChart3,
   Bot,
   Boxes,
   Building2,
   Clock,
+  CalendarClock,
+  ClipboardList,
   Cloud,
+  Cpu,
   Code2,
   FileAudio,
   Filter,
@@ -18,17 +21,17 @@ import {
   Laptop,
   Layers,
   ListOrdered,
-  Lock,
-  type LucideIcon,
   MessagesSquare,
+  MessageCircle,
   MonitorSmartphone,
+  Music,
   Network,
   Phone,
   PhoneCall,
+  PhoneForwarded,
   PhoneIncoming,
   PhoneOutgoing,
   Play,
-  Radio,
   Router,
   Send,
   Server,
@@ -37,6 +40,7 @@ import {
   Smartphone,
   Sparkles,
   Store,
+  type LucideIcon,
   Users,
   Workflow,
 } from "lucide-react";
@@ -215,43 +219,6 @@ function Rails({ mirrored = false }: { mirrored?: boolean }) {
   );
 }
 
-/** Faint dotted field behind the scene, faded out at the edges. */
-function DotField({ uid }: { uid: string }) {
-  return (
-    <svg
-      viewBox="0 0 400 180"
-      preserveAspectRatio="none"
-      role="presentation"
-      aria-hidden
-      className="size-full"
-    >
-      <defs>
-        <pattern
-          id={`dots-${uid}`}
-          width="10"
-          height="10"
-          patternUnits="userSpaceOnUse"
-        >
-          <circle cx="2" cy="2" r="1.6" className="fill-primary/30" />
-        </pattern>
-        <radialGradient id={`dotfade-${uid}`} cx="50%" cy="50%" r="58%">
-          <stop offset="0%" stopColor="white" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="white" stopOpacity="0" />
-        </radialGradient>
-        <mask id={`dotmask-${uid}`}>
-          <rect width="400" height="180" fill={`url(#dotfade-${uid})`} />
-        </mask>
-      </defs>
-      <rect
-        width="400"
-        height="180"
-        fill={`url(#dots-${uid})`}
-        mask={`url(#dotmask-${uid})`}
-      />
-    </svg>
-  );
-}
-
 /* ------------------------------------------------------------------ *
  * Scene shapes
  * ------------------------------------------------------------------ */
@@ -281,6 +248,10 @@ type QueueSpec = {
   waitingIcon: LucideIcon;
   waitingLabel: string;
   queueLabel: string;
+  /** Callers in line, front first. Each is a real caller, not a bar. */
+  waiting: { number: string; waited: string }[];
+  /** What the queue does while people hold. */
+  handling: { icon: LucideIcon; label: string }[];
   agents: { icon: LucideIcon; label: string; state: "free" | "busy" }[];
 };
 
@@ -308,6 +279,85 @@ type WaveSpec = {
   readouts: { icon: LucideIcon; label: string; value: string }[];
 };
 
+type DialerSpec = {
+  layout: "dialer";
+  status: string;
+  listLabel: string;
+  /** Contacts worked through in order; the scene animates the progress. */
+  contacts: { number: string }[];
+  /** The pacing engine, raised as the centre of the picture. */
+  engine: { icon: LucideIcon; title: string; note: string; metric: string };
+  /** True where the row is a person whose availability changes. */
+  agents: { icon: LucideIcon; label: string; cycles?: boolean }[];
+};
+
+type BroadcastSpec = {
+  layout: "broadcast";
+  status: string;
+  /** The recorded announcement the campaign plays when a call connects. */
+  message: { icon: LucideIcon; title: string; note: string };
+  /** How far through the list the campaign has worked. */
+  sent: number;
+  total: number;
+  /** Calls currently in flight, each at its own stage. */
+  calls: { number: string; stage: "ringing" | "playing" | "done" }[];
+  outcomes: { icon: LucideIcon; label: string }[];
+};
+
+type SystemSpec = {
+  layout: "system";
+  status: string;
+  /** The call arriving from outside. */
+  caller: { icon: LucideIcon; label: string; number: string };
+  /** How the system decides where the call goes. */
+  routing: { icon: LucideIcon; label: string }[];
+  /** Where the call can land; `live` marks the one being rung now. */
+  extensions: { icon: LucideIcon; label: string; ext: string; live?: boolean }[];
+  /** Everything else the system keeps doing in the background. */
+  alsoLabel: string;
+  also: { icon: LucideIcon; label: string }[];
+};
+
+type HubSpec = {
+  layout: "hub";
+  status: string;
+  /** The platform SipLink operates on the customer's behalf. */
+  platform: { title: string; note: string };
+  /** What SipLink does to keep it running, shown as the managed part. */
+  managed: { icon: LucideIcon; label: string }[];
+  /** Places and people that all share the one system. */
+  sites: { icon: LucideIcon; label: string; detail: string }[];
+};
+
+type PerimeterSpec = {
+  layout: "perimeter";
+  status: string;
+  /** The boundary everything inside it stays within. */
+  boundary: string;
+  /** The on-site system, and what it keeps hold of. */
+  core: { icon: LucideIcon; title: string; note: string };
+  /** Kept inside the perimeter, listed so "inside" is concrete. */
+  inside: { icon: LucideIcon; label: string }[];
+  /** The one link that crosses the boundary. */
+  link: { label: string; note: string };
+  /** What that link reaches. */
+  outside: { icon: LucideIcon; label: string }[];
+};
+
+type JourneySpec = {
+  layout: "journey";
+  status: string;
+  /** The number itself — the one thing that does not change. */
+  subject: { number: string; note: string };
+  /** Where it starts and where it ends up. */
+  from: string;
+  to: string;
+  /** The stages of the port, in the order they happen. */
+  stages: { icon: LucideIcon; label: string }[];
+  /** What is true once it lands. */
+  outcome: { icon: LucideIcon; label: string }[];
+};
+
 type CodeSpec = {
   layout: "code";
   status: string;
@@ -316,16 +366,6 @@ type CodeSpec = {
   responseLabel: string;
   caption: string;
   results: Endpoint[];
-};
-
-type SwapSpec = {
-  layout: "swap";
-  status: string;
-  beforeLabel: string;
-  before: Endpoint[];
-  verb: string;
-  afterLabel: string;
-  after: Endpoint[];
 };
 
 type OrbitSpec = {
@@ -341,8 +381,13 @@ type SceneSpec =
   | QueueSpec
   | PanelSpec
   | WaveSpec
+  | DialerSpec
+  | SystemSpec
+  | HubSpec
+  | PerimeterSpec
+  | JourneySpec
+  | BroadcastSpec
   | CodeSpec
-  | SwapSpec
   | OrbitSpec;
 
 /* ------------------------------------------------------------------ *
@@ -356,22 +401,14 @@ type SceneSpec =
 
 /** Ambient dot field + status chip, shared by every layout. */
 function Stage({
-  uid,
   status,
   children,
 }: {
-  uid: string;
   status: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative isolate">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-8 bottom-0 -z-10"
-      >
-        <DotField uid={uid} />
-      </div>
+    <div>
       <div className="flex justify-center pb-4">
         <StatusPill text={status} />
       </div>
@@ -385,9 +422,9 @@ function Stage({
  * SipLink provides, and arrive on the right. For products that are a path
  * between two worlds.
  */
-function FlowLayout({ uid, spec }: { uid: string; spec: FlowSpec }) {
+function FlowLayout({ spec }: { spec: FlowSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="flex items-stretch">
         <div className="flex shrink-0 flex-col justify-between gap-3">
           {spec.left.map((item) => (
@@ -431,10 +468,10 @@ function FlowLayout({ uid, spec }: { uid: string; spec: FlowSpec }) {
  * point of a published number or a menu is that one entry point reaches
  * several destinations, so the picture says that and nothing else.
  */
-function FanLayout({ uid, spec }: { uid: string; spec: FanSpec }) {
+function FanLayout({ spec }: { spec: FanSpec }) {
   const n = spec.out.length;
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="flex items-center gap-2">
         {/* The single entry point, stated large */}
         <div className="flex w-28 shrink-0 flex-col items-center gap-2 text-center">
@@ -519,53 +556,78 @@ function FanLayout({ uid, spec }: { uid: string; spec: FanSpec }) {
  * QUEUE — callers waiting in line, then handed to agents. Drawn as an
  * actual line of people, because that is the thing being described.
  */
-function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
+function QueueLayout({ spec }: { spec: QueueSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
-      <div className="flex items-center gap-3">
-        {/* Waiting callers — a real line, fading toward the back */}
-        <div className="flex shrink-0 flex-col items-center gap-2">
-          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+    <Stage status={spec.status}>
+      <div className="flex items-center gap-2.5">
+        {/* Callers arriving, more than there are agents to take them */}
+        <div className="flex w-[3.25rem] shrink-0 flex-col items-center gap-1.5">
+          <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
             {spec.waitingLabel}
           </span>
-          <div className="flex flex-col gap-1.5">
-            {[0, 1, 2, 3].map((i) => (
-              <span
-                key={i}
-                className="flex size-8 items-center justify-center rounded-full border border-primary/40 bg-background text-primary"
-                style={{ opacity: 1 - i * 0.2 }}
-              >
-                <spec.waitingIcon className="size-3.5" aria-hidden />
-              </span>
-            ))}
-          </div>
+          {[0, 1, 2, 3].map((i) => (
+            <span
+              key={i}
+              style={
+                {
+                  "--cycle-delay": `${i * 0.5}s`,
+                  opacity: 1 - i * 0.18,
+                } as React.CSSProperties
+              }
+              className="queue-arrive flex size-7 items-center justify-center rounded-full border border-primary/40 bg-background text-primary"
+            >
+              <spec.waitingIcon className="size-3" aria-hidden />
+            </span>
+          ))}
         </div>
 
-        {/* The queue itself — a dashed holding pen */}
-        <div className="flex min-w-0 flex-1 flex-col items-center gap-2">
-          <div className="w-full rounded-xl border border-dashed border-primary/50 bg-primary/[0.04] px-3 py-4">
-            <div className="flex flex-col gap-2">
-              {[0, 1, 2].map((i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <span className="font-mono text-[9px] text-primary/60 tabular-nums">
+        {/* The queue. Each caller is identified and shows how long they have
+            held, because a line of blank bars reads as a loading state. */}
+        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+          <div className="rounded-xl border border-dashed border-primary/50 bg-primary/[0.04] p-2">
+            <div className="flex flex-col gap-1">
+              {spec.waiting.map(({ number, waited }, i) => (
+                <div
+                  key={number}
+                  style={
+                    { "--cycle-delay": `${i * 0.6}s` } as React.CSSProperties
+                  }
+                  className="queue-row flex items-center gap-2 rounded-md border border-border bg-background px-2 py-1"
+                >
+                  <span className="flex size-4 shrink-0 items-center justify-center rounded bg-primary/10 font-mono text-[8px] font-semibold text-primary tabular-nums">
                     {i + 1}
                   </span>
-                  <span
-                    className="h-1.5 rounded-full bg-primary/30"
-                    style={{ width: `${70 - i * 16}%` }}
-                  />
+                  <span className="min-w-0 flex-1 truncate font-mono text-[9px] tabular-nums">
+                    {number}
+                  </span>
+                  <span className="shrink-0 font-mono text-[8px] text-muted-foreground tabular-nums">
+                    {waited}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
-          <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-primary uppercase">
+
+          {/* What the caller experiences while holding */}
+          <div className="flex items-center justify-center gap-2.5">
+            {spec.handling.map(({ icon: Icon, label }) => (
+              <span key={label} className="flex items-center gap-1">
+                <Icon className="size-2.5 shrink-0 text-primary" aria-hidden />
+                <span className="text-[8px] whitespace-nowrap text-muted-foreground">
+                  {label}
+                </span>
+              </span>
+            ))}
+          </div>
+
+          <span className="text-center font-mono text-[9px] font-semibold tracking-[0.16em] text-primary uppercase">
             {spec.queueLabel}
           </span>
         </div>
 
-        {/* Arrow into the agents */}
+        {/* Handed to whoever comes free */}
         <div aria-hidden className="shrink-0">
-          <svg viewBox="0 0 28 10" className="w-7" role="presentation">
+          <svg viewBox="0 0 28 10" className="w-6" role="presentation">
             <path
               d="M0 5h20M16 1l5 4-5 4"
               fill="none"
@@ -578,17 +640,24 @@ function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
         </div>
 
         {/* Agents */}
-        <div className="flex shrink-0 flex-col gap-2">
+        <div className="flex shrink-0 flex-col gap-1.5">
           {spec.agents.map(({ icon: Icon, label, state }) => (
             <div
               key={label}
-              className="flex w-32 items-center gap-2 rounded-lg border border-border bg-background px-2.5 py-2 shadow-sm"
+              className="flex w-[7rem] items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
             >
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <Icon className="size-3.5" aria-hidden />
+              <span
+                className={cn(
+                  "flex size-6 shrink-0 items-center justify-center rounded-md",
+                  state === "free"
+                    ? "bg-primary/10 text-primary"
+                    : "bg-muted text-muted-foreground",
+                )}
+              >
+                <Icon className="size-3" aria-hidden />
               </span>
               <span className="min-w-0">
-                <span className="block text-[10px] leading-tight font-semibold">
+                <span className="block text-[9px] leading-tight font-semibold">
                   {label}
                 </span>
                 <span className="flex items-center gap-1">
@@ -598,7 +667,7 @@ function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
                       state === "busy" ? "bg-muted-foreground/40" : "bg-primary",
                     )}
                   />
-                  <span className="text-[9px] text-muted-foreground">
+                  <span className="text-[8px] text-muted-foreground">
                     {state === "busy" ? "On a call" : "Available"}
                   </span>
                 </span>
@@ -615,9 +684,9 @@ function QueueLayout({ uid, spec }: { uid: string; spec: QueueSpec }) {
  * PANEL — a reporting surface. For products whose output is something you
  * look at rather than something that travels somewhere.
  */
-function PanelLayout({ uid, spec }: { uid: string; spec: PanelSpec }) {
+function PanelLayout({ spec }: { spec: PanelSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="rounded-xl border border-border bg-background shadow-sm">
         {/* Window chrome */}
         <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
@@ -687,10 +756,10 @@ function PanelLayout({ uid, spec }: { uid: string; spec: PanelSpec }) {
  * is what a recording actually looks like when you go to review one. Kept
  * distinct from PANEL so recording and analytics do not share a picture.
  */
-function WaveLayout({ uid, spec }: { uid: string; spec: WaveSpec }) {
+function WaveLayout({ spec }: { spec: WaveSpec }) {
   const played = Math.round(spec.wave.length * spec.playhead);
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="rounded-xl border border-border bg-background shadow-sm">
         <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
           <span className="flex size-5 items-center justify-center rounded bg-primary/10 text-primary">
@@ -770,13 +839,302 @@ function WaveLayout({ uid, spec }: { uid: string; spec: WaveSpec }) {
 }
 
 /**
+ * DIALER — a contact list on one side, agents on the other, and the pacing
+ * engine lifted between them. The engine is the product: it decides how fast
+ * to dial against who is free, so it sits raised on the brand ground and is
+ * the only element that carries a solid fill.
+ */
+function DialerLayout({ spec }: { spec: DialerSpec }) {
+  const rows = spec.contacts.length;
+  return (
+    <Stage status={spec.status}>
+      <div className="flex items-center gap-2.5">
+        {/* The list being worked through. Each row runs the same loop a beat
+            later than the one above, so the campaign reads as travelling
+            down the list rather than every row blinking at once. */}
+        <div className="flex w-[6.75rem] shrink-0 flex-col gap-1">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+            {spec.listLabel}
+          </span>
+          {spec.contacts.map(({ number }, i) => {
+            const delay = `${(i / rows) * 8}s`;
+            return (
+              <div
+                key={number}
+                style={{ "--cycle-delay": delay } as React.CSSProperties}
+                className="dial-row flex items-center gap-1.5 rounded-md border border-border px-2 py-1"
+              >
+                <span
+                  style={{ "--cycle-delay": delay } as React.CSSProperties}
+                  className="dial-dot size-1.5 shrink-0 rounded-full"
+                />
+                <span
+                  style={{ "--cycle-delay": delay } as React.CSSProperties}
+                  className="dial-number font-mono text-[9px] tabular-nums"
+                >
+                  {number}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        <svg
+          viewBox="0 0 30 8"
+          className="w-6 shrink-0"
+          role="presentation"
+          aria-hidden
+        >
+          <path
+            d="M0 4h22M18 1l4 3-4 3"
+            fill="none"
+            className="stroke-primary/50"
+            strokeWidth="1.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+
+        {/* The pacing engine, raised */}
+        <div className="min-w-0 flex-1 rounded-2xl border border-primary/30 bg-linear-to-br from-brand-from/25 via-background via-65% to-background p-3.5 text-center shadow-md ring-1 ring-primary/10">
+          <span className="mx-auto flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+            <spec.engine.icon className="size-4.5" aria-hidden />
+          </span>
+          <p className="mt-2 text-[11px] leading-tight font-semibold">
+            {spec.engine.title}
+          </p>
+          <p className="mt-1 text-[9px] leading-snug text-pretty text-muted-foreground">
+            {spec.engine.note}
+          </p>
+
+          {/* The meter runs faster than the list, so the engine looks like it
+              is making a decision between calls rather than with them. */}
+          <div className="mt-2.5 flex items-center justify-center gap-1">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <span
+                key={i}
+                style={
+                  { "--cycle-delay": `${i * 0.16}s` } as React.CSSProperties
+                }
+                className="pace-bar h-3.5 w-1.5 rounded-full"
+              />
+            ))}
+          </div>
+          <p className="mt-1.5 font-mono text-[8px] tracking-widest text-primary uppercase">
+            {spec.engine.metric}
+          </p>
+        </div>
+
+        <svg
+          viewBox="0 0 30 8"
+          className="w-6 shrink-0"
+          role="presentation"
+          aria-hidden
+        >
+          <path
+            d="M0 4h22M18 1l4 3-4 3"
+            fill="none"
+            className="stroke-primary"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+
+        {/* Agents. `cycles` agents free and busy in turn; anything else — an
+            outcome, a recorded message — is a fixed row, because a campaign
+            outcome is never "on a call". */}
+        <div className="flex shrink-0 flex-col gap-1.5">
+          {spec.agents.map(({ icon: Icon, label, cycles }, i) => (
+            <div
+              key={label}
+              className="flex w-[7.25rem] items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
+            >
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <Icon className="size-3" aria-hidden />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[10px] leading-tight font-semibold">
+                  {label}
+                </span>
+                <span className="flex items-center gap-1">
+                  {cycles ? (
+                    <span
+                      style={
+                        {
+                          "--cycle-delay": `${i * 2.6}s`,
+                        } as React.CSSProperties
+                      }
+                      className="agent-state size-1.5 rounded-full"
+                    />
+                  ) : (
+                    <span className="size-1.5 rounded-full bg-primary" />
+                  )}
+                  <span className="text-[9px] text-muted-foreground">
+                    {cycles ? "In rotation" : "Ready"}
+                  </span>
+                </span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * BROADCAST — an outbound calling campaign. Several calls are placed at once
+ * and each is at its own stage: one ringing, one with the announcement
+ * playing, one already finished. Drawn as calls rather than as a message
+ * fanning out, because the auto dialler dials phones — it does not send
+ * messages, and a one-to-many burst reads as SMS.
+ */
+function BroadcastLayout({ spec }: { spec: BroadcastSpec }) {
+  const pct = Math.round((spec.sent / spec.total) * 100);
+
+  return (
+    <Stage status={spec.status}>
+      <div className="flex items-center gap-4">
+        {/* The announcement, and how far through the list the run is */}
+        <div className="w-[8.5rem] shrink-0 rounded-2xl border border-primary/30 bg-linear-to-br from-brand-from/25 via-background via-65% to-background p-3.5 text-center shadow-md ring-1 ring-primary/10">
+          <span className="mx-auto flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+            <spec.message.icon className="size-4.5" aria-hidden />
+          </span>
+          <p className="mt-2 text-[11px] leading-tight font-semibold">
+            {spec.message.title}
+          </p>
+          {/* The recording, shown playing, so the card reads as a voice
+              message rather than as text going out. */}
+          <span className="mt-2 flex h-4 items-center justify-center gap-[3px]">
+            {[0, 1, 2, 3, 4, 5, 6].map((barIndex) => (
+              <span
+                key={barIndex}
+                style={
+                  { "--cycle-delay": `${barIndex * 0.1}s` } as React.CSSProperties
+                }
+                className="talk-bar w-[3px] rounded-full bg-primary"
+              />
+            ))}
+          </span>
+          <p className="mt-1.5 text-[9px] leading-snug text-pretty text-muted-foreground">
+            {spec.message.note}
+          </p>
+          <div className="mt-3 h-1 overflow-hidden rounded-full bg-primary/15">
+            <span
+              className="block h-full rounded-full bg-primary"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+          <p className="mt-1.5 font-mono text-[8px] tracking-widest text-primary tabular-nums">
+            {spec.sent} / {spec.total} CALLED
+          </p>
+        </div>
+
+        {/* Calls in flight, each showing what stage it has reached */}
+        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+            Calls in progress
+          </span>
+
+          {spec.calls.map(({ number, stage }, i) => (
+            <div
+              key={number}
+              className="flex items-center gap-2.5 rounded-lg border border-border bg-background px-2.5 py-2 shadow-sm"
+            >
+              {/* A handset that rings while the call is being placed */}
+              <span
+                style={{ "--cycle-delay": `${i * 0.45}s` } as React.CSSProperties}
+                className={cn(
+                  "flex size-7 shrink-0 items-center justify-center rounded-md",
+                  stage === "done"
+                    ? "bg-muted text-muted-foreground"
+                    : "bg-primary/10 text-primary",
+                  stage === "ringing" && "ring-shake",
+                )}
+              >
+                {stage === "done" ? (
+                  <PhoneCall className="size-3.5" aria-hidden />
+                ) : (
+                  <PhoneOutgoing className="size-3.5" aria-hidden />
+                )}
+              </span>
+
+              <span className="min-w-0 flex-1">
+                <span className="block font-mono text-[10px] leading-tight tabular-nums">
+                  {number}
+                </span>
+                <span className="text-[9px] leading-tight text-muted-foreground">
+                  {stage === "ringing"
+                    ? "Ringing"
+                    : stage === "playing"
+                      ? "Message playing"
+                      : "Call complete"}
+                </span>
+              </span>
+
+              {/* Stage read out as sound, so the row is unmistakably a call */}
+              {stage === "playing" ? (
+                <span className="flex shrink-0 items-end gap-[2px]">
+                  {[0, 1, 2, 3].map((barIndex) => (
+                    <span
+                      key={barIndex}
+                      style={
+                        {
+                          "--cycle-delay": `${barIndex * 0.12}s`,
+                        } as React.CSSProperties
+                      }
+                      className="talk-bar w-[3px] rounded-full bg-primary"
+                    />
+                  ))}
+                </span>
+              ) : stage === "ringing" ? (
+                <span className="flex shrink-0 gap-[3px]">
+                  {[0, 1, 2].map((dotIndex) => (
+                    <span
+                      key={dotIndex}
+                      style={
+                        {
+                          "--cycle-delay": `${dotIndex * 0.16}s`,
+                        } as React.CSSProperties
+                      }
+                      className="ring-dot size-1.5 rounded-full bg-primary"
+                    />
+                  ))}
+                </span>
+              ) : (
+                <span className="shrink-0 font-mono text-[9px] text-muted-foreground tabular-nums">
+                  00:18
+                </span>
+              )}
+            </div>
+          ))}
+
+          {/* What each finished call becomes */}
+          <div className="mt-0.5 flex items-center gap-3 border-t border-border pt-2">
+            {spec.outcomes.map(({ icon: Icon, label }) => (
+              <span key={label} className="flex items-center gap-1.5">
+                <span className="flex size-5 items-center justify-center rounded bg-muted text-muted-foreground">
+                  <Icon className="size-2.5" aria-hidden />
+                </span>
+                <span className="text-[9px] text-muted-foreground">{label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
  * CODE — a request going out and something happening as a result. For the
  * developer products, where the interesting part is that your own software
  * is driving it.
  */
-function CodeLayout({ uid, spec }: { uid: string; spec: CodeSpec }) {
+function CodeLayout({ spec }: { spec: CodeSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="flex items-center gap-3">
         {/* The call your application makes */}
         <div className="min-w-0 flex-1 overflow-hidden rounded-xl border border-border bg-background shadow-sm">
@@ -791,7 +1149,7 @@ function CodeLayout({ uid, spec }: { uid: string; spec: CodeSpec }) {
           <div className="space-y-1 px-3 py-3 font-mono text-[10px] leading-relaxed">
             {spec.lines.map((line, i) => (
               <div key={i} className="flex gap-2">
-                <span className="w-3 shrink-0 text-right text-muted-foreground/40 tabular-nums">
+                <span className="w-3 shrink-0 text-right text-muted-foreground tabular-nums">
                   {i + 1}
                 </span>
                 <span
@@ -863,59 +1221,489 @@ function CodeLayout({ uid, spec }: { uid: string; spec: CodeSpec }) {
 }
 
 /**
- * SWAP — what you run today on one side, struck through, and what replaces
- * it on the other. For migrations, where the story is the change itself.
+ * SYSTEM — the phone system doing its job: a call comes in, the system
+ * decides where it belongs, and it rings the right extension. Used where the
+ * product IS the system, so the picture shows it running rather than showing
+ * what it replaced.
  */
-function SwapLayout({ uid, spec }: { uid: string; spec: SwapSpec }) {
+function SystemLayout({ spec }: { spec: SystemSpec }) {
   return (
-    <Stage uid={uid} status={spec.status}>
-      <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
-        {/* Before */}
-        <div className="rounded-xl border border-border bg-background/60 p-4">
-          <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
-            {spec.beforeLabel}
-          </span>
-          <ul className="mt-3 space-y-2">
-            {spec.before.map(({ icon: Icon, label }) => (
-              <li key={label} className="flex items-center gap-2">
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground/70">
-                  <Icon className="size-3" aria-hidden />
+    <Stage status={spec.status}>
+      {/* The cloud sits over everything, because that is where the system
+          lives. The call goes up into it and the ring comes back down. */}
+      <div className="relative mx-auto w-full max-w-[22rem]">
+        <div className="relative">
+          {/* Cloud outline, drawn at its own aspect so the lobes stay round */}
+          <svg
+            viewBox="0 0 320 196"
+            role="presentation"
+            aria-hidden
+            className="w-full"
+          >
+            <path
+              d="M62 186a46 46 0 0 1 0-92 48 48 0 0 1 7 .5A58 58 0 0 1 160 44a58 58 0 0 1 91 50.5 48 48 0 0 1 7-.5 46 46 0 0 1 0 92z"
+              className="fill-background stroke-primary/45"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+            />
+          </svg>
+
+          {/* What the system does, laid out inside the cloud */}
+          <div className="absolute inset-x-0 top-[22%] px-[6.25rem]">
+            <div className="flex items-center justify-center gap-1.5">
+              <Cloud className="size-3 text-primary" aria-hidden />
+              <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase">
+                Your phone system
+              </span>
+            </div>
+
+            {/* Stacked, so each step keeps one line and reads as an order */}
+            <ul className="mt-1.5 space-y-1">
+              {spec.routing.map(({ icon: Icon, label }, idx) => (
+                <li
+                  key={label}
+                  style={
+                    { "--cycle-delay": `${idx * 0.8}s` } as React.CSSProperties
+                  }
+                  className="route-step flex items-center gap-2 rounded-lg border border-primary/20 bg-background px-2 py-1"
+                >
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
+                    <Icon className="size-2.5" aria-hidden />
+                  </span>
+                  <span className="text-[9px] leading-tight font-medium whitespace-nowrap">
+                    {label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="-mx-8 mt-2 flex items-center justify-center gap-4">
+              {spec.also.map(({ icon: Icon, label }) => (
+                <span key={label} className="flex items-center gap-1">
+                  <Icon
+                    className="size-2.5 shrink-0 text-muted-foreground"
+                    aria-hidden
+                  />
+                  <span className="text-[8px] whitespace-nowrap text-muted-foreground">
+                    {label}
+                  </span>
                 </span>
-                <span className="text-[10px] leading-tight text-muted-foreground line-through decoration-muted-foreground/40">
-                  {label}
-                </span>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* The change */}
-        <div className="flex flex-col items-center gap-2">
-          <span className="flex size-9 items-center justify-center rounded-full border border-primary/40 bg-background text-primary shadow-sm">
-            <ArrowLeftRight className="size-4" aria-hidden />
-          </span>
+        {/* Up into the cloud on one side, back down on the other */}
+        <svg
+          viewBox="0 0 320 28"
+          role="presentation"
+          aria-hidden
+          className="w-full"
+        >
+          {/* Up into the cloud: dashed, because the call is not handled yet */}
+          <path
+            d="M66 26V12a6 6 0 0 1 6-6h58"
+            fill="none"
+            className="stroke-primary/40"
+            strokeWidth="1.5"
+            strokeDasharray="3 3"
+            strokeLinecap="round"
+          />
+          {/* Back down to the extension: solid, the call is placed */}
+          <path
+            d="M190 6h58a6 6 0 0 1 6 6v8l-4-4m4 4 4-4"
+            fill="none"
+            className="stroke-primary"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+
+        {/* The call on one side, the extensions it can reach on the other */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="w-[8.25rem]">
+            <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+              Incoming call
+            </span>
+            <div className="mt-1 flex items-center gap-2 rounded-xl border border-border bg-background px-2 py-1.5 shadow-sm">
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <spec.caller.icon className="size-3" aria-hidden />
+              </span>
+              <span className="min-w-0">
+                <span className="block font-mono text-[9px] leading-tight whitespace-nowrap tabular-nums">
+                  {spec.caller.number}
+                </span>
+                <span className="text-[8px] leading-tight text-muted-foreground">
+                  {spec.caller.label}
+                </span>
+              </span>
+            </div>
+          </div>
+
+          {/* Extensions are people, not places — that is the product. */}
+          <div className="w-[8.25rem]">
+            <span className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+              Extensions
+            </span>
+            <div className="mt-1 flex flex-col gap-1">
+              {spec.extensions.map(({ icon: Icon, label, ext, live }) => (
+                <div
+                  key={ext}
+                  className={cn(
+                    "flex items-center gap-2 rounded-lg border bg-background px-2 py-1",
+                    live
+                      ? "border-primary/40 shadow-sm ring-1 ring-primary/10"
+                      : "border-border",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "flex size-5 shrink-0 items-center justify-center rounded",
+                      live
+                        ? "ring-shake bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground",
+                    )}
+                  >
+                    <Icon className="size-2.5" aria-hidden />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[9px] leading-tight font-medium">
+                      {label}
+                    </span>
+                    <span className="font-mono text-[8px] leading-tight text-muted-foreground tabular-nums">
+                      {ext}
+                    </span>
+                  </span>
+                  {live ? (
+                    <span className="flex shrink-0 gap-[2px]">
+                      {[0, 1, 2].map((d) => (
+                        <span
+                          key={d}
+                          style={
+                            {
+                              "--cycle-delay": `${d * 0.16}s`,
+                            } as React.CSSProperties
+                          }
+                          className="ring-dot size-1 rounded-full bg-primary"
+                        />
+                      ))}
+                    </span>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * HUB — one platform that SipLink runs, with every site and worker hanging
+ * off it. For the hosted product, where the point is not how a call routes
+ * but that head office, branches and home workers are on the same system
+ * and none of them operate it.
+ */
+function HubLayout({ spec }: { spec: HubSpec }) {
+  return (
+    <Stage status={spec.status}>
+      <div className="mx-auto w-full max-w-[23rem]">
+        {/* The platform, raised: SipLink runs this part */}
+        <div className="rounded-2xl border border-primary/30 bg-linear-to-b from-brand-from/15 via-background via-60% to-background p-3 shadow-md ring-1 ring-primary/10">
+          <div className="flex items-center justify-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-primary" />
+            <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase">
+              {spec.platform.title}
+            </span>
+          </div>
+          <p className="mt-1 text-center text-[9px] leading-snug text-pretty text-muted-foreground">
+            {spec.platform.note}
+          </p>
+
+          {/* The work that is ours rather than theirs */}
+          <div className="mt-2.5 flex items-stretch gap-1.5">
+            {spec.managed.map(({ icon: Icon, label }, idx) => (
+              <span
+                key={label}
+                style={
+                  { "--cycle-delay": `${idx * 0.8}s` } as React.CSSProperties
+                }
+                className="route-step flex flex-1 flex-col items-center gap-1 rounded-lg border border-primary/20 bg-background px-1 py-1.5 text-center"
+              >
+                <Icon className="size-3 text-primary" aria-hidden />
+                <span className="text-[8px] leading-tight font-medium text-balance">
+                  {label}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Spokes down to everyone on the system */}
+        <svg
+          viewBox="0 0 340 30"
+          role="presentation"
+          aria-hidden
+          className="w-full"
+        >
+          {(() => {
+            const n = spec.sites.length;
+            const xs = spec.sites.map((_, idx) => (340 / n) * (idx + 0.5));
+            const r = 6;
+            return (
+              <>
+                <path
+                  d={`M170 0V${14 - r}`}
+                  fill="none"
+                  className="stroke-primary/35"
+                  strokeWidth="1.25"
+                  strokeLinecap="round"
+                />
+                {xs.map((x, idx) => {
+                  const d =
+                    Math.abs(x - 170) < 1
+                      ? `M170 ${14 - r}V30`
+                      : x < 170
+                        ? `M170 ${14 - r}q0 ${r} -${r} ${r}H${x + r}q-${r} 0 -${r} ${r}V30`
+                        : `M170 ${14 - r}q0 ${r} ${r} ${r}H${x - r}q${r} 0 ${r} ${r}V30`;
+                  return (
+                    <path
+                      key={idx}
+                      d={d}
+                      fill="none"
+                      className="stroke-primary/35"
+                      strokeWidth="1.25"
+                      strokeLinecap="round"
+                    />
+                  );
+                })}
+              </>
+            );
+          })()}
+        </svg>
+
+        {/* One system, several places — the labels carry the difference */}
+        <div className="flex items-start gap-1.5">
+          {spec.sites.map(({ icon: Icon, label, detail }) => (
+            <div
+              key={label}
+              className="flex flex-1 flex-col items-center gap-1 rounded-xl border border-border bg-background px-1.5 py-2 text-center shadow-sm"
+            >
+              <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Icon className="size-3.5" aria-hidden />
+              </span>
+              <span className="text-[9px] leading-tight font-semibold text-balance">
+                {label}
+              </span>
+              <span className="text-[8px] leading-tight text-balance text-muted-foreground">
+                {detail}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* The shared thing, stated once rather than repeated per site */}
+        <p className="mt-2 text-center font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+          Same extensions · Same call flows · One portal
+        </p>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * PERIMETER — a drawn boundary with the system inside it and a single link
+ * crossing out. The inverse of the cloud scene: for the on-premise product,
+ * where the claim is that call control never leaves the network you run.
+ */
+function PerimeterLayout({ spec }: {
+    spec: PerimeterSpec;
+}) {
+  return (
+    <Stage status={spec.status}>
+      <div className="flex items-stretch gap-0">
+        {/* Inside the boundary. The dashed rule is the perimeter itself, so
+            everything it encloses is visibly on the customer's side. */}
+        <div className="min-w-0 flex-1 rounded-2xl border-2 border-dashed border-primary/40 bg-background/60 p-3">
+          <div className="flex items-center justify-center gap-1.5">
+            <Building2 className="size-3 text-primary" aria-hidden />
+            <span className="font-mono text-[9px] font-semibold tracking-widest text-primary uppercase">
+              {spec.boundary}
+            </span>
+          </div>
+
+          {/* The box they own, raised inside their own walls */}
+          <div className="mt-2 rounded-xl border border-primary/30 bg-linear-to-b from-brand-from/15 to-background p-2.5 text-center shadow-sm">
+            <span className="mx-auto flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+              <spec.core.icon className="size-4" aria-hidden />
+            </span>
+            <p className="mt-1.5 text-[10px] leading-tight font-semibold">
+              {spec.core.title}
+            </p>
+            <p className="mt-0.5 text-[8px] leading-snug text-pretty text-muted-foreground">
+              {spec.core.note}
+            </p>
+          </div>
+
+          <div className="mt-2 flex items-stretch gap-1.5">
+            {spec.inside.map(({ icon: Icon, label }) => (
+              <span
+                key={label}
+                className="flex flex-1 flex-col items-center gap-1 rounded-lg border border-border bg-background px-1 py-1.5 text-center"
+              >
+                <Icon className="size-3 text-primary" aria-hidden />
+                <span className="text-[8px] leading-tight font-medium text-balance">
+                  {label}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* The single crossing. Drawn as one link because that is the whole
+            point: one way out, and call state does not go with it. */}
+        <div className="flex w-[5.25rem] shrink-0 flex-col items-center justify-center gap-1">
           <span className="font-mono text-[8px] tracking-widest text-primary uppercase">
-            {spec.verb}
+            {spec.link.label}
+          </span>
+          <svg
+            viewBox="0 0 64 16"
+            role="presentation"
+            aria-hidden
+            className="w-full"
+          >
+            <path
+              d="M2 8h60M56 4l6 4-6 4"
+              fill="none"
+              className="stroke-primary"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M2 8h60"
+              fill="none"
+              className="stroke-primary"
+              strokeWidth="1.5"
+              strokeDasharray="4 56"
+              strokeLinecap="round"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                values="60;0"
+                dur="2.4s"
+                repeatCount="indefinite"
+              />
+            </path>
+          </svg>
+          <span className="text-center text-[8px] leading-tight text-balance text-muted-foreground">
+            {spec.link.note}
           </span>
         </div>
 
-        {/* After */}
-        <div className="rounded-xl border border-primary/30 bg-background p-4 shadow-sm ring-1 ring-primary/10">
-          <span className="font-mono text-[9px] tracking-widest text-primary uppercase">
-            {spec.afterLabel}
+        {/* Outside: what the link reaches, kept deliberately plain */}
+        <div className="flex w-[7rem] shrink-0 flex-col justify-center gap-1.5">
+          {spec.outside.map(({ icon: Icon, label }) => (
+            <div
+              key={label}
+              className="flex items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
+            >
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
+                <Icon className="size-3" aria-hidden />
+              </span>
+              <span className="text-[9px] leading-tight font-medium text-balance">
+                {label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Stage>
+  );
+}
+
+/**
+ * JOURNEY — one thing moving through a sequence of stages. For porting,
+ * where the product is the process and the number is the constant: it is
+ * shown once, above the track, because the point is that it never changes.
+ */
+function JourneyLayout({ spec }: { spec: JourneySpec }) {
+  return (
+    <Stage status={spec.status}>
+      <div className="mx-auto w-full max-w-[23rem]">
+        {/* The number, stated once and held still */}
+        <div className="mx-auto w-fit rounded-2xl border border-primary/30 bg-linear-to-b from-brand-from/15 to-background px-5 py-2.5 text-center shadow-md ring-1 ring-primary/10">
+          <p className="font-mono text-[15px] leading-none font-semibold tracking-tight tabular-nums">
+            {spec.subject.number}
+          </p>
+          <p className="mt-1 text-[8px] tracking-widest text-muted-foreground uppercase">
+            {spec.subject.note}
+          </p>
+        </div>
+
+        {/* Who holds it, before and after */}
+        <div className="mt-2.5 flex items-center gap-2">
+          <span className="shrink-0 font-mono text-[8px] tracking-widest text-muted-foreground uppercase">
+            {spec.from}
           </span>
-          <ul className="mt-3 space-y-2">
-            {spec.after.map(({ icon: Icon, label }) => (
-              <li key={label} className="flex items-center gap-2">
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+          <span className="h-px flex-1 bg-border" />
+          <span className="shrink-0 font-mono text-[8px] tracking-widest text-primary uppercase">
+            {spec.to}
+          </span>
+        </div>
+
+        {/* The track. Each stage lights in turn, so the port reads as a
+            sequence that runs rather than a list of guarantees. */}
+        <div className="mt-2 flex items-stretch gap-1">
+          {spec.stages.map(({ icon: Icon, label }, idx) => (
+            <div key={label} className="flex min-w-0 flex-1 items-center">
+              <div
+                style={{ "--cycle-delay": `${idx * 0.7}s` } as React.CSSProperties}
+                className="route-step flex min-w-0 flex-1 flex-col items-center gap-1 rounded-lg border border-primary/20 bg-background px-1 py-2 text-center"
+              >
+                <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary">
                   <Icon className="size-3" aria-hidden />
                 </span>
-                <span className="text-[10px] leading-tight font-medium">
+                <span className="font-mono text-[8px] text-muted-foreground tabular-nums">
+                  {idx + 1}
+                </span>
+                <span className="text-[8px] leading-tight font-medium text-balance">
                   {label}
                 </span>
-              </li>
-            ))}
-          </ul>
+              </div>
+              {idx < spec.stages.length - 1 ? (
+                <svg
+                  viewBox="0 0 10 8"
+                  className="w-2 shrink-0"
+                  role="presentation"
+                  aria-hidden
+                >
+                  <path
+                    d="M1 4h6M5 1.5l2 2.5-2 2.5"
+                    fill="none"
+                    className="stroke-primary/40"
+                    strokeWidth="1.25"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              ) : null}
+            </div>
+          ))}
+        </div>
+
+        {/* What is true on the other side */}
+        <div className="mt-2 flex items-center justify-center gap-3 border-t border-border pt-2">
+          {spec.outcome.map(({ icon: Icon, label }) => (
+            <span key={label} className="flex items-center gap-1">
+              <Icon className="size-2.5 shrink-0 text-primary" aria-hidden />
+              <span className="text-[8px] whitespace-nowrap text-muted-foreground">
+                {label}
+              </span>
+            </span>
+          ))}
         </div>
       </div>
     </Stage>
@@ -926,10 +1714,10 @@ function SwapLayout({ uid, spec }: { uid: string; spec: SwapSpec }) {
  * ORBIT — one hub with everything else arranged around it. For products
  * whose job is to sit in the middle of things other people already run.
  */
-function OrbitLayout({ uid, spec }: { uid: string; spec: OrbitSpec }) {
+function OrbitLayout({ spec }: { spec: OrbitSpec }) {
   const n = spec.around.length;
   return (
-    <Stage uid={uid} status={spec.status}>
+    <Stage status={spec.status}>
       <div className="relative mx-auto h-[210px] w-full max-w-[340px]">
         {/* Connecting spokes, drawn under the cards */}
         <svg
@@ -1137,8 +1925,17 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     layout: "queue",
     status: "Callers waiting",
     waitingIcon: PhoneIncoming,
-    waitingLabel: "Callers",
+    waitingLabel: "Calls",
     queueLabel: "In the queue",
+    waiting: [
+      { number: "+44 20 7946", waited: "0:42" },
+      { number: "+44 161 496", waited: "1:15" },
+      { number: "+44 121 234", waited: "2:03" },
+    ],
+    handling: [
+      { icon: Music, label: "On hold music" },
+      { icon: ListOrdered, label: "Position announced" },
+    ],
     agents: [
       { icon: Headset, label: "Agent 1", state: "busy" },
       { icon: Headset, label: "Agent 2", state: "free" },
@@ -1146,12 +1943,22 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     ],
   },
 
+
   "call-center": {
     layout: "queue",
     status: "Queue healthy",
     waitingIcon: Users,
-    waitingLabel: "Customers",
+    waitingLabel: "Calls",
     queueLabel: "Routed by your rules",
+    waiting: [
+      { number: "Sales enquiry", waited: "0:18" },
+      { number: "Support case", waited: "0:51" },
+      { number: "Billing query", waited: "1:07" },
+    ],
+    handling: [
+      { icon: ListOrdered, label: "Skills matched" },
+      { icon: BarChart3, label: "Wait tracked" },
+    ],
     agents: [
       { icon: Headset, label: "Sales", state: "free" },
       { icon: Headset, label: "Support", state: "busy" },
@@ -1159,31 +1966,54 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     ],
   },
 
+
   "predictive-dialer": {
-    layout: "queue",
+    layout: "dialer",
     status: "Campaign running",
-    waitingIcon: PhoneOutgoing,
-    waitingLabel: "Dial list",
-    queueLabel: "Paced to availability",
+    listLabel: "Dial list",
+    contacts: [
+      { number: "+1 415 ···" },
+      { number: "+1 628 ···" },
+      { number: "+1 917 ···" },
+      { number: "+1 212 ···" },
+      { number: "+1 646 ···" },
+    ],
+    engine: {
+      icon: Activity,
+      title: "Pacing engine",
+      note: "Dials ahead of the agents about to free up",
+      metric: "Paced to availability",
+    },
     agents: [
-      { icon: Headset, label: "Agent 1", state: "busy" },
-      { icon: Headset, label: "Agent 2", state: "free" },
-      { icon: PhoneCall, label: "Answered", state: "free" },
+      { icon: Headset, label: "Agent 1", cycles: true },
+      { icon: Headset, label: "Agent 2", cycles: true },
+      { icon: Headset, label: "Agent 3", cycles: true },
     ],
   },
 
   "auto-dialer": {
-    layout: "queue",
-    status: "Campaign queued",
-    waitingIcon: Smartphone,
-    waitingLabel: "Contacts",
-    queueLabel: "Dialled in order",
-    agents: [
-      { icon: Radio, label: "Announcement", state: "free" },
-      { icon: Headset, label: "Or an agent", state: "free" },
-      { icon: BarChart3, label: "Outcome", state: "busy" },
+    layout: "broadcast",
+    status: "Campaign running",
+    message: {
+      icon: AudioLines,
+      title: "Your recorded voice message",
+      note: "Recorded once, played aloud on every answered call",
+    },
+    sent: 348,
+    total: 500,
+    calls: [
+      { number: "+44 20 7946 ···", stage: "playing" },
+      { number: "+44 161 496 ···", stage: "ringing" },
+      { number: "+44 121 234 ···", stage: "done" },
+    ],
+    outcomes: [
+      { icon: PhoneCall, label: "Answered" },
+      { icon: Headset, label: "To an agent" },
+      { icon: BarChart3, label: "Logged" },
     ],
   },
+
+
 
   /* -------------------------------------------- panel: a surface to read */
   "call-analytics": {
@@ -1291,76 +2121,90 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
 
   /* ---------------------------------------------- swap: old for new */
   "number-porting": {
-    layout: "swap",
+    layout: "journey",
     status: "Continuity kept",
-    beforeLabel: "With your old carrier",
-    before: [
-      { icon: Building2, label: "Tied to one provider" },
-      { icon: Phone, label: "Change number to move" },
-      { icon: Store, label: "Reprint everything" },
+    subject: {
+      number: "+44 20 7946 0123",
+      note: "Your number, unchanged",
+    },
+    from: "Old carrier",
+    to: "SipLink",
+    stages: [
+      { icon: ClipboardList, label: "Coordinate details" },
+      { icon: ShieldCheck, label: "Validate numbers" },
+      { icon: CalendarClock, label: "Plan the move" },
+      { icon: ListOrdered, label: "Configure routing" },
     ],
-    verb: "Port",
-    afterLabel: "On SipLink",
-    after: [
-      { icon: Phone, label: "Same numbers kept" },
-      { icon: ListOrdered, label: "Your call flows" },
-      { icon: ShieldCheck, label: "Customers unaffected" },
+    outcome: [
+      { icon: Phone, label: "Same number" },
+      { icon: Users, label: "Customers unaffected" },
     ],
   },
+
 
   "cloud-pbx": {
-    layout: "swap",
+    layout: "system",
     status: "System online",
-    beforeLabel: "On-premise system",
-    before: [
-      { icon: Server, label: "A box to maintain" },
-      { icon: Building2, label: "Tied to one office" },
-      { icon: Lock, label: "Upgrades deferred" },
+    caller: { icon: PhoneIncoming, label: "Customer", number: "+44 20 7946" },
+    routing: [
+      { icon: ListOrdered, label: "IVR menu answers" },
+      { icon: Clock, label: "Checks business hours" },
+      { icon: Users, label: "Rings the sales queue" },
     ],
-    verb: "Move",
-    afterLabel: "Cloud PBX",
-    after: [
-      { icon: Cloud, label: "Nothing on site" },
-      { icon: Users, label: "Extensions anywhere" },
-      { icon: ListOrdered, label: "IVR, queues, voicemail" },
+    extensions: [
+      { icon: MonitorSmartphone, label: "Priya", ext: "Ext 201", live: true },
+      { icon: Users, label: "Sam", ext: "Ext 202" },
+      { icon: Users, label: "Alex", ext: "Ext 203" },
+    ],
+    alsoLabel: "Always on",
+    also: [
+      { icon: MessageCircle, label: "Voicemail to email" },
+      { icon: BarChart3, label: "CDR reporting" },
     ],
   },
+
 
   "hosted-pbx": {
-    layout: "swap",
+    layout: "hub",
     status: "Managed by SipLink",
-    beforeLabel: "Running it yourself",
-    before: [
-      { icon: ServerCog, label: "Your team patches it" },
-      { icon: Clock, label: "Updates wait for capacity" },
-      { icon: Activity, label: "You watch it" },
+    platform: {
+      title: "Hosted by SipLink",
+      note: "No PBX in your building to patch, replace or monitor",
+    },
+    managed: [
+      { icon: ServerCog, label: "We host it" },
+      { icon: Activity, label: "We monitor it" },
+      { icon: ShieldCheck, label: "We update it" },
     ],
-    verb: "Hand over",
-    afterLabel: "Hosted by SipLink",
-    after: [
-      { icon: ServerCog, label: "We run and update it" },
-      { icon: Store, label: "Every branch included" },
-      { icon: ShieldCheck, label: "You keep the controls" },
+    sites: [
+      { icon: Building2, label: "Head office", detail: "Desk phones" },
+      { icon: Store, label: "Branches", detail: "Same system" },
+      { icon: MonitorSmartphone, label: "Remote staff", detail: "App or browser" },
     ],
   },
 
+
   "ip-pbx": {
-    layout: "swap",
+    layout: "perimeter",
     status: "On premise",
-    beforeLabel: "Legacy trunks",
-    before: [
-      { icon: Phone, label: "PRI and analogue lines" },
-      { icon: Lock, label: "Fixed channel blocks" },
-      { icon: Network, label: "Hard to extend" },
+    boundary: "Your network",
+    core: {
+      icon: Cpu,
+      title: "Your IP PBX",
+      note: "Call processing and internal dialling stay here",
+    },
+    inside: [
+      { icon: Phone, label: "Extensions" },
+      { icon: PhoneForwarded, label: "Transfer and park" },
+      { icon: Users, label: "Company phonebook" },
     ],
-    verb: "SIP-enable",
-    afterLabel: "Your IP PBX",
-    after: [
-      { icon: Server, label: "Call control stays on site" },
-      { icon: Cloud, label: "Hybrid where you want it" },
-      { icon: Globe, label: "SIP uplink to the world" },
+    link: { label: "SIP", note: "Only the trunk leaves" },
+    outside: [
+      { icon: Globe, label: "SipLink voice network" },
+      { icon: Network, label: "DIDs and routing" },
     ],
   },
+
 
   /* ------------------------------------------- orbit: sits in the middle */
   "crm-integration": {
@@ -1404,15 +2248,30 @@ export function ProductIllustration({ slug, className }: Props) {
   if (!spec) return null;
 
   return (
-    <div className={cn("w-full", className)}>
-      {spec.layout === "flow" ? <FlowLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "fan" ? <FanLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "queue" ? <QueueLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "panel" ? <PanelLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "wave" ? <WaveLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "code" ? <CodeLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "swap" ? <SwapLayout uid={slug} spec={spec} /> : null}
-      {spec.layout === "orbit" ? <OrbitLayout uid={slug} spec={spec} /> : null}
+    <div className={cn("w-full text-foreground", className)}>
+      {spec.layout === "flow" ? <FlowLayout spec={spec} /> : null}
+      {spec.layout === "fan" ? <FanLayout spec={spec} /> : null}
+      {spec.layout === "queue" ? <QueueLayout spec={spec} /> : null}
+      {spec.layout === "panel" ? <PanelLayout spec={spec} /> : null}
+      {spec.layout === "wave" ? <WaveLayout spec={spec} /> : null}
+      {spec.layout === "dialer" ? (
+        <DialerLayout spec={spec} />
+      ) : null}
+      {spec.layout === "broadcast" ? (
+        <BroadcastLayout spec={spec} />
+      ) : null}
+      {spec.layout === "code" ? <CodeLayout spec={spec} /> : null}
+      {spec.layout === "system" ? (
+        <SystemLayout spec={spec} />
+      ) : null}
+      {spec.layout === "hub" ? <HubLayout spec={spec} /> : null}
+      {spec.layout === "perimeter" ? (
+        <PerimeterLayout spec={spec} />
+      ) : null}
+      {spec.layout === "journey" ? (
+        <JourneyLayout spec={spec} />
+      ) : null}
+      {spec.layout === "orbit" ? <OrbitLayout spec={spec} /> : null}
     </div>
   );
 }
