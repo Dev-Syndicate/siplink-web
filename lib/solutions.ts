@@ -55,7 +55,25 @@ export type SolutionGroup = "By Business Size" | "By Use Case" | "Migration";
 export type SolutionStep = { title: string; body: string };
 
 /** A named point in the "what you gain" / capability lists. */
-export type SolutionPoint = { title: string; description: string; icon: LucideIcon };
+export type SolutionPoint = {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  /**
+   * A product mock for this capability, shown in place of the drawn
+   * schematic. Set it only where real artwork exists — a capability without
+   * one falls back to its figure in capability-figures.tsx, so the six By Use
+   * Case pages stay illustrated whether or not artwork has been made for
+   * them yet.
+   *
+   * `width` and `height` are the file's real pixel size and are required.
+   * next/image takes the aspect ratio from them, not from the file, so a
+   * shared default would silently squash any mock that did not happen to
+   * match it — and the four sets so far arrive at four different ratios
+   * (1.50, 1.72, 1.78, 2.00).
+   */
+  image?: { src: string; alt: string; width: number; height: number };
+};
 
 /** Which schematic the page's hero draws (see SolutionIllustration). */
 export type SolutionShape =
@@ -81,8 +99,23 @@ export type SolutionDetail = {
   challenge: { heading: string; body: string };
   /** How SipLink answers it. Right column of the problem spine. */
   handling: { heading: string; body: string[] };
-  /** Concrete capabilities. Rendered as a quiet grid. */
+  /** Concrete capabilities. */
   capabilities: SolutionPoint[];
+  /**
+   * How the "What's included" section lays them out.
+   *
+   * "rows" (the default) alternates copy and figure down the page, which
+   * suits a mock that reads left to right and gives each capability its own
+   * band. "cards" is a two-up grid of tall cards with the mock across the
+   * top — better where the artwork is a self-contained panel rather than a
+   * scene, and where two capabilities at a time is the right reading unit.
+   * "banner" is one mock across the full width with all the capabilities in a
+   * single row beneath it — for a page with one piece of artwork that stands
+   * for the whole section rather than one capability each. It takes the first
+   * `image` it finds, so only one capability needs to set one, and it is the
+   * only layout that gives the mock the container's full width.
+   */
+  capabilityLayout?: "rows" | "cards" | "banner";
   /** The payoff line that closes the argument. */
   gain: { heading: string; body: string };
   /** Who this is for. */
@@ -166,24 +199,48 @@ const useCase: SolutionDetail[] = [
         description:
           "Take business calls from a softphone, a phone in the pocket or straight from the browser with WebRTC.",
         icon: Smartphone,
+        image: {
+          src: "/solns-remoteWorkforce/desktop-mobile-and-browser-calling.webp",
+          alt: "One call running on a laptop softphone, in a browser window and on a mobile handset at the same time.",
+          width: 1620,
+          height: 930,
+        },
       },
       {
         title: "Extension mobility",
         description:
           "An extension follows the person, not the desk, so moving location changes nothing for callers.",
         icon: ArrowLeftRight,
+        image: {
+          src: "/solns-remoteWorkforce/extension-mobility.webp",
+          alt: "The same extension, 1024, answering from the office, from home and out on the move.",
+          width: 1649,
+          height: 930,
+        },
       },
       {
         title: "Presence and multi-device",
         description:
           "See who's available and pick up on whichever device is closest, with calls staying in sync.",
         icon: Users,
+        image: {
+          src: "/solns-remoteWorkforce/presence-and-multi-device.webp",
+          alt: "A team presence list showing who is available, beside the same person's call on desktop, mobile and browser.",
+          width: 1600,
+          height: 959,
+        },
       },
       {
         title: "Centralised control",
         description:
           "Provision users, set routing and manage the whole team from one web portal.",
         icon: ServerCog,
+        image: {
+          src: "/solns-remoteWorkforce/centralised-control.webp",
+          alt: "The admin dashboard, with user management, call routing and team presence panels around it.",
+          width: 1600,
+          height: 931,
+        },
       },
     ],
     idealFor: [
@@ -235,30 +292,59 @@ const useCase: SolutionDetail[] = [
         "Teams handle conversations from one place and keep visibility into what's happening, which brings missed calls and response times down.",
       ],
     },
+    capabilityLayout: "cards",
     capabilities: [
       {
         title: "Intelligent routing and queues",
         description:
           "Send each caller to the right team and hold the rest in an organised queue instead of a busy tone.",
         icon: Route,
+        image: {
+          src: "/solns-customerSupport/intelligent-routing-and-queues.webp",
+          alt: "A routing rules panel sending each caller to the support, sales, accounts or technical team, with a queue holding the overflow rather than a busy tone.",
+          width: 1404,
+          height: 936,
+        },
       },
       {
         title: "IVR menus",
         description:
           "Let callers self-select Sales, Support or Billing before they ever reach an agent.",
         icon: ListChecks,
+        image: {
+          src: "/solns-customerSupport/ivr-menus.webp",
+          alt: "A call flow designer: an incoming call reaches a menu, the caller presses 2 for support, and the call goes to the support queue.",
+          width: 1404,
+          height: 936,
+        },
+      },
+      /* Analytics sits before recording so the two crimson-ground mocks fall
+         on opposite corners of the two-up grid rather than stacking down the
+         right column. These four are an unordered set, so the order is free
+         to serve the layout. */
+      {
+        title: "Analytics",
+        description:
+          "Understand call volumes, answered and missed calls, and busy periods to staff and improve accordingly.",
+        icon: Gauge,
+        image: {
+          src: "/solns-customerSupport/analytics.webp",
+          alt: "A support analytics dashboard showing call volumes through the day, answered against missed calls, and staffing recommendations.",
+          width: 840,
+          height: 560,
+        },
       },
       {
         title: "Recording and monitoring",
         description:
           "Capture conversations and let supervisors listen, whisper or barge to support agents live.",
         icon: Headset,
-      },
-      {
-        title: "Analytics",
-        description:
-          "Understand call volumes, answered and missed calls, and busy periods to staff and improve accordingly.",
-        icon: Gauge,
+        image: {
+          src: "/solns-customerSupport/recording-and-monitoring.webp",
+          alt: "A call being recorded while a supervisor monitors it live, with listen, whisper and barge controls.",
+          width: 1404,
+          height: 936,
+        },
       },
     ],
     idealFor: [
@@ -316,24 +402,48 @@ const useCase: SolutionDetail[] = [
         description:
           "Spend more time speaking with prospects and less time on the repetitive parts of dialling.",
         icon: PhoneOutgoing,
+        image: {
+          src: "/solns-salesTeam/streamlined-outbound-calling.webp",
+          alt: "An outbound calling app working through a synced lead list one click at a time, logging each call as it moves from dialling to speaking.",
+          width: 1600,
+          height: 930,
+        },
       },
       {
         title: "Professional business numbers",
         description:
           "Reach prospects from consistent business numbers rather than personal lines.",
         icon: Phone,
+        image: {
+          src: "/solns-salesTeam/professional-business-numbers.webp",
+          alt: "A softphone and call log showing outbound calls placed from the company's business line rather than a personal number.",
+          width: 1600,
+          height: 930,
+        },
       },
       {
         title: "Conversation visibility",
         description:
           "Keep track of customer conversations so the whole team knows where each relationship stands.",
         icon: Gauge,
+        image: {
+          src: "/solns-salesTeam/conversation-visibility.webp",
+          alt: "A shared conversations inbox with each customer thread, its history, and a summary of what was agreed.",
+          width: 1600,
+          height: 930,
+        },
       },
       {
         title: "CRM integration",
         description:
           "Connect calling to the CRM workflows your team already relies on, where the integration supports it.",
         icon: Workflow,
+        image: {
+          src: "/solns-salesTeam/crm-integration.webp",
+          alt: "A live call beside the matching CRM record, showing the contact's details, open deals and a logged history of calls, notes and emails.",
+          width: 1600,
+          height: 930,
+        },
       },
     ],
     idealFor: [
@@ -391,24 +501,48 @@ const useCase: SolutionDetail[] = [
         description:
           "Calls, HD video meetings, instant messaging and presence on one platform.",
         icon: Video,
+        image: {
+          src: "/solns-unifiedComm/voice-video-and-messaging.webp",
+          alt: "A team video meeting running beside its chat thread, with an incoming call arriving and a presence menu set to available.",
+          width: 1600,
+          height: 800,
+        },
       },
       {
         title: "Collaboration in one place",
         description:
           "Bring team communication together instead of spreading it across separate apps.",
         icon: MessagesSquare,
+        image: {
+          src: "/solns-unifiedComm/collaboration-in-one-place.webp",
+          alt: "One workspace holding team channels, the conversation, shared files and the next meeting, rather than separate apps for each.",
+          width: 1600,
+          height: 800,
+        },
       },
       {
         title: "Business app integrations",
         description:
           "Connect communication to the business applications your teams already use, where supported.",
         icon: Workflow,
+        image: {
+          src: "/solns-unifiedComm/business-app-integrations.webp",
+          alt: "An integrations directory connecting calling to the CRM, helpdesk and productivity tools a team already runs.",
+          width: 1600,
+          height: 800,
+        },
       },
       {
         title: "One environment to manage",
         description:
           "Administer calls, video, chat and collaboration from a single platform.",
         icon: Layers,
+        image: {
+          src: "/solns-unifiedComm/one-environment-to-manage.webp",
+          alt: "A single dashboard covering calls, video meetings, messages and teams, with the same platform running on desktop, mobile and web.",
+          width: 1600,
+          height: 900,
+        },
       },
     ],
     idealFor: [
@@ -460,6 +594,7 @@ const useCase: SolutionDetail[] = [
         "Whether teams are talking internally or serving customers in different markets, they stay connected without a patchwork of systems per site.",
       ],
     },
+    capabilityLayout: "banner",
     capabilities: [
       {
         title: "Unified environment across sites",
@@ -468,16 +603,25 @@ const useCase: SolutionDetail[] = [
         icon: Globe,
       },
       {
-        title: "Local numbers and routing",
-        description:
-          "Give each market the local presence it needs while routing stays centrally managed.",
-        icon: MapPin,
-      },
-      {
         title: "Cross-location connectivity",
         description:
           "Connect employees and offices so internal calls and transfers work across borders.",
         icon: Network,
+      },
+      {
+        /* The section's one image hangs off the capability it draws most
+           directly; under "banner" it runs across the top and stands for all
+           four. See the note on `capabilityLayout`. */
+        title: "Local numbers and routing",
+        description:
+          "Give each market the local presence it needs while routing stays centrally managed.",
+        icon: MapPin,
+        image: {
+          src: "/solns-Global/local-numbers-and-routing.webp",
+          alt: "A local number for each market beside a numbers table showing where each one routes, all managed from one place.",
+          width: 1600,
+          height: 800,
+        },
       },
       {
         title: "Centralised administration",

@@ -53,10 +53,15 @@ export type SizeContent = {
   /**
    * Where the visual sits.
    *
-   * `beside` runs it alongside the hero copy, which suits the instruments —
-   * they are read left to right and their controls want to be near the text
-   * that sets them up. `below` gives it a section of its own under the hero,
-   * figure on the left with its explanation reading against it on the right.
+   * `beside` runs it alongside the hero copy, for a figure that states the
+   * size's claim on its own and wants to be the first thing seen — the
+   * Startups ring is one number with every phone on it, which is the whole
+   * pitch at that size. `below` gives it a section of its own under the hero,
+   * figure on the left with its explanation reading against it on the right,
+   * for the figures that need that explanation to land.
+   *
+   * Either way the size's `feature` copy is rendered; `beside` simply does
+   * not draw the figure a second time underneath it.
    */
   placement?: "beside" | "below";
   /** One line naming what the visual is showing, used in the `beside` layout. */
@@ -370,19 +375,20 @@ export const businessSizes: SizeContent[] = [
     label: "Startups",
     short: "Startups",
     visual: "ring",
-    placement: "below",
+    /*
+     * The ring is the hero now, in place of a photograph of three people at a
+     * laptop. The picture showed the setting; the ring shows the claim — one
+     * number, every phone lighting at once, one of them taking it — which is
+     * the thing a founder is actually deciding about.
+     *
+     * The three checked lines that used to sit under the tagline are gone
+     * with it. Each one is answered better further down the page than it was
+     * in a fragment: no hardware and on-demand extensions are both in
+     * `feature.body` and again in the first two FAQs, and the hero now runs
+     * the solution's own intro paragraph instead.
+     */
+    placement: "beside",
     includedAs: "phone",
-    heroImage: {
-      src: "/solutions/startuphd.png",
-      alt: "Three colleagues smiling together at a laptop, with SipLink call activity, messages and calling features shown around them.",
-      width: 1489,
-      height: 1056,
-    },
-    heroPoints: [
-      "Run your phone system from the cloud, with no hardware to buy or maintain.",
-      "Work from mobile, the browser or a desk phone, from your first hire onward.",
-      "Add extensions and features on demand instead of buying capacity up front.",
-    ],
     note: "One number. Every phone on the ring lights at once, and whoever is free answers.",
     feature: {
       lead: "Everyone answers the same number.",

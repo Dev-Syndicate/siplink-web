@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Globe, PhoneCall, Smartphone } from "lucide-react";
 
@@ -22,13 +23,25 @@ const DEVICES = [
  * three places, not a call being passed between them, and simultaneity is
  * exactly what prose is bad at.
  *
- * It plays once, when scrolled to, and then holds the lit state. A loop would
- * make it decoration.
+ * It draws itself on view and then redraws every CYCLE_MS. The draw is CSS
+ * with a `both` fill, which cannot be restarted by toggling a class — the
+ * animation is already finished and stays finished — so the cycle counter is
+ * used as a React key and the branches remount. Long enough that the lit
+ * state, not the drawing, is what the figure is showing nearly all the time.
  */
+const CYCLE_MS = 7000;
+
 export function ReachFigure() {
   const [ref, seen] = useInView<HTMLDivElement>();
   const still = useReducedMotion();
   const play = seen && !still;
+  const [cycle, setCycle] = useState(0);
+
+  useEffect(() => {
+    if (!play) return;
+    const id = window.setInterval(() => setCycle((n) => n + 1), CYCLE_MS);
+    return () => window.clearInterval(id);
+  }, [play]);
 
   return (
     <div ref={ref} className="mx-auto w-full max-w-xl">
@@ -78,7 +91,10 @@ export function ReachFigure() {
           <path d="M150 44 L150 100" />
         </g>
 
-        <g strokeWidth={2} strokeLinecap="round" fill="none">
+        {/* Keyed on the cycle so the draw remounts and replays. A `both`
+            fill leaves the animation finished, so re-applying the class
+            alone would change nothing. */}
+        <g key={cycle} strokeWidth={2} strokeLinecap="round" fill="none">
           <path
             d="M150 0 L150 44"
             pathLength={1}
@@ -99,6 +115,7 @@ export function ReachFigure() {
         {DEVICES.map((device) => (
           <li key={device.label} className="flex flex-col items-center gap-2">
             <span
+              key={cycle}
               className={cn(
                 "flex size-16 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground sm:size-20",
                 play && "reach-device",

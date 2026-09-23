@@ -39,7 +39,16 @@ import { cn } from "@/lib/utils";
 const CW = 320;
 const CH = 180;
 
-/** Wrapper: the shared svg shell, so ten figures cannot drift apart. */
+/**
+ * Wrapper: the shared svg shell, so ten figures cannot drift apart.
+ *
+ * `figure-cut` is what makes these switch between beats rather than ease
+ * between them. The drawing vocabulary fades each state change over 700ms,
+ * which is longer than a beat at this size — a state was still arriving as
+ * the next one started, and ten cards doing that read as permanently
+ * half-resolved rather than as ten live panels. The full-page figures keep
+ * the fade; the class only reaches inside this svg. See globals.css.
+ */
 function Figure({
   uid,
   label,
@@ -55,7 +64,7 @@ function Figure({
     <svg
       ref={svgRef}
       viewBox={`0 0 ${CW} ${CH}`}
-      className="h-full w-full"
+      className="figure-cut h-full w-full"
       role="img"
       aria-label={label}
       fill="none"

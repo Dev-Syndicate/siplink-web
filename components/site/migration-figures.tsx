@@ -355,7 +355,7 @@ export function PbxMove() {
 
 /* ----------------------------------------------------------------- cloud */
 
-/** Where the same people end up once the building stops being the anchor. */
+/** The four places one phone system has to reach when it is not a place. */
 const PLACES = [
   { label: "head office", x: 96, y: 74 },
   { label: "home", x: 468, y: 66 },
@@ -366,133 +366,76 @@ const PLACES = [
 /**
  * What the cloud changes: what everyone is attached to.
  *
- * Before, the phone system is a place and every desk is wired into it. After,
- * it is above all of them — the same four people are in four different places
- * and none of them has moved away from the phone system, because it is no
- * longer somewhere you can be away from.
+ * The phone system sits above all four of them. Nobody is in the building and
+ * nobody is away from the system, because it is no longer somewhere you can be
+ * away from — head office, home, a branch and the road all reach it the same
+ * way, and the tethers are what carry that.
+ *
+ * This used to open on the before: the same four huddled around a box in a
+ * building, re-anchoring to the cloud after two and a half seconds. The state
+ * worth looking at is the one it ended on, so the figure starts there. The
+ * only motion left is the traffic on the tethers, which runs on its own and
+ * needs no phase to drive it — which is also why there is no longer anything
+ * here to wait for on scroll.
  */
 export function CloudUntether() {
-  const { ref, phase } = usePhases(2, 2500);
-  const free = phase >= 1;
-
   return (
     <svg
-      ref={ref}
       viewBox={`0 0 ${W} ${H}`}
       className="w-full"
       role="img"
-      aria-label="Before the move, every desk is wired to a box in one building. After it, the same four people work from the head office, home, a branch and the road, all reaching one phone system in the cloud."
+      aria-label="Four people — at the head office, at home, at a branch and on the road — each reaching the same phone system in the cloud."
     >
       <Defs uid="cld" w={W} h={H} />
       <Field uid="cld" w={W} h={H} />
 
-      {/* The tethers. They do not vanish, they re-anchor — nobody loses the
-          phone system, it stops being a place. */}
-      {PLACES.map((place, index) => {
-        const hx = free ? place.x : 248 + (index % 2) * 64;
-        const hy = free ? place.y : 126 + Math.floor(index / 2) * 88;
-        return (
-          <Wire
-            key={place.label}
-            uid="cld"
-            live
-            delay={index * 0.42}
-            d={`M280 170 Q${(280 + hx) / 2} ${(170 + hy) / 2} ${hx} ${hy}`}
-          />
-        );
-      })}
+      {/* The tethers, staggered so the four never pulse in formation. */}
+      {PLACES.map((place, index) => (
+        <Wire
+          key={place.label}
+          uid="cld"
+          live
+          delay={index * 0.42}
+          d={`M280 170 Q${(280 + place.x) / 2} ${(170 + place.y) / 2} ${place.x} ${place.y}`}
+        />
+      ))}
 
-      {/* The anchor. A building, then the layer above it. */}
-      {free ? (
-        <g>
-          <path
-            d="M236 150 q0 -22 22 -22 q6 -18 26 -18 q22 0 28 20 q22 0 22 22 q0 20 -22 20 H258 q-22 0 -22 -22 Z"
-            className="fill-primary stroke-primary"
-            strokeWidth="1.5"
-            filter="url(#mgl-cld)"
-          />
-          <Note x={280} y={196} anchor="middle" tone="primary">
-            siplink
-          </Note>
-        </g>
-      ) : (
-        <g>
-          <rect
-            x={244}
-            y={124}
-            width={72}
-            height={62}
-            rx="5"
-            className="fill-background stroke-border"
+      {/* The anchor, which is a layer rather than a place. */}
+      <path
+        d="M236 150 q0 -22 22 -22 q6 -18 26 -18 q22 0 28 20 q22 0 22 22 q0 20 -22 20 H258 q-22 0 -22 -22 Z"
+        className="fill-primary stroke-primary"
+        strokeWidth="1.5"
+        filter="url(#mgl-cld)"
+      />
+      <Note x={280} y={196} anchor="middle" tone="primary">
+        siplink
+      </Note>
+
+      {/* The people, where they actually are. */}
+      {PLACES.map((place) => (
+        <g
+          key={place.label}
+          style={{ transform: `translate(${place.x}px, ${place.y}px)` }}
+        >
+          <circle
+            r="17"
+            className="fill-background stroke-primary"
             strokeWidth="1.5"
           />
-          {[0, 1, 2].map((r) =>
-            [0, 1, 2].map((c) => (
-              <rect
-                key={`${r}-${c}`}
-                x={256 + c * 18}
-                y={136 + r * 16}
-                width={10}
-                height={9}
-                rx="1.5"
-                className="fill-transparent stroke-border"
-                strokeWidth="1"
-              />
-            )),
-          )}
-          <Note x={280} y={204} anchor="middle">
-            the building
-          </Note>
-        </g>
-      )}
-
-      {/* The people. Huddled at the box, then where they actually are. */}
-      {PLACES.map((place, index) => {
-        const x = free ? place.x : 248 + (index % 2) * 64;
-        const y = free ? place.y : 126 + Math.floor(index / 2) * 88;
-        return (
-          <g
-            key={place.label}
-            className="transition-all duration-1000 ease-out"
-            style={{ transform: `translate(${x}px, ${y}px)` }}
+          <circle cy="-4" r="4.5" className="fill-primary/70" />
+          <path d="M-7 8 a7 7 0 0 1 14 0" className="fill-primary/70" />
+          <text
+            y="32"
+            textAnchor="middle"
+            className="text-[8px] fill-muted-foreground [font-family:var(--font-mono)]"
           >
-            <circle
-              r="17"
-              className={cn(
-                "transition-all duration-700",
-                free
-                  ? "fill-background stroke-primary"
-                  : "fill-background stroke-border",
-              )}
-              strokeWidth="1.5"
-            />
-            <circle
-              cy="-4"
-              r="4.5"
-              className={cn(free ? "fill-primary/70" : "fill-muted-foreground/50")}
-            />
-            <path
-              d="M-7 8 a7 7 0 0 1 14 0"
-              className={cn(
-                free ? "fill-primary/70" : "fill-muted-foreground/50",
-              )}
-            />
-            <text
-              y="32"
-              textAnchor="middle"
-              className={cn(
-                "text-[8px] [font-family:var(--font-mono)] transition-opacity duration-700",
-                free ? "fill-muted-foreground opacity-100" : "opacity-0",
-              )}
-            >
-              {place.label}
-            </text>
-          </g>
-        );
-      })}
+            {place.label}
+          </text>
+        </g>
+      ))}
 
-      <Note x={280} y={322} anchor="middle" tone={free ? "primary" : "faint"}>
-        {free ? "four places, one phone system" : "every desk wired to one box"}
+      <Note x={280} y={322} anchor="middle" tone="primary">
+        four places, one phone system
       </Note>
     </svg>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useInView } from "@/hooks/use-in-view";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -10,6 +10,14 @@ import { cn } from "@/lib/utils";
 const HOLD_MS = 1900;
 /** How long the switch itself is worked. */
 const CUT_MS = 1500;
+/**
+ * How long the new side is held before the figure replays.
+ *
+ * Deliberately longer than HOLD_MS: the migration has to be seen to finish,
+ * and the outcome is what the page is arguing for, so the cycle rests there
+ * rather than dividing its time evenly between the two systems.
+ */
+const AFTER_MS = 4200;
 
 /** Packets on the ribbon. Staggered so the line is never empty. */
 const RUNNERS = [0, 0.85, 1.7, 2.55];
@@ -29,26 +37,35 @@ type Phase = "before" | "cutting" | "after";
  * of calls along the bottom keeps running straight through the marker. The
  * whole figure is that the two things happen independently.
  *
- * It plays once, on view, and holds on the new side. A migration that loops
- * back to the old system every eight seconds would say the opposite of what
- * this page is for.
+ * It cycles, and the weighting is the whole of how it stays honest: the new
+ * side is held for AFTER_MS, roughly twice as long as the old side, so at any
+ * moment a reader is most likely to find the figure resting on the outcome.
+ * It used to play once and stop there, which was safer but left the figure
+ * dead for as long as anyone kept reading.
  */
 export function CutoverFigure({ from }: { from: string }) {
   const [ref, seen] = useInView<HTMLDivElement>();
   const still = useReducedMotion();
   const [played, setPlayed] = useState<Phase>("before");
-  const timers = useRef<number[]>([]);
 
   useEffect(() => {
     if (!seen || still) return;
 
-    timers.current.push(
-      window.setTimeout(() => setPlayed("cutting"), HOLD_MS),
-      window.setTimeout(() => setPlayed("after"), HOLD_MS + CUT_MS),
-    );
+    const timers: number[] = [];
 
-    const running = timers.current;
-    return () => running.forEach(window.clearTimeout);
+    const run = () => {
+      timers.push(
+        window.setTimeout(() => setPlayed("cutting"), HOLD_MS),
+        window.setTimeout(() => setPlayed("after"), HOLD_MS + CUT_MS),
+        window.setTimeout(() => {
+          setPlayed("before");
+          run();
+        }, HOLD_MS + CUT_MS + AFTER_MS),
+      );
+    };
+
+    run();
+    return () => timers.forEach(window.clearTimeout);
   }, [seen, still]);
 
   /* Under reduced motion the figure rests on the outcome rather than on the

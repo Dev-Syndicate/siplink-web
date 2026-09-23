@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import { CtaPanel } from "@/components/site/cta-panel";
 import { BusinessHoursHero } from "@/components/site/business-hours-hero";
 import { ReachFigure } from "@/components/site/reach-figure";
 import {
@@ -10,7 +11,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
 import { businessSizes, type SizeContent } from "@/lib/business-size";
 import { integrationLogos } from "@/lib/site";
 import type { SolutionDetail } from "@/lib/solutions";
@@ -303,23 +303,17 @@ export function SmallBusinessSolution({
           </ul>
         ) : null}
 
-        <h2 className="mt-16 max-w-[18ch] text-3xl leading-[1.12] font-semibold tracking-tight text-balance sm:text-4xl">
-          {gain.heading}
-        </h2>
-        <p className="mt-5 max-w-[56ch] text-lg text-pretty text-muted-foreground">
-          {gain.body} Tell us how your team takes calls today and we will
-          recommend a configuration, including porting the numbers you already
-          have.
-        </p>
+      </section>
 
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button asChild size="lg">
-            <Link href="/contact">Talk to us</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link href="/pricing">View pricing</Link>
-          </Button>
-        </div>
+      {/* The closing ask, in the site's one CTA shape — see cta-panel. The
+          second sentence is this page's own: it is the only size where the
+          next step is "tell us how you take calls today". */}
+      <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-10 lg:pb-28">
+        <CtaPanel
+          eyebrow="Sized to your team &middot; Grow without switching"
+          heading={gain.heading}
+          body={`${gain.body} Tell us how your team takes calls today and we will recommend a configuration, including porting the numbers you already have.`}
+        />
       </section>
 
       {/* The other three sizes, as plain navigation. */}

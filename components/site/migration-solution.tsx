@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+import { CtaPanel } from "@/components/site/cta-panel";
 import {
   CloudUntether,
   NumberKept,
@@ -427,22 +428,11 @@ export function MigrationSolution({ solution }: { solution: SolutionDetail }) {
           no hole. */}
       <section className="border-t border-border">
         <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10 lg:py-20">
-          <div className="relative overflow-hidden rounded-3xl bg-foreground px-8 py-12 text-background sm:px-12 lg:px-16 lg:py-16">
-            <div className="relative max-w-[46ch]">
-              <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                {gain.heading}
-              </h2>
-              <p className="mt-5 text-lg text-pretty text-background/75">
-                {gain.body}
-              </p>
-              <Link
-                href="/contact"
-                className="mt-8 inline-block text-sm font-medium text-background underline underline-offset-4 hover:no-underline"
-              >
-                Talk to us about {title}
-              </Link>
-            </div>
-          </div>
+          <CtaPanel
+            eyebrow="Planned cutover &middot; Numbers ported"
+            heading={gain.heading}
+            body={gain.body}
+          />
         </div>
       </section>
 

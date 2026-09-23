@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
+import { CtaPanel } from "@/components/site/cta-panel";
 import { IncludedCards } from "@/components/site/included-cards";
 import { QueueSplit } from "@/components/site/queue-split";
 import {
@@ -199,21 +200,15 @@ export function MidMarketSolution({
           </ul>
         ) : null}
 
-        <h2 className="mt-16 max-w-[18ch] text-3xl leading-[1.12] font-semibold tracking-tight text-balance sm:text-4xl">
-          {gain.heading}
-        </h2>
-        <p className="mt-5 max-w-[56ch] text-lg text-pretty text-muted-foreground">
-          {gain.body}
-        </p>
+      </section>
 
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button asChild size="lg">
-            <Link href="/contact">Talk to us</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link href="/pricing">View pricing</Link>
-          </Button>
-        </div>
+      {/* The closing ask, in the site's one CTA shape — see cta-panel. */}
+      <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-10 lg:pb-28">
+        <CtaPanel
+          eyebrow="Sized to your team &middot; Grow without switching"
+          heading={gain.heading}
+          body={gain.body}
+        />
       </section>
 
       <section className="border-t border-border">

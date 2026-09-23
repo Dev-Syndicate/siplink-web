@@ -7,8 +7,20 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { estateNodes, estatePhases } from "@/lib/business-size";
 import { cn } from "@/lib/utils";
 
-/** How long the estate is left standing on its own before the layer arrives. */
-const HOLD_MS = 2200;
+/**
+ * How long the estate is left standing on its own before the layer arrives.
+ *
+ * Was 2200. The disconnected estate is the setup, not the claim, and two and
+ * a bit seconds of it sitting motionless read as a figure still loading
+ * rather than one about to resolve.
+ */
+const HOLD_MS = 1200;
+/**
+ * How long the joined estate is held before the figure replays. Longer than
+ * HOLD_MS on purpose — the connected estate is the claim, the disconnected
+ * one is only the setup for it.
+ */
+const JOINED_MS = 5000;
 
 /**
  * The estate, connected in place.
@@ -27,11 +39,11 @@ const HOLD_MS = 2200;
  * A horizontal bar rather than a hub and spokes because layer is the word the
  * copy itself uses for what SipLink is, twice.
  *
- * It plays once, when scrolled to, and then holds the joined state. It used
- * to loop, which was defensible in the hero where it was the first thing on
- * the page. Here it is a hinge between a complaint and its answer, and a loop
- * would mean a reader arriving mid-cycle sees a connected estate having never
- * seen the disconnected one — which is half the argument gone.
+ * It cycles, holding the joined state for JOINED_MS against HOLD_MS on the
+ * disconnected one. The risk in looping a before-and-after is that a reader
+ * arriving mid-cycle sees the connected estate having never seen the
+ * disconnected one, so the two beats are weighted rather than equal: the
+ * joined state is the resting state and the complaint is the brief part.
  *
  * Dark rather than following the page ground. This is the largest size and
  * the weight belongs here; a ground that changed as well would leave the
@@ -47,11 +59,23 @@ export function EstatePanel() {
   const [arrived, setArrived] = useState(false);
 
   useEffect(() => {
-    if (!seen || still || arrived) return;
+    if (!seen || still) return;
 
-    const id = window.setTimeout(() => setArrived(true), HOLD_MS);
-    return () => window.clearTimeout(id);
-  }, [seen, still, arrived]);
+    const timers: number[] = [];
+
+    const run = () => {
+      timers.push(
+        window.setTimeout(() => setArrived(true), HOLD_MS),
+        window.setTimeout(() => {
+          setArrived(false);
+          run();
+        }, HOLD_MS + JOINED_MS),
+      );
+    };
+
+    run();
+    return () => timers.forEach(window.clearTimeout);
+  }, [seen, still]);
 
   // Anyone who has asked for less motion gets the joined state outright,
   // because the connected estate is the claim and the arriving is the telling.
@@ -79,16 +103,17 @@ export function EstatePanel() {
         <Row nodes={above} joined={joined} side="above" />
 
         {/* The layer. It grows from the centre out, so it reads as something
-            laid between the two rows rather than as another row of its own. */}
+            laid between the two rows rather than as another row of its own.
+
+            It grows out of nothing, not along a track. A hairline used to run
+            the full width behind it, marking where the layer would land, but
+            it read as a rule drawn through the bar — and it gave the arrival
+            away, which is the one beat this figure has. */}
         <div className="relative my-3 flex h-11 items-center">
           <span
             aria-hidden
             data-joined={joined}
             className="absolute inset-x-0 h-11 origin-center scale-x-0 rounded-lg bg-primary transition-transform duration-700 ease-out data-[joined=true]:scale-x-100"
-          />
-          <span
-            aria-hidden
-            className="absolute inset-x-0 h-px bg-background/15"
           />
           <span
             className={cn(

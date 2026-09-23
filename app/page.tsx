@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { AiConsole } from "@/components/site/ai-console";
+import { CtaPanel } from "@/components/site/cta-panel";
 import { CustomerStories } from "@/components/site/customer-stories";
 import { FeatureCards } from "@/components/site/feature-cards";
 import { IntegrationWall } from "@/components/site/integration-wall";
@@ -566,52 +567,16 @@ export default function Home() {
           last reassurance sits next to the last ask.
          --------------------------------------------------------------- */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <div className="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-brand-to via-brand-to to-brand-from px-8 py-14 text-primary-foreground lg:px-14 lg:py-16">
-          {/* Soft light falling from the top-right, so the flat gradient
-              reads as a lit surface rather than a solid fill. */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-32 -right-24 -z-10 size-[520px] rounded-full bg-white/10 blur-3xl"
-          />
-
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 font-mono text-[11px] font-semibold tracking-widest uppercase">
-            <span className="size-1.5 rounded-full bg-current" aria-hidden />
-            Zero risk &middot; Instant onboarding
-          </span>
-
-          <h2 className="font-heading mt-6 max-w-xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
-            Ready to modernize your enterprise telephony?
-          </h2>
-
-          <p className="mt-5 max-w-xl text-pretty text-primary-foreground/85 lg:text-lg">
-            Activate your elastic SIP trunk in minutes with complimentary test
-            credits, or schedule a private architecture review with a certified
-            carrier engineer.
-          </p>
-
-          <div className="mt-9 flex flex-wrap gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="w-full bg-background text-primary hover:bg-background/90 sm:w-auto"
-            >
-              <Link href="/contact">Book a demo</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="h-auto w-full border-white/25 bg-white/10 py-3 text-primary-foreground hover:bg-white/20 hover:text-primary-foreground sm:w-auto sm:py-2 dark:border-white/25 dark:bg-white/10 dark:hover:bg-white/20"
-            >
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
-                <PhoneCall className="shrink-0" aria-hidden />
-                <span className="text-center text-balance whitespace-normal">
-                  Speak to an architect ({site.phone})
-                </span>
-              </a>
-            </Button>
-          </div>
-        </div>
+        {/* This panel is now a component, because every solution page closes
+            with the same one. Keeping a copy here would have meant the home
+            CTA and the seven others drifting apart the first time either was
+            touched. See components/site/cta-panel. */}
+        <CtaPanel
+          eyebrow="Zero risk &middot; Instant onboarding"
+          heading="Ready to modernize your enterprise telephony?"
+          body="Activate your elastic SIP trunk in minutes with complimentary test credits, or schedule a private architecture review with a certified carrier engineer."
+          contactLabel="Speak to an architect"
+        />
       </section>
     </>
   );

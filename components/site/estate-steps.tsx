@@ -11,6 +11,19 @@ import { cn } from "@/lib/utils";
 const STEP_MS = 2400;
 
 /**
+ * One crossing of the wire, matching `.estate-call` in globals.css. Kept here
+ * too because the packets are spaced by dividing it, and a stagger that does
+ * not divide the cycle exactly leaves a visible gap once per lap.
+ */
+const CYCLE_MS = 6600;
+
+/**
+ * Where the calls sit when nothing is moving. Spread rather than even, so a
+ * still line still reads as traffic that happens to be caught mid-flow.
+ */
+const CALLS = [6, 41, 73] as const;
+
+/**
  * The estate being modernised, a step at a time.
  *
  * What an enterprise stands to lose is not a call, it is the weekend — the
@@ -19,13 +32,18 @@ const STEP_MS = 2400;
  * verbs in the enterprise `gain` copy are already a sequence. So this is that
  * sequence executing against an estate that is still carrying traffic.
  *
- * The rails are the content, not decoration: they are what says the estate is
- * running while the list advances. They are deliberately slow and thin, so the
+ * The line is the content, not decoration: it is what says the estate is
+ * running while the list advances. It is deliberately slow and thin, so the
  * thing that draws the eye is a step ticking to done rather than the movement
  * itself.
  *
- * Nothing here claims zero downtime or a service level. The rails say work is
- * in progress and the caption says gradually, which is exactly as far as the
+ * It carries discrete calls rather than a fill that sweeps across, because a
+ * part-width bar travelling a track is an indeterminate progress bar however
+ * it is styled — it says this panel is loading, where the claim is that the
+ * estate is still running.
+ *
+ * Nothing here claims zero downtime or a service level. The line says calls
+ * are moving and the caption says gradually, which is exactly as far as the
  * source documents go.
  *
  * Loops, unlike the estate panel further down the page which plays once. This
@@ -68,22 +86,32 @@ export function EstateSteps() {
         </span>
       </div>
 
-      {/* The estate, still running. Three rails rather than one so it reads
-          as traffic across an estate and not as a single progress bar. */}
-      <div aria-hidden className="space-y-2.5 px-5 pt-6 pb-5">
-        {[0, 1, 2].map((rail) => (
-          <div
-            key={rail}
-            className="h-1.5 overflow-hidden rounded-full bg-background/10"
-          >
-            <div
-              className={cn("h-full w-1/3 rounded-full bg-primary/70", {
-                "estate-rail": !still,
-              })}
-              style={{ animationDelay: `${rail * -2.6}s` }}
+      {/* The estate, still running: one line carrying several calls.
+          Packets rather than a fill sweeping the track — a part-width bar
+          crossing a rail is an indeterminate progress bar, and it reads as
+          the panel loading rather than as the estate running. */}
+      <div aria-hidden className="px-5 pt-6 pb-5">
+        <div className="relative h-1.5 overflow-hidden rounded-full bg-background/10">
+          {CALLS.map((offset, index) => (
+            <span
+              key={offset}
+              className={cn(
+                "absolute inset-y-0 w-[9%] rounded-full bg-primary/70",
+                still ? null : "estate-call",
+              )}
+              // Moving, every packet starts at the left edge and the delay
+              // spaces them out along the wire. Standing still there is no
+              // delay to space them, so they take up their positions
+              // directly — three calls in progress rather than three
+              // stacked on the same pixel.
+              style={
+                still
+                  ? { left: `${offset}%` }
+                  : { animationDelay: `${index * -(CYCLE_MS / CALLS.length)}ms` }
+              }
             />
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       <ol className="space-y-px px-5 pb-2">

@@ -3,12 +3,26 @@
 import { useEffect, useState } from "react";
 import { Headset } from "lucide-react";
 
+import { useInView } from "@/hooks/use-in-view";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { queueLanes, queuePhases, queueTotal } from "@/lib/business-size";
 import { cn } from "@/lib/utils";
 
-/** One line, then sorted, then a hold long enough to read the lanes. */
-const BEATS = [3400, 4400, 3400];
+/**
+ * Long enough to read one line of nine before it becomes three queues.
+ *
+ * Was 2200, which is most of the time a reader gives a hero figure before
+ * deciding it is a static image. The caption under the panel is legible from
+ * 600ms — `phase-in` holds it for 300 and fades it over 300 — so this leaves
+ * it readable for half a second and then moves.
+ */
+const HOLD = 1200;
+/**
+ * How long the sorted lanes are held before the figure replays. Longer than
+ * HOLD, so the cycle rests on the three queues rather than on the single
+ * line they replace.
+ */
+const SORTED_MS = 5000;
 
 /** Same people either side of the split, just standing somewhere useful. */
 const totalAgents = queueLanes.reduce((sum, lane) => sum + lane.agents, 0);
@@ -28,30 +42,46 @@ const totalAgents = queueLanes.reduce((sum, lane) => sum + lane.agents, 0);
  * can finally say who is waiting for what. Shortening the line would be a
  * performance claim; making it legible is the product.
  *
- * It plays itself rather than offering a control to operate. The figure this
- * replaces let the reader open and close agents, which asks for work before
- * the page has said anything.
+ * It plays itself rather than offering a control to operate, and it cycles.
+ * An even loop made the sorted queues — the half worth looking at — keep
+ * dissolving back into the problem, so the beats are weighted instead:
+ * SORTED_MS against HOLD, which leaves the lanes on screen for most of the
+ * cycle and the undifferentiated line as the brief thing it interrupts.
  */
 export function QueueSplit() {
-  const [beat, setBeat] = useState(0);
+  const [ref, seen] = useInView<HTMLDivElement>();
   const still = useReducedMotion();
+  const [split, setSplit] = useState(false);
 
   useEffect(() => {
-    if (still) return;
+    if (!seen || still) return;
 
-    const id = window.setTimeout(
-      () => setBeat((current) => (current + 1) % BEATS.length),
-      BEATS[beat],
-    );
+    const timers: number[] = [];
 
-    return () => window.clearTimeout(id);
-  }, [beat, still]);
+    const run = () => {
+      timers.push(
+        window.setTimeout(() => setSplit(true), HOLD),
+        window.setTimeout(() => {
+          setSplit(false);
+          run();
+        }, HOLD + SORTED_MS),
+      );
+    };
 
-  const sorted = still || beat > 0;
+    run();
+    return () => timers.forEach(window.clearTimeout);
+  }, [seen, still]);
+
+  // Reduced motion gets the sorted state outright: the lanes are the content,
+  // the sorting is only the telling.
+  const sorted = still || split;
   const phase = queuePhases[sorted ? 1 : 0];
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card">
+    <div
+      ref={ref}
+      className="overflow-hidden rounded-2xl border border-border bg-card"
+    >
       <div className="flex items-baseline justify-between gap-4 border-b border-border px-5 py-4">
         <p key={phase.label} className="phase-in font-medium">
           {phase.label}
@@ -136,25 +166,39 @@ export function QueueSplit() {
         )}
       </div>
 
-      {/* Both notes are rendered into the same grid cell, one of them
-          invisible. They wrap to different numbers of lines and that number
-          changes with viewport width, so a reserved height would have been a
-          magic number that held at one size and not another. Stacking them
-          makes the footer exactly as tall as the taller note, whatever the
-          width, and the panel cannot move under the reader. */}
+      {/* Both notes are rendered into the same grid cell. They wrap to
+          different numbers of lines and that number changes with viewport
+          width, so a reserved height would have been a magic number that held
+          at one size and not another. Stacking them makes the footer exactly
+          as tall as the taller note, whatever the width, and the panel cannot
+          move under the reader.
+
+          The inactive one is `invisible` rather than `opacity-0`, and the
+          active one fades in on `phase-in` rather than the two of them
+          crossfading. Crossfading in a shared cell puts both notes at half
+          opacity on top of each other for the length of the transition, which
+          renders as one illegible paragraph — the header has always keyed and
+          faded for exactly this reason, and the footer had been left behind.
+          `invisible` still reserves the space; it just paints nothing. */}
       <div className="grid border-t border-border px-5 py-4">
-        {queuePhases.map((item, index) => (
-          <p
-            key={item.label}
-            aria-hidden={index !== (sorted ? 1 : 0)}
-            className={cn(
-              "col-start-1 row-start-1 text-sm text-pretty text-muted-foreground transition-opacity duration-300",
-              index === (sorted ? 1 : 0) ? "opacity-100" : "opacity-0",
-            )}
-          >
-            {item.note}
-          </p>
-        ))}
+        {queuePhases.map((item, index) => {
+          const active = index === (sorted ? 1 : 0);
+
+          return (
+            <p
+              // The sorted state is in the key so both notes remount when it
+              // flips, which is what lets `phase-in` run on the new one.
+              key={`${item.label}-${sorted}`}
+              aria-hidden={!active}
+              className={cn(
+                "col-start-1 row-start-1 text-sm text-pretty text-muted-foreground",
+                active ? "phase-in" : "invisible",
+              )}
+            >
+              {item.note}
+            </p>
+          );
+        })}
       </div>
     </div>
   );

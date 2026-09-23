@@ -1306,24 +1306,33 @@
     animation-delay: 0.36s;
   }
 
-  /* ------------------------------------------------ enterprise: the rails
+  /* ------------------------------------------------- enterprise: the line
 
      Traffic across the estate, under a list of steps being worked through.
      Slow and thin on purpose: the thing that should draw the eye is a step
-     ticking to done, and the rails only have to say that the estate is
-     carrying calls while that happens. Three of them on a stagger, so it
-     reads as an estate rather than as one progress bar. */
-  @keyframes estate-rail {
+     ticking to done, and the line only has to say that the estate is
+     carrying calls while that happens.
+
+     One line, carrying several calls — not one fill sweeping across it. A
+     part-width bar travelling a track is an indeterminate progress bar, and
+     it reads as the panel loading rather than as the estate running, which
+     is the opposite of the claim. Discrete packets on a shared wire read as
+     traffic, and match the travelling pulses on the integration wall.
+
+     Each packet is 9% of the track, so 1000% of its own width carries it
+     across a little over the full span — self-relative because the element
+     is the only thing a transform can measure. */
+  @keyframes estate-call {
     from {
-      transform: translateX(-110%);
+      transform: translateX(-100%);
     }
     to {
-      transform: translateX(340%);
+      transform: translateX(1000%);
     }
   }
 
-  .estate-rail {
-    animation: estate-rail 7.8s linear infinite;
+  .estate-call {
+    animation: estate-call 6.6s linear infinite;
   }
 
   @keyframes estate-pulse {
@@ -1398,7 +1407,7 @@
       display: none;
     }
 
-    .estate-rail,
+    .estate-call,
     .estate-pulse {
       animation: none;
     }
@@ -1817,5 +1826,32 @@
       animation: none;
       opacity: 0;
     }
+  }
+}
+
+@layer components {
+  /* ------------------------------------------ capability cards: cut, not fade
+
+     The what's-included figures switch between beats instead of easing
+     between them.
+
+     The shared vocabulary in schematic.tsx fades every state change over
+     700ms, which suits the full-page figures: they are read slowly, and a
+     box warming up is part of how they explain themselves. In a card the
+     same fade is longer than the beat it belongs to, so a state is still
+     arriving when the next one starts and the whole figure reads as soft —
+     perpetually resolving, never resolved.
+
+     Cutting is what a live panel does. A status light switches; it does not
+     dissolve. Removing the fade is the whole of the difference between these
+     reading as something running and something loading.
+
+     `!important` because the declarations being overridden are Tailwind
+     utilities on the descendants themselves, and utilities are a later layer
+     than this one — matching specificity would still lose. Scoped to the
+     figures by the class, so nothing else on the site is touched. */
+  .figure-cut,
+  .figure-cut * {
+    transition-property: none !important;
   }
 }

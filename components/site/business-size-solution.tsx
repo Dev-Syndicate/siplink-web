@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Check } from "lucide-react";
 
+import { CtaPanel } from "@/components/site/cta-panel";
 import { CallPhone } from "@/components/site/call-phone";
 import { SizeQueue } from "@/components/site/size-queue";
 import { SizeRing } from "@/components/site/size-ring";
@@ -13,7 +14,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { businessSizes, type SizeContent } from "@/lib/business-size";
 import { integrationLogos } from "@/lib/site";
 import type { SolutionDetail } from "@/lib/solutions";
@@ -94,7 +94,9 @@ export function BusinessSizeSolution({
 
   const beside = size.placement === "beside";
   /* The hero is two columns whether the right half holds the size's own
-     visual or a photograph — only startups currently takes the second route. */
+     visual or a photograph. No size takes the photograph route at present —
+     Startups was the last and now runs its ring there instead — but the shell
+     still supports one, so the branch stays. */
   const heroSplit = beside || Boolean(size.heroImage);
   const aroundPhone = size.includedAs === "phone" && capabilities.length === 4;
 
@@ -230,17 +232,45 @@ export function BusinessSizeSolution({
         </div>
       </section>
 
-      {/* The visual in its own section under the hero: figure left, the
-          explanation reading against it on the right. The ring carries no
-          controls, so the two halves are a figure and its caption rather than
-          an instrument and its instructions — which is why the copy sits
-          beside it at reading width instead of centred underneath. */}
-      {!beside && size.feature ? (
-        <section className="border-b border-border">
-          <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 pt-10 pb-16 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pt-12 lg:pb-20">
-            <HeroVisual visual={size.visual} />
+      {/* The size's own argument, at length.
 
-            <div className="max-w-[56ch]">
+          Where the visual sits below, this section is the figure and its
+          explanation reading against it on the right: the visuals carry no
+          controls, so the two halves are a figure and its caption rather than
+          an instrument and its instructions, which is why the copy sits beside
+          it at reading width instead of centred underneath.
+
+          Where the visual is already up in the hero, the figure is not drawn
+          again and this is the copy alone. It is still rendered: the lead and
+          body are the size's substance, not a caption for the picture, and
+          dropping them with the figure was silently costing Startups its best
+          paragraph when its ring moved up. */}
+      {size.feature ? (
+        <section className="border-b border-border">
+          <div
+            className={cn(
+              "mx-auto max-w-7xl px-6 pt-10 pb-16 lg:px-10 lg:pt-12 lg:pb-20",
+              beside
+                ? null
+                : "grid items-center gap-12 lg:grid-cols-2 lg:gap-16",
+            )}
+          >
+            {beside ? null : <HeroVisual visual={size.visual} />}
+
+            {/* Centred only when it stands alone. Beside a figure the copy is
+                a caption reading against it and belongs on the left edge they
+                share; on its own in a full-width section, a 56ch column held
+                to the left reads as something that lost its other half —
+                which, on Startups, is exactly what happened when the ring
+                moved up into the hero. The measure does not change with the
+                alignment: it is what keeps the centred body five lines rather
+                than a wide ragged block. */}
+            <div
+              className={cn(
+                "max-w-[56ch]",
+                beside && "mx-auto text-center",
+              )}
+            >
               <p className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
                 {size.feature.lead}
               </p>
@@ -368,20 +398,18 @@ export function BusinessSizeSolution({
             <div />
           )}
 
-          <div className="rounded-2xl bg-background p-8 ring-1 ring-border">
-            <h2 className="text-2xl font-semibold tracking-tight text-balance">
-              {gain.heading}
-            </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">{gain.body}</p>
-            <Separator className="my-6" />
-            <Link
-              href="/contact"
-              className="text-sm font-medium text-primary hover:underline"
-            >
-              Talk to us about {title}
-            </Link>
-          </div>
         </div>
+      </section>
+
+      {/* The closing ask, in the site's one CTA shape — see cta-panel. It used
+          to share a row with "Who it's for", which left the same ask the home
+          page makes at full width sitting in a 28rem card. */}
+      <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-10 lg:pb-28">
+        <CtaPanel
+          eyebrow="Sized to your team &middot; Grow without switching"
+          heading={gain.heading}
+          body={gain.body}
+        />
       </section>
 
       {/* Integrations. Named because the logos alone are a claim without a
