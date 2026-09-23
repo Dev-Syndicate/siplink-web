@@ -1331,3 +1331,164 @@
     }
   }
 }
+
+@layer components {
+  /* Entrance for a section's own content, driven by ScrollReveal: the
+     component flips `data-visible` when the block crosses into view, and the
+     transition runs once. Staggering is a custom property rather than a set
+     of variant classes, so a list can deal itself in without N classes.
+
+     The rest state is the *hidden* one, so a reader who never scrolls past
+     never sees a flash of positioned content. */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(var(--reveal-shift, 14px));
+    transition:
+      opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Reduced motion, and the no-JS case: content must be readable either way,
+     so both resolve to the visible rest state rather than to the hidden one. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+@layer components {
+  /* A packet crossing a scene wire. Every wire declares `pathLength="100"`,
+     so one dash definition covers wires of different real lengths and each
+     pulse crosses at the same rate — the same trick `.signal-path` uses,
+     but without the heavy bloom, because these scenes sit on a light ground
+     where a drop-shadow reads as a smudge. */
+  .scene-dash {
+    stroke-dasharray: 3 97;
+    animation: scene-dash var(--dash-duration, 3s) linear infinite;
+    animation-delay: var(--dash-delay, 0s);
+  }
+
+  @keyframes scene-dash {
+    from {
+      stroke-dashoffset: 100;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* A node lighting as traffic reaches it. Opacity only — a scaling node
+     shifts the labels around it, which is worse than no animation at all. */
+  .scene-pulse {
+    animation: scene-pulse var(--pulse-duration, 3s) ease-in-out infinite;
+    animation-delay: var(--pulse-delay, 0s);
+  }
+
+  @keyframes scene-pulse {
+    0%,
+    100% {
+      opacity: 0.25;
+    }
+    45% {
+      opacity: 1;
+    }
+  }
+
+  /* Wi-Fi coverage: rings leaving the access point. They expand and fade
+     together, so the ring is gone before it reaches the labels. */
+  .scene-ring {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: scene-ring 2.8s ease-out infinite;
+    animation-delay: var(--ring-delay, 0s);
+  }
+
+  @keyframes scene-ring {
+    from {
+      transform: scale(0.35);
+      opacity: 0.55;
+    }
+    to {
+      transform: scale(1.35);
+      opacity: 0;
+    }
+  }
+
+  /* A throughput bar filling. Used for the symmetrical up/down comparison,
+     where the point is that the two bars reach the same place. */
+  .scene-meter {
+    transform-origin: left center;
+    transform-box: fill-box;
+    animation: scene-meter 3.4s ease-in-out infinite;
+    animation-delay: var(--meter-delay, 0s);
+  }
+
+  @keyframes scene-meter {
+    0%,
+    100% {
+      transform: scaleX(0.08);
+    }
+    40%,
+    70% {
+      transform: scaleX(1);
+    }
+  }
+
+  /* The connector between two tiers of the network stack. The gradient is a
+     token, so the descent reads in both themes. */
+  .stack-drop {
+    animation: stack-drop 2.4s ease-in-out infinite;
+    animation-delay: var(--drop-delay, 0s);
+  }
+
+  @keyframes stack-drop {
+    0%,
+    100% {
+      transform: translateY(-3px);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(3px);
+      opacity: 1;
+    }
+  }
+
+  /* Every scene labels what it draws in words, so the loops are decoration
+     and can simply stop. `.scene-ring` is the exception: a ring frozen
+     mid-expansion is a stray circle, so it is hidden rather than paused. */
+  @media (prefers-reduced-motion: reduce) {
+    .scene-dash,
+    .scene-pulse,
+    .scene-meter,
+    .stack-drop {
+      animation: none;
+    }
+
+    .scene-dash {
+      stroke-dasharray: none;
+      opacity: 0.45;
+    }
+
+    .scene-pulse {
+      opacity: 1;
+    }
+
+    .scene-meter {
+      transform: none;
+    }
+
+    .scene-ring {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}

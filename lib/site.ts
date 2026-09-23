@@ -1444,9 +1444,12 @@ export const nav: NavItem[] = [
     },
   },
   {
-    // The connectivity line, alongside voice. Links are in-page anchors: the
-    // four pillars live on one /internet page rather than four thin routes,
-    // which is how internet.md describes them.
+    // The connectivity line, alongside voice. Each group is a real page:
+    // three connectivity services under /internet, and six network services
+    // under /internet/network-solutions, per the URL structure in
+    // docs/INTERNET.md. The sub-links within a connectivity service are
+    // anchors on that service's own page — the brief proposes routes for
+    // them, but each would be a few hundred words, so they are sections.
     label: "Internet",
     href: "/internet",
     groups: [
@@ -1456,21 +1459,27 @@ export const nav: NavItem[] = [
         description: "Shared-port connectivity for the office.",
         links: [
           {
+            label: "Business Broadband",
+            icon: Wifi,
+            href: "/internet/business-broadband",
+            description: "Dependable internet for everyday operations",
+          },
+          {
             label: "Plans",
             icon: LayoutGrid,
-            href: "/internet#broadband-plans",
+            href: "/internet/business-broadband#plans",
             description: "Committed rate with burst, sized per site",
           },
           {
             label: "Features",
             icon: ListChecks,
-            href: "/internet#broadband-features",
+            href: "/internet/business-broadband#features",
             description: "Static IP, managed router, 24/7 monitoring",
           },
           {
             label: "Business Benefits",
             icon: TrendingUp,
-            href: "/internet#broadband-business-benefits",
+            href: "/internet/business-broadband#business-benefits",
             description: "Voice and internet from one provider",
           },
         ],
@@ -1481,27 +1490,33 @@ export const nav: NavItem[] = [
         description: "Uncontended leased lines on fibre.",
         links: [
           {
+            label: "Dedicated Internet",
+            icon: Gauge,
+            href: "/internet/dedicated-internet",
+            description: "Bandwidth provisioned for you alone",
+          },
+          {
             label: "Dedicated Bandwidth",
             icon: Gauge,
-            href: "/internet#dedicated-dedicated-bandwidth",
+            href: "/internet/dedicated-internet#dedicated-bandwidth",
             description: "50 Mbps to 100 Gbps, shared with nobody",
           },
           {
             label: "Symmetrical Speeds",
             icon: ArrowLeftRight,
-            href: "/internet#dedicated-symmetrical-speeds",
+            href: "/internet/dedicated-internet#symmetrical-speeds",
             description: "Equal upstream for cloud, voice and video",
           },
           {
             label: "SLA",
             icon: ScrollText,
-            href: "/internet#dedicated-sla",
+            href: "/internet/dedicated-internet#sla",
             description: "Availability and throughput, set out in writing",
           },
           {
             label: "Enterprise Connectivity",
             icon: Building2,
-            href: "/internet#dedicated-enterprise-connectivity",
+            href: "/internet/dedicated-internet#enterprise-connectivity",
             description: "Point-to-point, Tier-1 peering, data centres",
           },
         ],
@@ -1512,21 +1527,27 @@ export const nav: NavItem[] = [
         description: "A fixed public address that stays yours.",
         links: [
           {
+            label: "Static IP",
+            icon: MapPin,
+            href: "/internet/static-ip",
+            description: "One address everything else is configured against",
+          },
+          {
             label: "What is Static IP?",
             icon: MapPin,
-            href: "/internet#static-ip-what-is-static-ip",
+            href: "/internet/static-ip#what-is-static-ip",
             description: "Permanent addressing, single or routed block",
           },
           {
             label: "Business Uses",
             icon: Briefcase,
-            href: "/internet#static-ip-business-uses",
+            href: "/internet/static-ip#business-uses",
             description: "VPN endpoints, SIP trunks, allow-listing",
           },
           {
             label: "Add Static IP",
             icon: CirclePlus,
-            href: "/internet#static-ip-add-static-ip",
+            href: "/internet/static-ip#add-static-ip",
             description: "With a new order or on a live circuit",
           },
         ],
@@ -1537,39 +1558,45 @@ export const nav: NavItem[] = [
         description: "Everything past the router, managed.",
         links: [
           {
+            label: "Network Solutions",
+            icon: Network,
+            href: "/internet/network-solutions",
+            description: "The infrastructure behind the connection",
+          },
+          {
             label: "Managed Router & Firewall",
             icon: Router,
-            href: "/internet#network-managed-router-firewall",
+            href: "/internet/network-solutions/managed-router-firewall",
             description: "Edge equipment configured and monitored",
           },
           {
             label: "Business Wi-Fi",
             icon: Wifi,
-            href: "/internet#network-business-wi-fi",
+            href: "/internet/network-solutions/business-wifi",
             description: "Coverage designed around the floor plan",
           },
           {
             label: "LAN & Switching",
             icon: EthernetPort,
-            href: "/internet#network-lan-switching",
+            href: "/internet/network-solutions/lan-switching",
             description: "Cabling, VLANs and QoS for voice",
           },
           {
             label: "VPN",
             icon: Lock,
-            href: "/internet#network-vpn",
+            href: "/internet/network-solutions/vpn",
             description: "Encrypted tunnels across fixed sites",
           },
           {
             label: "SD-WAN",
             icon: Waypoints,
-            href: "/internet#network-sd-wan",
+            href: "/internet/network-solutions/sd-wan",
             description: "Application-aware routing across links",
           },
           {
             label: "Multi-Location Networking",
             icon: Share2,
-            href: "/internet#network-multi-location-networking",
+            href: "/internet/network-solutions/multi-location-networking",
             description: "One network across every office",
           },
         ],
