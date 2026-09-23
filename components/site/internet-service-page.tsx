@@ -237,7 +237,7 @@ export function InternetServicePage({ service }: { service: InternetService }) {
                   {steps?.length ? (
                     <ol
                       className={cn(
-                        "grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2 xl:grid-cols-5",
+                        "flex flex-wrap gap-px overflow-hidden rounded-2xl bg-border",
                         body?.length || points?.length || list?.length ? "mt-12" : "mt-0",
                       )}
                     >
@@ -247,7 +247,7 @@ export function InternetServicePage({ service }: { service: InternetService }) {
                           key={stepTitle}
                           delay={stepIndex * 70}
                           shift={10}
-                          className="flex flex-col bg-background p-6"
+                          className="flex grow basis-56 flex-col bg-background p-6"
                         >
                           <span className="font-mono text-xs tracking-[0.2em] text-primary uppercase">
                             {String(stepIndex + 1).padStart(2, "0")}
@@ -286,14 +286,20 @@ export function InternetServicePage({ service }: { service: InternetService }) {
               </p>
             </ScrollReveal>
 
-            <ul className="mt-12 grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2 lg:grid-cols-3">
+            {/* Wrapping flex rather than a fixed column count. `addOns` runs
+                from two to five across these pages, so any fixed grid leaves
+                empty cells on some of them — and in a hairline grid an empty
+                cell is a bare grey panel. Here the last row's items grow to
+                fill the width instead, which is even at every count and
+                every breakpoint. */}
+            <ul className="mt-12 flex flex-wrap gap-px overflow-hidden rounded-2xl bg-border">
               {related.map((item, index) => (
                 <ScrollReveal
                   as="li"
                   key={item.slug}
                   delay={index * 70}
                   shift={10}
-                  className="bg-background"
+                  className="flex grow basis-72 bg-background"
                 >
                   <Link
                     href={
@@ -301,7 +307,7 @@ export function InternetServicePage({ service }: { service: InternetService }) {
                         ? `/internet/network-solutions/${item.slug}`
                         : `/internet/${item.slug}`
                     }
-                    className="group flex h-full flex-col p-7 transition-colors hover:bg-primary/5 focus-visible:bg-primary/5 focus-visible:outline-none"
+                    className="group flex grow flex-col p-7 transition-colors hover:bg-primary/5 focus-visible:bg-primary/5 focus-visible:outline-none"
                   >
                     <span className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                       <item.icon className="size-[1.15rem]" aria-hidden />

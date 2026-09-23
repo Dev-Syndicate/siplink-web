@@ -400,14 +400,17 @@ export default function InternetPage() {
             </p>
           </ScrollReveal>
 
-          <ol className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-border md:grid-cols-2 xl:grid-cols-5">
+          {/* Five steps, so a two-column grid leaves a bare grey cell on the
+              last row at medium widths. Wrapping flex lets the last row grow
+              to fill instead — see the same note in InternetServicePage. */}
+          <ol className="mt-14 flex flex-wrap gap-px overflow-hidden rounded-2xl bg-border">
             {internetDelivery.map(({ title, body }, index) => (
               <ScrollReveal
                 as="li"
                 key={title}
                 delay={index * 70}
                 shift={10}
-                className="flex flex-col bg-background p-7"
+                className="flex grow basis-56 flex-col bg-background p-7"
               >
                 <span className="font-mono text-xs tracking-[0.2em] text-primary uppercase">
                   Step {String(index + 1).padStart(2, "0")}
