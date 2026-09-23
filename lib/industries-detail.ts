@@ -46,16 +46,28 @@ import {
  * the industry, described alongside SipLink's real platform capabilities.
  */
 
+/** A SipLink product that delivers a capability, linked to its product page. */
+export type CapabilityProduct = {
+  /** Product name as shown on /products. */
+  label: string;
+  /** Product slug under /products/[slug]. */
+  slug: string;
+};
+
 /**
  * A named capability. `outcome` is a short "so that…" line derived from the
  * capability's own description — no new facts, it just states the benefit the
- * description already implies, for the editorial capability list.
+ * description already implies, for the editorial capability list. `products`
+ * maps the capability to the actual SipLink product page(s) that deliver it,
+ * so a reader can see which product is at work and jump straight to it.
  */
 export type IndustryPoint = {
   title: string;
   description: string;
   outcome: string;
   icon: LucideIcon;
+  /** The SipLink product(s) that power this capability. */
+  products?: CapabilityProduct[];
 };
 
 /**
@@ -140,6 +152,10 @@ export const industryDetails: IndustryDetail[] = [
           "Automated menus and routing rules send each caller to the right team, department or next available agent.",
         outcome: "Callers reach the right team first time.",
         icon: ListChecks,
+        products: [
+          { label: "IVR System", slug: "ivr" },
+          { label: "Call Center Solution", slug: "call-center" },
+        ],
       },
       {
         title: "Call queues",
@@ -147,6 +163,7 @@ export const industryDetails: IndustryDetail[] = [
           "Hold waiting callers in an organised queue and distribute them across agents to keep response times down.",
         outcome: "Waiting callers get answered, not a busy tone.",
         icon: Route,
+        products: [{ label: "Call Queue", slug: "call-queue" }],
       },
       {
         title: "Supervisor Whisper, Barge and Spy",
@@ -154,6 +171,7 @@ export const industryDetails: IndustryDetail[] = [
           "Monitor live calls, whisper guidance to an agent, or join a conversation when a customer needs more help.",
         outcome: "Agents get support the moment a call needs it.",
         icon: Headset,
+        products: [{ label: "Call Center Solution", slug: "call-center" }],
       },
       {
         title: "Recording and transcription",
@@ -161,6 +179,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture calls and generate AI, real-time and audio transcription so conversations become searchable text.",
         outcome: "Conversations become searchable text, not just audio.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -168,6 +187,7 @@ export const industryDetails: IndustryDetail[] = [
           "Attach notes to conversations so follow-ups, requirements and outcomes are documented, not remembered.",
         outcome: "Follow-ups are documented, not left to memory.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Analytics and call insights",
@@ -175,6 +195,7 @@ export const industryDetails: IndustryDetail[] = [
           "Understand call volume, answered and missed calls and busy periods, and use insights to lift team performance.",
         outcome: "Managers see what moves team performance.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -237,6 +258,7 @@ export const industryDetails: IndustryDetail[] = [
           "Voice and fax together support the patient, provider and document-based workflows healthcare teams depend on.",
         outcome: "Voice and document workflows sit together.",
         icon: PhoneCall,
+        products: [{ label: "Cloud PBX", slug: "cloud-pbx" }],
       },
       {
         title: "IVR and contact-center capabilities",
@@ -244,6 +266,10 @@ export const industryDetails: IndustryDetail[] = [
           "Route callers to the right department and organise high-volume patient and insurer communication.",
         outcome: "High-volume patient calls stay organised.",
         icon: ListChecks,
+        products: [
+          { label: "IVR System", slug: "ivr" },
+          { label: "Call Center Solution", slug: "call-center" },
+        ],
       },
       {
         title: "Recording and transcription",
@@ -251,6 +277,7 @@ export const industryDetails: IndustryDetail[] = [
           "Record calls and generate AI, real-time and audio transcription so authorised users can review conversations as text.",
         outcome: "Authorised users review calls as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -258,6 +285,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture follow-ups, requirements and important details from patient and provider conversations.",
         outcome: "Nothing important goes undocumented.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "SMS and analytics",
@@ -265,6 +293,10 @@ export const industryDetails: IndustryDetail[] = [
           "Reach patients by message and use analytics to understand communication activity across teams.",
         outcome: "Reach patients and see activity across teams.",
         icon: MessagesSquare,
+        products: [
+          { label: "SMS API", slug: "sms-api" },
+          { label: "Call Analytics", slug: "call-analytics" },
+        ],
       },
     ],
     idealFor: [
@@ -320,6 +352,7 @@ export const industryDetails: IndustryDetail[] = [
           "Direct callers with automated menus and give sales, service and collections teams an organised calling environment.",
         outcome: "Every caller lands in an organised environment.",
         icon: ListChecks,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Call queues",
@@ -327,6 +360,7 @@ export const industryDetails: IndustryDetail[] = [
           "Distribute high call volume across teams and hold waiting customers in an organised queue.",
         outcome: "High call volume stays under control.",
         icon: Route,
+        products: [{ label: "Call Queue", slug: "call-queue" }],
       },
       {
         title: "Recording",
@@ -334,6 +368,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture conversations for accountability and review across regulated financial workflows.",
         outcome: "Every conversation is accountable and reviewable.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "AI and real-time transcription",
@@ -341,6 +376,7 @@ export const industryDetails: IndustryDetail[] = [
           "Review conversations as searchable text and find key information without replaying the audio.",
         outcome: "Find what was said without replaying audio.",
         icon: FileText,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -348,6 +384,7 @@ export const industryDetails: IndustryDetail[] = [
           "Document important conversation details and follow-up requirements as work progresses.",
         outcome: "Key details and follow-ups stay on record.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Call analytics",
@@ -355,6 +392,7 @@ export const industryDetails: IndustryDetail[] = [
           "See communication activity and team performance across sales, support, service and collections.",
         outcome: "See activity and performance across every team.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -410,6 +448,7 @@ export const industryDetails: IndustryDetail[] = [
           "Guide callers to admissions, departments or support and route enquiries to the right place.",
         outcome: "Enquiries reach the right department.",
         icon: ListChecks,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Call queues",
@@ -417,6 +456,7 @@ export const industryDetails: IndustryDetail[] = [
           "Handle busy admissions and support periods without callers hitting a busy tone.",
         outcome: "Busy admissions periods stay manageable.",
         icon: Route,
+        products: [{ label: "Call Queue", slug: "call-queue" }],
       },
       {
         title: "Messaging",
@@ -424,6 +464,7 @@ export const industryDetails: IndustryDetail[] = [
           "Reach students, parents and staff by message alongside voice communication.",
         outcome: "Reach everyone by message as well as voice.",
         icon: MessagesSquare,
+        products: [{ label: "SMS API", slug: "sms-api" }],
       },
       {
         title: "Recording and transcription",
@@ -431,6 +472,7 @@ export const industryDetails: IndustryDetail[] = [
           "Record calls and review them as text, with real-time transcription where applicable.",
         outcome: "Review conversations quickly as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -438,6 +480,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture enquiry requirements and follow-ups so nothing slips between departments.",
         outcome: "Nothing slips between departments.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Analytics",
@@ -445,6 +488,7 @@ export const industryDetails: IndustryDetail[] = [
           "Give administrators visibility into call volumes and how communication is being handled.",
         outcome: "Administrators see how calls are handled.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -500,6 +544,7 @@ export const industryDetails: IndustryDetail[] = [
           "Route customers to the right store, sales team or support department automatically.",
         outcome: "Customers reach the right store or team.",
         icon: Route,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Multiple business numbers",
@@ -507,6 +552,7 @@ export const industryDetails: IndustryDetail[] = [
           "Keep separate numbers for different stores, departments or business functions.",
         outcome: "Each store keeps its own identity.",
         icon: PhoneCall,
+        products: [{ label: "DID Numbers", slug: "did-numbers" }],
       },
       {
         title: "Business SMS",
@@ -514,6 +560,7 @@ export const industryDetails: IndustryDetail[] = [
           "Support customer communication and notifications alongside voice.",
         outcome: "Reach customers by message and notification.",
         icon: Send,
+        products: [{ label: "SMS API", slug: "sms-api" }],
       },
       {
         title: "Recording and transcription",
@@ -521,6 +568,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture calls and use AI transcription to review customer conversations as text.",
         outcome: "Review customer conversations as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -528,6 +576,7 @@ export const industryDetails: IndustryDetail[] = [
           "Document customer requirements so service teams can follow up consistently.",
         outcome: "Service teams follow up consistently.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Analytics",
@@ -535,6 +584,7 @@ export const industryDetails: IndustryDetail[] = [
           "Identify recurring issues and customer requirements across stores and teams.",
         outcome: "Spot recurring issues across stores.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -590,6 +640,7 @@ export const industryDetails: IndustryDetail[] = [
           "Send guests to reservations, the front desk, service or management without misdirected calls.",
         outcome: "Guests reach the right team, not the wrong one.",
         icon: ListChecks,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Numbers and extensions",
@@ -597,6 +648,7 @@ export const industryDetails: IndustryDetail[] = [
           "Business numbers and extensions organised around departments and service teams.",
         outcome: "Departments and teams stay clearly organised.",
         icon: PhoneCall,
+        products: [{ label: "DID Numbers", slug: "did-numbers" }],
       },
       {
         title: "Call queues",
@@ -604,6 +656,7 @@ export const industryDetails: IndustryDetail[] = [
           "Keep busy reservation and service periods organised rather than dropping calls.",
         outcome: "Busy periods stay organised, not dropped.",
         icon: Route,
+        products: [{ label: "Call Queue", slug: "call-queue" }],
       },
       {
         title: "Recording and transcription",
@@ -611,6 +664,7 @@ export const industryDetails: IndustryDetail[] = [
           "Record guest calls and review them as text to understand service interactions.",
         outcome: "Understand service interactions as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -618,6 +672,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture guest requirements and follow-ups so requests don't get lost between shifts.",
         outcome: "Requests survive the shift change.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Analytics",
@@ -625,6 +680,7 @@ export const industryDetails: IndustryDetail[] = [
           "Understand service interactions and improve the overall guest experience over time.",
         outcome: "The guest experience keeps improving.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -680,6 +736,7 @@ export const industryDetails: IndustryDetail[] = [
           "Direct customers, drivers and operations calls to the right branch or team.",
         outcome: "Calls reach the right branch or team.",
         icon: Route,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "SMS updates and notifications",
@@ -687,6 +744,7 @@ export const industryDetails: IndustryDetail[] = [
           "Send operational updates and customer notifications by message.",
         outcome: "Updates and notifications go out fast.",
         icon: Send,
+        products: [{ label: "SMS API", slug: "sms-api" }],
       },
       {
         title: "Call recording",
@@ -694,6 +752,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture conversations across dispatch, warehouse and customer communication.",
         outcome: "Conversations are captured across every site.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Transcription and call notes",
@@ -701,6 +760,10 @@ export const industryDetails: IndustryDetail[] = [
           "Capture delivery instructions, customer requests and follow-up information as text.",
         outcome: "Delivery instructions don't get lost.",
         icon: FileText,
+        products: [
+          { label: "Call Recording", slug: "call-recording" },
+          { label: "Call Analytics", slug: "call-analytics" },
+        ],
       },
       {
         title: "Multi-site communication",
@@ -708,6 +771,7 @@ export const industryDetails: IndustryDetail[] = [
           "Keep customers, drivers, dispatchers, warehouses and branches connected on one platform.",
         outcome: "Every part of the operation stays connected.",
         icon: Network,
+        products: [{ label: "SIP Trunking", slug: "sip-trunking" }],
       },
       {
         title: "Analytics",
@@ -715,6 +779,7 @@ export const industryDetails: IndustryDetail[] = [
           "Understand communication volume and identify operational bottlenecks.",
         outcome: "Find the bottlenecks slowing operations.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -770,6 +835,10 @@ export const industryDetails: IndustryDetail[] = [
           "Place and receive calls and send programmable messages from within your own application.",
         outcome: "Calls and messages run inside your product.",
         icon: Braces,
+        products: [
+          { label: "Voice API", slug: "voice-api" },
+          { label: "SMS API", slug: "sms-api" },
+        ],
       },
       {
         title: "WhatsApp Business API",
@@ -777,6 +846,7 @@ export const industryDetails: IndustryDetail[] = [
           "Reach customers on WhatsApp as part of your product's communication workflows.",
         outcome: "Reach customers on WhatsApp from your product.",
         icon: MessagesSquare,
+        products: [{ label: "WhatsApp Business API", slug: "whatsapp-api" }],
       },
       {
         title: "WebRTC SDK",
@@ -784,6 +854,7 @@ export const industryDetails: IndustryDetail[] = [
           "Add calling straight into the browser and your web application.",
         outcome: "Calling works right in the browser.",
         icon: Code2,
+        products: [{ label: "WebRTC SDK", slug: "webrtc-sdk" }],
       },
       {
         title: "SIP API",
@@ -791,6 +862,7 @@ export const industryDetails: IndustryDetail[] = [
           "Provision and manage SIP connectivity programmatically alongside your platform.",
         outcome: "Manage SIP connectivity programmatically.",
         icon: ServerCog,
+        products: [{ label: "SIP API", slug: "sip-api" }],
       },
       {
         title: "CRM integrations",
@@ -798,6 +870,7 @@ export const industryDetails: IndustryDetail[] = [
           "Connect communication to the CRM and business systems your product works with.",
         outcome: "Communication ties into your business systems.",
         icon: Workflow,
+        products: [{ label: "CRM Integration", slug: "crm-integration" }],
       },
       {
         title: "Transcription and analytics",
@@ -805,6 +878,10 @@ export const industryDetails: IndustryDetail[] = [
           "Transcribe, document and analyse conversations, and connect the results back to your app.",
         outcome: "Conversations become data in your app.",
         icon: FileText,
+        products: [
+          { label: "Call Recording", slug: "call-recording" },
+          { label: "Call Analytics", slug: "call-analytics" },
+        ],
       },
     ],
     idealFor: [
@@ -860,6 +937,7 @@ export const industryDetails: IndustryDetail[] = [
           "Guide citizens and staff to the right department or service center automatically.",
         outcome: "Citizens reach the right department.",
         icon: ListChecks,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Call queues",
@@ -867,6 +945,7 @@ export const industryDetails: IndustryDetail[] = [
           "Keep service-center demand organised so citizens aren't met with a busy tone.",
         outcome: "Service demand stays organised.",
         icon: Route,
+        products: [{ label: "Call Queue", slug: "call-queue" }],
       },
       {
         title: "Business numbers and messaging",
@@ -874,6 +953,10 @@ export const industryDetails: IndustryDetail[] = [
           "Organise departmental numbers and reach citizens and employees by message.",
         outcome: "Departmental lines stay organised.",
         icon: PhoneCall,
+        products: [
+          { label: "DID Numbers", slug: "did-numbers" },
+          { label: "SMS API", slug: "sms-api" },
+        ],
       },
       {
         title: "Recording and transcription",
@@ -881,6 +964,7 @@ export const industryDetails: IndustryDetail[] = [
           "Record calls and let authorised teams document conversations as text.",
         outcome: "Authorised teams document conversations as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -888,6 +972,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture follow-up requirements from citizen and internal conversations.",
         outcome: "Follow-up requirements are captured.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Analytics",
@@ -895,6 +980,7 @@ export const industryDetails: IndustryDetail[] = [
           "Give management visibility into communication volumes and service demand.",
         outcome: "Management sees volumes and service demand.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -950,6 +1036,7 @@ export const industryDetails: IndustryDetail[] = [
           "Connect offices, factories and warehouses with SIP connectivity and organised extensions.",
         outcome: "Every site connects on one platform.",
         icon: Network,
+        products: [{ label: "SIP Trunking", slug: "sip-trunking" }],
       },
       {
         title: "IVR and routing",
@@ -957,6 +1044,7 @@ export const industryDetails: IndustryDetail[] = [
           "Direct calls to the right site, production team, supplier line or service department.",
         outcome: "Calls reach the right site or team.",
         icon: Route,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Messaging",
@@ -964,6 +1052,7 @@ export const industryDetails: IndustryDetail[] = [
           "Support operational communication across locations and teams.",
         outcome: "Teams coordinate across locations by message.",
         icon: MessagesSquare,
+        products: [{ label: "SMS API", slug: "sms-api" }],
       },
       {
         title: "Recording and transcription",
@@ -971,6 +1060,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture supplier conversations and service requests and review them as text.",
         outcome: "Supplier conversations are reviewable as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -978,6 +1068,7 @@ export const industryDetails: IndustryDetail[] = [
           "Document instructions and follow-up requirements from operational calls.",
         outcome: "Instructions don't slip between sites.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Centralised management and analytics",
@@ -985,6 +1076,7 @@ export const industryDetails: IndustryDetail[] = [
           "Manage multi-location communication centrally and understand activity across sites.",
         outcome: "Manage every site's communication centrally.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -1040,6 +1132,7 @@ export const industryDetails: IndustryDetail[] = [
           "Support large numbers of customers, SIP connections and communication workflows.",
         outcome: "Carry large volumes of customers and connections.",
         icon: Network,
+        products: [{ label: "SIP Trunking", slug: "sip-trunking" }],
       },
       {
         title: "Session Border Controller",
@@ -1047,6 +1140,7 @@ export const industryDetails: IndustryDetail[] = [
           "A controlled layer between operator voice infrastructure and external SIP networks.",
         outcome: "A controlled layer to external SIP networks.",
         icon: ShieldCheck,
+        products: [{ label: "Session Border Controller", slug: "sbc" }],
       },
       {
         title: "Number management",
@@ -1054,6 +1148,7 @@ export const industryDetails: IndustryDetail[] = [
           "Manage numbers across operator environments and their customers.",
         outcome: "Manage numbers across operators and customers.",
         icon: MapPin,
+        products: [{ label: "DID Numbers", slug: "did-numbers" }],
       },
       {
         title: "APIs and programmable services",
@@ -1061,6 +1156,10 @@ export const industryDetails: IndustryDetail[] = [
           "Integrate voice, routing and programmable communication into operator platforms.",
         outcome: "Integrate voice into operator platforms.",
         icon: Braces,
+        products: [
+          { label: "Voice API", slug: "voice-api" },
+          { label: "SMS API", slug: "sms-api" },
+        ],
       },
       {
         title: "Recording and transcription",
@@ -1068,6 +1167,7 @@ export const industryDetails: IndustryDetail[] = [
           "Add call recording and audio, AI and real-time transcription on top of connectivity.",
         outcome: "Layer intelligence on top of connectivity.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Analytics and call notes",
@@ -1075,6 +1175,7 @@ export const industryDetails: IndustryDetail[] = [
           "Give operators and their customers more intelligent communication services.",
         outcome: "Move beyond basic voice connectivity.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [

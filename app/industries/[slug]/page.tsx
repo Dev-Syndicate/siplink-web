@@ -293,8 +293,9 @@ export default async function IndustryDetailPage({
               </ol>
             </section>
 
-            {/* Capabilities — editorial numbered list with an outcome per row,
-                not the product page's 3-col card grid */}
+            {/* Capabilities — editorial numbered list. Each row names the
+                capability, the outcome, and the SipLink product(s) that deliver
+                it, linked so a reader can jump straight to the product. */}
             <section id="capabilities" className="scroll-mt-28">
               <p className="font-mono text-xs tracking-[0.2em] text-primary uppercase">
                 What you get
@@ -302,10 +303,17 @@ export default async function IndustryDetailPage({
               <h3 className="mt-3 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
                 Built for {title.toLowerCase()}
               </h3>
+              <p className="mt-3 max-w-2xl text-pretty text-muted-foreground">
+                Every capability below is a SipLink product doing the work —
+                follow any one to see how it runs.
+              </p>
 
               <div className="mt-8 divide-y divide-border border-y border-border">
                 {capabilities.map(
-                  ({ title: name, description, outcome, icon: PointIcon }, i) => (
+                  (
+                    { title: name, description, outcome, icon: PointIcon, products },
+                    i,
+                  ) => (
                     <div
                       key={name}
                       className="group grid gap-4 py-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-6"
@@ -325,10 +333,32 @@ export default async function IndustryDetailPage({
                         <p className="mt-1.5 max-w-2xl text-pretty text-muted-foreground">
                           {description}
                         </p>
-                        <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
-                          <ArrowUpRight className="size-4" aria-hidden />
+                        <p className="mt-3 flex items-center gap-1.5 text-sm text-muted-foreground">
+                          <Check className="size-4 shrink-0 text-primary" aria-hidden />
                           {outcome}
                         </p>
+
+                        {/* the SipLink product(s) that power this capability */}
+                        {products?.length ? (
+                          <div className="mt-4 flex flex-wrap items-center gap-2">
+                            <span className="font-mono text-[10px] tracking-[0.16em] text-muted-foreground/70 uppercase">
+                              Powered by
+                            </span>
+                            {products.map((p) => (
+                              <Link
+                                key={p.slug}
+                                href={`/products/${p.slug}`}
+                                className="group/prod inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/[0.06] px-3 py-1 text-xs font-medium text-primary transition-colors hover:border-primary/50 hover:bg-primary/[0.12]"
+                              >
+                                {p.label}
+                                <ArrowUpRight
+                                  className="size-3.5 transition-transform group-hover/prod:translate-x-0.5 group-hover/prod:-translate-y-0.5"
+                                  aria-hidden
+                                />
+                              </Link>
+                            ))}
+                          </div>
+                        ) : null}
                       </div>
                     </div>
                   ),
