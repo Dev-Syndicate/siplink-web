@@ -1,12 +1,66 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ArrowRight, ArrowUpRight, Check, Phone, PhoneCall } from "lucide-react";
+import { ArrowRight, Check, Phone, PhoneCall } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { IndustryIllustration } from "@/components/site/industry-illustration";
 import { getIndustryDetail, industryDetails } from "@/lib/industries-detail";
 import { site } from "@/lib/site";
+
+/**
+ * Render a paragraph of prose with product mentions turned into inline links.
+ * Each phrase is linked on its first occurrence only, and every phrase links
+ * at most once across the whole paragraph set (tracked by `used`), so a product
+ * named twice in the copy does not produce two competing links. Phrases are
+ * matched longest-first so "AI-powered transcription" wins over "transcription".
+ */
+function linkifyProse(
+  text: string,
+  links: { phrase: string; slug: string }[] | undefined,
+  used: Set<string>,
+): React.ReactNode[] {
+  if (!links?.length) return [text];
+
+  const remaining = links
+    .filter((l) => !used.has(l.slug + l.phrase))
+    .sort((a, b) => b.phrase.length - a.phrase.length);
+
+  let segments: React.ReactNode[] = [text];
+
+  for (const { phrase, slug } of remaining) {
+    const next: React.ReactNode[] = [];
+    let linkedHere = false;
+    for (const seg of segments) {
+      if (typeof seg !== "string" || linkedHere) {
+        next.push(seg);
+        continue;
+      }
+      const idx = seg.indexOf(phrase);
+      if (idx === -1) {
+        next.push(seg);
+        continue;
+      }
+      used.add(slug + phrase);
+      linkedHere = true;
+      if (idx > 0) next.push(seg.slice(0, idx));
+      next.push(
+        <Link
+          key={`${slug}-${phrase}`}
+          href={`/products/${slug}`}
+          className="font-medium text-primary underline decoration-primary/30 decoration-2 underline-offset-[3px] transition-colors hover:decoration-primary"
+        >
+          {phrase}
+        </Link>,
+      );
+      const rest = seg.slice(idx + phrase.length);
+      if (rest) next.push(rest);
+    }
+    segments = next;
+  }
+
+  return segments;
+}
 
 /**
  * Legacy / brochure industry slugs that appear elsewhere on the site (the
@@ -218,39 +272,42 @@ export default async function IndustryDetailPage({
                 — the turn from problem to solution is marked by the eyebrow and
                 the gradient rule, not by an empty twin card. */}
             <section id="challenge" className="scroll-mt-28">
+              {/* Challenge — the situation the reader recognises. */}
               <p className="font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
                 The challenge
               </p>
-              <h3 className="mt-3 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
+              <h3 className="mt-3 max-w-2xl text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
                 {challenge.heading}
               </h3>
               <p className="mt-4 max-w-2xl text-pretty text-muted-foreground">
                 {challenge.body}
               </p>
 
-              <div className="relative mt-8 overflow-hidden rounded-2xl border border-primary/30 bg-background p-6 shadow-sm sm:p-8">
-                <span
-                  aria-hidden
-                  className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-brand-from to-brand-to"
-                />
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute -top-16 -right-10 size-40 rounded-full bg-brand-to/10 blur-2xl"
-                />
-                <p className="relative font-mono text-[11px] tracking-[0.18em] text-primary uppercase">
-                  How SipLink helps · {handling.heading}
-                </p>
-                <div className="relative mt-4 grid gap-4 sm:grid-cols-2 sm:gap-8">
-                  {handling.body.map((paragraph) => (
-                    <p
-                      key={paragraph.slice(0, 40)}
-                      className="text-pretty text-muted-foreground"
-                    >
-                      {paragraph}
+              {/* The turn: a bold gradient rule leads into SipLink's answer as an
+                  editorial passage on the page — not a boxed widget. Product
+                  mentions in the prose are linked inline; the toolkit is then
+                  surfaced once as a scannable stack. */}
+              {(() => {
+                const used = new Set<string>();
+
+                return (
+                  <div className="mt-12 border-l-2 border-primary/40 pl-6 sm:pl-8">
+                    <p className="font-mono text-xs tracking-[0.2em] text-primary uppercase">
+                      How SipLink helps
                     </p>
-                  ))}
-                </div>
-              </div>
+                    <h3 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+                      {handling.heading}
+                    </h3>
+                    <div className="mt-5 max-w-3xl space-y-4 text-pretty text-muted-foreground sm:text-lg sm:leading-relaxed">
+                      {handling.body.map((paragraph) => (
+                        <p key={paragraph.slice(0, 40)}>
+                          {linkifyProse(paragraph, handling.productLinks, used)}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
             </section>
 
             {/* How a conversation flows — a real sequence, so numbering is honest */}
@@ -303,17 +360,10 @@ export default async function IndustryDetailPage({
               <h3 className="mt-3 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
                 Built for {title.toLowerCase()}
               </h3>
-              <p className="mt-3 max-w-2xl text-pretty text-muted-foreground">
-                Every capability below is a SipLink product doing the work —
-                follow any one to see how it runs.
-              </p>
 
               <div className="mt-8 divide-y divide-border border-y border-border">
                 {capabilities.map(
-                  (
-                    { title: name, description, outcome, icon: PointIcon, products },
-                    i,
-                  ) => (
+                  ({ title: name, description, outcome, icon: PointIcon }, i) => (
                     <div
                       key={name}
                       className="group grid gap-4 py-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-6"
@@ -337,28 +387,6 @@ export default async function IndustryDetailPage({
                           <Check className="size-4 shrink-0 text-primary" aria-hidden />
                           {outcome}
                         </p>
-
-                        {/* the SipLink product(s) that power this capability */}
-                        {products?.length ? (
-                          <div className="mt-4 flex flex-wrap items-center gap-2">
-                            <span className="font-mono text-[10px] tracking-[0.16em] text-muted-foreground/70 uppercase">
-                              Powered by
-                            </span>
-                            {products.map((p) => (
-                              <Link
-                                key={p.slug}
-                                href={`/products/${p.slug}`}
-                                className="group/prod inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/[0.06] px-3 py-1 text-xs font-medium text-primary transition-colors hover:border-primary/50 hover:bg-primary/[0.12]"
-                              >
-                                {p.label}
-                                <ArrowUpRight
-                                  className="size-3.5 transition-transform group-hover/prod:translate-x-0.5 group-hover/prod:-translate-y-0.5"
-                                  aria-hidden
-                                />
-                              </Link>
-                            ))}
-                          </div>
-                        ) : null}
                       </div>
                     </div>
                   ),

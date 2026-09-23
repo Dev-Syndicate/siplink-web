@@ -96,8 +96,16 @@ export type IndustryDetail = {
   parties: string[];
   /** The situation the reader recognises. Left column of the problem spine. */
   challenge: { heading: string; body: string };
-  /** How SipLink answers it. Right column of the problem spine. */
-  handling: { heading: string; body: string[] };
+  /**
+   * How SipLink answers it. `body` is the prose; `productLinks` maps exact
+   * product phrases that appear in that prose to their /products slug, so the
+   * page can turn those mentions into inline links without fragile matching.
+   */
+  handling: {
+    heading: string;
+    body: string[];
+    productLinks?: { phrase: string; slug: string }[];
+  };
   /** The interaction sequence, derived from `handling`. */
   flow: IndustryFlowStep[];
   /** Concrete capabilities the source attributes to this industry. */
@@ -126,6 +134,15 @@ export const industryDetails: IndustryDetail[] = [
       body: [
         "SipLink manages inbound and outbound communication with IVR, call queues and intelligent routing, so each caller reaches the right team quickly and the rest wait in an organised queue rather than a busy tone.",
         "Supervisors can support agents live with Whisper, Barge and Spy, while call recording and analytics keep a record of every interaction. AI-powered transcription, real-time transcription and call notes turn conversations into searchable information — so managers can review, coach and improve without replaying whole recordings.",
+      ],
+      productLinks: [
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "call queues", slug: "call-queue" },
+        { phrase: "Whisper, Barge and Spy", slug: "call-center" },
+        { phrase: "call recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "AI-powered transcription", slug: "call-recording" },
+        { phrase: "call notes", slug: "call-analytics" },
       ],
     },
     flow: [
@@ -225,6 +242,15 @@ export const industryDetails: IndustryDetail[] = [
       body: [
         "SipLink combines business calling, fax, call recording, transcription, call analytics, SMS, IVR and contact-center capabilities into one HIPAA-compliant environment, so voice and document workflows sit side by side rather than in separate systems.",
         "For medical billing and Revenue Cycle Management teams, reliable voice and fax support document-driven work, and supervisors can use Whisper, Barge and Spy to monitor or assist RCM agents on live calls where appropriate. AI, real-time and audio transcription with call notes let authorised users review a transcript and notes to find follow-ups and requirements — instead of listening to an entire recording.",
+      ],
+      productLinks: [
+        { phrase: "business calling", slug: "cloud-pbx" },
+        { phrase: "call recording", slug: "call-recording" },
+        { phrase: "call analytics", slug: "call-analytics" },
+        { phrase: "SMS", slug: "sms-api" },
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "Whisper, Barge and Spy", slug: "call-center" },
+        { phrase: "call notes", slug: "call-analytics" },
       ],
     },
     flow: [
@@ -327,6 +353,14 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink provides structured calling, IVR, queues, recording, analytics and communication management for sales, support, service and collections teams — so every conversation is directed, captured and measurable.",
         "With AI-powered and real-time transcription, authorised teams can review conversations in text rather than depending entirely on audio. Call notes help agents and managers capture key details and follow-up requirements, while analytics gives visibility into communication activity and team performance.",
       ],
+      productLinks: [
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "queues", slug: "call-queue" },
+        { phrase: "recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "AI-powered and real-time transcription", slug: "call-recording" },
+        { phrase: "Call notes", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -422,6 +456,14 @@ export const industryDetails: IndustryDetail[] = [
       body: [
         "SipLink provides business calling, IVR, call queues, messaging, recording and analytics to help institutions organise communication across departments and campuses.",
         "For support and admissions teams handling frequent calls, transcription and call notes make it quick to review a conversation, capture requirements and follow up properly. Real-time transcription can give teams immediate visibility into ongoing conversations where applicable, while administrators gain a clearer view of how calls are handled.",
+      ],
+      productLinks: [
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "call queues", slug: "call-queue" },
+        { phrase: "messaging", slug: "sms-api" },
+        { phrase: "recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "call notes", slug: "call-analytics" },
       ],
     },
     flow: [
@@ -519,6 +561,15 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink helps retailers manage customer calls, store communication, IVR, call routing, messaging, recording and analytics from one centralised environment — so the whole operation communicates as a connected business.",
         "For customer-service teams, AI transcription, call notes and analytics surface customer requirements and recurring issues. SMS supports customer communication and notifications, and multiple business numbers keep separate lines for different stores, departments or functions.",
       ],
+      productLinks: [
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "AI transcription", slug: "call-recording" },
+        { phrase: "call notes", slug: "call-analytics" },
+        { phrase: "SMS", slug: "sms-api" },
+        { phrase: "multiple business numbers", slug: "did-numbers" },
+      ],
     },
     flow: [
       {
@@ -615,6 +666,15 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink routes guests to the appropriate department and supports business numbers, extensions, IVR, queues, recording and analytics — so calls reach the right team and busy periods stay organised.",
         "For guest-service teams, call transcription and call notes capture important guest requirements and follow-ups. Managers can use recordings and analytics to understand service interactions and steadily improve the guest communication experience.",
       ],
+      productLinks: [
+        { phrase: "business numbers", slug: "did-numbers" },
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "queues", slug: "call-queue" },
+        { phrase: "recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "call transcription", slug: "call-recording" },
+        { phrase: "call notes", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -710,6 +770,14 @@ export const industryDetails: IndustryDetail[] = [
       body: [
         "SipLink organises these conversations through business calling, routing, IVR, SMS, call recording and analytics — so customers, drivers and operations teams stay connected across sites.",
         "SMS supports operational updates and customer notifications, while call transcription and call notes capture delivery instructions, customer requests and follow-up information. Managers can use analytics to understand communication volume and identify operational bottlenecks.",
+      ],
+      productLinks: [
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "SMS", slug: "sms-api" },
+        { phrase: "call recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "call transcription", slug: "call-recording" },
+        { phrase: "call notes", slug: "call-analytics" },
       ],
     },
     flow: [
@@ -809,6 +877,16 @@ export const industryDetails: IndustryDetail[] = [
       body: [
         "SipLink provides Voice API, SMS API, WhatsApp Business API, WebRTC SDK, SIP API, CRM integrations and programmable communication capabilities, so technology businesses can build calling and messaging directly into their applications.",
         "It also provides communication intelligence through AI, real-time and audio transcription, call notes and analytics — so SaaS products go beyond embedding a call to building workflows where conversations are transcribed, analysed, documented and connected to their applications. This supports CRM platforms, help-desk and staffing software, sales and healthcare applications, customer-service platforms and other products that need voice or messaging built in.",
+      ],
+      productLinks: [
+        { phrase: "Voice API", slug: "voice-api" },
+        { phrase: "SMS API", slug: "sms-api" },
+        { phrase: "WhatsApp Business API", slug: "whatsapp-api" },
+        { phrase: "WebRTC SDK", slug: "webrtc-sdk" },
+        { phrase: "SIP API", slug: "sip-api" },
+        { phrase: "CRM integrations", slug: "crm-integration" },
+        { phrase: "call notes", slug: "call-analytics" },
+        { phrase: "analytics", slug: "call-analytics" },
       ],
     },
     flow: [
@@ -912,6 +990,15 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink helps organise these interactions through business numbers, IVR, call queues, routing, recording, analytics and messaging — so citizen and internal communication is directed and captured.",
         "For government support centers, transcription and call notes help authorised teams document conversations and identify follow-up requirements, while analytics provides management-level visibility into communication volumes and service demand.",
       ],
+      productLinks: [
+        { phrase: "business numbers", slug: "did-numbers" },
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "call queues", slug: "call-queue" },
+        { phrase: "recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "messaging", slug: "sms-api" },
+        { phrase: "call notes", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -1011,6 +1098,14 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink connects these environments through business calling, SIP connectivity, extensions, routing, IVR, messaging and centralised communication management — so multi-location communication runs through one platform.",
         "For operational and support teams, call recording, transcription, call notes and analytics capture important instructions, supplier conversations, service requests and follow-up requirements — keeping detail from slipping between sites.",
       ],
+      productLinks: [
+        { phrase: "SIP connectivity", slug: "sip-trunking" },
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "messaging", slug: "sms-api" },
+        { phrase: "call recording", slug: "call-recording" },
+        { phrase: "call notes", slug: "call-analytics" },
+        { phrase: "analytics", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -1106,6 +1201,13 @@ export const industryDetails: IndustryDetail[] = [
       body: [
         "SipLink provides SIP connectivity, SBC capabilities, number management, voice infrastructure, APIs, routing and programmable communication services that integrate into operator environments.",
         "It can also add communication intelligence through call recording, audio, AI and real-time transcription, analytics and call notes — so operators and their customers move beyond basic voice connectivity toward more intelligent communication services.",
+      ],
+      productLinks: [
+        { phrase: "SIP connectivity", slug: "sip-trunking" },
+        { phrase: "SBC capabilities", slug: "sbc" },
+        { phrase: "call recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "call notes", slug: "call-analytics" },
       ],
     },
     flow: [
