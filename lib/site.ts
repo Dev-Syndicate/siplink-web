@@ -1122,6 +1122,42 @@ export type NavItem = {
   flat?: boolean;
 };
 
+/**
+ * Whether a nav leaf — a single link inside a mega-menu group — is the page
+ * being viewed.
+ *
+ * This is an exact match rather than a prefix test, and that matters now that
+ * nav links nest: `/internet/business-broadband` is a prefix of
+ * `/internet/business-broadband/plans`, so a prefix test lights up the parent
+ * and the child together and the menu shows two current pages at once.
+ *
+ * A leaf gets no ancestor state. The section pages carry a breadcrumb and a
+ * sibling rail of their own, so the path back up is already on the page.
+ */
+export function isNavLeafCurrent(href: string, pathname: string) {
+  return pathname === href;
+}
+
+/**
+ * Whether a top-level nav item is the section being viewed.
+ *
+ * Unlike a leaf, this *is* a prefix test — the tab marks which part of the
+ * site you are in, so everything beneath it counts. The `/` guard keeps the
+ * boundary on a segment, so `/internet` does not claim `/internet-archive`.
+ */
+export function isNavItemActive(item: NavItem, pathname: string) {
+  if (item.href === "/") return pathname === "/";
+  if (pathname === item.href || pathname.startsWith(`${item.href}/`)) {
+    return true;
+  }
+
+  return (
+    item.groups?.some((group) =>
+      group.links.some((link) => isNavLeafCurrent(link.href, pathname)),
+    ) ?? false
+  );
+}
+
 export const nav: NavItem[] = [
   {
     label: "Products",
@@ -1444,12 +1480,11 @@ export const nav: NavItem[] = [
     },
   },
   {
-    // The connectivity line, alongside voice. Each group is a real page:
-    // three connectivity services under /internet, and six network services
-    // under /internet/network-solutions, per the URL structure in
-    // docs/INTERNET.md. The sub-links within a connectivity service are
-    // anchors on that service's own page — the brief proposes routes for
-    // them, but each would be a few hundred words, so they are sections.
+    // The connectivity line, alongside voice. Every entry here is a real
+    // page, per the URL structure in docs/INTERNET.md:
+    // three connectivity services under /internet, each with its own
+    // sections routed beneath it, and six network services under
+    // /internet/network-solutions. Nothing here is an in-page anchor.
     label: "Internet",
     href: "/internet",
     groups: [
@@ -1467,19 +1502,19 @@ export const nav: NavItem[] = [
           {
             label: "Plans",
             icon: LayoutGrid,
-            href: "/internet/business-broadband#plans",
+            href: "/internet/business-broadband/plans",
             description: "Committed rate with burst, sized per site",
           },
           {
             label: "Features",
             icon: ListChecks,
-            href: "/internet/business-broadband#features",
+            href: "/internet/business-broadband/features",
             description: "Static IP, managed router, 24/7 monitoring",
           },
           {
             label: "Business Benefits",
             icon: TrendingUp,
-            href: "/internet/business-broadband#business-benefits",
+            href: "/internet/business-broadband/business-benefits",
             description: "Voice and internet from one provider",
           },
         ],
@@ -1498,25 +1533,25 @@ export const nav: NavItem[] = [
           {
             label: "Dedicated Bandwidth",
             icon: Gauge,
-            href: "/internet/dedicated-internet#dedicated-bandwidth",
+            href: "/internet/dedicated-internet/dedicated-bandwidth",
             description: "50 Mbps to 100 Gbps, shared with nobody",
           },
           {
             label: "Symmetrical Speeds",
             icon: ArrowLeftRight,
-            href: "/internet/dedicated-internet#symmetrical-speeds",
+            href: "/internet/dedicated-internet/symmetrical-speeds",
             description: "Equal upstream for cloud, voice and video",
           },
           {
             label: "SLA",
             icon: ScrollText,
-            href: "/internet/dedicated-internet#sla",
+            href: "/internet/dedicated-internet/sla",
             description: "Availability and throughput, set out in writing",
           },
           {
             label: "Enterprise Connectivity",
             icon: Building2,
-            href: "/internet/dedicated-internet#enterprise-connectivity",
+            href: "/internet/dedicated-internet/enterprise-connectivity",
             description: "Point-to-point, Tier-1 peering, data centres",
           },
         ],
@@ -1535,19 +1570,19 @@ export const nav: NavItem[] = [
           {
             label: "What is Static IP?",
             icon: MapPin,
-            href: "/internet/static-ip#what-is-static-ip",
+            href: "/internet/static-ip/what-is-static-ip",
             description: "Permanent addressing, single or routed block",
           },
           {
             label: "Business Uses",
             icon: Briefcase,
-            href: "/internet/static-ip#business-uses",
+            href: "/internet/static-ip/business-uses",
             description: "VPN endpoints, SIP trunks, allow-listing",
           },
           {
             label: "Add Static IP",
             icon: CirclePlus,
-            href: "/internet/static-ip#add-static-ip",
+            href: "/internet/static-ip/add-static-ip",
             description: "With a new order or on a live circuit",
           },
         ],

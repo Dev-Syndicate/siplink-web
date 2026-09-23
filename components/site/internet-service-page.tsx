@@ -1,12 +1,17 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { ConnectivityScene } from "@/components/site/connectivity-scene";
+import { SectionContent } from "@/components/site/internet-section-content";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { getInternetService, type InternetService } from "@/lib/internet";
+import {
+  getInternetService,
+  getSectionPages,
+  type InternetService,
+} from "@/lib/internet";
 import { cn } from "@/lib/utils";
 
 /**
@@ -14,15 +19,16 @@ import { cn } from "@/lib/utils";
  * services under /internet and the six network services under
  * /internet/network-solutions.
  *
- * A section renders whichever of `body`, `points`, `list` and `steps` it
- * sets, always in that order, so a page's rhythm comes from its content
- * rather than from each route inventing a layout. The one thing that is
- * never optional is the onward path: docs/INTERNET.md is explicit that a
- * reader who has chosen connectivity should be shown what layers onto it,
- * so `addOns` closes every page.
+ * The two differ in one respect. A connectivity service's sections are routed
+ * as their own pages, so it lists and links them; a network service's stay
+ * inline. Everything else — hero, add-ons, close — is identical, and the
+ * onward path is the part that is never optional: docs/INTERNET.md is
+ * explicit that a reader who has chosen connectivity should be shown what
+ * layers onto it, so `addOns` closes every page.
  */
 export function InternetServicePage({ service }: { service: InternetService }) {
   const {
+    slug,
     title,
     eyebrow,
     tagline,
@@ -32,10 +38,13 @@ export function InternetServicePage({ service }: { service: InternetService }) {
     scene,
     idealFor,
     sections,
+    sectionsAsPages,
     addOns,
     cta,
     parent,
   } = service;
+
+  const sectionPages = getSectionPages(service);
 
   const backHref = parent ? "/internet/network-solutions" : "/internet";
   const backLabel = parent ? "Network Solutions" : "Internet";
@@ -136,15 +145,68 @@ export function InternetServicePage({ service }: { service: InternetService }) {
         </div>
       </section>
 
-      {/* Sections */}
-      {sections.map((section, index) => {
-        const { slug, eyebrow: sectionEyebrow, heading, body, points, list, listCaption, steps } =
-          section;
+      {/* Sections.
 
-        return (
+          A connectivity service routes its sections as their own pages, so
+          here it lists them and links out — publishing the same copy at two
+          URLs would only make the two compete. A network service has no
+          child routes, so its sections render inline as before. */}
+      {sectionsAsPages ? (
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+            <ScrollReveal className="max-w-2xl">
+              <span className="font-mono text-xs tracking-widest text-primary uppercase">
+                In this section
+              </span>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+                {title} in detail
+              </h2>
+              <p className="mt-4 text-pretty text-muted-foreground">
+                Each of these is a page of its own. Start wherever your
+                question is.
+              </p>
+            </ScrollReveal>
+
+            <ul className="mt-14 flex flex-wrap gap-px overflow-hidden rounded-2xl bg-border">
+              {sectionPages.map((item, index) => (
+                <ScrollReveal
+                  as="li"
+                  key={item.slug}
+                  delay={index * 70}
+                  shift={12}
+                  className="flex grow basis-72 bg-background"
+                >
+                  <Link
+                    href={`/internet/${slug}/${item.slug}`}
+                    className="group flex grow flex-col p-8 transition-colors hover:bg-primary/5 focus-visible:bg-primary/5 focus-visible:outline-none"
+                  >
+                    <span className="font-mono text-xs tracking-[0.2em] text-primary uppercase">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="mt-4 text-lg font-semibold tracking-tight text-balance">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-pretty text-muted-foreground">
+                      {item.tagline}
+                    </p>
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-medium text-primary">
+                      Read more
+                      <ArrowRight
+                        className="size-3.5 transition-transform group-hover:translate-x-1"
+                        aria-hidden
+                      />
+                    </span>
+                  </Link>
+                </ScrollReveal>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : (
+        sections.map((section, index) => (
           <section
-            key={slug}
-            id={slug}
+            key={section.slug}
+            id={section.slug}
             className={cn(
               "scroll-mt-28 border-b border-border",
               index % 2 === 1 && "bg-muted/30",
@@ -154,120 +216,19 @@ export function InternetServicePage({ service }: { service: InternetService }) {
               <div className="grid gap-8 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-16">
                 <ScrollReveal>
                   <p className="font-mono text-xs tracking-[0.2em] text-primary uppercase">
-                    {sectionEyebrow ?? String(index + 1).padStart(2, "0")}
+                    {section.eyebrow ?? String(index + 1).padStart(2, "0")}
                   </p>
                   <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance">
-                    {heading}
+                    {section.heading}
                   </h2>
                 </ScrollReveal>
 
-                <div>
-                  {body?.map((paragraph, paragraphIndex) => (
-                    <ScrollReveal
-                      as="p"
-                      key={paragraph}
-                      delay={paragraphIndex * 70}
-                      className={cn(
-                        "max-w-3xl text-lg text-pretty text-muted-foreground",
-                        paragraphIndex > 0 && "mt-4",
-                      )}
-                    >
-                      {paragraph}
-                    </ScrollReveal>
-                  ))}
-
-                  {points?.length ? (
-                    <ul
-                      className={cn(
-                        "grid gap-8 sm:grid-cols-2 xl:grid-cols-3",
-                        body?.length ? "mt-12" : "mt-0",
-                      )}
-                    >
-                      {points.map(
-                        ({ title: pointTitle, description, icon: PointIcon }, pointIndex) => (
-                          <ScrollReveal
-                            as="li"
-                            key={pointTitle}
-                            delay={pointIndex * 60}
-                            shift={10}
-                            className="group"
-                          >
-                            <span className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                              <PointIcon className="size-[1.15rem]" aria-hidden />
-                            </span>
-                            <h3 className="mt-4 text-base font-semibold tracking-tight text-balance">
-                              {pointTitle}
-                            </h3>
-                            <p className="mt-2 text-sm text-pretty text-muted-foreground">
-                              {description}
-                            </p>
-                          </ScrollReveal>
-                        ),
-                      )}
-                    </ul>
-                  ) : null}
-
-                  {list?.length ? (
-                    <div className={cn(body?.length || points?.length ? "mt-12" : "mt-0")}>
-                      {listCaption ? (
-                        <p className="font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
-                          {listCaption}
-                        </p>
-                      ) : null}
-                      <ul className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2 xl:grid-cols-3">
-                        {list.map((item, itemIndex) => (
-                          <ScrollReveal
-                            as="li"
-                            key={item}
-                            delay={Math.min(itemIndex * 35, 350)}
-                            shift={8}
-                            className="flex items-start gap-2.5 text-sm"
-                          >
-                            <Check
-                              className="mt-0.5 size-4 shrink-0 text-primary"
-                              aria-hidden
-                            />
-                            <span className="text-muted-foreground">{item}</span>
-                          </ScrollReveal>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-
-                  {steps?.length ? (
-                    <ol
-                      className={cn(
-                        "flex flex-wrap gap-px overflow-hidden rounded-2xl bg-border",
-                        body?.length || points?.length || list?.length ? "mt-12" : "mt-0",
-                      )}
-                    >
-                      {steps.map(({ title: stepTitle, body: stepBody }, stepIndex) => (
-                        <ScrollReveal
-                          as="li"
-                          key={stepTitle}
-                          delay={stepIndex * 70}
-                          shift={10}
-                          className="flex grow basis-56 flex-col bg-background p-6"
-                        >
-                          <span className="font-mono text-xs tracking-[0.2em] text-primary uppercase">
-                            {String(stepIndex + 1).padStart(2, "0")}
-                          </span>
-                          <h3 className="mt-3 text-base font-semibold tracking-tight text-balance">
-                            {stepTitle}
-                          </h3>
-                          <p className="mt-2 text-sm text-pretty text-muted-foreground">
-                            {stepBody}
-                          </p>
-                        </ScrollReveal>
-                      ))}
-                    </ol>
-                  ) : null}
-                </div>
+                <SectionContent section={section} />
               </div>
             </div>
           </section>
-        );
-      })}
+        ))
+      )}
 
       {/* Onward journey — the layering docs/INTERNET.md asks for. */}
       {related.length ? (

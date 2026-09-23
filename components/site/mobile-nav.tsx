@@ -21,17 +21,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { nav, site, type NavItem } from "@/lib/site";
-
-function isItemActive(item: NavItem, pathname: string) {
-  if (item.href === "/") return pathname === "/";
-  if (pathname.startsWith(item.href)) return true;
-  return (
-    item.groups?.some((group) =>
-      group.links.some((link) => pathname.startsWith(link.href)),
-    ) ?? false
-  );
-}
+import { isNavItemActive, isNavLeafCurrent, nav, site } from "@/lib/site";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -75,7 +65,7 @@ export function MobileNav() {
         <nav className="flex-1 overflow-y-auto overscroll-contain px-2.5 py-3">
           <Accordion type="single" collapsible className="w-full">
             {nav.map((item) => {
-              const isActive = isItemActive(item, pathname);
+              const isActive = isNavItemActive(item, pathname);
 
               // Plain link — no children to expand.
               if (!item.groups?.length) {
@@ -133,7 +123,7 @@ export function MobileNav() {
                         <ul>
                           {group.links.map((link) => {
                             const Icon = link.icon ?? group.icon;
-                            const linkActive = pathname.startsWith(link.href);
+                            const linkActive = isNavLeafCurrent(link.href, pathname);
 
                             return (
                               <li key={link.href}>

@@ -1,5 +1,6 @@
 import {
   Activity,
+  BadgeCheck,
   Boxes,
   Briefcase,
   Building2,
@@ -49,6 +50,7 @@ import {
   TrendingUp,
   Truck,
   UserCheck,
+  Video,
   Users,
   Waypoints,
   Webhook,
@@ -114,15 +116,41 @@ export type InternetPoint = {
 };
 
 /**
- * One section of a service page. A section renders whichever of the optional
- * fields it sets, in a fixed order: body, then points, then list, then steps.
+ * One section of a connectivity service — and a page in its own right, at
+ * /internet/<service>/<section>.
+ *
+ * These began as anchored sections on the parent page. They are now separate
+ * routes, which is what docs/INTERNET.md asks for, so each one carries what a
+ * standalone page needs: its own `title` for navigation, a `tagline` and
+ * `intro` for the hero and the metadata description, and enough body to be
+ * worth landing on. The parent page links to them rather than repeating them,
+ * so the same copy is never published at two URLs.
+ *
+ * A page renders whichever of the optional fields it sets, always in the same
+ * order: body, points, list, steps, closing.
  */
 export type InternetSection = {
-  /** Anchor id, unique within its page. */
+  /** Last URL segment, and the anchor id when linked from elsewhere. */
   slug: string;
+  /**
+   * The next three are what a section needs to stand as its own page. They
+   * are optional because only the three connectivity services promote their
+   * sections to routes; the six network services keep theirs inline, where a
+   * nav label and a second intro would be noise. `sectionsAsPages` on the
+   * service is what decides, and `getSectionPages` narrows to these.
+   */
+  /** Navigation label — what the mega menu and the parent's cards show. */
+  title?: string;
+  /** Short line under the heading, and the blurb on the parent's card. */
+  tagline?: string;
+  /** Opening paragraph, and the page's metadata description. */
+  intro?: string;
+  /** Its own diagram. Falls back to the parent service's when absent. */
+  scene?: SceneKind;
   eyebrow?: string;
+  /** The page's own h1, or the section heading when rendered inline. */
   heading: string;
-  /** Lead paragraph(s) for the section. */
+  /** Lead paragraph(s), after `intro`. */
   body?: string[];
   /** Explained capabilities, rendered as an icon grid. */
   points?: InternetPoint[];
@@ -132,6 +160,8 @@ export type InternetSection = {
   listCaption?: string;
   /** An ordered process. Only used where order genuinely carries meaning. */
   steps?: { title: string; body: string }[];
+  /** The note the page ends on, before the call to action. */
+  closing?: { heading: string; body: string };
 };
 
 /** Which schematic the page hero draws. See ConnectivityScene. */
@@ -164,6 +194,13 @@ export type InternetService = {
   scene: SceneKind;
   /** Who the service is for — rendered as a chip rail in the hero. */
   idealFor?: string[];
+  /**
+   * True on the three connectivity services, whose sections are routed as
+   * their own pages under /internet/<service>/<section>. The parent then
+   * links to them instead of rendering them, so nothing is published twice.
+   * The six network services leave this unset and render inline.
+   */
+  sectionsAsPages?: boolean;
   sections: InternetSection[];
   /**
    * The journey docs/INTERNET.md asks for: having chosen connectivity, a
@@ -583,6 +620,7 @@ const businessBroadband: InternetService = {
   ],
   icon: Wifi,
   scene: "broadband",
+  sectionsAsPages: true,
   idealFor: [
     "Small and medium businesses",
     "Offices and commercial establishments",
@@ -596,10 +634,16 @@ const businessBroadband: InternetService = {
   sections: [
     {
       slug: "plans",
+      title: "Plans",
       eyebrow: "Plans",
       heading: "Sized against how you actually work",
+      tagline: "There is no standard office, so there is no standard plan.",
+      intro:
+        "Rather than publishing a speed tier and hoping it fits, we size a business broadband connection against what actually runs on it — how many people, which applications, and how much of the traffic travels upward.",
+      scene: "broadband",
       body: [
-        "There is no single right plan, because there is no single kind of office. Rather than publishing a speed tier and hoping it fits, we size the connection against what runs on it.",
+        "Most connections that disappoint were not undersized on paper. They were sized on headcount alone, and nobody asked what those people would be doing: a twelve-person design studio pushing renders to the cloud is a heavier load than a forty-person office reading email.",
+        "So the conversation starts with the work, not the number. The nine factors below are what we actually ask about.",
       ],
       listCaption: "A plan is chosen on",
       list: [
@@ -613,13 +657,62 @@ const businessBroadband: InternetService = {
         "Location",
         "Required support level",
       ],
+      points: [
+        {
+          title: "Concurrency, not headcount",
+          description:
+            "What matters is how many people are using the connection at once, at the busiest hour of the day — not how many desks there are.",
+          icon: Users,
+        },
+        {
+          title: "The upward half",
+          description:
+            "Cloud backup, file sync, video calls and VoIP all travel outward. An office that uploads heavily needs a plan chosen on its upload, not its download.",
+          icon: TrendingUp,
+        },
+        {
+          title: "Voice gets counted separately",
+          description:
+            "Calls are not large, but they are unforgiving about timing. Where SipLink voice runs over the same line, we size and prioritise for it explicitly.",
+          icon: PhoneCall,
+        },
+        {
+          title: "Headroom for the next year",
+          description:
+            "A plan sized exactly to today is a plan you outgrow. We leave room for the hires and applications you already know are coming.",
+          icon: Expand,
+        },
+      ],
+      steps: [
+        {
+          title: "Tell us the work",
+          body: "How many people, what they run, and which applications would hurt most if they slowed down.",
+        },
+        {
+          title: "We check the address",
+          body: "What is deliverable at your location, and on what timescale. Feasibility comes before a quote, not after it.",
+        },
+        {
+          title: "We size and quote",
+          body: "A plan matched to the work, with static IP, a managed router or Wi-Fi added only where you actually need them.",
+        },
+      ],
+      closing: {
+        heading: "Outgrowing it is not a problem",
+        body: "Bandwidth upgrades are a normal part of the relationship rather than a renegotiation. As users, applications and locations increase, we review the plan with you and change it.",
+      },
     },
     {
       slug: "features",
+      title: "Features",
       eyebrow: "Features",
       heading: "Business-ready connectivity",
+      tagline: "Judged by what still works at eleven o'clock on a Monday.",
+      intro:
+        "A business connection is not a faster consumer one. It is judged on what keeps running during the busiest hour of the week, and on what can be added to it when the business needs something a household never would.",
+      scene: "broadband",
       body: [
-        "A business connection is judged by what keeps working on it at eleven o'clock on a Monday. These are the applications broadband is expected to carry.",
+        "These are the applications business broadband is expected to carry — all of them at the same time, on the same line, without one of them starving the others.",
       ],
       listCaption: "Supports",
       list: [
@@ -656,11 +749,23 @@ const businessBroadband: InternetService = {
           icon: MapPin,
         },
       ],
+      closing: {
+        heading: "The connection is the start of it",
+        body: "A managed router, business Wi-Fi, LAN and switching or a VPN can all be layered onto the same service and supported by the same team — so a fault is diagnosed once rather than argued between suppliers.",
+      },
     },
     {
       slug: "business-benefits",
+      title: "Business Benefits",
       eyebrow: "Benefits",
       heading: "Built for everyday business",
+      tagline: "What changes when the office line is a business one.",
+      intro:
+        "The difference between a business connection and a consumer one shows up in ordinary weeks rather than exceptional ones — in whether the Monday video call holds, whether the CRM is quick at four in the afternoon, and in who answers when it is not.",
+      scene: "broadband",
+      body: [
+        "None of these are dramatic on their own. Together they are the difference between connectivity you think about and connectivity you do not.",
+      ],
       points: [
         {
           title: "Reliable connectivity",
@@ -699,6 +804,10 @@ const businessBroadband: InternetService = {
           icon: Headset,
         },
       ],
+      closing: {
+        heading: "When broadband stops being enough",
+        body: "If an hour of degraded performance would cost you real money, the honest answer is dedicated internet rather than a larger broadband plan. We will say so rather than sell you the upgrade.",
+      },
     },
   ],
   addOns: [
@@ -722,6 +831,7 @@ const dedicatedInternet: InternetService = {
   ],
   icon: Gauge,
   scene: "dedicated",
+  sectionsAsPages: true,
   idealFor: [
     "Enterprises",
     "IT and ITES companies",
@@ -737,11 +847,43 @@ const dedicatedInternet: InternetService = {
   sections: [
     {
       slug: "dedicated-bandwidth",
+      title: "Dedicated Bandwidth",
       eyebrow: "Dedicated bandwidth",
       heading: "Bandwidth provisioned for you, not shared with the street",
+      tagline:
+        "What you buy at five in the morning is what you have at five in the evening.",
+      intro:
+        "With dedicated internet, bandwidth is provisioned specifically for your business requirement rather than drawn from a pool shared with everyone else on the segment.",
+      scene: "dedicated",
       body: [
-        "With dedicated internet, bandwidth is provisioned specifically for your business requirement rather than drawn from a shared pool. What you buy is what is there at five in the evening as well as five in the morning.",
-        "That makes it suitable for anything where unpredictable throughput turns into an operational problem rather than an inconvenience.",
+        "Contended services are sold on a peak figure and delivered on an average one. That is a reasonable trade for a household, where the busy hour is the evening and nothing important depends on it. It is a poor trade for a business, whose busy hour is the working day and whose systems are all in use at once.",
+        "Dedicated capacity removes the variable. It makes throughput something you can design around rather than something you discover.",
+      ],
+      points: [
+        {
+          title: "No contention ratio",
+          description:
+            "Your capacity is not divided among other subscribers, so performance does not move with the neighbours' usage or the time of day.",
+          icon: Gauge,
+        },
+        {
+          title: "A committed rate",
+          description:
+            "The service is delivered against a committed information rate rather than a best-effort maximum, so the figure in the contract is the figure you plan against.",
+          icon: BadgeCheck,
+        },
+        {
+          title: "Predictable under load",
+          description:
+            "Month-end, a large migration or a full day of video calls do not change the shape of the connection — which is the entire point of buying it.",
+          icon: Activity,
+        },
+        {
+          title: "Sized from 50 Mbps to 100 Gbps",
+          description:
+            "Port sizes across that range, chosen against the requirement rather than the tier above whatever you have now.",
+          icon: Expand,
+        },
       ],
       listCaption: "Designed to carry",
       list: [
@@ -757,13 +899,22 @@ const dedicatedInternet: InternetService = {
         "Remote access",
         "Business-critical SaaS",
       ],
+      closing: {
+        heading: "The test is simple",
+        body: "If an hour of degraded throughput would cost you money, meetings or customers, the capacity should not be shared. If it would merely be irritating, business broadband is the honest answer and we will say so.",
+      },
     },
     {
       slug: "symmetrical-speeds",
+      title: "Symmetrical Speeds",
       eyebrow: "Symmetrical speeds",
       heading: "Equal upload and download performance",
+      tagline: "Businesses do not only download.",
+      intro:
+        "Consumer connections are built on the assumption that data flows inward. Business traffic does not behave that way, and a connection tuned for consumption starves exactly the traffic an organisation depends on.",
+      scene: "dedicated",
       body: [
-        "Businesses do not only download. Modern organisations push data outward all day, and a connection tuned for consumption starves exactly the traffic a business depends on.",
+        "Every backup, every file sync, every outbound video stream and every voice call travels upward. On an asymmetric line those are the first things to suffer, and they suffer invisibly: the download test still looks fine while the call breaks up and the backup never finishes.",
         "Where a symmetrical service is selected, upload and download bandwidth are provisioned equally to support two-way business traffic. That matters most for cloud applications, video collaboration, data transfer, remote access and hosted services.",
       ],
       listCaption: "Traffic that travels upward",
@@ -777,14 +928,50 @@ const dedicatedInternet: InternetService = {
         "Business transactions",
         "Collaboration content",
       ],
+      points: [
+        {
+          title: "Video calls are uploads",
+          description:
+            "Your camera sends as much as it receives. A meeting where everyone else looks fine and you do not is usually an upstream problem.",
+          icon: Video,
+        },
+        {
+          title: "Backups finish overnight",
+          description:
+            "Cloud backup is bounded by upload. Symmetrical capacity is the difference between a job that completes by morning and one that never does.",
+          icon: CloudCog,
+        },
+        {
+          title: "Voice quality holds",
+          description:
+            "SIP traffic is small but constant in both directions. Starved upstream shows up as choppy audio long before anything else breaks.",
+          icon: PhoneCall,
+        },
+        {
+          title: "Remote access works both ways",
+          description:
+            "When colleagues reach systems hosted in your office, your upload is their download — and it sets what they experience.",
+          icon: MonitorSmartphone,
+        },
+      ],
+      closing: {
+        heading: "Confirmed per service",
+        body: "Symmetrical delivery applies where the selected service specifies it. We will confirm in writing whether it applies to the service quoted for your site rather than leaving you to assume it.",
+      },
     },
     {
       slug: "sla",
+      title: "SLA",
       eyebrow: "SLA",
       heading: "Service commitments, in writing",
+      tagline:
+        "Bandwidth is a number. An SLA is a promise about what happens when it stops.",
+      intro:
+        "Business connectivity needs more than capacity. It needs defined commitments about response, restoration and accountability — agreed before anything goes wrong, when there is no pressure to be vague.",
+      scene: "dedicated",
       body: [
-        "Business connectivity needs more than bandwidth. It needs defined commitments about what happens when something breaks, and who is accountable for fixing it.",
-        "SipLink can provide SLA-backed connectivity options based on the service and commercial agreement selected. Our internet services include SLA arrangements covering SipLink equipment, the local access network and the IP network.",
+        "SipLink can provide SLA-backed connectivity options based on the service and commercial agreement selected. Our internet services include SLA arrangements covering SipLink equipment, the local access network and the IP network — the three places a fault actually occurs.",
+        "We do not publish a headline uptime figure on this page. The commitment that applies to you depends on the service, the site and the last mile, and quoting an unrelated number here would tell you nothing useful about either.",
       ],
       listCaption: "An SLA may address",
       list: [
@@ -797,13 +984,48 @@ const dedicatedInternet: InternetService = {
         "Support availability",
         "Service credits, where applicable",
       ],
+      points: [
+        {
+          title: "Covers the whole path",
+          description:
+            "SipLink equipment, the local access network and the IP network are all in scope, so a fault does not fall into a gap between suppliers.",
+          icon: ShieldCheck,
+        },
+        {
+          title: "Monitored, not reported",
+          description:
+            "Circuits are watched from our Global NOC in Chennai around the clock, so in most cases the fault is already open before you call.",
+          icon: Activity,
+        },
+        {
+          title: "A defined escalation path",
+          description:
+            "Who to reach, and who they reach next, agreed in advance — rather than discovered during the incident.",
+          icon: Route,
+        },
+        {
+          title: "Written, not implied",
+          description:
+            "Whatever is committed appears in your service agreement. If it is not written down, treat it as not committed — with any provider.",
+          icon: ScrollText,
+        },
+      ],
+      closing: {
+        heading: "Ask for the numbers",
+        body: "When you request a quote, ask for the availability, response and restoration targets that apply to your service and site. We would rather give you figures we can stand behind than headline ones we cannot.",
+      },
     },
     {
       slug: "enterprise-connectivity",
+      title: "Enterprise Connectivity",
       eyebrow: "Enterprise connectivity",
       heading: "Internet designed around your business",
+      tagline: "Not a bigger plan — a different question.",
+      intro:
+        "Enterprise connectivity is not simply a higher bandwidth tier. It is a design problem, and the answer changes with every one of the inputs below.",
+      scene: "multisite",
       body: [
-        "Enterprise connectivity is not simply a higher bandwidth plan. It is a design question, and the answer changes with every one of these inputs.",
+        "Two organisations with identical headcounts and identical budgets can need entirely different networks, because one runs everything in a data centre and the other runs everything in someone else's cloud. Bandwidth is the last decision in that conversation, not the first.",
       ],
       listCaption: "We design around",
       list: [
@@ -857,6 +1079,10 @@ const dedicatedInternet: InternetService = {
           icon: Factory,
         },
       ],
+      closing: {
+        heading: "Start with the architecture",
+        body: "Tell us what your sites look like, where your applications live and what cannot be allowed to stop. The port size falls out of that conversation rather than starting it.",
+      },
     },
   ],
   addOns: [
@@ -881,6 +1107,7 @@ const staticIp: InternetService = {
   ],
   icon: MapPin,
   scene: "static-ip",
+  sectionsAsPages: true,
   idealFor: [
     "VPN",
     "Remote access",
@@ -894,11 +1121,30 @@ const staticIp: InternetService = {
   sections: [
     {
       slug: "what-is-static-ip",
+      title: "What is Static IP?",
       eyebrow: "What it is",
       heading: "A public address that stays put",
-      body: [
+      tagline: "One number you write into a rule once.",
+      intro:
         "A static IP is a public IP address assigned to your business connection that remains fixed. Unlike a dynamic address, which may change, it gives you one consistent value that other systems can be configured to trust.",
-        "In practice that means one number you can write into a rule once, rather than a moving target that breaks access the day it changes.",
+      scene: "static-ip",
+      body: [
+        "Most connections are issued a dynamic address: the network hands you one from a pool, and it may be replaced. For browsing that is invisible and entirely fine. It stops being fine the moment something outside needs to find you, because the address a rule was written against is no longer the address you have.",
+        "Your office may need to let employees or approved systems connect from outside. With a fixed public address, an administrator configures the access rule around a known value, and it keeps working next month.",
+      ],
+      points: [
+        {
+          title: "Dynamic: assigned from a pool",
+          description:
+            "Fine for outbound browsing and email. Anything configured to trust it can break without warning when it changes.",
+          icon: RefreshCw,
+        },
+        {
+          title: "Static: assigned to you",
+          description:
+            "The same public address every day, so firewall rules, allowlists and DNS records stay correct once they are written.",
+          icon: MapPin,
+        },
       ],
       listCaption: "Configured in",
       list: [
@@ -911,13 +1157,22 @@ const staticIp: InternetService = {
         "DNS",
         "Security systems",
       ],
+      closing: {
+        heading: "Not every business needs one",
+        body: "If nothing outside your network has to reach in at a known address, a dynamic IP is perfectly adequate and there is no reason to pay for more. The uses that genuinely call for a fixed address are set out on the next page.",
+      },
     },
     {
       slug: "business-uses",
+      title: "Business Uses",
       eyebrow: "Business uses",
       heading: "Where a fixed address earns its keep",
+      tagline: "Eight situations where a changing address breaks something.",
+      intro:
+        "A static IP is worth paying for when some other system has been configured to trust your address. These are the eight cases that come up most often in business networks.",
+      scene: "static-ip",
       body: [
-        "Your office may need to let employees or authorised systems connect from outside. With a fixed public address, an administrator configures the access rule around a known value and it keeps working.",
+        "The pattern is the same in all of them: something outside your network — a partner, a platform, a trunk provider or your own remote staff — needs to recognise traffic as yours. Recognition requires an address that does not move.",
       ],
       points: [
         {
@@ -969,13 +1224,40 @@ const staticIp: InternetService = {
           icon: Webhook,
         },
       ],
+      closing: {
+        heading: "An address is not a security control",
+        body: "A static IP makes access rules possible; it does not make them safe on its own. Anything reachable from the internet still needs a firewall policy in front of it, which is what a managed router and firewall service is for.",
+      },
     },
     {
       slug: "add-static-ip",
+      title: "Add Static IP",
       eyebrow: "Add static IP",
       heading: "Need a static IP for your business?",
-      body: [
+      tagline: "Added to an eligible service, usually without changing the line.",
+      intro:
         "Static IP can be added to an eligible SipLink internet service for applications that require consistent public addressing. Tell us what needs to reach what, and we will confirm whether your service supports it.",
+      scene: "static-ip",
+      body: [
+        "This is normally a configuration change rather than a new installation, so an existing connection can usually keep running while it is arranged.",
+      ],
+      steps: [
+        {
+          title: "Tell us what needs it",
+          body: "The VPN, trunk, allowlist or hosted system driving the requirement. What it is for decides whether one address is enough or a routed block is the right answer.",
+        },
+        {
+          title: "We confirm eligibility",
+          body: "Whether your current service supports it, or which service would. Availability depends on the connection and the site.",
+        },
+        {
+          title: "Assigned and documented",
+          body: "The address is allocated to your service and recorded, so your administrator has it in writing rather than in an email thread.",
+        },
+        {
+          title: "Configured and tested",
+          body: "Applied to the router and tested against whatever needed it, so you find out it works from us rather than from a user.",
+        },
       ],
       listCaption: "Suitable for",
       list: [
@@ -989,6 +1271,10 @@ const staticIp: InternetService = {
         "Secure business applications",
         "API integrations",
       ],
+      closing: {
+        heading: "Already with another provider?",
+        body: "A static IP is tied to the service it is issued on, so moving providers means a new address and a round of reconfiguration. It is worth raising early in a migration rather than discovering it on cutover day.",
+      },
     },
   ],
   addOns: ["managed-router-firewall", "vpn"],
@@ -1596,4 +1882,40 @@ export function getInternetService(
   slug: string,
 ): InternetService | undefined {
   return internetServices.find((item) => item.slug === slug);
+}
+
+/** A section complete enough to be its own page. */
+export type InternetSectionPage = InternetSection &
+  Required<Pick<InternetSection, "title" | "tagline" | "intro">>;
+
+/**
+ * The sections of `service` that are routed as their own pages — empty for
+ * the six network services, which render their sections inline.
+ *
+ * The filter is not defensive padding: it is what narrows the optional page
+ * fields to required ones, so a section missing an intro cannot reach a
+ * route that assumes it has one.
+ */
+export function getSectionPages(service: InternetService): InternetSectionPage[] {
+  if (!service.sectionsAsPages) return [];
+
+  return service.sections.filter(
+    (section): section is InternetSectionPage =>
+      Boolean(section.title && section.tagline && section.intro),
+  );
+}
+
+/** One section page, by its service slug and its own slug. */
+export function getInternetSectionPage(
+  serviceSlug: string,
+  sectionSlug: string,
+): { service: InternetService; section: InternetSectionPage } | undefined {
+  const service = getInternetService(serviceSlug);
+  if (!service) return undefined;
+
+  const section = getSectionPages(service).find(
+    (item) => item.slug === sectionSlug,
+  );
+
+  return section ? { service, section } : undefined;
 }
