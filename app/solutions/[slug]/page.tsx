@@ -3,7 +3,13 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
+import { BusinessSizeSolution } from "@/components/site/business-size-solution";
+import { EnterpriseSolution } from "@/components/site/enterprise-solution";
+import { MidMarketSolution } from "@/components/site/mid-market-solution";
+import { MigrationSolution } from "@/components/site/migration-solution";
+import { SmallBusinessSolution } from "@/components/site/small-business-solution";
 import { SolutionIllustration } from "@/components/site/solution-illustration";
+import { UseCaseSolution } from "@/components/site/use-case-solution";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,6 +18,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { getBusinessSize } from "@/lib/business-size";
 import {
   getSolutionDetail,
   solutionDetails,
@@ -50,6 +57,43 @@ export default async function SolutionDetailPage({
   const solution = getSolutionDetail(slug);
   if (!solution) notFound();
 
+  // The four business-size pages each get the moment that is characteristic
+  // of that size — a ring, a working day, a queue, a stack of systems — so
+  // they have their own treatment. Every other solution keeps the shared
+  // template below.
+  const size = getBusinessSize(slug);
+
+  // Small Business takes that furthest: the working day is not an
+  // illustration beside the pitch, it is the pitch, so the page is built
+  // around it rather than fitted into the shared size shell.
+  if (size?.slug === "small-business")
+    return <SmallBusinessSolution solution={solution} size={size} />;
+
+  // Enterprise argues from what survives rather than from what arrives, so
+  // its hero is the estate being connected in place rather than a figure of
+  // the product. It has its own page for the same reason.
+  if (size?.slug === "enterprise")
+    return <EnterpriseSolution solution={solution} size={size} />;
+
+  // Mid-Market argues from the caller who gives up waiting, and from nobody
+  // being able to say afterwards why — so the queue takes its hero.
+  if (size?.slug === "mid-market")
+    return <MidMarketSolution solution={solution} size={size} />;
+
+  if (size) return <BusinessSizeSolution solution={solution} size={size} />;
+
+  // The six use cases answer the same questions in the same order and
+  // differ only in their content and the topology each one draws, so the
+  // group shares one treatment the way the business sizes do.
+  if (solution.group === "By Use Case")
+    return <UseCaseSolution solution={solution} />;
+
+  // Migration sells a project rather than a product: the reader is deciding
+  // whether to risk the phones, so the cutover takes the hero and the order
+  // of work is the spine of the page.
+  if (solution.group === "Migration")
+    return <MigrationSolution solution={solution} />;
+
   const {
     group,
     title,
@@ -74,10 +118,6 @@ export default async function SolutionDetailPage({
     <>
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-40 -right-24 size-[560px] rounded-full bg-brand-to/10 blur-3xl"
-        />
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <Link
             href="/solutions"
@@ -270,10 +310,6 @@ export default async function SolutionDetailPage({
           )}
 
           <div className="relative overflow-hidden rounded-2xl bg-background p-8 ring-1 ring-border">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -top-16 -right-10 size-48 rounded-full bg-brand-to/10 blur-2xl"
-            />
             <div className="relative">
               <h2 className="text-2xl font-semibold tracking-tight text-balance">
                 {gain.heading}

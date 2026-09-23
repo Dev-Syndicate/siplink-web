@@ -55,7 +55,25 @@ export type SolutionGroup = "By Business Size" | "By Use Case" | "Migration";
 export type SolutionStep = { title: string; body: string };
 
 /** A named point in the "what you gain" / capability lists. */
-export type SolutionPoint = { title: string; description: string; icon: LucideIcon };
+export type SolutionPoint = {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  /**
+   * A product mock for this capability, shown in place of the drawn
+   * schematic. Set it only where real artwork exists — a capability without
+   * one falls back to its figure in capability-figures.tsx, so the six By Use
+   * Case pages stay illustrated whether or not artwork has been made for
+   * them yet.
+   *
+   * `width` and `height` are the file's real pixel size and are required.
+   * next/image takes the aspect ratio from them, not from the file, so a
+   * shared default would silently squash any mock that did not happen to
+   * match it — and the four sets so far arrive at four different ratios
+   * (1.50, 1.72, 1.78, 2.00).
+   */
+  image?: { src: string; alt: string; width: number; height: number };
+};
 
 /** Which schematic the page's hero draws (see SolutionIllustration). */
 export type SolutionShape =
@@ -81,8 +99,23 @@ export type SolutionDetail = {
   challenge: { heading: string; body: string };
   /** How SipLink answers it. Right column of the problem spine. */
   handling: { heading: string; body: string[] };
-  /** Concrete capabilities. Rendered as a quiet grid. */
+  /** Concrete capabilities. */
   capabilities: SolutionPoint[];
+  /**
+   * How the "What's included" section lays them out.
+   *
+   * "rows" (the default) alternates copy and figure down the page, which
+   * suits a mock that reads left to right and gives each capability its own
+   * band. "cards" is a two-up grid of tall cards with the mock across the
+   * top — better where the artwork is a self-contained panel rather than a
+   * scene, and where two capabilities at a time is the right reading unit.
+   * "banner" is one mock across the full width with all the capabilities in a
+   * single row beneath it — for a page with one piece of artwork that stands
+   * for the whole section rather than one capability each. It takes the first
+   * `image` it finds, so only one capability needs to set one, and it is the
+   * only layout that gives the mock the container's full width.
+   */
+  capabilityLayout?: "rows" | "cards" | "banner";
   /** The payoff line that closes the argument. */
   gain: { heading: string; body: string };
   /** Who this is for. */
@@ -93,6 +126,18 @@ export type SolutionDetail = {
    * source; feature grids are not, so they never get numbers.
    */
   process?: SolutionStep[];
+  /**
+   * One concrete run-through of this use case, as a reader would live it.
+   * Only "By Use Case" pages set this. It is ordered — a call really does
+   * happen in this order — so unlike `capabilities` it carries numbers.
+   */
+  scenario?: { heading: string; lead: string; steps: SolutionStep[] };
+  /**
+   * Product slugs this use case is assembled from. The page looks each one
+   * up in `productDetails` rather than restating it, so the product copy
+   * lives in exactly one file.
+   */
+  builtFrom?: string[];
 };
 
 /* ------------------------------------------------------------------ shared */
@@ -154,24 +199,48 @@ const useCase: SolutionDetail[] = [
         description:
           "Take business calls from a softphone, a phone in the pocket or straight from the browser with WebRTC.",
         icon: Smartphone,
+        image: {
+          src: "/solns-remoteWorkforce/desktop-mobile-and-browser-calling.webp",
+          alt: "One call running on a laptop softphone, in a browser window and on a mobile handset at the same time.",
+          width: 1620,
+          height: 930,
+        },
       },
       {
         title: "Extension mobility",
         description:
           "An extension follows the person, not the desk, so moving location changes nothing for callers.",
         icon: ArrowLeftRight,
+        image: {
+          src: "/solns-remoteWorkforce/extension-mobility.webp",
+          alt: "The same extension, 1024, answering from the office, from home and out on the move.",
+          width: 1649,
+          height: 930,
+        },
       },
       {
         title: "Presence and multi-device",
         description:
           "See who's available and pick up on whichever device is closest, with calls staying in sync.",
         icon: Users,
+        image: {
+          src: "/solns-remoteWorkforce/presence-and-multi-device.webp",
+          alt: "A team presence list showing who is available, beside the same person's call on desktop, mobile and browser.",
+          width: 1600,
+          height: 959,
+        },
       },
       {
         title: "Centralised control",
         description:
           "Provision users, set routing and manage the whole team from one web portal.",
         icon: ServerCog,
+        image: {
+          src: "/solns-remoteWorkforce/centralised-control.webp",
+          alt: "The admin dashboard, with user management, call routing and team presence panels around it.",
+          width: 1600,
+          height: 931,
+        },
       },
     ],
     idealFor: [
@@ -179,6 +248,25 @@ const useCase: SolutionDetail[] = [
       "Businesses hiring across locations",
       "Companies replacing personal phones for work calls",
     ],
+    scenario: {
+      heading: "A call to someone who isn’t at a desk",
+      lead: "The caller does one thing — dial the business number. Everything after that is the platform’s job.",
+      steps: [
+        {
+          title: "The business number rings",
+          body: "Not a mobile, not a personal line. The customer dials the number they have always had for you.",
+        },
+        {
+          title: "The extension follows the person",
+          body: "It rings wherever that employee is working today — desk phone, laptop softphone, browser or the app on their mobile.",
+        },
+        {
+          title: "They answer as the business",
+          body: "Same greeting, same transfer options, same recording and reporting. The caller never learns which room the call landed in.",
+        },
+      ],
+    },
+    builtFrom: ["cloud-pbx", "webrtc-sdk", "virtual-numbers", "call-analytics"],
     gain: {
       heading: "Flexible working, without the trade-off",
       body: "Support employees working anywhere while keeping one consistent, professional voice for every customer who calls.",
@@ -204,30 +292,59 @@ const useCase: SolutionDetail[] = [
         "Teams handle conversations from one place and keep visibility into what's happening, which brings missed calls and response times down.",
       ],
     },
+    capabilityLayout: "cards",
     capabilities: [
       {
         title: "Intelligent routing and queues",
         description:
           "Send each caller to the right team and hold the rest in an organised queue instead of a busy tone.",
         icon: Route,
+        image: {
+          src: "/solns-customerSupport/intelligent-routing-and-queues.webp",
+          alt: "A routing rules panel sending each caller to the support, sales, accounts or technical team, with a queue holding the overflow rather than a busy tone.",
+          width: 1404,
+          height: 936,
+        },
       },
       {
         title: "IVR menus",
         description:
           "Let callers self-select Sales, Support or Billing before they ever reach an agent.",
         icon: ListChecks,
+        image: {
+          src: "/solns-customerSupport/ivr-menus.webp",
+          alt: "A call flow designer: an incoming call reaches a menu, the caller presses 2 for support, and the call goes to the support queue.",
+          width: 1404,
+          height: 936,
+        },
+      },
+      /* Analytics sits before recording so the two crimson-ground mocks fall
+         on opposite corners of the two-up grid rather than stacking down the
+         right column. These four are an unordered set, so the order is free
+         to serve the layout. */
+      {
+        title: "Analytics",
+        description:
+          "Understand call volumes, answered and missed calls, and busy periods to staff and improve accordingly.",
+        icon: Gauge,
+        image: {
+          src: "/solns-customerSupport/analytics.webp",
+          alt: "A support analytics dashboard showing call volumes through the day, answered against missed calls, and staffing recommendations.",
+          width: 840,
+          height: 560,
+        },
       },
       {
         title: "Recording and monitoring",
         description:
           "Capture conversations and let supervisors listen, whisper or barge to support agents live.",
         icon: Headset,
-      },
-      {
-        title: "Analytics",
-        description:
-          "Understand call volumes, answered and missed calls, and busy periods to staff and improve accordingly.",
-        icon: Gauge,
+        image: {
+          src: "/solns-customerSupport/recording-and-monitoring.webp",
+          alt: "A call being recorded while a supervisor monitors it live, with listen, whisper and barge controls.",
+          width: 1404,
+          height: 936,
+        },
       },
     ],
     idealFor: [
@@ -235,6 +352,25 @@ const useCase: SolutionDetail[] = [
       "Growing support operations",
       "Businesses tracking service quality",
     ],
+    scenario: {
+      heading: "One caller, from ring to resolution",
+      lead: "The shape of a support call when the routing is set up properly — nobody hears a busy tone and nothing goes uncounted.",
+      steps: [
+        {
+          title: "The menu asks once",
+          body: "An IVR greeting offers the departments you actually have, so the caller selects where they need to go instead of being passed around.",
+        },
+        {
+          title: "The queue holds the place",
+          body: "If every agent in that department is on a call, the caller waits in order with a message — rather than a busy tone or an unanswered ring.",
+        },
+        {
+          title: "The first free agent picks up",
+          body: "The call is delivered, recorded for quality and training, and added to the day’s figures the supervisor is watching.",
+        },
+      ],
+    },
+    builtFrom: ["ivr", "call-queue", "call-recording", "call-analytics"],
     gain: {
       heading: "A more consistent experience, every call",
       body: "Fewer missed calls, faster responses, and a support experience that stays consistent as your team grows.",
@@ -266,24 +402,48 @@ const useCase: SolutionDetail[] = [
         description:
           "Spend more time speaking with prospects and less time on the repetitive parts of dialling.",
         icon: PhoneOutgoing,
+        image: {
+          src: "/solns-salesTeam/streamlined-outbound-calling.webp",
+          alt: "An outbound calling app working through a synced lead list one click at a time, logging each call as it moves from dialling to speaking.",
+          width: 1600,
+          height: 930,
+        },
       },
       {
         title: "Professional business numbers",
         description:
           "Reach prospects from consistent business numbers rather than personal lines.",
         icon: Phone,
+        image: {
+          src: "/solns-salesTeam/professional-business-numbers.webp",
+          alt: "A softphone and call log showing outbound calls placed from the company's business line rather than a personal number.",
+          width: 1600,
+          height: 930,
+        },
       },
       {
         title: "Conversation visibility",
         description:
           "Keep track of customer conversations so the whole team knows where each relationship stands.",
         icon: Gauge,
+        image: {
+          src: "/solns-salesTeam/conversation-visibility.webp",
+          alt: "A shared conversations inbox with each customer thread, its history, and a summary of what was agreed.",
+          width: 1600,
+          height: 930,
+        },
       },
       {
         title: "CRM integration",
         description:
           "Connect calling to the CRM workflows your team already relies on, where the integration supports it.",
         icon: Workflow,
+        image: {
+          src: "/solns-salesTeam/crm-integration.webp",
+          alt: "A live call beside the matching CRM record, showing the contact's details, open deals and a logged history of calls, notes and emails.",
+          width: 1600,
+          height: 930,
+        },
       },
     ],
     idealFor: [
@@ -291,6 +451,25 @@ const useCase: SolutionDetail[] = [
       "High-volume calling operations",
       "Teams that live in a CRM",
     ],
+    scenario: {
+      heading: "An afternoon of outbound calling",
+      lead: "The same list, worked without the dead air between attempts that eats a sales day.",
+      steps: [
+        {
+          title: "The list loads into the dialler",
+          body: "Representatives stop keying numbers by hand and stop losing their place in a spreadsheet between calls.",
+        },
+        {
+          title: "Dead dials never reach a person",
+          body: "No answer, busy and unavailable are handled by the dialler. What arrives at a representative is a customer already on the line.",
+        },
+        {
+          title: "The conversation lands with its context",
+          body: "The customer record opens with the call, and the outcome writes back — so the follow-up is booked before the next number dials.",
+        },
+      ],
+    },
+    builtFrom: ["predictive-dialer", "auto-dialer", "crm-integration", "call-recording"],
     gain: {
       heading: "More selling time, less busywork",
       body: "Cut the manual work around every call so representatives can focus on building relationships and closing.",
@@ -322,24 +501,48 @@ const useCase: SolutionDetail[] = [
         description:
           "Calls, HD video meetings, instant messaging and presence on one platform.",
         icon: Video,
+        image: {
+          src: "/solns-unifiedComm/voice-video-and-messaging.webp",
+          alt: "A team video meeting running beside its chat thread, with an incoming call arriving and a presence menu set to available.",
+          width: 1600,
+          height: 800,
+        },
       },
       {
         title: "Collaboration in one place",
         description:
           "Bring team communication together instead of spreading it across separate apps.",
         icon: MessagesSquare,
+        image: {
+          src: "/solns-unifiedComm/collaboration-in-one-place.webp",
+          alt: "One workspace holding team channels, the conversation, shared files and the next meeting, rather than separate apps for each.",
+          width: 1600,
+          height: 800,
+        },
       },
       {
         title: "Business app integrations",
         description:
           "Connect communication to the business applications your teams already use, where supported.",
         icon: Workflow,
+        image: {
+          src: "/solns-unifiedComm/business-app-integrations.webp",
+          alt: "An integrations directory connecting calling to the CRM, helpdesk and productivity tools a team already runs.",
+          width: 1600,
+          height: 800,
+        },
       },
       {
         title: "One environment to manage",
         description:
           "Administer calls, video, chat and collaboration from a single platform.",
         icon: Layers,
+        image: {
+          src: "/solns-unifiedComm/one-environment-to-manage.webp",
+          alt: "A single dashboard covering calls, video meetings, messages and teams, with the same platform running on desktop, mobile and web.",
+          width: 1600,
+          height: 900,
+        },
       },
     ],
     idealFor: [
@@ -347,6 +550,25 @@ const useCase: SolutionDetail[] = [
       "Businesses standardising collaboration",
       "Organisations wanting one platform to manage",
     ],
+    scenario: {
+      heading: "What stops being separate",
+      lead: "Nothing here is a new habit for your employees. It is the same work, with fewer systems underneath it.",
+      steps: [
+        {
+          title: "Collaboration keeps its home",
+          body: "Teams stays where internal conversation already happens — and gains the ability to place and take external business calls from inside it.",
+        },
+        {
+          title: "Customer channels arrive together",
+          body: "Voice, messaging and WhatsApp reach the same environment, so a customer who switches channel is not starting again with someone new.",
+        },
+        {
+          title: "Your applications join in",
+          body: "Voice and SIP APIs put calling inside the systems your teams already work in, rather than beside them in another window.",
+        },
+      ],
+    },
+    builtFrom: ["cloud-pbx", "teams-calling", "whatsapp-api", "sip-api"],
     gain: {
       heading: "Less switching, more connection",
       body: "A unified experience that's easier for teams to use and easier for the business to control.",
@@ -372,6 +594,7 @@ const useCase: SolutionDetail[] = [
         "Whether teams are talking internally or serving customers in different markets, they stay connected without a patchwork of systems per site.",
       ],
     },
+    capabilityLayout: "banner",
     capabilities: [
       {
         title: "Unified environment across sites",
@@ -380,16 +603,25 @@ const useCase: SolutionDetail[] = [
         icon: Globe,
       },
       {
-        title: "Local numbers and routing",
-        description:
-          "Give each market the local presence it needs while routing stays centrally managed.",
-        icon: MapPin,
-      },
-      {
         title: "Cross-location connectivity",
         description:
           "Connect employees and offices so internal calls and transfers work across borders.",
         icon: Network,
+      },
+      {
+        /* The section's one image hangs off the capability it draws most
+           directly; under "banner" it runs across the top and stands for all
+           four. See the note on `capabilityLayout`. */
+        title: "Local numbers and routing",
+        description:
+          "Give each market the local presence it needs while routing stays centrally managed.",
+        icon: MapPin,
+        image: {
+          src: "/solns-Global/local-numbers-and-routing.webp",
+          alt: "A local number for each market beside a numbers table showing where each one routes, all managed from one place.",
+          width: 1600,
+          height: 800,
+        },
       },
       {
         title: "Centralised administration",
@@ -403,6 +635,25 @@ const useCase: SolutionDetail[] = [
       "Businesses entering new markets",
       "Teams serving customers across time zones",
     ],
+    scenario: {
+      heading: "Opening in a new market",
+      lead: "What it takes to be reachable in a country you have just started selling into.",
+      steps: [
+        {
+          title: "A number local to that market",
+          body: "Customers dial a number that looks domestic to them, which is often the difference between a call placed and a call abandoned.",
+        },
+        {
+          title: "It joins the platform you already run",
+          body: "The new market is a configuration, not a second phone system with its own vendor, its own portal and its own way of doing things.",
+        },
+        {
+          title: "Policy stays set in one place",
+          body: "Routing, opening hours and reporting for the new office are managed alongside every other office, in the same portal.",
+        },
+      ],
+    },
+    builtFrom: ["virtual-numbers", "did-numbers", "toll-free-numbers", "cloud-pbx"],
     gain: {
       heading: "Connected everywhere, managed in one place",
       body: "Serve every market with a consistent business presence, without building and maintaining a separate system for each office.",
@@ -459,6 +710,25 @@ const useCase: SolutionDetail[] = [
       "Businesses opening new locations",
       "Operations that transfer calls between sites",
     ],
+    scenario: {
+      heading: "A branch that keeps its own hours",
+      lead: "Central management is only worth having if it does not flatten the differences between locations.",
+      steps: [
+        {
+          title: "The branch stays itself",
+          body: "Its own number, its own greeting, its own opening hours — because a branch that closes at five should not answer like one that closes at nine.",
+        },
+        {
+          title: "Staff reach each other directly",
+          body: "Employees dial colleagues at other branches by extension. Internal calls stay internal, wherever the two people happen to be.",
+        },
+        {
+          title: "Head office sees all of it",
+          body: "One view across every location, and a policy change made once rather than repeated branch by branch.",
+        },
+      ],
+    },
+    builtFrom: ["hosted-pbx", "cloud-pbx", "ivr", "call-analytics"],
     gain: {
       heading: "One business, many branches, no seams",
       body: "Keep every location running its own way while managing communication — and seeing it — as one connected operation.",

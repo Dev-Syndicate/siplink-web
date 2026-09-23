@@ -18,6 +18,7 @@ import {
   solutions,
   ucaasBenefits,
 } from "@/lib/site";
+import { solutionDetails } from "@/lib/solutions";
 
 export const metadata: Metadata = {
   title: "Solutions",
@@ -38,15 +39,16 @@ const portLabels: Record<string, string> = {
   "Unified Communications": "SIP.UA",
 };
 
+/** The six "By Use Case" pages, in source order. */
+const useCases = solutionDetails.filter(
+  (item) => item.group === "By Use Case",
+);
+
 export default function SolutionsPage() {
   return (
     <>
       {/* Hero — a stated thesis beside a live routing panel */}
       <section className="relative overflow-hidden border-b border-border">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-40 -right-24 size-[560px] rounded-full bg-brand-to/10 blur-3xl"
-        />
         <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:px-10 lg:py-28">
           <div>
             <p className="font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
@@ -276,6 +278,63 @@ export default function SolutionsPage() {
         </div>
       </section>
 
+      {/* By use case — the six workflow pages. The heading, lead and the
+          closing line below are the client's own By Use Case copy from
+          docs/website-contents.md, which had no home on this page before. */}
+      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+        <div className="max-w-2xl">
+          <p className="font-mono text-xs tracking-[0.2em] text-primary uppercase">
+            By use case
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+            Communication built around the way you work
+          </h2>
+          <p className="mt-3 text-pretty text-muted-foreground">
+            Every business has different communication needs. Whether your
+            employees work remotely, your teams manage customer conversations,
+            your sales team is focused on outbound growth, or your business
+            operates across multiple locations, SipLink connects your people,
+            customers, teams and locations around the workflow you already run.
+          </p>
+        </div>
+
+        <ul className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {useCases.map(({ slug, title, tagline, icon: Icon }) => (
+            <li key={slug}>
+              <Link
+                href={`/solutions/${slug}`}
+                className="group flex h-full flex-col gap-3 bg-card p-8 transition-colors hover:bg-muted/40"
+              >
+                <span className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <Icon className="size-5" aria-hidden />
+                </span>
+                <span className="mt-2 text-lg font-semibold tracking-tight">
+                  {title}
+                </span>
+                <span className="text-pretty text-muted-foreground">
+                  {tagline}
+                </span>
+                <span className="mt-auto pt-5 text-primary">
+                  <ArrowRight
+                    className="size-4 transition-transform group-hover:translate-x-0.5"
+                    aria-hidden
+                  />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-10 max-w-2xl text-pretty text-muted-foreground">
+          <span className="font-medium text-foreground">
+            Wherever you work, SipLink keeps you connected.
+          </span>{" "}
+          From remote teams and customer support to sales organisations, global
+          offices and multi-branch businesses — your people, customers and
+          locations through one communication partner.
+        </p>
+      </section>
+
       {/* Solutions by segment */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
         <div className="max-w-2xl">
@@ -320,10 +379,6 @@ export default function SolutionsPage() {
       <section className="border-t border-border bg-muted/30">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <div className="relative overflow-hidden rounded-3xl border border-border bg-card px-8 py-14 text-center sm:px-16">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -top-24 left-1/2 size-[420px] -translate-x-1/2 rounded-full bg-brand-to/10 blur-3xl"
-            />
             <div className="relative">
               <Badge variant="outline" className="mb-5 font-mono">
                 Number porting included
