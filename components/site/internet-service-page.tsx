@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -26,7 +27,21 @@ import { cn } from "@/lib/utils";
  * explicit that a reader who has chosen connectivity should be shown what
  * layers onto it, so `addOns` closes every page.
  */
-export function InternetServicePage({ service }: { service: InternetService }) {
+export function InternetServicePage({
+  service,
+  prelude,
+  extra,
+}: {
+  service: InternetService;
+  /**
+   * An opening band above the hero, for a page that has earned a bespoke
+   * one. When present it carries the `h1` and the hero below steps down to
+   * `h2`, so the page never ships two `h1`s.
+   */
+  prelude?: ReactNode;
+  /** Extra sections, rendered after the body and before the add-ons. */
+  extra?: ReactNode;
+}) {
   const {
     slug,
     title,
@@ -46,6 +61,9 @@ export function InternetServicePage({ service }: { service: InternetService }) {
 
   const sectionPages = getSectionPages(service);
 
+  // The prelude, when there is one, owns the h1.
+  const Heading = prelude ? "h2" : "h1";
+
   const backHref = parent ? "/internet/network-solutions" : "/internet";
   const backLabel = parent ? "Network Solutions" : "Internet";
 
@@ -55,6 +73,8 @@ export function InternetServicePage({ service }: { service: InternetService }) {
 
   return (
     <>
+      {prelude}
+
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <div
@@ -82,9 +102,9 @@ export function InternetServicePage({ service }: { service: InternetService }) {
                 </Badge>
               </div>
 
-              <h1 className="mt-6 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl">
+              <Heading className="mt-6 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl">
                 {title}
-              </h1>
+              </Heading>
 
               <p className="mt-4 text-lg text-pretty text-primary lg:text-xl">
                 {tagline}
@@ -229,6 +249,8 @@ export function InternetServicePage({ service }: { service: InternetService }) {
           </section>
         ))
       )}
+
+      {extra}
 
       {/* Onward journey — the layering docs/INTERNET.md asks for. */}
       {related.length ? (

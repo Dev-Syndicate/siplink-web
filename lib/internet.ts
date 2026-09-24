@@ -46,6 +46,7 @@ import {
   ShoppingCart,
   Signal,
   SlidersHorizontal,
+  Store,
   Split,
   TrendingUp,
   Truck,
@@ -2610,5 +2611,347 @@ export const staticIpFaqs: { question: string; answer: string }[] = [
     question: "Does a static IP expose my network?",
     answer:
       "Not by itself — an address is only reachable on the ports a firewall permits. What matters is the policy in front of it, which is what a managed router and firewall service is for.",
+  },
+];
+
+/* --------------------------------- network solutions: page content */
+
+/**
+ * Supporting content for the six Network Solutions pages.
+ *
+ * These six are the least documented services in the portfolio — SD-WAN,
+ * Business Wi-Fi and LAN & switching are not mentioned in the older source
+ * material at all, and docs/INTERNET.md introduces them with "can include"
+ * and "depending on deployment" throughout. Everything below keeps that
+ * hedging. Nothing here states a throughput, a coverage radius, a device
+ * count or a failover time, because none of those is verified for any
+ * SipLink deployment.
+ */
+
+/** Managed router & firewall: the layers a policy is actually built from. */
+export const firewallLayers: {
+  layer: string;
+  title: string;
+  body: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    layer: "01",
+    title: "The perimeter",
+    body: "What may reach you from the internet, and on which ports. Everything else is refused by default rather than permitted by oversight.",
+    icon: ShieldCheck,
+  },
+  {
+    layer: "02",
+    title: "Segmentation",
+    body: "Which parts of your own network can see each other. Guests reaching a file server is rarely a decision anyone made — it is usually a decision nobody made.",
+    icon: Split,
+  },
+  {
+    layer: "03",
+    title: "Remote access",
+    body: "Who gets in from outside, from where, and to what. Configured against a fixed address where the design calls for one.",
+    icon: Key,
+  },
+  {
+    layer: "04",
+    title: "Watched and recorded",
+    body: "Monitoring, configuration backup and change control, so a rule added on a Friday can be explained on the Monday.",
+    icon: Activity,
+  },
+];
+
+/** Managed router & firewall: the difference it actually makes. */
+export const firewallManagedVsNot: {
+  unmanaged: string;
+  managed: string;
+}[] = [
+  {
+    unmanaged: "Configured once, by whoever was free",
+    managed: "Designed against a stated requirement",
+  },
+  {
+    unmanaged: "The rules live in one person's memory",
+    managed: "Documented, with a configuration backup",
+  },
+  {
+    unmanaged: "Firmware ages quietly",
+    managed: "Maintained as part of the service",
+  },
+  {
+    unmanaged: "A fault is noticed by a user",
+    managed: "Watched 24/7 from our Chennai NOC",
+  },
+  {
+    unmanaged: "Changes are remembered, not recorded",
+    managed: "Change control, so Friday can be explained on Monday",
+  },
+];
+
+/** Business Wi-Fi: how a deployment is actually arrived at. */
+export const wifiProcess: { title: string; body: string }[] = [
+  {
+    title: "Walk the floor",
+    body: "Coverage is decided by walls, glass, racking and floors — none of which appear on a plan drawing. A site assessment comes before any design.",
+  },
+  {
+    title: "Count the devices",
+    body: "Not the people. A training room of thirty laptops and thirty phones is a heavier load than an open floor of sixty desks.",
+  },
+  {
+    title: "Place the access points",
+    body: "Positioned for the layout rather than for the nearest cable run, with the cabling and power planned around them.",
+  },
+  {
+    title: "Separate the networks",
+    body: "Employee, guest and device traffic given their own access, so a visitor gets internet and nothing else.",
+  },
+  {
+    title: "Tune it in use",
+    body: "Channels, power and roaming adjusted once real people are on it, because a quiet office and a busy one behave differently.",
+  },
+];
+
+/** Business Wi-Fi: the failures a survey is meant to prevent. */
+export const wifiFailures: {
+  symptom: string;
+  cause: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    symptom: "It drops in the far meeting room",
+    cause: "Coverage planned from the cabinet outward rather than from the floor plan. One more access point usually fixes what more power cannot.",
+    icon: Radar,
+  },
+  {
+    symptom: "Fine until the room fills",
+    cause: "Sized on floor area instead of device density. The room has not changed; the number of things asking to talk at once has.",
+    icon: Users,
+  },
+  {
+    symptom: "The call drops on the walk to the desk",
+    cause: "No roaming design, so the device clings to the first access point instead of handing over cleanly to the next.",
+    icon: Route,
+  },
+  {
+    symptom: "Guests slow everyone down",
+    cause: "One network for everybody. Separate access for guests is a design decision, not a setting to switch on afterwards.",
+    icon: UserCheck,
+  },
+];
+
+/** LAN & switching: what segmentation is actually for. */
+export const lanSegments: {
+  name: string;
+  carries: string;
+  why: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    name: "Voice",
+    carries: "IP phones and handsets",
+    why: "Given priority and its own segment, so a backup job cannot push a call off the wire.",
+    icon: Phone,
+  },
+  {
+    name: "Data",
+    carries: "Desktops, laptops, printers",
+    why: "The everyday network, kept apart from the things that should not see it.",
+    icon: MonitorSmartphone,
+  },
+  {
+    name: "Wi-Fi",
+    carries: "Access points, employee and guest",
+    why: "Guest traffic reaches the internet and nothing else, which has to be built rather than assumed.",
+    icon: Signal,
+  },
+  {
+    name: "Devices",
+    carries: "Cameras, door entry, sensors",
+    why: "Segregated because they are rarely patched and almost never watched.",
+    icon: Eye,
+  },
+];
+
+/** LAN & switching: the moments it becomes worth doing properly. */
+export const lanTriggers: { title: string; body: string }[] = [
+  {
+    title: "A new office",
+    body: "The only time the network is genuinely cheap to get right. Cabling, ports and addressing decided once, before anyone moves in.",
+  },
+  {
+    title: "Putting in IP phones",
+    body: "Handsets need power, priority and a predictable address plan. Designing for them beforehand avoids re-cabling afterwards.",
+  },
+  {
+    title: "Rolling out Wi-Fi",
+    body: "Access points are only as good as what they plug into. A wireless upgrade on an improvised LAN disappoints everyone.",
+  },
+  {
+    title: "Running out of ports",
+    body: "The moment unmanaged switches start appearing under desks is the moment the network stopped being designed.",
+  },
+];
+
+/** VPN: the two shapes, and which problem each one solves. */
+export const vpnShapes: {
+  title: string;
+  solves: string;
+  points: string[];
+  icon: LucideIcon;
+}[] = [
+  {
+    title: "Site to site",
+    solves: "Two or more offices that should behave as one network",
+    points: [
+      "Always on, between fixed locations",
+      "Configured once, on equipment at each end",
+      "Staff notice nothing — the other office is simply reachable",
+      "Usually configured against a fixed public address",
+    ],
+    icon: Link2,
+  },
+  {
+    title: "Remote access",
+    solves: "People who need the office network from somewhere else",
+    points: [
+      "Per user, connected on demand",
+      "Access scoped to what that person needs",
+      "Removed when someone leaves, centrally",
+      "Depends on the office address staying put",
+    ],
+    icon: MonitorSmartphone,
+  },
+];
+
+/** VPN: the honest limits. */
+export const vpnLimits: { title: string; body: string }[] = [
+  {
+    title: "It is not a firewall",
+    body: "A VPN decides who gets in. What they can reach once inside is a firewall and segmentation question, and it is the one more often left unanswered.",
+  },
+  {
+    title: "It does not create bandwidth",
+    body: "Traffic between sites still crosses the connections you have. If the link is the constraint, the tunnel over it will be too.",
+  },
+  {
+    title: "It is only as current as its access list",
+    body: "The value is in revoking access as reliably as granting it. That is a process, not a product — which is why it is worth managing rather than owning.",
+  },
+];
+
+/** SD-WAN: how a path is chosen, moment to moment. */
+export const sdwanDecisions: {
+  condition: string;
+  action: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    condition: "A voice call starts",
+    action: "Placed on the most stable path and prioritised, because latency matters more to it than capacity.",
+    icon: PhoneCall,
+  },
+  {
+    condition: "A large backup begins",
+    action: "Moved to the link with room for it, so it fills what is spare rather than what is needed.",
+    icon: CloudCog,
+  },
+  {
+    condition: "A link degrades",
+    action: "Traffic shifts to an alternative path where the design provides one, without waiting for anyone to notice.",
+    icon: GitBranch,
+  },
+  {
+    condition: "A new branch opens",
+    action: "The same policy is applied centrally rather than configured again on site.",
+    icon: Package,
+  },
+];
+
+/** SD-WAN: what changes for a branch rollout. */
+export const sdwanBeforeAfter: { before: string; after: string }[] = [
+  {
+    before: "Each site configured by hand, on site",
+    after: "Policy defined once and applied centrally",
+  },
+  {
+    before: "Configurations drift apart over years",
+    after: "Sites stay standardised as they are added",
+  },
+  {
+    before: "Failover means someone noticing first",
+    after: "Path changes happen without an intervention",
+  },
+  {
+    before: "Adding the tenth site is harder than the second",
+    after: "The tenth site is the same work as the second",
+  },
+  {
+    before: "Visibility means asking each location",
+    after: "The whole WAN seen from one place",
+  },
+];
+
+/** Multi-location: sites are not interchangeable, so they are not sized alike. */
+export const siteTiers: {
+  tier: string;
+  profile: string;
+  typical: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    tier: "Head office",
+    profile: "The centre of gravity",
+    typical:
+      "The largest user population, the core systems and usually the heaviest link — plus whatever every other site needs to reach.",
+    icon: Building2,
+  },
+  {
+    tier: "Major site",
+    profile: "An operation in its own right",
+    typical:
+      "Enough people and systems to justify its own resilience, and often its own voice and Wi-Fi design.",
+    icon: Boxes,
+  },
+  {
+    tier: "Branch",
+    profile: "A handful of people, one job",
+    typical:
+      "Sized for what it actually does rather than given a smaller copy of head office. Most multi-site estates are mostly this.",
+    icon: Store,
+  },
+  {
+    tier: "Remote and mobile",
+    profile: "No site at all",
+    typical:
+      "People who need the same access and the same controls without a building to put equipment in.",
+    icon: MonitorSmartphone,
+  },
+];
+
+/** Multi-location: what actually changes as an estate grows. */
+export const scaleThresholds: {
+  scale: string;
+  changes: string;
+}[] = [
+  {
+    scale: "Up to 5 sites",
+    changes:
+      "Site-to-site VPN over business connections is usually enough. Each site can still be reasoned about individually.",
+  },
+  {
+    scale: "5 to 20 sites",
+    changes:
+      "Consistency starts to matter more than any single site. Standard builds, central monitoring and one escalation path stop being optional.",
+  },
+  {
+    scale: "20 to 50 sites",
+    changes:
+      "Configuring sites by hand stops scaling. Central policy, application-aware routing and automatic failover earn their place.",
+  },
+  {
+    scale: "50 and beyond",
+    changes:
+      "The network is a programme rather than a project. Opening a site becomes a repeatable process with a known cost and a known lead time.",
   },
 ];
