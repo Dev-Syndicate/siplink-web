@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ProductIllustration } from "@/components/site/product-illustration";
+import { RevealGroup } from "@/components/site/reveal-group";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -206,9 +207,16 @@ export default async function ProductDetailPage({
               ) : null}
 
               {approach ? (
-                <div className="rounded-2xl border border-primary/30 bg-background p-8 ring-1 ring-primary/10">
+                /* A soft primary glow and a light running the outline mark
+                    this as the side to land on. */
+                <div className="border-run rounded-2xl p-8 shadow-[0_0_48px_-12px] shadow-primary/50 dark:shadow-primary/40">
                   <span className="inline-flex items-center gap-2 text-xs font-medium tracking-widest text-primary uppercase">
-                    <span className="size-1.5 rounded-full bg-primary" />
+                    {/* A live-status blink: the halo pings out from a
+                        steady dot. */}
+                    <span className="relative flex size-1.5">
+                      <span className="absolute inline-flex size-full rounded-full bg-primary opacity-75 motion-safe:animate-ping" />
+                      <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
+                    </span>
                     {problem ? "With SipLink" : "Our approach"}
                   </span>
                   <h2 className="mt-4 text-xl font-semibold tracking-tight text-balance">
@@ -242,21 +250,42 @@ export default async function ProductDetailPage({
           </h2>
         </div>
 
-        <div className="mt-10 grid gap-x-6 gap-y-7 md:grid-cols-2 lg:grid-cols-3">
-          {features.map(({ title: name, description, icon: FeatureIcon }) => (
-            <div key={name} className="flex gap-4">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <FeatureIcon className="size-5" aria-hidden />
-              </span>
-              <div className="min-w-0">
-                <h3 className="font-medium">{name}</h3>
-                <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
-                  {description}
-                </p>
+        {/* Cards rise in as the grid is reached, then answer the pointer:
+            lift, a primary edge and glow, and the icon tile filling in. The
+            reveal sits on the wrapper and the hover on the card, since a
+            finished animation would otherwise pin the card's transform. */}
+        <RevealGroup className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {features.map(
+            ({ title: name, description, icon: FeatureIcon }, index) => (
+              <div
+                key={name}
+                className="reveal-item"
+                style={{ "--reveal-index": index } as React.CSSProperties}
+              >
+                <Card className="relative h-full gap-0 p-6 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px] hover:shadow-primary/40 hover:ring-primary/40">
+                  {/* Accent line that draws across the top on hover */}
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-linear-to-r from-brand-from to-brand-to transition-transform duration-500 ease-out group-hover/card:scale-x-100"
+                  />
+                  <span
+                    aria-hidden
+                    className="absolute top-5 right-6 font-mono text-xs text-muted-foreground/50 transition-colors group-hover/card:text-primary"
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover/card:scale-110 group-hover/card:bg-primary group-hover/card:text-primary-foreground">
+                    <FeatureIcon className="size-5" aria-hidden />
+                  </span>
+                  <h3 className="mt-5 text-base font-medium">{name}</h3>
+                  <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
+                    {description}
+                  </p>
+                </Card>
               </div>
-            </div>
-          ))}
-        </div>
+            ),
+          )}
+        </RevealGroup>
       </section>
 
       {/* Technical summary — only what the source documents state. */}
@@ -394,24 +423,54 @@ export default async function ProductDetailPage({
               </p>
             </div>
 
-            {/* A real sequence, so the numbering carries meaning. */}
-            <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {migration.steps.map(({ title: step, body }, index) => (
-                <li key={step} className="relative">
-                  <span className="font-mono text-xs font-semibold text-primary">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    aria-hidden
-                    className="mt-3 block h-px w-full bg-border"
-                  />
-                  <h3 className="mt-4 font-medium">{step}</h3>
-                  <p className="mt-2 text-sm text-pretty text-muted-foreground">
-                    {body}
-                  </p>
-                </li>
-              ))}
-            </ol>
+            {/* A real sequence, drawn as a route: numbered stops joined by a
+                line that fills in when reached, with a packet running it. */}
+            <RevealGroup className="relative mt-12">
+              {/* Across, on wide screens: from the first stop's centre to the
+                  last's. The last column starts 3/4 of the way plus three
+                  quarters of the gaps in, hence the right inset. */}
+              <div
+                aria-hidden
+                className="absolute top-5 right-[calc(25%-1.5rem-1.25rem)] left-5 hidden h-0.5 rounded-full bg-border lg:block"
+              >
+                <span className="path-fill-x absolute inset-0 origin-left rounded-full bg-linear-to-r from-brand-from to-brand-to" />
+                <span className="path-packet-x absolute top-1/2 size-2.5 -translate-1/2 rounded-full bg-primary shadow-[0_0_12px_2px] shadow-primary/60" />
+              </div>
+
+              <ol className="grid gap-8 lg:grid-cols-4">
+                {migration.steps.map(({ title: step, body }, index) => (
+                  <li
+                    key={step}
+                    className="reveal-item relative pl-16 lg:pl-0"
+                    style={{ "--reveal-index": index * 4 } as React.CSSProperties}
+                  >
+                    {/* Down, when stacked: a segment to the next stop. */}
+                    {index < migration.steps.length - 1 ? (
+                      <span
+                        aria-hidden
+                        className="absolute top-12 -bottom-6 left-5 w-0.5 -translate-x-1/2 rounded-full bg-border lg:hidden"
+                      >
+                        <span
+                          className="path-fill-y absolute inset-0 origin-top rounded-full bg-linear-to-b from-brand-from to-brand-to"
+                          style={{ "--reveal-index": index } as React.CSSProperties}
+                        />
+                      </span>
+                    ) : null}
+
+                    <span
+                      className="path-node absolute top-0 left-0 flex size-10 items-center justify-center rounded-full border-2 border-primary bg-background font-mono text-xs font-semibold text-primary ring-4 ring-background lg:relative"
+                      style={{ "--step": index } as React.CSSProperties}
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="pt-2.5 font-medium lg:mt-6 lg:pt-0">{step}</h3>
+                    <p className="mt-2 text-sm text-pretty text-muted-foreground">
+                      {body}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </RevealGroup>
           </div>
         </section>
       ) : null}

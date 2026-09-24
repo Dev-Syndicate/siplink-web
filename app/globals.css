@@ -218,6 +218,180 @@
 
 }
 
+/* Registered so the conic angle interpolates; an unregistered custom
+   property would jump between keyframes instead of turning. */
+@property --run-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@layer components {
+  /* A light that runs around a card's outline. The border is transparent and
+     two backgrounds show through it: the card fill clipped to the padding
+     box, and a rotating conic gradient on the border box that only shows in
+     the border ring. */
+  .border-run {
+    border: 2.5px solid transparent;
+    background:
+      linear-gradient(var(--background), var(--background)) padding-box,
+      conic-gradient(
+          from var(--run-angle),
+          color-mix(in oklab, var(--primary) 30%, transparent) 0deg,
+          color-mix(in oklab, var(--primary) 30%, transparent) 200deg,
+          var(--brand-from) 270deg,
+          var(--primary) 330deg,
+          var(--brand-to) 352deg,
+          color-mix(in oklab, var(--primary) 30%, transparent) 360deg
+        )
+        border-box;
+    animation: border-run 4s linear infinite;
+  }
+
+  @keyframes border-run {
+    to {
+      --run-angle: 360deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .border-run {
+      animation: none;
+      background: var(--background);
+      border-color: color-mix(in oklab, var(--primary) 60%, transparent);
+    }
+  }
+}
+
+@layer components {
+  /* Items of a <RevealGroup> rise in, staggered, once the group is scrolled
+     to. Hidden only while motion is allowed, so reduced-motion visitors and
+     anything that never observes still get the content. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-group .reveal-item {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .reveal-group[data-revealed] .reveal-item {
+      animation: reveal-item 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: calc(min(var(--reveal-index, 0), 12) * 70ms);
+    }
+  }
+
+  /* Step path: the filled line draws along the track once revealed, then a
+     packet keeps travelling it so the sequence reads as a route. Wide
+     screens get one line across; stacked steps get a segment down from
+     each step to the next, drawn in turn. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-group .path-fill-x {
+      transform: scaleX(0);
+    }
+
+    .reveal-group .path-fill-y {
+      transform: scaleY(0);
+    }
+
+    .reveal-group[data-revealed] .path-fill-x {
+      animation: path-draw-x 1.2s linear 0.1s both;
+    }
+
+    /* Stops fill in order as the line reaches them. Linear draw, so stop n
+       is reached at n/3 of it on wide screens; stacked, each stop follows
+       the segment above it. */
+    .reveal-group[data-revealed] .path-node {
+      animation: path-node-fill 0.5s ease-out both;
+      animation-delay: calc(
+        var(--step, 0) * 280ms + min(var(--step, 0), 1) * 420ms
+      );
+    }
+
+    @media (width >= 64rem) {
+      .reveal-group[data-revealed] .path-node {
+        animation-delay: calc(var(--step, 0) * 400ms + 100ms);
+      }
+    }
+
+    .reveal-group[data-revealed] .path-fill-y {
+      animation: path-draw-y 0.5s cubic-bezier(0.65, 0, 0.35, 1) both;
+      animation-delay: calc(var(--reveal-index, 0) * 280ms + 200ms);
+    }
+
+    .reveal-group[data-revealed] .path-packet-x {
+      animation: path-packet-x 3.2s ease-in-out 1.6s infinite;
+    }
+
+  }
+
+  .path-packet-x {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .path-node {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+  }
+
+  @keyframes path-node-fill {
+    50% {
+      transform: scale(1.15);
+    }
+    to {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      box-shadow:
+        0 0 0 4px var(--background),
+        0 0 18px 2px color-mix(in oklab, var(--primary) 45%, transparent);
+    }
+  }
+
+  @keyframes path-draw-x {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes path-draw-y {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes path-packet-x {
+    0% {
+      left: 0%;
+      opacity: 0;
+    }
+    10%,
+    90% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes reveal-item {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
 @layer components {
   /* Mega-menu rows deal themselves in when a panel opens, rather than the
      whole block appearing at once. The stagger is capped so a 24-link panel
