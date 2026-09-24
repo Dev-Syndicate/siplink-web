@@ -218,6 +218,173 @@
 
 }
 
+/* Registered so the conic angle interpolates; an unregistered custom
+   property would jump between keyframes instead of turning. */
+@property --run-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@layer components {
+  /* A light that runs around a card's outline. The border is transparent and
+     two backgrounds show through it: the card fill clipped to the padding
+     box, and a rotating conic gradient on the border box that only shows in
+     the border ring. */
+  .border-run {
+    border: 2.5px solid transparent;
+    background:
+      linear-gradient(var(--background), var(--background)) padding-box,
+      conic-gradient(
+          from var(--run-angle),
+          color-mix(in oklab, var(--primary) 30%, transparent) 0deg,
+          color-mix(in oklab, var(--primary) 30%, transparent) 200deg,
+          var(--brand-from) 270deg,
+          var(--primary) 330deg,
+          var(--brand-to) 352deg,
+          color-mix(in oklab, var(--primary) 30%, transparent) 360deg
+        )
+        border-box;
+    animation: border-run 4s linear infinite;
+  }
+
+  @keyframes border-run {
+    to {
+      --run-angle: 360deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .border-run {
+      animation: none;
+      background: var(--background);
+      border-color: color-mix(in oklab, var(--primary) 60%, transparent);
+    }
+  }
+}
+
+@layer components {
+  /* Soft brand-coloured blobs for frosted (`backdrop-blur`) panels to blur;
+     glass only reads as glass over colour. They drift slowly so the
+     frosting visibly shifts; each sets its own `--orb-duration`. */
+  .glass-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    pointer-events: none;
+    animation: orb-drift var(--orb-duration, 18s) ease-in-out infinite
+      alternate;
+  }
+
+  @keyframes orb-drift {
+    to {
+      transform: translate(var(--orb-x, 60px), var(--orb-y, -40px))
+        scale(1.1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glass-orb {
+      animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* Items of a <RevealGroup> rise in, staggered, once the group is scrolled
+     to. Hidden only while motion is allowed, so reduced-motion visitors and
+     anything that never observes still get the content. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-group .reveal-item {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .reveal-group[data-revealed] .reveal-item {
+      animation: reveal-item 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: calc(min(var(--reveal-index, 0), 12) * 70ms);
+    }
+  }
+
+  /* Step path: a segment joins each stop to the next — across on wide
+     screens, down when stacked — and they draw in turn, each stop filling
+     as its segment arrives. Stop n and segment n share one clock
+     (`--step`), so the timing holds for any number of steps. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-group .path-fill-x {
+      transform: scaleX(0);
+    }
+
+    .reveal-group .path-fill-y {
+      transform: scaleY(0);
+    }
+
+    .reveal-group[data-revealed] .path-fill-x {
+      animation: path-draw-x 0.4s linear both;
+      animation-delay: calc(var(--step, 0) * 400ms + 100ms);
+    }
+
+    .reveal-group[data-revealed] .path-fill-y {
+      animation: path-draw-y 0.4s linear both;
+      animation-delay: calc(var(--step, 0) * 400ms + 100ms);
+    }
+
+    .reveal-group[data-revealed] .path-node {
+      animation: path-node-fill 0.5s ease-out both;
+      animation-delay: calc(var(--step, 0) * 400ms + 100ms);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .path-node {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+  }
+
+  @keyframes path-node-fill {
+    50% {
+      transform: scale(1.15);
+    }
+    to {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      box-shadow:
+        0 0 0 4px var(--background),
+        0 0 18px 2px color-mix(in oklab, var(--primary) 45%, transparent);
+    }
+  }
+
+  @keyframes path-draw-x {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes path-draw-y {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes reveal-item {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
 @layer components {
   /* Mega-menu rows deal themselves in when a panel opens, rather than the
      whole block appearing at once. The stagger is capped so a 24-link panel
