@@ -66,7 +66,13 @@ export function PlansHero() {
         className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-background to-transparent"
       />
 
-      <div className="relative mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:gap-16 lg:px-10 lg:py-28">
+      {/* Top padding matches the site's other heroes (`pt-10 lg:pt-14`). It
+          is deliberately not symmetrical with the bottom: `main` already
+          offsets every page by the height of the fixed header, so a large
+          top pad here reads as dead space above the artwork rather than as
+          breathing room. The bottom stays generous — it is what separates
+          this band from the hero beneath it. */}
+      <div className="relative mx-auto grid max-w-7xl gap-12 px-6 pt-10 pb-20 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:gap-16 lg:px-10 lg:pt-14 lg:pb-24">
         <ScrollReveal>
           <Badge variant="secondary" className="font-mono tracking-widest">
             Business broadband plans
