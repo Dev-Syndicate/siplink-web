@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 
@@ -26,9 +27,17 @@ import { cn } from "@/lib/utils";
 export function InternetSectionPage({
   service,
   section,
+  prelude,
 }: {
   service: InternetService;
   section: SectionPage;
+  /**
+   * An opening band rendered above the hero, for a page that has earned a
+   * bespoke one. When it is present it carries the page's `h1`, so the hero
+   * below steps down to `h2` — otherwise the page would ship two `h1`s and
+   * the heading outline would start in the wrong place.
+   */
+  prelude?: ReactNode;
 }) {
   const { title, heading, tagline, intro, eyebrow, scene } = section;
   const siblings = getSectionPages(service);
@@ -49,11 +58,16 @@ export function InternetSectionPage({
   const layout = (["split", "reverse", "wide"] as const)[index % 3];
   const wide = layout === "wide";
 
+  // The prelude, when there is one, owns the h1.
+  const Heading = prelude ? "h2" : "h1";
+
   const servicePath = `/internet/${service.slug}`;
   const ServiceIcon = service.icon;
 
   return (
     <>
+      {prelude}
+
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <div
@@ -113,9 +127,9 @@ export function InternetSectionPage({
                 </Badge>
               </div>
 
-              <h1 className="mt-6 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl">
+              <Heading className="mt-6 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl">
                 {heading}
-              </h1>
+              </Heading>
 
               <p className="mt-4 text-lg text-pretty text-primary lg:text-xl">
                 {tagline}

@@ -2,11 +2,21 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { InternetSectionPage } from "@/components/site/internet-section-page";
+import { PlansHero } from "@/components/site/plans-hero";
 import {
   connectivityServices,
   getInternetSectionPage,
   getSectionPages,
 } from "@/lib/internet";
+
+/**
+ * Bespoke opening bands, by `<service>/<section>`. A page listed here renders
+ * its band above the standard hero and hands it the `h1`; everything else
+ * opens on the shared hero, which is still the right answer for most of them.
+ */
+const PRELUDES: Record<string, () => React.JSX.Element> = {
+  "business-broadband/plans": PlansHero,
+};
 
 /**
  * The third level of the internet tree — every section of a connectivity
@@ -50,7 +60,13 @@ export default async function InternetSectionRoute({
 
   if (!found) notFound();
 
+  const Prelude = PRELUDES[`${slug}/${section}`];
+
   return (
-    <InternetSectionPage service={found.service} section={found.section} />
+    <InternetSectionPage
+      service={found.service}
+      section={found.section}
+      prelude={Prelude ? <Prelude /> : undefined}
+    />
   );
 }
