@@ -2365,3 +2365,250 @@ export const enterpriseQuestions: {
     ],
   },
 ];
+
+/* ------------------------------------------- static IP: page content */
+
+/**
+ * Supporting content for the three Static IP section pages.
+ *
+ * Addresses are the one place on these pages where concrete examples are
+ * safe, because the documentation ranges exist precisely so nobody has to
+ * invent one. Every address written here is from RFC 5737 (192.0.2.0/24,
+ * 198.51.100.0/24, 203.0.113.0/24) or RFC 1918 private space — none of them
+ * routes anywhere, so none can ever point at a real customer.
+ */
+
+/** What a public address actually is, for the explainer page. */
+export const addressAnatomy: {
+  title: string;
+  body: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    title: "Public, not the one on your laptop",
+    body: "The 192.168.x.x address your laptop shows is private — it exists only inside your building. A public address is the one the rest of the internet sees, and it belongs to the connection rather than to any device on it.",
+    icon: Globe,
+  },
+  {
+    title: "One address, or a small block",
+    body: "A single address covers most needs, because one public address can front several services. A routed block is for when systems genuinely need to be reachable separately — which is a design decision, not an upgrade.",
+    icon: Boxes,
+  },
+  {
+    title: "Tied to the service, not the hardware",
+    body: "The address is issued against your internet service. Replacing a router keeps it; changing provider does not — which is why it is worth raising early in a migration rather than on cutover day.",
+    icon: Link2,
+  },
+];
+
+/**
+ * How a dynamic address breaks something, as a sequence. The failure is
+ * quiet, which is the entire point of telling it as a story: nothing errors,
+ * nothing alerts, and the first report comes from a person.
+ */
+export const dynamicBreakage: {
+  time: string;
+  title: string;
+  body: string;
+  address: string;
+  state: "ok" | "changed" | "denied";
+}[] = [
+  {
+    time: "Day 1",
+    title: "A rule is written",
+    body: "Your administrator gives a partner platform the address your office is using today, and it is added to their allowlist. Everything works, and it is reasonable to assume it will keep working.",
+    address: "198.51.100.7",
+    state: "ok",
+  },
+  {
+    time: "Day 2-40",
+    title: "Nothing happens",
+    body: "The integration runs every day. Nobody thinks about the address again, because there has been no reason to. This is the part that makes the next step a surprise.",
+    address: "198.51.100.7",
+    state: "ok",
+  },
+  {
+    time: "Day 41",
+    title: "The lease renews",
+    body: "The network hands your connection a different public address. This is normal behaviour for a dynamic service, not a fault — there is no notice, no error and nothing in a log to read.",
+    address: "203.0.113.88",
+    state: "changed",
+  },
+  {
+    time: "Day 41, later",
+    title: "Access is refused",
+    body: "The partner sees a request from an address that is not on their list and rejects it, correctly. Nothing has broken, nobody has been alerted, and the first report of it arrives from a person who could not do their job.",
+    address: "203.0.113.88",
+    state: "denied",
+  },
+];
+
+/**
+ * Situations that lead people to ask for a static IP, framed as the job
+ * rather than the feature — a reader knows what they are trying to do, not
+ * which addressing model it requires.
+ */
+export const staticIpSituations: {
+  id: string;
+  label: string;
+  job: string;
+  why: string;
+  alongside: string[];
+  icon: LucideIcon;
+}[] = [
+  {
+    id: "remote",
+    label: "Remote work",
+    job: "Let staff reach the systems in our office from home",
+    why: "A remote-access VPN is configured against the office public address. If it moves, every client configuration is pointing at the wrong place.",
+    alongside: ["VPN", "Managed firewall"],
+    icon: MonitorSmartphone,
+  },
+  {
+    id: "partner",
+    label: "Partner access",
+    job: "Let a customer or partner system talk to ours",
+    why: "Their security team will ask for the addresses to allow. A fixed one is a rule written once; a dynamic one is a rule that silently expires.",
+    alongside: ["Managed firewall"],
+    icon: UserCheck,
+  },
+  {
+    id: "voice",
+    label: "SIP and voice",
+    job: "Run SIP trunks into our phone system",
+    why: "Where a trunk authorises by IP rather than by credentials, the registration depends on the address staying put.",
+    alongside: ["SIP trunking"],
+    icon: Phone,
+  },
+  {
+    id: "cctv",
+    label: "Cameras and monitoring",
+    job: "Check site cameras from outside the building",
+    why: "Monitoring platforms and remote viewers need a consistent address to reach — and a firewall in front of it, which is not optional.",
+    alongside: ["Managed firewall"],
+    icon: Eye,
+  },
+  {
+    id: "hosting",
+    label: "Hosted systems",
+    job: "Run a service in our building that outsiders use",
+    why: "Anything reached from outside needs an address that DNS can point at and keep pointing at.",
+    alongside: ["Managed firewall", "Routed block, sometimes"],
+    icon: Server,
+  },
+  {
+    id: "api",
+    label: "API integrations",
+    job: "Call a platform that checks who is calling",
+    why: "Some APIs identify the caller by source address. Yours has to be one they recognise every time, not most of the time.",
+    alongside: ["Managed firewall"],
+    icon: Webhook,
+  },
+];
+
+/** What a static IP is not, said plainly. */
+export const staticIpLimits: {
+  title: string;
+  body: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    title: "It is not a security control",
+    body: "A fixed address makes access rules possible; it does not make them safe. Anything reachable from the internet still needs a firewall policy in front of it — the address is what the policy refers to, not the policy.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "It will not make anything faster",
+    body: "Addressing and bandwidth are unrelated. A static IP changes how you are found, never how much you can carry — if the connection is slow, this is not the thing that fixes it.",
+    icon: Gauge,
+  },
+  {
+    title: "It does not move with you",
+    body: "The address belongs to the service it was issued on. Changing provider means a new address and a round of reconfiguration everywhere the old one was written down.",
+    icon: RefreshCw,
+  },
+];
+
+/** Single address or routed block — the decision, without the jargon. */
+export const staticIpShapes: {
+  title: string;
+  summary: string;
+  points: string[];
+  note: string;
+}[] = [
+  {
+    title: "A single address",
+    summary: "What most businesses need, and where every conversation starts.",
+    points: [
+      "One public address for the whole site",
+      "Several services can sit behind it on different ports",
+      "Enough for VPN, SIP, allowlisting and remote access",
+      "Simplest to document and to hand to a partner",
+    ],
+    note: "If you are not sure which you need, it is almost certainly this one.",
+  },
+  {
+    title: "A routed block",
+    summary:
+      "For when systems genuinely need to be reachable in their own right.",
+    points: [
+      "Several public addresses routed to your connection",
+      "One per service where sharing a port is not workable",
+      "Useful where separate DNS records or certificates are required",
+      "Assigned against a stated requirement, not by default",
+    ],
+    note: "Availability and size are confirmed per service before you order.",
+  },
+];
+
+/** What to have ready, so the request does not bounce back and forth. */
+export const staticIpReadiness: { title: string; body: string }[] = [
+  {
+    title: "What needs it",
+    body: "The VPN, trunk, allowlist or hosted system driving the request. This decides whether one address is enough.",
+  },
+  {
+    title: "Who configures it",
+    body: "The person or supplier who manages your firewall and router, so the address reaches them rather than an inbox.",
+  },
+  {
+    title: "The service it is for",
+    body: "Which SipLink connection and which site, since eligibility depends on the service rather than the company.",
+  },
+  {
+    title: "Anything already pointing at you",
+    body: "Existing DNS records, partner allowlists or VPN clients configured against an old address, so nothing is missed on the day.",
+  },
+  {
+    title: "When it has to work by",
+    body: "Whether this is a live cutover with a deadline or a change that can be made calmly.",
+  },
+];
+
+export const staticIpFaqs: { question: string; answer: string }[] = [
+  {
+    question: "Will adding a static IP interrupt my connection?",
+    answer:
+      "It is normally a configuration change rather than a new installation, so an existing service usually keeps running while it is arranged. Where a brief interruption is unavoidable, we agree the window with you beforehand.",
+  },
+  {
+    question: "Can I keep my address if I move office?",
+    answer:
+      "Not usually. The address is issued against the service at a location, so a move generally means a new address — worth planning for alongside the physical move rather than after it.",
+  },
+  {
+    question: "How many addresses should I ask for?",
+    answer:
+      "Start from what needs to be reachable rather than from a number. Most businesses are well served by one; a routed block is assigned against a stated requirement.",
+  },
+  {
+    question: "Is a static IP available on every service?",
+    answer:
+      "It can be added to eligible SipLink internet services. Which ones qualify depends on the connection and the site, and we confirm that before you order rather than after.",
+  },
+  {
+    question: "Does a static IP expose my network?",
+    answer:
+      "Not by itself — an address is only reachable on the ports a firewall permits. What matters is the policy in front of it, which is what a managed router and firewall service is for.",
+  },
+];

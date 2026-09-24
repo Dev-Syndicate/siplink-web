@@ -11,7 +11,19 @@ import {
   EnterpriseConnectivityHero,
   EnterpriseConnectivitySections,
 } from "@/components/site/page-enterprise-connectivity";
+import {
+  AddStaticIpHero,
+  AddStaticIpSections,
+} from "@/components/site/page-add-static-ip";
+import {
+  BusinessUsesHero,
+  BusinessUsesSections,
+} from "@/components/site/page-business-uses";
 import { SlaHero, SlaSections } from "@/components/site/page-sla";
+import {
+  WhatIsStaticIpHero,
+  WhatIsStaticIpSections,
+} from "@/components/site/page-what-is-static-ip";
 import {
   SymmetricalSpeedsHero,
   SymmetricalSpeedsSections,
@@ -40,6 +52,9 @@ const PRELUDES: Record<string, () => React.JSX.Element> = {
   "dedicated-internet/symmetrical-speeds": SymmetricalSpeedsHero,
   "dedicated-internet/sla": SlaHero,
   "dedicated-internet/enterprise-connectivity": EnterpriseConnectivityHero,
+  "static-ip/what-is-static-ip": WhatIsStaticIpHero,
+  "static-ip/business-uses": BusinessUsesHero,
+  "static-ip/add-static-ip": AddStaticIpHero,
 };
 
 /**
@@ -54,6 +69,9 @@ const EXTRAS: Record<string, () => React.JSX.Element> = {
   "dedicated-internet/symmetrical-speeds": SymmetricalSpeedsSections,
   "dedicated-internet/sla": SlaSections,
   "dedicated-internet/enterprise-connectivity": EnterpriseConnectivitySections,
+  "static-ip/what-is-static-ip": WhatIsStaticIpSections,
+  "static-ip/business-uses": BusinessUsesSections,
+  "static-ip/add-static-ip": AddStaticIpSections,
 };
 
 /**
