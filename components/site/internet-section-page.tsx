@@ -21,8 +21,11 @@ import { cn } from "@/lib/utils";
  *
  * Because these are leaves of the tree, the onward path matters more here
  * than anywhere else on the site: a reader who lands on "Symmetrical Speeds"
- * from search has no idea what else exists. So the page carries the full
- * sibling rail rather than a bare back link, with the current page marked.
+ * from search has no idea what else exists. The sibling rail near the top
+ * carries that — every section of the service, with the current one marked —
+ * which is why the page does not also end on a previous/next pair. One way
+ * across the set is enough, and the rail shows the whole set rather than
+ * just its two neighbours.
  */
 export function InternetSectionPage({
   service,
@@ -41,16 +44,13 @@ export function InternetSectionPage({
   prelude?: ReactNode;
   /**
    * Extra sections for a page whose own content does not carry it alone,
-   * rendered after the body and before the previous/next pair — so the
-   * onward navigation stays the last thing before the close.
+   * rendered after the body and before the closing call to action.
    */
   extra?: ReactNode;
 }) {
   const { title, heading, tagline, intro, eyebrow, scene } = section;
   const siblings = getSectionPages(service);
   const index = siblings.findIndex((item) => item.slug === section.slug);
-  const previous = index > 0 ? siblings[index - 1] : undefined;
-  const next = index < siblings.length - 1 ? siblings[index + 1] : undefined;
 
   /**
    * Siblings rotate through three hero compositions, so consecutive pages in
@@ -224,65 +224,6 @@ export function InternetSectionPage({
       </section>
 
       {extra}
-
-      {/* Previous / next within the service */}
-      {previous || next ? (
-        <section className="border-b border-border">
-          <div className="mx-auto max-w-7xl px-6 py-12 lg:px-10">
-            <ul className="grid gap-4 sm:grid-cols-2">
-              {previous ? (
-                <ScrollReveal as="li">
-                  <Link
-                    href={`${servicePath}/${previous.slug}`}
-                    className="group flex h-full flex-col rounded-2xl border border-border p-6 transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:border-primary focus-visible:outline-none"
-                  >
-                    <span className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
-                      <ArrowLeft
-                        className="size-3.5 transition-transform group-hover:-translate-x-1"
-                        aria-hidden
-                      />
-                      Previous
-                    </span>
-                    <span className="mt-3 text-base font-semibold tracking-tight">
-                      {previous.title}
-                    </span>
-                    <span className="mt-1.5 text-sm text-pretty text-muted-foreground">
-                      {previous.tagline}
-                    </span>
-                  </Link>
-                </ScrollReveal>
-              ) : (
-                <li aria-hidden />
-              )}
-
-              {next ? (
-                <ScrollReveal as="li" delay={70}>
-                  <Link
-                    href={`${servicePath}/${next.slug}`}
-                    className="group flex h-full flex-col rounded-2xl border border-border p-6 text-right transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:border-primary focus-visible:outline-none"
-                  >
-                    <span className="inline-flex items-center justify-end gap-1.5 font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
-                      Next
-                      <ArrowRight
-                        className="size-3.5 transition-transform group-hover:translate-x-1"
-                        aria-hidden
-                      />
-                    </span>
-                    <span className="mt-3 text-base font-semibold tracking-tight">
-                      {next.title}
-                    </span>
-                    <span className="mt-1.5 text-sm text-pretty text-muted-foreground">
-                      {next.tagline}
-                    </span>
-                  </Link>
-                </ScrollReveal>
-              ) : (
-                <li aria-hidden />
-              )}
-            </ul>
-          </div>
-        </section>
-      ) : null}
 
       {/* Close */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">

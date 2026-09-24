@@ -723,10 +723,6 @@ const businessBroadband: InternetService = {
           body: "A plan matched to the work, with static IP, a managed router or Wi-Fi added only where you actually need them.",
         },
       ],
-      closing: {
-        heading: "Outgrowing it is not a problem",
-        body: "Bandwidth upgrades are a normal part of the relationship rather than a renegotiation. As users, applications and locations increase, we review the plan with you and change it.",
-      },
     },
     {
       slug: "features",
