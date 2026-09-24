@@ -771,10 +771,6 @@ const businessBroadband: InternetService = {
           icon: MapPin,
         },
       ],
-      closing: {
-        heading: "The connection is the start of it",
-        body: "A managed router, business Wi-Fi, LAN and switching or a VPN can all be layered onto the same service and supported by the same team — so a fault is diagnosed once rather than argued between suppliers.",
-      },
     },
     {
       slug: "business-benefits",
@@ -2081,3 +2077,150 @@ export const planStepUp = {
     ],
   },
 } as const;
+
+/* ----------------------------- business broadband: the features page */
+
+/**
+ * The four things that make a connection a business one, for
+ * /internet/business-broadband/features.
+ *
+ * `diagram` selects the drawing beside each card — see FeatureShowcase. The
+ * cards alternate sides, which is the pattern FeatureCards uses on the home
+ * page; borrowing it keeps the site speaking one visual language rather than
+ * inventing a sixth.
+ */
+export const broadbandFeatureCards: {
+  diagram: "converge" | "priority" | "headroom" | "onehand";
+  title: string;
+  description: string;
+  detail: string[];
+}[] = [
+  {
+    diagram: "converge",
+    title: "Everything at once, not in turn",
+    description:
+      "Mail, cloud applications, calls, card terminals and backups do not politely queue. A business line is judged on the hour when all of them are running together.",
+    detail: [
+      "Sized against the busy hour rather than the average",
+      "One connection carrying every kind of business traffic",
+    ],
+  },
+  {
+    diagram: "priority",
+    title: "Voice that holds its place",
+    description:
+      "Calls are small but unforgiving about timing. Where SipLink voice runs over the same line, it is sized and prioritised explicitly, so a backup job cannot push a conversation off it.",
+    detail: [
+      "Voice accounted for separately when the plan is sized",
+      "The same provider for the calls and the line beneath them",
+    ],
+  },
+  {
+    diagram: "headroom",
+    title: "Room to grow into",
+    description:
+      "A plan sized exactly to today is one you outgrow by the next quarter. We review bandwidth with you as users, applications and locations increase.",
+    detail: [
+      "Upgrades are a change to the service, not a renegotiation",
+      "Reviewed when the business changes, not only at renewal",
+    ],
+  },
+  {
+    diagram: "onehand",
+    title: "One team for the line and the kit",
+    description:
+      "A managed router, business Wi-Fi and the LAN behind it can be delivered and supported alongside the circuit — so a fault is diagnosed once rather than argued between suppliers.",
+    detail: [
+      "Router, Wi-Fi and switching supported with the connection",
+      "Monitored 24/7 from our Global NOC in Chennai",
+    ],
+  },
+];
+
+/** What can be layered onto the line, in the order most businesses add it. */
+export const broadbandAddOnSlugs = [
+  "static-ip",
+  "managed-router-firewall",
+  "business-wifi",
+  "lan-switching",
+];
+
+/* ----------------------------- business broadband: the benefits page */
+
+/**
+ * Each benefit, placed in an ordinary week, for
+ * /internet/business-broadband/business-benefits.
+ *
+ * A benefits page is the easiest place on a site to write six lines nobody
+ * believes. These give each claim a moment you can picture instead — which
+ * is also what keeps them honest, since a scenario cannot hide behind an
+ * adjective the way "reliable connectivity" can.
+ */
+export const benefitScenarios: {
+  benefit: string;
+  when: string;
+  body: string;
+}[] = [
+  {
+    benefit: "Reliable connectivity",
+    when: "Monday, 09:05",
+    body: "The whole floor arrives inside twenty minutes. Mail syncs, laptops update and the CRM loads for everyone at once. This is the sharpest demand of the week, and the one a plan sized on headcount alone tends to fail.",
+  },
+  {
+    benefit: "Better cloud access",
+    when: "Tuesday, 14:20",
+    body: "Your team is in the CRM and the finance system all afternoon, and neither is on a server in the building. When the connection is sized for that, nobody mentions it — which is the entire benefit.",
+  },
+  {
+    benefit: "Support for VoIP",
+    when: "Wednesday, 11:00",
+    body: "A client call runs for forty minutes while a backup is midway through uploading. Because voice was accounted for when the line was sized, the call is not the thing that suffers.",
+  },
+  {
+    benefit: "Work from anywhere",
+    when: "Thursday, 07:40",
+    body: "Someone starts early from home and needs the same systems they would have at a desk. With remote access — and a static IP where the VPN requires one — that is an ordinary morning rather than a support ticket.",
+  },
+  {
+    benefit: "Easy to scale",
+    when: "Friday, four months in",
+    body: "Three people started this quarter and two more start next. Rather than waiting for complaints, the plan is reviewed against the new shape of the office and changed if it needs to be.",
+  },
+  {
+    benefit: "Business-focused support",
+    when: "Saturday, 02:00",
+    body: "Something fails outside working hours. The circuit is watched from our Global NOC in Chennai around the clock, so in most cases the fault is already open before anyone in your office notices it.",
+  },
+];
+
+/** Who feels the difference, and what they actually notice. */
+export const benefitRoles: {
+  role: string;
+  notices: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    role: "The office manager",
+    notices:
+      "That the internet has stopped being a standing item. Nobody is at their desk asking whether it is slow for everyone else.",
+    icon: Users,
+  },
+  {
+    role: "The IT lead",
+    notices:
+      "That they are no longer the escalation path. The router, the Wi-Fi and the circuit are one supplier's problem, with a number to call.",
+    icon: Settings2,
+  },
+  {
+    role: "The finance lead",
+    notices:
+      "One supplier for voice and connectivity, quoted per location and billed together, instead of three invoices that never quite reconcile.",
+    icon: ScrollText,
+  },
+  {
+    role: "The person on the call",
+    notices:
+      "Nothing at all. No apologising for the audio, no asking anyone to repeat themselves. That is what a connection sized properly feels like.",
+    icon: PhoneCall,
+  },
+];

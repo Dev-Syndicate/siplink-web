@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { InternetSectionPage } from "@/components/site/internet-section-page";
+import { BenefitsHero } from "@/components/site/benefits-hero";
+import { BenefitsSections } from "@/components/site/benefits-sections";
+import { FeaturesHero } from "@/components/site/features-hero";
+import { FeaturesSections } from "@/components/site/features-sections";
 import { PlansHero } from "@/components/site/plans-hero";
 import { PlansSections } from "@/components/site/plans-sections";
 import {
@@ -17,6 +21,8 @@ import {
  */
 const PRELUDES: Record<string, () => React.JSX.Element> = {
   "business-broadband/plans": PlansHero,
+  "business-broadband/features": FeaturesHero,
+  "business-broadband/business-benefits": BenefitsHero,
 };
 
 /**
@@ -25,6 +31,8 @@ const PRELUDES: Record<string, () => React.JSX.Element> = {
  */
 const EXTRAS: Record<string, () => React.JSX.Element> = {
   "business-broadband/plans": PlansSections,
+  "business-broadband/features": FeaturesSections,
+  "business-broadband/business-benefits": BenefitsSections,
 };
 
 /**
