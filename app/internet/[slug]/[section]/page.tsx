@@ -3,6 +3,19 @@ import { notFound } from "next/navigation";
 
 import { InternetSectionPage } from "@/components/site/internet-section-page";
 import { BenefitsHero } from "@/components/site/benefits-hero";
+import {
+  DedicatedBandwidthHero,
+  DedicatedBandwidthSections,
+} from "@/components/site/page-dedicated-bandwidth";
+import {
+  EnterpriseConnectivityHero,
+  EnterpriseConnectivitySections,
+} from "@/components/site/page-enterprise-connectivity";
+import { SlaHero, SlaSections } from "@/components/site/page-sla";
+import {
+  SymmetricalSpeedsHero,
+  SymmetricalSpeedsSections,
+} from "@/components/site/page-symmetrical-speeds";
 import { BenefitsSections } from "@/components/site/benefits-sections";
 import { FeaturesHero } from "@/components/site/features-hero";
 import { FeaturesSections } from "@/components/site/features-sections";
@@ -23,6 +36,10 @@ const PRELUDES: Record<string, () => React.JSX.Element> = {
   "business-broadband/plans": PlansHero,
   "business-broadband/features": FeaturesHero,
   "business-broadband/business-benefits": BenefitsHero,
+  "dedicated-internet/dedicated-bandwidth": DedicatedBandwidthHero,
+  "dedicated-internet/symmetrical-speeds": SymmetricalSpeedsHero,
+  "dedicated-internet/sla": SlaHero,
+  "dedicated-internet/enterprise-connectivity": EnterpriseConnectivityHero,
 };
 
 /**
@@ -33,6 +50,10 @@ const EXTRAS: Record<string, () => React.JSX.Element> = {
   "business-broadband/plans": PlansSections,
   "business-broadband/features": FeaturesSections,
   "business-broadband/business-benefits": BenefitsSections,
+  "dedicated-internet/dedicated-bandwidth": DedicatedBandwidthSections,
+  "dedicated-internet/symmetrical-speeds": SymmetricalSpeedsSections,
+  "dedicated-internet/sla": SlaSections,
+  "dedicated-internet/enterprise-connectivity": EnterpriseConnectivitySections,
 };
 
 /**

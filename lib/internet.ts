@@ -2224,3 +2224,144 @@ export const benefitRoles: {
     icon: PhoneCall,
   },
 ];
+
+/* ------------------------------------ dedicated internet: page content */
+
+/**
+ * Supporting content for the four Dedicated Internet section pages.
+ *
+ * The designs these pages borrow from put a rail of oversized figures under
+ * the hero. That device works, so it is used — but only with figures that are
+ * actually stated in a source document. No speed multiple, uptime percentage
+ * or saving appears anywhere below, because none is verified. Where a
+ * reference would have put a number, these put a fact.
+ */
+
+/** Sourced facts, for the figure rail. See `internetProof` for provenance. */
+export const dedicatedFacts: { value: string; label: string }[] = [
+  { value: "50 Mbps", label: "Smallest port we provision" },
+  { value: "100 Gbps", label: "Largest port available" },
+  { value: "Class A", label: "ISP licensed by the DoT" },
+  { value: "24/7", label: "Watched from our Chennai NOC" },
+];
+
+/** The neighbours arriving on a contended segment, in the order they land. */
+export const contentionNeighbours = [
+  "The office upstairs",
+  "A café on the corner",
+  "Forty flats",
+  "A school at 15:30",
+];
+
+/**
+ * Which way each kind of business traffic actually travels. `direction` is
+ * what the page is really about — the outbound column is the one consumer
+ * services are worst at, and the one nobody checks.
+ */
+export const symmetryFlows: {
+  label: string;
+  direction: "up" | "down" | "both";
+  note: string;
+}[] = [
+  {
+    label: "Cloud backup",
+    direction: "up",
+    note: "Bounded entirely by upload. It either finishes overnight or it does not.",
+  },
+  {
+    label: "Video calls",
+    direction: "both",
+    note: "Your camera sends as much as it receives. Being the only person who looks frozen is an upstream problem.",
+  },
+  {
+    label: "File sharing",
+    direction: "up",
+    note: "Sending work to a client is an upload, however it is described in the app.",
+  },
+  {
+    label: "VoIP",
+    direction: "both",
+    note: "Small, constant, and in both directions at once. Starved upstream shows up as choppy audio first.",
+  },
+  {
+    label: "Remote access",
+    direction: "up",
+    note: "When colleagues reach systems in your office, your upload sets what they experience.",
+  },
+  {
+    label: "Web and SaaS",
+    direction: "down",
+    note: "The one genuinely download-heavy thing on this list, and the only one a consumer line is built for.",
+  },
+];
+
+/** What happens between a fault starting and it being closed. */
+export const slaLifecycle: { title: string; body: string }[] = [
+  {
+    title: "Detected",
+    body: "The circuit is monitored around the clock, so in most cases a fault is seen before anyone in your office picks up a phone.",
+  },
+  {
+    title: "Raised",
+    body: "A ticket is opened against your service with the agreed priority, and you have a reference rather than a conversation.",
+  },
+  {
+    title: "Diagnosed",
+    body: "SipLink equipment, the local access network and the IP network are all in scope, so the fault does not fall into a gap between suppliers.",
+  },
+  {
+    title: "Restored",
+    body: "Worked to the restoration target in your agreement, with escalation following a path that was set before anything went wrong.",
+  },
+  {
+    title: "Reviewed",
+    body: "What happened, why, and what changes — recorded against the service rather than left as an apology on a call.",
+  },
+];
+
+/**
+ * The questions that decide an enterprise design, grouped so the page can
+ * show that bandwidth is the last of them rather than the first.
+ */
+export const enterpriseQuestions: {
+  group: string;
+  icon: LucideIcon;
+  questions: string[];
+}[] = [
+  {
+    group: "What you run",
+    icon: Boxes,
+    questions: [
+      "Which applications, and where do they live?",
+      "How much traffic never leaves the building?",
+      "What cannot be allowed to stop?",
+    ],
+  },
+  {
+    group: "Where you are",
+    icon: MapPinned,
+    questions: [
+      "How many sites, and how different are they?",
+      "What moves between them?",
+      "Who works away from all of them?",
+    ],
+  },
+  {
+    group: "What it must survive",
+    icon: ShieldCheck,
+    questions: [
+      "What happens when the primary path fails?",
+      "Who needs to reach you from outside?",
+      "What has to be recorded or segregated?",
+    ],
+  },
+  {
+    group: "Where it is going",
+    icon: TrendingUp,
+    questions: [
+      "What does the next year add?",
+      "Which systems are moving to the cloud?",
+      "What would you rather not rebuild in two years?",
+    ],
+  },
+];

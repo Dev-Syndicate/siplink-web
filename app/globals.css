@@ -1644,3 +1644,145 @@
     }
   }
 }
+
+@layer components {
+  /* Motion for the four Dedicated Internet pages.
+
+     The references these come from lean on floating UI cards, dotted step
+     rails and oversized figures. Those translate; their colour-blocking and
+     invented statistics do not, so what is borrowed here is the movement and
+     the depth, not the numbers. */
+
+  /* A token travelling a dotted step rail. The rail is drawn in CSS, so the
+     dot moves in pixels rather than along a path — `--rail-distance` is set
+     by the component from the rail's own width. */
+  .rail-dot {
+    animation: rail-dot var(--rail-duration, 5.6s) ease-in-out infinite;
+  }
+
+  @keyframes rail-dot {
+    0%,
+    4% {
+      transform: translateX(0);
+    }
+    96%,
+    100% {
+      transform: translateX(var(--rail-distance, 100%));
+    }
+  }
+
+  /* An item carried upward and released — the outbound half of a
+     symmetrical link. Paired with `.flow-down` so the two read as one
+     exchange rather than two unrelated loops. */
+  .flow-up {
+    animation: flow-up var(--flow-duration, 4.4s) ease-in-out infinite;
+    animation-delay: var(--flow-delay, 0s);
+  }
+
+  @keyframes flow-up {
+    0%,
+    100% {
+      transform: translateY(6px);
+      opacity: 0.35;
+    }
+    45% {
+      transform: translateY(-6px);
+      opacity: 1;
+    }
+  }
+
+  .flow-down {
+    animation: flow-down var(--flow-duration, 4.4s) ease-in-out infinite;
+    animation-delay: var(--flow-delay, 0s);
+  }
+
+  @keyframes flow-down {
+    0%,
+    100% {
+      transform: translateY(-6px);
+      opacity: 0.35;
+    }
+    45% {
+      transform: translateY(6px);
+      opacity: 1;
+    }
+  }
+
+  /* Your share of a contended segment as more subscribers join it. Stepped,
+     not eased: capacity is given away in whole neighbours, and the recovery
+     at the end of the loop is the segment emptying again overnight. */
+  .share-steps {
+    transform-origin: left center;
+    animation: share-steps 6s steps(1, end) infinite;
+  }
+
+  @keyframes share-steps {
+    0%,
+    14% {
+      transform: scaleX(1);
+    }
+    15%,
+    29% {
+      transform: scaleX(0.72);
+    }
+    30%,
+    44% {
+      transform: scaleX(0.55);
+    }
+    45%,
+    59% {
+      transform: scaleX(0.38);
+    }
+    60%,
+    88% {
+      transform: scaleX(0.26);
+    }
+    89%,
+    100% {
+      transform: scaleX(1);
+    }
+  }
+
+  /* A neighbour arriving on the segment, in time with the shrink above. */
+  .share-join {
+    animation: share-join 6s ease-out infinite;
+    animation-delay: var(--join-delay, 0s);
+  }
+
+  @keyframes share-join {
+    0%,
+    10% {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    18%,
+    88% {
+      opacity: 1;
+      transform: none;
+    }
+    92%,
+    100% {
+      opacity: 0;
+      transform: none;
+    }
+  }
+
+  /* Each of these is decoration over content that is also written out, so
+     they simply stop. `.share-steps` is the exception: frozen mid-loop it
+     would show an arbitrary share, so it resets to the full bar. */
+  @media (prefers-reduced-motion: reduce) {
+    .rail-dot,
+    .flow-up,
+    .flow-down,
+    .share-join {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .share-steps {
+      animation: none;
+      transform: none;
+    }
+  }
+}
