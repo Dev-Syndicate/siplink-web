@@ -54,8 +54,8 @@ const MESSAGES = [
 ];
 
 const NUMBERS = [
-  { value: "+91 44 ••• ••••", label: "Direct dial" },
-  { value: "1800 ••• ••••", label: "Toll-free" },
+  { value: "+1 212 ••• ••••", label: "Direct dial" },
+  { value: "+1 800 ••• ••••", label: "Toll-free" },
   { value: "+1 307 ••• ••••", label: "Ported in" },
 ];
 

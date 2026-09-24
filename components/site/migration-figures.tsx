@@ -511,7 +511,7 @@ export function NumberKept() {
           textAnchor="middle"
           className="fill-foreground text-[12.5px] font-medium tracking-[0.1em] [font-family:var(--font-mono)]"
         >
-          +91 80 •••• ••••
+          +1 212 ••• ••••
         </text>
         <Note x={112} y={190} anchor="middle">
           your number, before and after
