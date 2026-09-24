@@ -28,6 +28,7 @@ export function InternetSectionPage({
   service,
   section,
   prelude,
+  extra,
 }: {
   service: InternetService;
   section: SectionPage;
@@ -38,6 +39,12 @@ export function InternetSectionPage({
    * the heading outline would start in the wrong place.
    */
   prelude?: ReactNode;
+  /**
+   * Extra sections for a page whose own content does not carry it alone,
+   * rendered after the body and before the previous/next pair — so the
+   * onward navigation stays the last thing before the close.
+   */
+  extra?: ReactNode;
 }) {
   const { title, heading, tagline, intro, eyebrow, scene } = section;
   const siblings = getSectionPages(service);
@@ -215,6 +222,8 @@ export function InternetSectionPage({
           <SectionContent section={section} />
         </div>
       </section>
+
+      {extra}
 
       {/* Previous / next within the service */}
       {previous || next ? (

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { InternetSectionPage } from "@/components/site/internet-section-page";
 import { PlansHero } from "@/components/site/plans-hero";
+import { PlansSections } from "@/components/site/plans-sections";
 import {
   connectivityServices,
   getInternetSectionPage,
@@ -16,6 +17,14 @@ import {
  */
 const PRELUDES: Record<string, () => React.JSX.Element> = {
   "business-broadband/plans": PlansHero,
+};
+
+/**
+ * Extra sections for pages whose own content does not carry them alone,
+ * rendered after the body. Same keying as PRELUDES.
+ */
+const EXTRAS: Record<string, () => React.JSX.Element> = {
+  "business-broadband/plans": PlansSections,
 };
 
 /**
@@ -60,13 +69,16 @@ export default async function InternetSectionRoute({
 
   if (!found) notFound();
 
-  const Prelude = PRELUDES[`${slug}/${section}`];
+  const key = `${slug}/${section}`;
+  const Prelude = PRELUDES[key];
+  const Extra = EXTRAS[key];
 
   return (
     <InternetSectionPage
       service={found.service}
       section={found.section}
       prelude={Prelude ? <Prelude /> : undefined}
+      extra={Extra ? <Extra /> : undefined}
     />
   );
 }

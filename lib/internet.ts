@@ -1945,3 +1945,143 @@ export function getInternetSectionPage(
 
   return section ? { service, section } : undefined;
 }
+
+/* ------------------------------------------- business broadband plans */
+
+/**
+ * Supporting content for /internet/business-broadband/plans.
+ *
+ * The page's argument is that a plan is sized from the work rather than
+ * picked off a tier list, which is easy to assert and hard to believe. These
+ * three blocks are what make it concrete: the shapes of office we actually
+ * quote for, what a working day puts on the line hour by hour, and the point
+ * at which the honest answer stops being broadband.
+ *
+ * Deliberately free of numbers. No speed, price, contention ratio or uptime
+ * figure appears here, because none is verified for broadband — see the file
+ * header. Everything below is qualitative and can be said truthfully today.
+ */
+
+export const planProfiles: {
+  title: string;
+  people: string;
+  situation: string;
+  drives: string;
+  usually: string[];
+  icon: LucideIcon;
+}[] = [
+  {
+    title: "The small team",
+    people: "5–15 people, one office",
+    situation:
+      "Everything is in the cloud, nothing is hosted on site, and the connection is only noticed when a call breaks up.",
+    drives:
+      "How many people are actually using it at the same time, at the busiest hour — rarely the same as the headcount.",
+    usually: ["Managed router", "Static IP, if there is a VPN"],
+    icon: Users,
+  },
+  {
+    title: "The growing office",
+    people: "15–50 people, hiring",
+    situation:
+      "A plan that fitted last year is now the thing everyone complains about on Monday mornings.",
+    drives:
+      "Headroom and upload. Growth shows up in the outbound half of the line long before the inbound half.",
+    usually: ["Managed router", "Business Wi-Fi", "LAN and switching"],
+    icon: TrendingUp,
+  },
+  {
+    title: "The branch",
+    people: "A site reporting to head office",
+    situation:
+      "Most of what matters lives somewhere else, and the site needs a dependable path back to it rather than raw speed.",
+    drives:
+      "What travels between the branch and head office, and whether it needs to be private.",
+    usually: ["VPN", "Static IP", "Managed router"],
+    icon: Building2,
+  },
+  {
+    title: "The customer-facing floor",
+    people: "Retail, clinics, hospitality",
+    situation:
+      "Staff, customers, payment terminals and cameras all share one connection, and the guests are the ones on the phone about it.",
+    drives:
+      "Device density and separation — how many things connect, and which of them must never see each other.",
+    usually: ["Business Wi-Fi with guest separation", "LAN and VLANs"],
+    icon: ShoppingCart,
+  },
+];
+
+/**
+ * The working day, hour by hour. The point the sequence makes is that the
+ * load is not steady: the hour a connection is judged on is never the hour
+ * anyone tests it in.
+ */
+export const planDay: {
+  time: string;
+  label: string;
+  note: string;
+  live: string[];
+}[] = [
+  {
+    time: "09:00",
+    label: "Everyone arrives at once",
+    note: "Mail syncs, laptops update and the CRM loads for the whole floor inside twenty minutes. It is the sharpest spike of the day and the one most plans are not sized for.",
+    live: ["Email", "Microsoft 365", "CRM", "Web"],
+  },
+  {
+    time: "11:00",
+    label: "The meeting block",
+    note: "Several video calls at once, each one uploading as much as it downloads, with voice traffic underneath that cannot be asked to wait its turn.",
+    live: ["Video conferencing", "VoIP", "CRM", "Microsoft 365"],
+  },
+  {
+    time: "13:00",
+    label: "The lunch dip",
+    note: "The quietest hour of the working day, and the one a speed test will flatter you in. Nothing you learn here tells you how the connection behaves at nine.",
+    live: ["Web", "Payments"],
+  },
+  {
+    time: "15:00",
+    label: "The afternoon upload",
+    note: "Files go out, the day's work syncs to the cloud and documents move to customers. All of it travels in the direction consumer connections are worst at.",
+    live: ["File sharing", "Cloud backup", "CRM", "VoIP"],
+  },
+  {
+    time: "18:30",
+    label: "After the floor empties",
+    note: "Backups start and the cameras keep sending. This is the window that decides whether last night's backup finished before this morning's spike began.",
+    live: ["Cloud backup", "CCTV", "Remote access"],
+  },
+];
+
+/**
+ * When broadband is the right answer, and when it has stopped being one.
+ *
+ * This exists so the page can say the unprofitable thing out loud. The
+ * left column keeps people on a cheaper service; the right sends them to
+ * /internet/dedicated-internet.
+ */
+export const planStepUp = {
+  stay: {
+    heading: "Business broadband is the right answer when",
+    points: [
+      "Your applications are cloud services rather than systems you host",
+      "A slow hour would be irritating rather than expensive",
+      "One site, or sites that barely talk to each other",
+      "Nobody outside needs to reach a server on your network",
+      "You want the lowest sensible cost per location",
+    ],
+  },
+  move: {
+    heading: "It is time for dedicated internet when",
+    points: [
+      "An hour of degraded throughput costs you money, meetings or customers",
+      "You need restoration targets and escalation in writing, not best effort",
+      "The upload matters as much as the download",
+      "Voice is the business — a contact centre, not a few calls a day",
+      "Several sites move real traffic between each other",
+      "Systems you host are reached from outside the building",
+    ],
+  },
+} as const;
