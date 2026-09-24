@@ -1636,6 +1636,7 @@ export const nav: NavItem[] = [
         links: [
           { label: "Call Centers", href: "/industries/call-centers", icon: Headset },
           { label: "Healthcare", href: "/industries/healthcare", icon: HeartPulse },
+          { label: "Staffing & Recruitment", href: "/industries/staffing-recruitment", icon: UsersRound },
           { label: "Banking & Finance", href: "/industries/banking-finance", icon: Landmark },
           { label: "Education", href: "/industries/education", icon: GraduationCap },
           { label: "Retail", href: "/industries/retail", icon: ShoppingCart },
