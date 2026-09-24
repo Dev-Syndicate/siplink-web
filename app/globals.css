@@ -264,6 +264,33 @@
 }
 
 @layer components {
+  /* Soft brand-coloured blobs for frosted (`backdrop-blur`) panels to blur;
+     glass only reads as glass over colour. They drift slowly so the
+     frosting visibly shifts; each sets its own `--orb-duration`. */
+  .glass-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    pointer-events: none;
+    animation: orb-drift var(--orb-duration, 18s) ease-in-out infinite
+      alternate;
+  }
+
+  @keyframes orb-drift {
+    to {
+      transform: translate(var(--orb-x, 60px), var(--orb-y, -40px))
+        scale(1.1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glass-orb {
+      animation: none;
+    }
+  }
+}
+
+@layer components {
   /* Items of a <RevealGroup> rise in, staggered, once the group is scrolled
      to. Hidden only while motion is allowed, so reduced-motion visitors and
      anything that never observes still get the content. */
@@ -279,10 +306,10 @@
     }
   }
 
-  /* Step path: the filled line draws along the track once revealed, then a
-     packet keeps travelling it so the sequence reads as a route. Wide
-     screens get one line across; stacked steps get a segment down from
-     each step to the next, drawn in turn. */
+  /* Step path: a segment joins each stop to the next — across on wide
+     screens, down when stacked — and they draw in turn, each stop filling
+     as its segment arrives. Stop n and segment n share one clock
+     (`--step`), so the timing holds for any number of steps. */
   @media (prefers-reduced-motion: no-preference) {
     .reveal-group .path-fill-x {
       transform: scaleX(0);
@@ -293,38 +320,19 @@
     }
 
     .reveal-group[data-revealed] .path-fill-x {
-      animation: path-draw-x 1.2s linear 0.1s both;
-    }
-
-    /* Stops fill in order as the line reaches them. Linear draw, so stop n
-       is reached at n/3 of it on wide screens; stacked, each stop follows
-       the segment above it. */
-    .reveal-group[data-revealed] .path-node {
-      animation: path-node-fill 0.5s ease-out both;
-      animation-delay: calc(
-        var(--step, 0) * 280ms + min(var(--step, 0), 1) * 420ms
-      );
-    }
-
-    @media (width >= 64rem) {
-      .reveal-group[data-revealed] .path-node {
-        animation-delay: calc(var(--step, 0) * 400ms + 100ms);
-      }
+      animation: path-draw-x 0.4s linear both;
+      animation-delay: calc(var(--step, 0) * 400ms + 100ms);
     }
 
     .reveal-group[data-revealed] .path-fill-y {
-      animation: path-draw-y 0.5s cubic-bezier(0.65, 0, 0.35, 1) both;
-      animation-delay: calc(var(--reveal-index, 0) * 280ms + 200ms);
+      animation: path-draw-y 0.4s linear both;
+      animation-delay: calc(var(--step, 0) * 400ms + 100ms);
     }
 
-    .reveal-group[data-revealed] .path-packet-x {
-      animation: path-packet-x 3.2s ease-in-out 1.6s infinite;
+    .reveal-group[data-revealed] .path-node {
+      animation: path-node-fill 0.5s ease-out both;
+      animation-delay: calc(var(--step, 0) * 400ms + 100ms);
     }
-
-  }
-
-  .path-packet-x {
-    opacity: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -362,21 +370,6 @@
     }
     to {
       transform: scaleY(1);
-    }
-  }
-
-  @keyframes path-packet-x {
-    0% {
-      left: 0%;
-      opacity: 0;
-    }
-    10%,
-    90% {
-      opacity: 1;
-    }
-    100% {
-      left: 100%;
-      opacity: 0;
     }
   }
 
