@@ -38,8 +38,14 @@ export function InternetClose({
 }: {
   ctaLabel: string;
   ctaHref: string;
-  secondaryLabel: string;
-  secondaryHref: string;
+  /**
+   * An optional second action. Deliberately unused by the service and
+   * section pages: they already carry a breadcrumb, a sibling rail and a
+   * back link in the hero, so a "Back to …" button here was a fourth way to
+   * do the same thing and made the band taller for nothing.
+   */
+  secondaryLabel?: string;
+  secondaryHref?: string;
   heading?: string;
   body?: string;
 }) {
@@ -66,22 +72,22 @@ export function InternetClose({
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,var(--foreground)_85%)]"
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-20">
+      <div className="relative mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-18">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-16">
           <ScrollReveal>
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
               Next step
             </span>
 
-            <h2 className="mt-5 max-w-2xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+            <h2 className="mt-4 max-w-2xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl">
               {heading}
             </h2>
 
-            <p className="mt-5 max-w-xl text-pretty text-background/70">
+            <p className="mt-4 max-w-xl text-pretty text-background/70">
               {body}
             </p>
 
-            <ul className="mt-9 flex flex-wrap gap-x-7 gap-y-3">
+            <ul className="mt-7 flex flex-wrap gap-x-7 gap-y-3">
               {assurances.map((item, index) => (
                 <ScrollReveal
                   as="li"
@@ -98,21 +104,23 @@ export function InternetClose({
               ))}
             </ul>
 
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-8 flex flex-wrap gap-4">
               <Button asChild size="lg">
                 <Link href={ctaHref}>
                   {ctaLabel}
                   <ArrowRight className="size-4" aria-hidden />
                 </Link>
               </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-background/25 bg-transparent text-background hover:bg-background/10 hover:text-background dark:border-background/25 dark:bg-transparent dark:hover:bg-background/10"
-              >
-                <Link href={secondaryHref}>{secondaryLabel}</Link>
-              </Button>
+              {secondaryLabel && secondaryHref ? (
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="border-background/25 bg-transparent text-background hover:bg-background/10 hover:text-background dark:border-background/25 dark:bg-transparent dark:hover:bg-background/10"
+                >
+                  <Link href={secondaryHref}>{secondaryLabel}</Link>
+                </Button>
+              ) : null}
             </div>
           </ScrollReveal>
 
@@ -122,7 +130,7 @@ export function InternetClose({
               Or reach us directly
             </p>
 
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-4 space-y-2.5">
               {[
                 {
                   icon: PhoneCall,
@@ -157,7 +165,7 @@ export function InternetClose({
 
         <ScrollReveal
           delay={120}
-          className="mt-16 border-t border-background/15 pt-8"
+          className="mt-10 border-t border-background/15 pt-6"
         >
           <p className="max-w-3xl text-xs text-background/50">
             Availability, service levels and the exact scope of managed

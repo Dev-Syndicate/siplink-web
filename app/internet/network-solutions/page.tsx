@@ -188,8 +188,6 @@ export default function NetworkSolutionsPage() {
         body="Most people are not, and that is the normal starting point. Tell us what your sites look like and what runs on them, and we will come back with a design rather than a price list."
         ctaLabel="Talk to a connectivity expert"
         ctaHref="/contact"
-        secondaryLabel="Back to Internet"
-        secondaryHref="/internet"
       />
     </>
   );

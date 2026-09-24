@@ -228,8 +228,6 @@ export function InternetSectionPage({
       <InternetClose
         ctaLabel={service.cta.label}
         ctaHref={service.cta.href}
-        secondaryLabel={`Back to ${service.title}`}
-        secondaryHref={servicePath}
       />
     </>
   );

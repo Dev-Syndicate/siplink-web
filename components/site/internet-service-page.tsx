@@ -319,8 +319,6 @@ export function InternetServicePage({
       <InternetClose
         ctaLabel={cta.label}
         ctaHref={cta.href}
-        secondaryLabel={`Back to ${backLabel}`}
-        secondaryHref={backHref}
       />
     </>
   );
