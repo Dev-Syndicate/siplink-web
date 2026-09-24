@@ -3,11 +3,11 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { ConnectivityScene } from "@/components/site/connectivity-scene";
+import { InternetClose } from "@/components/site/internet-close";
 import { SectionContent } from "@/components/site/internet-section-content";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   getInternetService,
   getSectionPages,
@@ -316,40 +316,12 @@ export function InternetServicePage({
         </section>
       ) : null}
 
-      {/* Close */}
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <ScrollReveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Tell us where your offices are
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-            We will check what is deliverable at each address, size the service
-            against how you actually work, and quote the whole network — voice
-            included — as one bill.
-          </p>
-
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
-              <Link href={cta.href}>
-                {cta.label}
-                <ArrowRight className="size-4" aria-hidden />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href={backHref}>Back to {backLabel}</Link>
-            </Button>
-          </div>
-
-          <Separator className="mx-auto mt-14 max-w-xs" />
-
-          <p className="mt-8 text-xs text-muted-foreground/70">
-            Availability, service levels and the exact scope of managed
-            services are confirmed per location and set out in your agreement.
-            All services are subject to technical feasibility at the time of
-            order.
-          </p>
-        </ScrollReveal>
-      </section>
+      <InternetClose
+        ctaLabel={cta.label}
+        ctaHref={cta.href}
+        secondaryLabel={`Back to ${backLabel}`}
+        secondaryHref={backHref}
+      />
     </>
   );
 }

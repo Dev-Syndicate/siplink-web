@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import {
   Accordion,
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { ComparisonMatrix } from "@/components/site/comparison-matrix";
 import { ConnectivityScene } from "@/components/site/connectivity-scene";
+import { InternetClose } from "@/components/site/internet-close";
 import { NetworkStack } from "@/components/site/network-stack";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
@@ -465,50 +466,12 @@ export default function InternetPage() {
         </div>
       </section>
 
-      {/* Close */}
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <ScrollReveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Tell us where your offices are
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-            We will check what is deliverable at each address, size the ports
-            against how you actually work, and quote the whole network — voice
-            included — as one bill.
-          </p>
-
-          <ul className="mx-auto mt-8 flex max-w-lg flex-col gap-3 sm:flex-row sm:justify-center sm:gap-6">
-            {[
-              "Feasibility checked first",
-              "Talk to an engineer",
-              "Quoted per location",
-            ].map((item) => (
-              <li key={item} className="flex items-center gap-2 text-sm">
-                <Check className="size-4 shrink-0 text-primary" aria-hidden />
-                <span className="text-muted-foreground">{item}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
-              <Link href="/contact">
-                Request a quote
-                <ArrowRight className="size-4" aria-hidden />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/products">Explore voice products</Link>
-            </Button>
-          </div>
-
-          <p className="mt-12 text-xs text-muted-foreground/70">
-            Port sizes, availability and service levels are confirmed per
-            location and set out in your agreement. All services are subject to
-            technical feasibility at the time of order.
-          </p>
-        </ScrollReveal>
-      </section>
+      <InternetClose
+        ctaLabel="Request a quote"
+        ctaHref="/contact"
+        secondaryLabel="Explore voice products"
+        secondaryHref="/products"
+      />
     </>
   );
 }

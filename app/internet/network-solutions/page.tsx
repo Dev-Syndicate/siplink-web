@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { ConnectivityScene } from "@/components/site/connectivity-scene";
+import { InternetClose } from "@/components/site/internet-close";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -179,31 +180,17 @@ export default function NetworkSolutionsPage() {
         </div>
       </section>
 
-      {/* Close */}
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <ScrollReveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Not sure which of these you need?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-            Most people are not, and that is the normal starting point. Tell us
-            what your sites look like and what runs on them, and we will come
-            back with a design rather than a price list.
-          </p>
-
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
-              <Link href="/contact">
-                Talk to a connectivity expert
-                <ArrowRight className="size-4" aria-hidden />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/internet">Back to Internet</Link>
-            </Button>
-          </div>
-        </ScrollReveal>
-      </section>
+      {/* Its own wording — this page ends on a design conversation rather
+          than on a site survey, but it uses the same band as everything else
+          under /internet. */}
+      <InternetClose
+        heading="Not sure which of these you need?"
+        body="Most people are not, and that is the normal starting point. Tell us what your sites look like and what runs on them, and we will come back with a design rather than a price list."
+        ctaLabel="Talk to a connectivity expert"
+        ctaHref="/contact"
+        secondaryLabel="Back to Internet"
+        secondaryHref="/internet"
+      />
     </>
   );
 }
