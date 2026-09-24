@@ -36,6 +36,19 @@ export function InternetSectionPage({
   const previous = index > 0 ? siblings[index - 1] : undefined;
   const next = index < siblings.length - 1 ? siblings[index + 1] : undefined;
 
+  /**
+   * Siblings rotate through three hero compositions, so consecutive pages in
+   * the same column do not open on an identical screen. Position drives it
+   * rather than a hand-set field: the point is that neighbours differ, and
+   * nothing here depends on a given page getting a particular one.
+   *
+   * In `reverse` the diagram leads visually while the heading still comes
+   * first in the DOM — the swap is `order`, not markup, so reading order and
+   * focus order stay correct.
+   */
+  const layout = (["split", "reverse", "wide"] as const)[index % 3];
+  const wide = layout === "wide";
+
   const servicePath = `/internet/${service.slug}`;
   const ServiceIcon = service.icon;
 
@@ -81,8 +94,16 @@ export function InternetSectionPage({
             </ol>
           </nav>
 
-          <div className="mt-8 grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-16">
-            <ScrollReveal>
+          <div
+            className={cn(
+              "mt-8 grid items-center gap-12 lg:gap-16",
+              layout === "split" &&
+                "lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)]",
+              layout === "reverse" &&
+                "lg:grid-cols-[minmax(0,28rem)_minmax(0,1fr)]",
+            )}
+          >
+            <ScrollReveal className={cn(layout === "reverse" && "lg:order-2")}>
               <div className="flex flex-wrap items-center gap-3">
                 <span className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
                   <ServiceIcon className="size-5" aria-hidden />
@@ -120,9 +141,24 @@ export function InternetSectionPage({
               </div>
             </ScrollReveal>
 
-            <ScrollReveal delay={120}>
-              <div className="rounded-2xl border border-border bg-muted/30 p-6 lg:p-8">
-                <ConnectivityScene scene={scene ?? service.scene} />
+            <ScrollReveal
+              delay={120}
+              className={cn(layout === "reverse" && "lg:order-1")}
+            >
+              <div
+                className={cn(
+                  "rounded-2xl border border-border p-6 lg:p-8",
+                  // The wide variant gives the diagram the full measure and a
+                  // stronger ground, since it is the only thing on its row.
+                  wide
+                    ? "bg-gradient-to-br from-primary/5 to-muted/40 lg:p-12"
+                    : "bg-muted/30",
+                )}
+              >
+                <ConnectivityScene
+                  scene={scene ?? service.scene}
+                  className={cn(wide && "mx-auto max-w-3xl")}
+                />
               </div>
             </ScrollReveal>
           </div>

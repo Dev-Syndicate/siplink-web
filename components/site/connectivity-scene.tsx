@@ -758,6 +758,1127 @@ function MultiSiteScene({ uid }: { uid: string }) {
   );
 }
 
+/* ------------------------------------------------ business broadband */
+
+/** SIZING — the plan is the output of a conversation, not a tier you pick. */
+function SizingScene({ uid }: { uid: string }) {
+  const dials = [
+    { y: 56, label: "Users", travel: 54 },
+    { y: 102, label: "Applications", travel: 82 },
+    { y: 148, label: "Upload", travel: 38 },
+    { y: 194, label: "Devices", travel: 68 },
+  ];
+
+  return (
+    <>
+      <Caption x={116} y={34} text="what you actually run" />
+
+      {dials.map(({ y, label, travel }, index) => (
+        <g key={label}>
+          <text
+            x={22}
+            y={y + 4}
+            className="fill-muted-foreground/70 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+          >
+            {label}
+          </text>
+          {/* The track, and a knob that settles somewhere along it. Each
+              input lands in a different place, which is the whole point. */}
+          <rect
+            x={96}
+            y={y - 2}
+            width={112}
+            height={4}
+            rx="2"
+            className="fill-border"
+          />
+          <g
+            className="scene-slide"
+            style={
+              {
+                "--slide-distance": `${travel}px`,
+                "--slide-delay": `${index * 0.24}s`,
+              } as React.CSSProperties
+            }
+          >
+            <rect
+              x={96}
+              y={y - 2}
+              width={14}
+              height={4}
+              rx="2"
+              className="fill-primary"
+            />
+            <circle
+              cx={103}
+              cy={y}
+              r="5.5"
+              className="fill-background stroke-primary"
+              strokeWidth="1.75"
+            />
+          </g>
+        </g>
+      ))}
+
+      {/* Everything above resolves into one number on the right. */}
+      <path
+        d="M224 124 H250"
+        className="stroke-border"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <rect
+        x={256}
+        y={80}
+        width={158}
+        height={90}
+        rx="12"
+        className="fill-primary/5 stroke-primary"
+        strokeWidth="1.75"
+      />
+      <text
+        x={335}
+        y={116}
+        textAnchor="middle"
+        className="fill-muted-foreground/70 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+      >
+        YOUR PLAN
+      </text>
+      <rect
+        x={280}
+        y={128}
+        width={110}
+        height={7}
+        rx="3.5"
+        className="fill-border"
+      />
+      <rect
+        x={280}
+        y={128}
+        width={110}
+        height={7}
+        rx="3.5"
+        className="scene-meter fill-primary"
+      />
+      <circle
+        cx={335}
+        cy={155}
+        r="3.5"
+        className="scene-pulse fill-primary"
+        filter={`url(#cglow-${uid})`}
+      />
+      <Caption x={335} y={190} text="sized, not picked from a tier" />
+    </>
+  );
+}
+
+/** APPLICATIONS — one line, and everything a workday puts on it at once. */
+function ApplicationsScene({ uid }: { uid: string }) {
+  const apps = [
+    "Email",
+    "Microsoft 365",
+    "CRM / ERP",
+    "Video calls",
+    "VoIP",
+    "File sharing",
+    "Payments",
+    "CCTV",
+    "Remote access",
+  ];
+
+  return (
+    <>
+      <Core x={50} y={140} uid={uid} label="ONE LINE" r={22} />
+
+      {/* The spine everything hangs off. */}
+      <path
+        d="M78 140 H120"
+        className="stroke-border"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M120 46 V234"
+        className="stroke-border"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+
+      {apps.map((label, index) => {
+        const column = index % 3;
+        const row = Math.floor(index / 3);
+        const x = 148 + column * 98;
+        const y = 46 + row * 94;
+
+        return (
+          <g key={label}>
+            {/* Only the leftmost column joins the spine; the rest chain
+                across, so the picture stays a network and not a starburst. */}
+            <Wire
+              d={
+                column === 0
+                  ? `M120 ${y + 22} H${x}`
+                  : `M${x - 22} ${y + 22} H${x}`
+              }
+              delay={index * 0.22}
+              duration={2.6}
+            />
+            <rect
+              x={x}
+              y={y}
+              width={76}
+              height={44}
+              rx="9"
+              className="fill-background stroke-border"
+              strokeWidth="1.5"
+            />
+            <circle
+              cx={x + 12}
+              cy={y + 13}
+              r="3"
+              className="scene-pulse fill-primary"
+              style={
+                { "--pulse-delay": `${index * 0.22}s` } as React.CSSProperties
+              }
+            />
+            <text
+              x={x + 38}
+              y={y + 30}
+              textAnchor="middle"
+              className="fill-foreground/80 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+            >
+              {label}
+            </text>
+          </g>
+        );
+      })}
+
+      <Caption x={222} y={262} text="all of it, at the same time" />
+    </>
+  );
+}
+
+/** WORKDAY — the benefit is that nothing happens, all day. */
+function WorkdayScene({ uid }: { uid: string }) {
+  const hours = ["09", "11", "13", "15", "17"];
+  const markers = [
+    { x: 92, label: "Standup call" },
+    { x: 176, label: "Cloud CRM" },
+    { x: 260, label: "File sync" },
+    { x: 344, label: "Client video" },
+  ];
+
+  return (
+    <>
+      <Caption x={220} y={40} text="a connection you stop thinking about" />
+
+      {/* The day, as a baseline that does not move. */}
+      <path
+        d="M46 168 H400"
+        className="stroke-border"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      {hours.map((hour, index) => (
+        <g key={hour}>
+          <path
+            d={`M${56 + index * 86} 168 V176`}
+            className="stroke-border"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <text
+            x={56 + index * 86}
+            y={190}
+            textAnchor="middle"
+            className="fill-muted-foreground/70 text-[7.5px] [font-family:var(--font-mono)]"
+          >
+            {hour}
+          </text>
+        </g>
+      ))}
+
+      {/* Steady throughput across the whole day — deliberately flat. */}
+      <path
+        d="M46 128 H400"
+        className="stroke-primary/40"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray="4 5"
+      />
+      <Caption x={220} y={118} text="steady" />
+
+      {markers.map(({ x, label }, index) => (
+        <g key={label}>
+          <circle
+            cx={x}
+            cy={128}
+            r="5"
+            className="scene-pulse fill-primary"
+            style={
+              { "--pulse-delay": `${index * 0.6}s` } as React.CSSProperties
+            }
+          />
+          <path
+            d={`M${x} 133 V152`}
+            className="stroke-border"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <text
+            x={x}
+            y={84 + (index % 2) * 14}
+            textAnchor="middle"
+            className="fill-foreground/80 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+          >
+            {label}
+          </text>
+          <path
+            d={`M${x} ${88 + (index % 2) * 14} V123`}
+            className="stroke-border"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeDasharray="3 4"
+          />
+        </g>
+      ))}
+
+      {/* The playhead crossing the day. */}
+      <g
+        className="scene-sweep"
+        style={{ "--sweep-distance": "344px" } as React.CSSProperties}
+      >
+        <path
+          d="M46 104 V168"
+          className="stroke-primary"
+          strokeWidth="2"
+          strokeLinecap="round"
+          filter={`url(#cglow-${uid})`}
+        />
+      </g>
+
+      <Caption x={220} y={222} text="nine to five, without a dip" />
+    </>
+  );
+}
+
+/* -------------------------------------------------- dedicated internet */
+
+/** CONTENTION — the same hour, on a shared line and on a dedicated one. */
+function ContentionScene({ uid }: { uid: string }) {
+  return (
+    <>
+      {/* Shared: capacity divided among strangers, throughput lurching. */}
+      <text
+        x={24}
+        y={64}
+        className="fill-muted-foreground/70 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+      >
+        SHARED SEGMENT
+      </text>
+      <rect
+        x={24}
+        y={76}
+        width={392}
+        height={26}
+        rx="8"
+        className="fill-muted/40 stroke-border"
+        strokeWidth="1.5"
+        strokeDasharray="4 5"
+      />
+      <rect
+        x={30}
+        y={82}
+        width={380}
+        height={14}
+        rx="7"
+        className="scene-jitter fill-destructive/60"
+      />
+      <Caption x={220} y={118} text="what you get depends on the neighbours" />
+
+      {/* Other subscribers on the same segment. */}
+      {[0, 1, 2, 3, 4].map((index) => (
+        <circle
+          key={index}
+          cx={72 + index * 76}
+          cy={140}
+          r="4"
+          className="scene-pulse fill-muted-foreground/40"
+          style={
+            { "--pulse-delay": `${index * 0.35}s` } as React.CSSProperties
+          }
+        />
+      ))}
+
+      {/* Dedicated: the same bar, holding. */}
+      <text
+        x={24}
+        y={182}
+        className="fill-primary text-[7.5px] font-medium [font-family:var(--font-mono)]"
+      >
+        DEDICATED PORT
+      </text>
+      <rect
+        x={24}
+        y={194}
+        width={392}
+        height={26}
+        rx="8"
+        className="fill-primary/5 stroke-primary"
+        strokeWidth="1.75"
+      />
+      <rect
+        x={30}
+        y={200}
+        width={380}
+        height={14}
+        rx="7"
+        className="fill-primary"
+        filter={`url(#cglow-${uid})`}
+      />
+      <Caption x={220} y={238} text="the same at 09:00 and at 17:00" />
+    </>
+  );
+}
+
+/** SYMMETRY — two directions, one capacity, reaching the same mark. */
+function SymmetryScene({ uid }: { uid: string }) {
+  return (
+    <>
+      <Caption x={220} y={36} text="equal in both directions" />
+
+      {/* Download */}
+      <text
+        x={24}
+        y={82}
+        className="fill-muted-foreground/70 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+      >
+        DOWNLOAD
+      </text>
+      <rect
+        x={110}
+        y={70}
+        width={286}
+        height={16}
+        rx="8"
+        className="fill-border"
+      />
+      <rect
+        x={110}
+        y={70}
+        width={286}
+        height={16}
+        rx="8"
+        className="scene-meter fill-primary"
+      />
+      <path
+        d="M386 78 L396 78 M391 73 L396 78 L391 83"
+        fill="none"
+        className="stroke-primary"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      {/* Upload — same width, same timing, mirrored. */}
+      <text
+        x={24}
+        y={124}
+        className="fill-muted-foreground/70 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+      >
+        UPLOAD
+      </text>
+      <rect
+        x={110}
+        y={112}
+        width={286}
+        height={16}
+        rx="8"
+        className="fill-border"
+      />
+      <rect
+        x={110}
+        y={112}
+        width={286}
+        height={16}
+        rx="8"
+        className="scene-meter fill-primary"
+        style={{ "--meter-delay": "0.1s" } as React.CSSProperties}
+      />
+      <path
+        d="M120 120 L110 120 M115 115 L110 120 L115 125"
+        fill="none"
+        className="stroke-primary"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      {/* The asymmetric alternative, for contrast. */}
+      <text
+        x={24}
+        y={186}
+        className="fill-muted-foreground/60 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+      >
+        ASYMMETRIC
+      </text>
+      <rect
+        x={110}
+        y={174}
+        width={286}
+        height={12}
+        rx="6"
+        className="fill-border/70"
+      />
+      <rect
+        x={110}
+        y={174}
+        width={286}
+        height={12}
+        rx="6"
+        className="fill-muted-foreground/25"
+      />
+      <rect
+        x={110}
+        y={194}
+        width={286}
+        height={12}
+        rx="6"
+        className="fill-border/70"
+      />
+      <rect
+        x={110}
+        y={194}
+        width={52}
+        height={12}
+        rx="6"
+        className="fill-muted-foreground/25"
+      />
+      <Caption x={220} y={226} text="where the upload quietly runs out" />
+      <circle
+        cx={396}
+        cy={200}
+        r="3.5"
+        className="scene-pulse fill-destructive/70"
+        filter={`url(#cglow-${uid})`}
+      />
+    </>
+  );
+}
+
+/** SLA — the commitment, and the three places a fault actually happens. */
+function SlaScene({ uid }: { uid: string }) {
+  const covered = [
+    { y: 74, label: "SipLink equipment" },
+    { y: 120, label: "Local access network" },
+    { y: 166, label: "IP network" },
+  ];
+
+  return (
+    <>
+      {/* The agreement itself. */}
+      <rect
+        x={24}
+        y={56}
+        width={150}
+        height={168}
+        rx="12"
+        className="fill-background stroke-primary"
+        strokeWidth="1.75"
+      />
+      <path
+        d="M99 84 L117 92 V112 C117 125 109 134 99 139 C89 134 81 125 81 112 V92 Z"
+        className="fill-primary/15 stroke-primary"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+      {[0, 1, 2].map((row) => (
+        <rect
+          key={row}
+          x={48}
+          y={158 + row * 16}
+          width={102 - row * 24}
+          height={4}
+          rx="2"
+          className="fill-border"
+        />
+      ))}
+      <Caption x={99} y={240} text="in your agreement" />
+
+      {/* What it covers, ticked in sequence. */}
+      {covered.map(({ y, label }, index) => (
+        <g key={label}>
+          <Wire
+            d={`M174 140 Q198 140 198 ${y + 16} H224`}
+            delay={index * 0.5}
+            duration={2.8}
+          />
+          <rect
+            x={224}
+            y={y}
+            width={192}
+            height={32}
+            rx="9"
+            className="fill-background stroke-border"
+            strokeWidth="1.5"
+          />
+          <g
+            className="scene-tick"
+            style={
+              { "--tick-delay": `${index * 0.55}s` } as React.CSSProperties
+            }
+          >
+            <circle cx={244} cy={y + 16} r="8" className="fill-primary" />
+            <path
+              d="M240 16 l3 3 l5 -6"
+              transform={`translate(0 ${y - 16})`}
+              fill="none"
+              className="stroke-primary-foreground"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+          <text
+            x={262}
+            y={y + 20}
+            className="fill-foreground/80 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+          >
+            {label}
+          </text>
+        </g>
+      ))}
+
+      <circle
+        cx={320}
+        cy={216}
+        r="4"
+        className="scene-pulse fill-primary"
+        filter={`url(#cglow-${uid})`}
+      />
+      <Caption x={320} y={236} text="monitored 24/7 from Chennai" />
+    </>
+  );
+}
+
+/** ENTERPRISE — requirements in, architecture out. */
+function EnterpriseScene({ uid }: { uid: string }) {
+  const inputs = [
+    "Applications",
+    "Locations",
+    "Cloud",
+    "Voice",
+    "Security",
+    "Redundancy",
+  ];
+
+  return (
+    <>
+      <Caption x={74} y={34} text="what you tell us" />
+
+      {inputs.map((label, index) => {
+        const y = 52 + index * 34;
+        return (
+          <g key={label}>
+            <rect
+              x={20}
+              y={y}
+              width={108}
+              height={24}
+              rx="7"
+              className="fill-background stroke-border"
+              strokeWidth="1.5"
+            />
+            <text
+              x={74}
+              y={y + 16}
+              textAnchor="middle"
+              className="fill-foreground/80 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+            >
+              {label}
+            </text>
+            <Wire
+              d={`M128 ${y + 12} Q168 ${y + 12} 168 140 H196`}
+              delay={index * 0.28}
+              duration={3}
+            />
+          </g>
+        );
+      })}
+
+      {/* The design that falls out of them. */}
+      <circle
+        cx={252}
+        cy={140}
+        r="52"
+        className="fill-none stroke-primary/25"
+        strokeWidth="1.5"
+        strokeDasharray="4 6"
+      />
+      <circle
+        cx={252}
+        cy={140}
+        r="34"
+        className="fill-background stroke-primary"
+        strokeWidth="1.75"
+      />
+      <circle
+        cx={252}
+        cy={140}
+        r="9"
+        className="fill-primary"
+        filter={`url(#cglow-${uid})`}
+      />
+      <Caption x={252} y={208} text="a design, not a price list" />
+
+      {/* Outputs radiating to the things the design has to reach. */}
+      {[
+        { x: 372, y: 74, label: "Data centre" },
+        { x: 386, y: 140, label: "Cloud" },
+        { x: 372, y: 206, label: "Branches" },
+      ].map(({ x, y, label }, index) => (
+        <g key={label}>
+          <Wire
+            d={`M286 140 Q${(286 + x) / 2} ${(140 + y) / 2} ${x - 14} ${y}`}
+            delay={index * 0.45 + 0.4}
+            duration={2.8}
+          />
+          <circle
+            cx={x}
+            cy={y}
+            r="11"
+            className="fill-background stroke-primary"
+            strokeWidth="1.75"
+          />
+          <circle
+            cx={x}
+            cy={y}
+            r="4"
+            className="scene-pulse fill-primary"
+            style={
+              { "--pulse-delay": `${index * 0.45}s` } as React.CSSProperties
+            }
+          />
+          <Caption x={x} y={y + 24} text={label} />
+        </g>
+      ))}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------ static IP */
+
+/** ADDRESS — one side keeps changing, the other never does. */
+function AddressScene({ uid }: { uid: string }) {
+  const rotating = ["198.51.100.7", "203.0.113.88", "192.0.2.41", "198.51.100.62"];
+
+  return (
+    <>
+      {/* Dynamic */}
+      <text
+        x={112}
+        y={64}
+        textAnchor="middle"
+        className="fill-muted-foreground/70 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+      >
+        DYNAMIC
+      </text>
+      <rect
+        x={26}
+        y={78}
+        width={172}
+        height={62}
+        rx="11"
+        className="fill-muted/40 stroke-border"
+        strokeWidth="1.5"
+        strokeDasharray="4 5"
+      />
+      {/* Four values stacked in one place, one visible at a time. */}
+      {rotating.map((value, index) => (
+        <text
+          key={value}
+          x={112}
+          y={115}
+          textAnchor="middle"
+          className="scene-swap fill-muted-foreground text-[11px] font-semibold [font-family:var(--font-mono)]"
+          style={
+            { "--swap-delay": `${index * 1.2}s` } as React.CSSProperties
+          }
+        >
+          {value}
+        </text>
+      ))}
+      <Caption x={112} y={160} text="reassigned without warning" />
+
+      {/* Rules written against it break when it moves. */}
+      <rect
+        x={26}
+        y={182}
+        width={172}
+        height={44}
+        rx="10"
+        className="fill-background stroke-border"
+        strokeWidth="1.5"
+      />
+      <path
+        d="M52 197 L64 209 M64 197 L52 209"
+        className="stroke-destructive"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <text
+        x={122}
+        y={208}
+        textAnchor="middle"
+        className="fill-muted-foreground/70 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+      >
+        firewall rule stale
+      </text>
+
+      {/* Static */}
+      <text
+        x={328}
+        y={64}
+        textAnchor="middle"
+        className="fill-primary text-[7.5px] font-medium [font-family:var(--font-mono)]"
+      >
+        STATIC
+      </text>
+      <rect
+        x={242}
+        y={78}
+        width={172}
+        height={62}
+        rx="11"
+        className="fill-primary/5 stroke-primary"
+        strokeWidth="1.75"
+      />
+      <text
+        x={328}
+        y={115}
+        textAnchor="middle"
+        className="fill-primary text-[11px] font-semibold [font-family:var(--font-mono)]"
+      >
+        203.0.113.24
+      </text>
+      <circle
+        cx={328}
+        cy={132}
+        r="3"
+        className="scene-pulse fill-primary"
+        filter={`url(#cglow-${uid})`}
+      />
+      <Caption x={328} y={160} text="the same one, every day" />
+
+      <rect
+        x={242}
+        y={182}
+        width={172}
+        height={44}
+        rx="10"
+        className="fill-background stroke-primary"
+        strokeWidth="1.75"
+      />
+      <g className="scene-tick">
+        <circle cx={268} cy={203} r="9" className="fill-primary" />
+        <path
+          d="M264 203 l3 3 l6 -7"
+          fill="none"
+          className="stroke-primary-foreground"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+      <text
+        x={342}
+        y={208}
+        textAnchor="middle"
+        className="fill-foreground/80 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+      >
+        rule still correct
+      </text>
+    </>
+  );
+}
+
+/** ALLOWLIST — the gate that a fixed address makes possible. */
+function AllowlistScene({ uid }: { uid: string }) {
+  const rows = [
+    { y: 70, value: "203.0.113.24", allow: true },
+    { y: 108, value: "198.51.100.9", allow: false },
+    { y: 146, value: "203.0.113.24", allow: true },
+    { y: 184, value: "192.0.2.77", allow: false },
+  ];
+
+  return (
+    <>
+      <Caption x={80} y={46} text="inbound" />
+
+      {rows.map(({ y, value, allow }, index) => (
+        <g key={`${value}-${y}`}>
+          <rect
+            x={20}
+            y={y}
+            width={122}
+            height={26}
+            rx="7"
+            className={cn(
+              "fill-background",
+              allow ? "stroke-primary/60" : "stroke-border",
+            )}
+            strokeWidth="1.5"
+          />
+          <text
+            x={81}
+            y={y + 17}
+            textAnchor="middle"
+            className={cn(
+              "text-[7.5px] font-medium [font-family:var(--font-mono)]",
+              allow ? "fill-primary" : "fill-muted-foreground/70",
+            )}
+          >
+            {value}
+          </text>
+
+          {/* Allowed traffic crosses the gate; the rest stops at it. */}
+          {allow ? (
+            <Wire
+              d={`M142 ${y + 13} H188`}
+              delay={index * 0.4}
+              duration={2.4}
+            />
+          ) : (
+            <>
+              <Wire d={`M142 ${y + 13} H182`} still dimmed />
+              <path
+                d={`M178 ${y + 8} l10 10 M188 ${y + 8} l-10 10`}
+                className="stroke-destructive"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </>
+          )}
+        </g>
+      ))}
+
+      {/* The gate. */}
+      <rect
+        x={190}
+        y={56}
+        width={64}
+        height={166}
+        rx="12"
+        className="fill-primary/5 stroke-primary"
+        strokeWidth="1.75"
+      />
+      <text
+        x={222}
+        y={136}
+        textAnchor="middle"
+        transform="rotate(-90 222 136)"
+        className="fill-primary text-[8px] font-medium [font-family:var(--font-mono)]"
+      >
+        ALLOWLIST
+      </text>
+
+      {/* What sits behind it. */}
+      {[
+        { y: 74, label: "Application" },
+        { y: 124, label: "VPN" },
+        { y: 174, label: "Partner API" },
+      ].map(({ y, label }, index) => (
+        <g key={label}>
+          <Wire
+            d={`M254 138 Q290 138 290 ${y + 16} H318`}
+            delay={index * 0.45 + 0.5}
+            duration={2.6}
+          />
+          <rect
+            x={318}
+            y={y}
+            width={98}
+            height={32}
+            rx="9"
+            className="fill-background stroke-border"
+            strokeWidth="1.5"
+          />
+          <text
+            x={367}
+            y={y + 20}
+            textAnchor="middle"
+            className="fill-foreground/80 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+          >
+            {label}
+          </text>
+        </g>
+      ))}
+
+      <circle
+        cx={222}
+        cy={238}
+        r="3.5"
+        className="scene-pulse fill-primary"
+        filter={`url(#cglow-${uid})`}
+      />
+      <Caption x={222} y={256} text="known address, known rule" />
+    </>
+  );
+}
+
+/** PROVISION — the four steps between asking and it working. */
+function ProvisionScene({ uid }: { uid: string }) {
+  const steps = [
+    "Tell us what needs it",
+    "We confirm eligibility",
+    "Assigned & documented",
+    "Configured & tested",
+  ];
+
+  return (
+    <>
+      <Caption x={220} y={44} text="usually a change, not an installation" />
+
+      {/* The rail the request travels. */}
+      <path
+        d="M56 140 H384"
+        className="stroke-border"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M56 140 H384"
+        fill="none"
+        pathLength={100}
+        className="scene-dash stroke-primary"
+        strokeWidth="3"
+        strokeLinecap="round"
+        style={{ "--dash-duration": "4.4s" } as React.CSSProperties}
+      />
+
+      {steps.map((label, index) => {
+        const x = 56 + index * 109;
+        const above = index % 2 === 0;
+
+        return (
+          <g key={label}>
+            <circle
+              cx={x}
+              cy={140}
+              r="13"
+              className="fill-background stroke-primary"
+              strokeWidth="1.75"
+            />
+            <text
+              x={x}
+              y={144}
+              textAnchor="middle"
+              className="fill-primary text-[8px] font-semibold [font-family:var(--font-mono)]"
+            >
+              {index + 1}
+            </text>
+            <path
+              d={`M${x} ${above ? 127 : 153} V${above ? 108 : 172}`}
+              className="stroke-border"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeDasharray="3 4"
+            />
+            <rect
+              x={x - 50}
+              y={above ? 74 : 172}
+              width={100}
+              height={32}
+              rx="9"
+              className="fill-background stroke-border"
+              strokeWidth="1.5"
+            />
+            <text
+              x={x}
+              y={above ? 94 : 192}
+              textAnchor="middle"
+              className="fill-foreground/80 text-[7px] font-medium [font-family:var(--font-mono)]"
+            >
+              {label}
+            </text>
+          </g>
+        );
+      })}
+
+      <circle
+        cx={384}
+        cy={140}
+        r="5"
+        className="scene-pulse fill-primary"
+        filter={`url(#cglow-${uid})`}
+      />
+      <Caption x={220} y={232} text="your circuit keeps running throughout" />
+    </>
+  );
+}
+
+/* ------------------------------------------------------------- indexes */
+
+/** MODULES — the six network services, arranged around what they serve. */
+function ModulesScene({ uid }: { uid: string }) {
+  const modules = [
+    { x: 92, y: 62, label: "Firewall" },
+    { x: 348, y: 62, label: "Wi-Fi" },
+    { x: 56, y: 140, label: "LAN" },
+    { x: 384, y: 140, label: "VPN" },
+    { x: 92, y: 218, label: "SD-WAN" },
+    { x: 348, y: 218, label: "Multi-site" },
+  ];
+
+  return (
+    <>
+      {modules.map(({ x, y, label }, index) => (
+        <g key={label}>
+          <Wire
+            d={`M${x} ${y} Q${(x + 220) / 2} ${(y + 140) / 2} 220 140`}
+            delay={index * 0.35}
+            duration={3}
+          />
+          <rect
+            x={x - 40}
+            y={y - 15}
+            width={80}
+            height={30}
+            rx="9"
+            className="fill-background stroke-primary"
+            strokeWidth="1.75"
+          />
+          <text
+            x={x}
+            y={y + 4}
+            textAnchor="middle"
+            className="fill-foreground/80 text-[7.5px] font-medium [font-family:var(--font-mono)]"
+          >
+            {label}
+          </text>
+        </g>
+      ))}
+
+      <circle
+        cx={220}
+        cy={140}
+        r="34"
+        className="fill-background stroke-primary"
+        strokeWidth="1.75"
+      />
+      <circle
+        cx={220}
+        cy={140}
+        r="10"
+        className="fill-primary"
+        filter={`url(#cglow-${uid})`}
+      />
+      <Caption x={220} y={192} text="YOUR NETWORK" />
+      <Caption x={220} y={262} text="designed together, not ordered apart" />
+    </>
+  );
+}
+
 const SCENES: Record<SceneKind, (props: { uid: string }) => React.JSX.Element> = {
   broadband: BroadbandScene,
   dedicated: DedicatedScene,
@@ -769,6 +1890,17 @@ const SCENES: Record<SceneKind, (props: { uid: string }) => React.JSX.Element> =
   vpn: VpnScene,
   sdwan: SdWanScene,
   multisite: MultiSiteScene,
+  sizing: SizingScene,
+  applications: ApplicationsScene,
+  workday: WorkdayScene,
+  contention: ContentionScene,
+  symmetry: SymmetryScene,
+  sla: SlaScene,
+  enterprise: EnterpriseScene,
+  address: AddressScene,
+  allowlist: AllowlistScene,
+  provision: ProvisionScene,
+  modules: ModulesScene,
 };
 
 export function ConnectivityScene({ scene, className }: Props) {

@@ -164,12 +164,38 @@ export type InternetSection = {
   closing?: { heading: string; body: string };
 };
 
-/** Which schematic the page hero draws. See ConnectivityScene. */
+/**
+ * Which schematic the page hero draws. See ConnectivityScene.
+ *
+ * Every page under /internet has its own — twenty-one pages, twenty-one
+ * scenes. Sharing one across a column made four pages that differ only in
+ * their words look like the same page, so a section never falls back to its
+ * parent's diagram in practice. Each scene draws what its own page argues:
+ * `contention` wobbles because a shared line does, `symmetry` shows two bars
+ * reaching the same mark, `address` keeps changing on one side and never on
+ * the other.
+ */
 export type SceneKind =
-  | "broadband"
-  | "dedicated"
-  | "static-ip"
+  // Section indexes
   | "network"
+  | "modules"
+  // Business broadband
+  | "broadband"
+  | "sizing"
+  | "applications"
+  | "workday"
+  // Dedicated internet
+  | "dedicated"
+  | "contention"
+  | "symmetry"
+  | "sla"
+  | "enterprise"
+  // Static IP
+  | "static-ip"
+  | "address"
+  | "allowlist"
+  | "provision"
+  // Network solutions
   | "firewall"
   | "wifi"
   | "lan"
@@ -640,7 +666,7 @@ const businessBroadband: InternetService = {
       tagline: "There is no standard office, so there is no standard plan.",
       intro:
         "Rather than publishing a speed tier and hoping it fits, we size a business broadband connection against what actually runs on it — how many people, which applications, and how much of the traffic travels upward.",
-      scene: "broadband",
+      scene: "sizing",
       body: [
         "Most connections that disappoint were not undersized on paper. They were sized on headcount alone, and nobody asked what those people would be doing: a twelve-person design studio pushing renders to the cloud is a heavier load than a forty-person office reading email.",
         "So the conversation starts with the work, not the number. The nine factors below are what we actually ask about.",
@@ -710,7 +736,7 @@ const businessBroadband: InternetService = {
       tagline: "Judged by what still works at eleven o'clock on a Monday.",
       intro:
         "A business connection is not a faster consumer one. It is judged on what keeps running during the busiest hour of the week, and on what can be added to it when the business needs something a household never would.",
-      scene: "broadband",
+      scene: "applications",
       body: [
         "These are the applications business broadband is expected to carry — all of them at the same time, on the same line, without one of them starving the others.",
       ],
@@ -762,7 +788,7 @@ const businessBroadband: InternetService = {
       tagline: "What changes when the office line is a business one.",
       intro:
         "The difference between a business connection and a consumer one shows up in ordinary weeks rather than exceptional ones — in whether the Monday video call holds, whether the CRM is quick at four in the afternoon, and in who answers when it is not.",
-      scene: "broadband",
+      scene: "workday",
       body: [
         "None of these are dramatic on their own. Together they are the difference between connectivity you think about and connectivity you do not.",
       ],
@@ -854,7 +880,7 @@ const dedicatedInternet: InternetService = {
         "What you buy at five in the morning is what you have at five in the evening.",
       intro:
         "With dedicated internet, bandwidth is provisioned specifically for your business requirement rather than drawn from a pool shared with everyone else on the segment.",
-      scene: "dedicated",
+      scene: "contention",
       body: [
         "Contended services are sold on a peak figure and delivered on an average one. That is a reasonable trade for a household, where the busy hour is the evening and nothing important depends on it. It is a poor trade for a business, whose busy hour is the working day and whose systems are all in use at once.",
         "Dedicated capacity removes the variable. It makes throughput something you can design around rather than something you discover.",
@@ -912,7 +938,7 @@ const dedicatedInternet: InternetService = {
       tagline: "Businesses do not only download.",
       intro:
         "Consumer connections are built on the assumption that data flows inward. Business traffic does not behave that way, and a connection tuned for consumption starves exactly the traffic an organisation depends on.",
-      scene: "dedicated",
+      scene: "symmetry",
       body: [
         "Every backup, every file sync, every outbound video stream and every voice call travels upward. On an asymmetric line those are the first things to suffer, and they suffer invisibly: the download test still looks fine while the call breaks up and the backup never finishes.",
         "Where a symmetrical service is selected, upload and download bandwidth are provisioned equally to support two-way business traffic. That matters most for cloud applications, video collaboration, data transfer, remote access and hosted services.",
@@ -968,7 +994,7 @@ const dedicatedInternet: InternetService = {
         "Bandwidth is a number. An SLA is a promise about what happens when it stops.",
       intro:
         "Business connectivity needs more than capacity. It needs defined commitments about response, restoration and accountability — agreed before anything goes wrong, when there is no pressure to be vague.",
-      scene: "dedicated",
+      scene: "sla",
       body: [
         "SipLink can provide SLA-backed connectivity options based on the service and commercial agreement selected. Our internet services include SLA arrangements covering SipLink equipment, the local access network and the IP network — the three places a fault actually occurs.",
         "We do not publish a headline uptime figure on this page. The commitment that applies to you depends on the service, the site and the last mile, and quoting an unrelated number here would tell you nothing useful about either.",
@@ -1023,7 +1049,7 @@ const dedicatedInternet: InternetService = {
       tagline: "Not a bigger plan — a different question.",
       intro:
         "Enterprise connectivity is not simply a higher bandwidth tier. It is a design problem, and the answer changes with every one of the inputs below.",
-      scene: "multisite",
+      scene: "enterprise",
       body: [
         "Two organisations with identical headcounts and identical budgets can need entirely different networks, because one runs everything in a data centre and the other runs everything in someone else's cloud. Bandwidth is the last decision in that conversation, not the first.",
       ],
@@ -1127,7 +1153,7 @@ const staticIp: InternetService = {
       tagline: "One number you write into a rule once.",
       intro:
         "A static IP is a public IP address assigned to your business connection that remains fixed. Unlike a dynamic address, which may change, it gives you one consistent value that other systems can be configured to trust.",
-      scene: "static-ip",
+      scene: "address",
       body: [
         "Most connections are issued a dynamic address: the network hands you one from a pool, and it may be replaced. For browsing that is invisible and entirely fine. It stops being fine the moment something outside needs to find you, because the address a rule was written against is no longer the address you have.",
         "Your office may need to let employees or approved systems connect from outside. With a fixed public address, an administrator configures the access rule around a known value, and it keeps working next month.",
@@ -1170,7 +1196,7 @@ const staticIp: InternetService = {
       tagline: "Eight situations where a changing address breaks something.",
       intro:
         "A static IP is worth paying for when some other system has been configured to trust your address. These are the eight cases that come up most often in business networks.",
-      scene: "static-ip",
+      scene: "allowlist",
       body: [
         "The pattern is the same in all of them: something outside your network — a partner, a platform, a trunk provider or your own remote staff — needs to recognise traffic as yours. Recognition requires an address that does not move.",
       ],
@@ -1237,7 +1263,7 @@ const staticIp: InternetService = {
       tagline: "Added to an eligible service, usually without changing the line.",
       intro:
         "Static IP can be added to an eligible SipLink internet service for applications that require consistent public addressing. Tell us what needs to reach what, and we will confirm whether your service supports it.",
-      scene: "static-ip",
+      scene: "provision",
       body: [
         "This is normally a configuration change rather than a new installation, so an existing connection can usually keep running while it is arranged.",
       ],
@@ -1860,7 +1886,7 @@ export const networkSolutionsHub = {
     "SipLink Network Solutions help organisations design, deploy and manage the infrastructure connecting users, devices, applications, branches and cloud services.",
   ],
   icon: Network,
-  scene: "network" as SceneKind,
+  scene: "modules" as SceneKind,
   /** Two areas the brief lists that are delivered across all six services. */
   alsoIncludes: [
     {

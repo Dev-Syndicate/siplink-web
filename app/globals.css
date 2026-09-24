@@ -1492,3 +1492,155 @@
     }
   }
 }
+
+@layer components {
+  /* A second wave of scene motion, for the per-page diagrams under
+     /internet. Each one exists because a particular page has a particular
+     thing to say — a contended line wobbles, a symmetrical pair does not,
+     a dynamic address keeps changing and a fixed one never does. */
+
+  /* Throughput on a contended line: steps rather than a smooth ease, because
+     the point is that it lurches unpredictably instead of holding. */
+  .scene-jitter {
+    transform-origin: left center;
+    transform-box: fill-box;
+    animation: scene-jitter 2.8s steps(1, end) infinite;
+  }
+
+  @keyframes scene-jitter {
+    0% {
+      transform: scaleX(0.88);
+    }
+    12% {
+      transform: scaleX(0.42);
+    }
+    25% {
+      transform: scaleX(0.71);
+    }
+    37% {
+      transform: scaleX(0.29);
+    }
+    50% {
+      transform: scaleX(0.83);
+    }
+    62% {
+      transform: scaleX(0.47);
+    }
+    75% {
+      transform: scaleX(0.63);
+    }
+    87% {
+      transform: scaleX(0.34);
+    }
+    100% {
+      transform: scaleX(0.88);
+    }
+  }
+
+  /* One of a stack of alternatives showing at a time — a dynamic IP being
+     reassigned. `steps(1)` because an address switches; it does not fade. */
+  .scene-swap {
+    animation: scene-swap 4.8s steps(1, end) infinite;
+    animation-delay: var(--swap-delay, 0s);
+  }
+
+  @keyframes scene-swap {
+    0%,
+    24% {
+      opacity: 1;
+    }
+    25%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* A mark being made against a checklist, then the list resetting. */
+  .scene-tick {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: scene-tick 4.4s ease-out infinite;
+    animation-delay: var(--tick-delay, 0s);
+  }
+
+  @keyframes scene-tick {
+    0%,
+    6% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    16%,
+    90% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  /* A playhead crossing the working day. */
+  .scene-sweep {
+    animation: scene-sweep 7s ease-in-out infinite;
+  }
+
+  @keyframes scene-sweep {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(var(--sweep-distance, 240px));
+    }
+  }
+
+  /* A knob settling on a slider — the sizing conversation, drawn. */
+  .scene-slide {
+    animation: scene-slide 4.2s ease-in-out infinite;
+    animation-delay: var(--slide-delay, 0s);
+  }
+
+  @keyframes scene-slide {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    40%,
+    70% {
+      transform: translateX(var(--slide-distance, 40px));
+    }
+  }
+
+  /* Every scene labels its parts in words, so the loops are decoration and
+     can stop. The two that leave a misleading still frame are handled
+     individually: a half-swapped address would show two values at once, and
+     an unticked checklist would read as unmet. */
+  @media (prefers-reduced-motion: reduce) {
+    .scene-jitter,
+    .scene-sweep,
+    .scene-slide,
+    .scene-tick,
+    .scene-swap {
+      animation: none;
+    }
+
+    .scene-jitter {
+      transform: none;
+    }
+
+    .scene-tick {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Only the first alternative remains, so the stack reads as one value. */
+    .scene-swap {
+      opacity: 0;
+    }
+
+    .scene-swap:first-of-type {
+      opacity: 1;
+    }
+  }
+}

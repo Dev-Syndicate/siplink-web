@@ -1084,6 +1084,16 @@ export type NavLeaf = {
 
 export type NavGroup = {
   heading: string;
+  /**
+   * Where the heading itself points, when the group is named after a real
+   * page. Set it rather than repeating that page as the first row: a link
+   * labelled the same as the heading directly beneath it reads as a
+   * duplicate, and the heading is the obvious place to click.
+   *
+   * Groups that only label a set of links leave this unset and stay plain
+   * text.
+   */
+  href?: string;
   /** Not rendered in the mega menu; see the note on `NavLeaf.description`. */
   description?: string;
   icon?: LucideIcon;
@@ -1152,8 +1162,10 @@ export function isNavItemActive(item: NavItem, pathname: string) {
   }
 
   return (
-    item.groups?.some((group) =>
-      group.links.some((link) => isNavLeafCurrent(link.href, pathname)),
+    item.groups?.some(
+      (group) =>
+        (group.href ? isNavLeafCurrent(group.href, pathname) : false) ||
+        group.links.some((link) => isNavLeafCurrent(link.href, pathname)),
     ) ?? false
   );
 }
@@ -1490,15 +1502,10 @@ export const nav: NavItem[] = [
     groups: [
       {
         heading: "Business Broadband",
+        href: "/internet/business-broadband",
         icon: Wifi,
         description: "Shared-port connectivity for the office.",
         links: [
-          {
-            label: "Business Broadband",
-            icon: Wifi,
-            href: "/internet/business-broadband",
-            description: "Dependable internet for everyday operations",
-          },
           {
             label: "Plans",
             icon: LayoutGrid,
@@ -1521,15 +1528,10 @@ export const nav: NavItem[] = [
       },
       {
         heading: "Dedicated Internet",
+        href: "/internet/dedicated-internet",
         icon: Gauge,
         description: "Uncontended leased lines on fibre.",
         links: [
-          {
-            label: "Dedicated Internet",
-            icon: Gauge,
-            href: "/internet/dedicated-internet",
-            description: "Bandwidth provisioned for you alone",
-          },
           {
             label: "Dedicated Bandwidth",
             icon: Gauge,
@@ -1558,15 +1560,10 @@ export const nav: NavItem[] = [
       },
       {
         heading: "Static IP",
+        href: "/internet/static-ip",
         icon: MapPin,
         description: "A fixed public address that stays yours.",
         links: [
-          {
-            label: "Static IP",
-            icon: MapPin,
-            href: "/internet/static-ip",
-            description: "One address everything else is configured against",
-          },
           {
             label: "What is Static IP?",
             icon: MapPin,
@@ -1589,15 +1586,10 @@ export const nav: NavItem[] = [
       },
       {
         heading: "Network Solutions",
+        href: "/internet/network-solutions",
         icon: Network,
         description: "Everything past the router, managed.",
         links: [
-          {
-            label: "Network Solutions",
-            icon: Network,
-            href: "/internet/network-solutions",
-            description: "The infrastructure behind the connection",
-          },
           {
             label: "Managed Router & Firewall",
             icon: Router,

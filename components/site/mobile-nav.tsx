@@ -114,10 +114,33 @@ export function MobileNav() {
                   <AccordionContent className="pt-0 pb-2">
                     {item.groups.map((group) => (
                       <div key={group.heading} className="mt-1">
+                        {/* Where the group is named after a real page, the
+                            heading links to it rather than that page being
+                            repeated as the first row — see NavGroup.href. */}
                         {!item.flat ? (
-                          <p className="px-3 pt-2 pb-1 font-mono text-[10px] font-semibold tracking-[0.16em] text-muted-foreground/70 uppercase">
-                            {group.heading}
-                          </p>
+                          group.href ? (
+                            <Link
+                              href={group.href}
+                              onClick={close}
+                              aria-current={
+                                isNavLeafCurrent(group.href, pathname)
+                                  ? "page"
+                                  : undefined
+                              }
+                              className={cn(
+                                "block px-3 pt-2 pb-1 font-mono text-[10px] font-semibold tracking-[0.16em] uppercase transition-colors",
+                                isNavLeafCurrent(group.href, pathname)
+                                  ? "text-primary"
+                                  : "text-muted-foreground/70",
+                              )}
+                            >
+                              {group.heading}
+                            </Link>
+                          ) : (
+                            <p className="px-3 pt-2 pb-1 font-mono text-[10px] font-semibold tracking-[0.16em] text-muted-foreground/70 uppercase">
+                              {group.heading}
+                            </p>
+                          )
                         ) : null}
 
                         <ul>
