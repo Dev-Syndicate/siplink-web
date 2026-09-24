@@ -19,6 +19,30 @@ import { cn } from "@/lib/utils";
  * one comes first gets no top margin. Deriving it up front keeps this a pure
  * render; tracking it with a mutable flag would not be.
  */
+/**
+ * Column classes for the points grid, chosen from the number of points.
+ *
+ * A fixed `sm:grid-cols-2 xl:grid-cols-3` left a part-empty last row on most
+ * of these sections — four points rendered as three across and a lone one
+ * underneath. Counts here run 2, 3, 4, 5, 6 and 8, so the columns are picked
+ * per count to divide exactly.
+ *
+ * The cap is deliberate. This grid renders both at full width on a section
+ * page and inside the narrower right-hand column of a service page, and the
+ * breakpoints are viewport-based, so they cannot tell the two apart — four
+ * columns is the most that stays readable in the narrow case.
+ *
+ * Five is prime: rather than leave a hole beside the last item, it runs
+ * across both columns.
+ */
+function pointColumns(count: number) {
+  if (count === 3) return "sm:grid-cols-3";
+  if (count === 6) return "sm:grid-cols-2 xl:grid-cols-3";
+  if (count === 8) return "sm:grid-cols-2 xl:grid-cols-4";
+  if (count % 2 === 1) return "sm:grid-cols-2 sm:[&>li:last-child]:col-span-2";
+  return "sm:grid-cols-2";
+}
+
 export function SectionContent({
   section,
   className,
@@ -58,7 +82,13 @@ export function SectionContent({
       })}
 
       {points?.length ? (
-        <ul className={cn("grid gap-8 sm:grid-cols-2 xl:grid-cols-3", spacing("points"))}>
+        <ul
+          className={cn(
+            "grid gap-8",
+            pointColumns(points.length),
+            spacing("points"),
+          )}
+        >
           {points.map(({ title, description, icon: Icon }, index) => (
             <ScrollReveal
               as="li"
