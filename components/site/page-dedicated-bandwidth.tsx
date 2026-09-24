@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Users } from "lucide-react";
 
@@ -20,11 +21,28 @@ export function DedicatedBandwidthHero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-border">
       {/* The block. Kept to the right half from `lg` up; below that the
-          panel would crowd the copy, so the split simply does not happen. */}
+          panel would crowd the copy, so the split simply does not happen.
+
+          The artwork fills it rather than a flat gradient. Two scrims sit
+          over it: one fading from the page's own ground at the left edge, so
+          the seam between the halves is soft instead of a hard vertical rule,
+          and a light wash so the white cards that overlap it stay legible. */}
       <div
         aria-hidden
-        className="absolute inset-y-0 right-0 -z-10 hidden w-1/2 bg-gradient-to-br from-brand-from/15 via-accent to-brand-to/10 lg:block"
-      />
+        className="absolute inset-y-0 right-0 -z-10 hidden w-1/2 overflow-hidden lg:block"
+      >
+        <Image
+          src="/internet/dedicated.png"
+          alt=""
+          fill
+          priority
+          sizes="50vw"
+          className="object-cover object-center dark:opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/25 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/40" />
+      </div>
+
       <div
         aria-hidden
         className="pointer-events-none absolute -top-32 right-1/4 -z-10 size-[520px] rounded-full bg-brand-to/10 blur-3xl"
