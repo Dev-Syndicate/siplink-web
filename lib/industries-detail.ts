@@ -46,16 +46,28 @@ import {
  * the industry, described alongside SipLink's real platform capabilities.
  */
 
+/** A SipLink product that delivers a capability, linked to its product page. */
+export type CapabilityProduct = {
+  /** Product name as shown on /products. */
+  label: string;
+  /** Product slug under /products/[slug]. */
+  slug: string;
+};
+
 /**
  * A named capability. `outcome` is a short "so that…" line derived from the
  * capability's own description — no new facts, it just states the benefit the
- * description already implies, for the editorial capability list.
+ * description already implies, for the editorial capability list. `products`
+ * maps the capability to the actual SipLink product page(s) that deliver it,
+ * so a reader can see which product is at work and jump straight to it.
  */
 export type IndustryPoint = {
   title: string;
   description: string;
   outcome: string;
   icon: LucideIcon;
+  /** The SipLink product(s) that power this capability. */
+  products?: CapabilityProduct[];
 };
 
 /**
@@ -84,8 +96,16 @@ export type IndustryDetail = {
   parties: string[];
   /** The situation the reader recognises. Left column of the problem spine. */
   challenge: { heading: string; body: string };
-  /** How SipLink answers it. Right column of the problem spine. */
-  handling: { heading: string; body: string[] };
+  /**
+   * How SipLink answers it. `body` is the prose; `productLinks` maps exact
+   * product phrases that appear in that prose to their /products slug, so the
+   * page can turn those mentions into inline links without fragile matching.
+   */
+  handling: {
+    heading: string;
+    body: string[];
+    productLinks?: { phrase: string; slug: string }[];
+  };
   /** The interaction sequence, derived from `handling`. */
   flow: IndustryFlowStep[];
   /** Concrete capabilities the source attributes to this industry. */
@@ -115,6 +135,15 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink manages inbound and outbound communication with IVR, call queues and intelligent routing, so each caller reaches the right team quickly and the rest wait in an organised queue rather than a busy tone.",
         "Supervisors can support agents live with Whisper, Barge and Spy, while call recording and analytics keep a record of every interaction. AI-powered transcription, real-time transcription and call notes turn conversations into searchable information — so managers can review, coach and improve without replaying whole recordings.",
       ],
+      productLinks: [
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "call queues", slug: "call-queue" },
+        { phrase: "Whisper, Barge and Spy", slug: "call-center" },
+        { phrase: "call recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "AI-powered transcription", slug: "call-recording" },
+        { phrase: "call notes", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -140,6 +169,10 @@ export const industryDetails: IndustryDetail[] = [
           "Automated menus and routing rules send each caller to the right team, department or next available agent.",
         outcome: "Callers reach the right team first time.",
         icon: ListChecks,
+        products: [
+          { label: "IVR System", slug: "ivr" },
+          { label: "Call Center Solution", slug: "call-center" },
+        ],
       },
       {
         title: "Call queues",
@@ -147,6 +180,7 @@ export const industryDetails: IndustryDetail[] = [
           "Hold waiting callers in an organised queue and distribute them across agents to keep response times down.",
         outcome: "Waiting callers get answered, not a busy tone.",
         icon: Route,
+        products: [{ label: "Call Queue", slug: "call-queue" }],
       },
       {
         title: "Supervisor Whisper, Barge and Spy",
@@ -154,6 +188,7 @@ export const industryDetails: IndustryDetail[] = [
           "Monitor live calls, whisper guidance to an agent, or join a conversation when a customer needs more help.",
         outcome: "Agents get support the moment a call needs it.",
         icon: Headset,
+        products: [{ label: "Call Center Solution", slug: "call-center" }],
       },
       {
         title: "Recording and transcription",
@@ -161,6 +196,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture calls and generate AI, real-time and audio transcription so conversations become searchable text.",
         outcome: "Conversations become searchable text, not just audio.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -168,6 +204,7 @@ export const industryDetails: IndustryDetail[] = [
           "Attach notes to conversations so follow-ups, requirements and outcomes are documented, not remembered.",
         outcome: "Follow-ups are documented, not left to memory.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Analytics and call insights",
@@ -175,6 +212,7 @@ export const industryDetails: IndustryDetail[] = [
           "Understand call volume, answered and missed calls and busy periods, and use insights to lift team performance.",
         outcome: "Managers see what moves team performance.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -204,6 +242,15 @@ export const industryDetails: IndustryDetail[] = [
       body: [
         "SipLink combines business calling, fax, call recording, transcription, call analytics, SMS, IVR and contact-center capabilities into one HIPAA-compliant environment, so voice and document workflows sit side by side rather than in separate systems.",
         "For medical billing and Revenue Cycle Management teams, reliable voice and fax support document-driven work, and supervisors can use Whisper, Barge and Spy to monitor or assist RCM agents on live calls where appropriate. AI, real-time and audio transcription with call notes let authorised users review a transcript and notes to find follow-ups and requirements — instead of listening to an entire recording.",
+      ],
+      productLinks: [
+        { phrase: "business calling", slug: "cloud-pbx" },
+        { phrase: "call recording", slug: "call-recording" },
+        { phrase: "call analytics", slug: "call-analytics" },
+        { phrase: "SMS", slug: "sms-api" },
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "Whisper, Barge and Spy", slug: "call-center" },
+        { phrase: "call notes", slug: "call-analytics" },
       ],
     },
     flow: [
@@ -237,6 +284,7 @@ export const industryDetails: IndustryDetail[] = [
           "Voice and fax together support the patient, provider and document-based workflows healthcare teams depend on.",
         outcome: "Voice and document workflows sit together.",
         icon: PhoneCall,
+        products: [{ label: "Cloud PBX", slug: "cloud-pbx" }],
       },
       {
         title: "IVR and contact-center capabilities",
@@ -244,6 +292,10 @@ export const industryDetails: IndustryDetail[] = [
           "Route callers to the right department and organise high-volume patient and insurer communication.",
         outcome: "High-volume patient calls stay organised.",
         icon: ListChecks,
+        products: [
+          { label: "IVR System", slug: "ivr" },
+          { label: "Call Center Solution", slug: "call-center" },
+        ],
       },
       {
         title: "Recording and transcription",
@@ -251,6 +303,7 @@ export const industryDetails: IndustryDetail[] = [
           "Record calls and generate AI, real-time and audio transcription so authorised users can review conversations as text.",
         outcome: "Authorised users review calls as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -258,6 +311,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture follow-ups, requirements and important details from patient and provider conversations.",
         outcome: "Nothing important goes undocumented.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "SMS and analytics",
@@ -265,6 +319,10 @@ export const industryDetails: IndustryDetail[] = [
           "Reach patients by message and use analytics to understand communication activity across teams.",
         outcome: "Reach patients and see activity across teams.",
         icon: MessagesSquare,
+        products: [
+          { label: "SMS API", slug: "sms-api" },
+          { label: "Call Analytics", slug: "call-analytics" },
+        ],
       },
     ],
     idealFor: [
@@ -295,6 +353,14 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink provides structured calling, IVR, queues, recording, analytics and communication management for sales, support, service and collections teams — so every conversation is directed, captured and measurable.",
         "With AI-powered and real-time transcription, authorised teams can review conversations in text rather than depending entirely on audio. Call notes help agents and managers capture key details and follow-up requirements, while analytics gives visibility into communication activity and team performance.",
       ],
+      productLinks: [
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "queues", slug: "call-queue" },
+        { phrase: "recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "AI-powered and real-time transcription", slug: "call-recording" },
+        { phrase: "Call notes", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -320,6 +386,7 @@ export const industryDetails: IndustryDetail[] = [
           "Direct callers with automated menus and give sales, service and collections teams an organised calling environment.",
         outcome: "Every caller lands in an organised environment.",
         icon: ListChecks,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Call queues",
@@ -327,6 +394,7 @@ export const industryDetails: IndustryDetail[] = [
           "Distribute high call volume across teams and hold waiting customers in an organised queue.",
         outcome: "High call volume stays under control.",
         icon: Route,
+        products: [{ label: "Call Queue", slug: "call-queue" }],
       },
       {
         title: "Recording",
@@ -334,6 +402,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture conversations for accountability and review across regulated financial workflows.",
         outcome: "Every conversation is accountable and reviewable.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "AI and real-time transcription",
@@ -341,6 +410,7 @@ export const industryDetails: IndustryDetail[] = [
           "Review conversations as searchable text and find key information without replaying the audio.",
         outcome: "Find what was said without replaying audio.",
         icon: FileText,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -348,6 +418,7 @@ export const industryDetails: IndustryDetail[] = [
           "Document important conversation details and follow-up requirements as work progresses.",
         outcome: "Key details and follow-ups stay on record.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Call analytics",
@@ -355,6 +426,7 @@ export const industryDetails: IndustryDetail[] = [
           "See communication activity and team performance across sales, support, service and collections.",
         outcome: "See activity and performance across every team.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -385,6 +457,14 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink provides business calling, IVR, call queues, messaging, recording and analytics to help institutions organise communication across departments and campuses.",
         "For support and admissions teams handling frequent calls, transcription and call notes make it quick to review a conversation, capture requirements and follow up properly. Real-time transcription can give teams immediate visibility into ongoing conversations where applicable, while administrators gain a clearer view of how calls are handled.",
       ],
+      productLinks: [
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "call queues", slug: "call-queue" },
+        { phrase: "messaging", slug: "sms-api" },
+        { phrase: "recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "call notes", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -410,6 +490,7 @@ export const industryDetails: IndustryDetail[] = [
           "Guide callers to admissions, departments or support and route enquiries to the right place.",
         outcome: "Enquiries reach the right department.",
         icon: ListChecks,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Call queues",
@@ -417,6 +498,7 @@ export const industryDetails: IndustryDetail[] = [
           "Handle busy admissions and support periods without callers hitting a busy tone.",
         outcome: "Busy admissions periods stay manageable.",
         icon: Route,
+        products: [{ label: "Call Queue", slug: "call-queue" }],
       },
       {
         title: "Messaging",
@@ -424,6 +506,7 @@ export const industryDetails: IndustryDetail[] = [
           "Reach students, parents and staff by message alongside voice communication.",
         outcome: "Reach everyone by message as well as voice.",
         icon: MessagesSquare,
+        products: [{ label: "SMS API", slug: "sms-api" }],
       },
       {
         title: "Recording and transcription",
@@ -431,6 +514,7 @@ export const industryDetails: IndustryDetail[] = [
           "Record calls and review them as text, with real-time transcription where applicable.",
         outcome: "Review conversations quickly as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -438,6 +522,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture enquiry requirements and follow-ups so nothing slips between departments.",
         outcome: "Nothing slips between departments.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Analytics",
@@ -445,6 +530,7 @@ export const industryDetails: IndustryDetail[] = [
           "Give administrators visibility into call volumes and how communication is being handled.",
         outcome: "Administrators see how calls are handled.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -475,6 +561,15 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink helps retailers manage customer calls, store communication, IVR, call routing, messaging, recording and analytics from one centralised environment — so the whole operation communicates as a connected business.",
         "For customer-service teams, AI transcription, call notes and analytics surface customer requirements and recurring issues. SMS supports customer communication and notifications, and multiple business numbers keep separate lines for different stores, departments or functions.",
       ],
+      productLinks: [
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "AI transcription", slug: "call-recording" },
+        { phrase: "call notes", slug: "call-analytics" },
+        { phrase: "SMS", slug: "sms-api" },
+        { phrase: "multiple business numbers", slug: "did-numbers" },
+      ],
     },
     flow: [
       {
@@ -500,6 +595,7 @@ export const industryDetails: IndustryDetail[] = [
           "Route customers to the right store, sales team or support department automatically.",
         outcome: "Customers reach the right store or team.",
         icon: Route,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Multiple business numbers",
@@ -507,6 +603,7 @@ export const industryDetails: IndustryDetail[] = [
           "Keep separate numbers for different stores, departments or business functions.",
         outcome: "Each store keeps its own identity.",
         icon: PhoneCall,
+        products: [{ label: "DID Numbers", slug: "did-numbers" }],
       },
       {
         title: "Business SMS",
@@ -514,6 +611,7 @@ export const industryDetails: IndustryDetail[] = [
           "Support customer communication and notifications alongside voice.",
         outcome: "Reach customers by message and notification.",
         icon: Send,
+        products: [{ label: "SMS API", slug: "sms-api" }],
       },
       {
         title: "Recording and transcription",
@@ -521,6 +619,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture calls and use AI transcription to review customer conversations as text.",
         outcome: "Review customer conversations as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -528,6 +627,7 @@ export const industryDetails: IndustryDetail[] = [
           "Document customer requirements so service teams can follow up consistently.",
         outcome: "Service teams follow up consistently.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Analytics",
@@ -535,6 +635,7 @@ export const industryDetails: IndustryDetail[] = [
           "Identify recurring issues and customer requirements across stores and teams.",
         outcome: "Spot recurring issues across stores.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -565,6 +666,15 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink routes guests to the appropriate department and supports business numbers, extensions, IVR, queues, recording and analytics — so calls reach the right team and busy periods stay organised.",
         "For guest-service teams, call transcription and call notes capture important guest requirements and follow-ups. Managers can use recordings and analytics to understand service interactions and steadily improve the guest communication experience.",
       ],
+      productLinks: [
+        { phrase: "business numbers", slug: "did-numbers" },
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "queues", slug: "call-queue" },
+        { phrase: "recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "call transcription", slug: "call-recording" },
+        { phrase: "call notes", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -590,6 +700,7 @@ export const industryDetails: IndustryDetail[] = [
           "Send guests to reservations, the front desk, service or management without misdirected calls.",
         outcome: "Guests reach the right team, not the wrong one.",
         icon: ListChecks,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Numbers and extensions",
@@ -597,6 +708,7 @@ export const industryDetails: IndustryDetail[] = [
           "Business numbers and extensions organised around departments and service teams.",
         outcome: "Departments and teams stay clearly organised.",
         icon: PhoneCall,
+        products: [{ label: "DID Numbers", slug: "did-numbers" }],
       },
       {
         title: "Call queues",
@@ -604,6 +716,7 @@ export const industryDetails: IndustryDetail[] = [
           "Keep busy reservation and service periods organised rather than dropping calls.",
         outcome: "Busy periods stay organised, not dropped.",
         icon: Route,
+        products: [{ label: "Call Queue", slug: "call-queue" }],
       },
       {
         title: "Recording and transcription",
@@ -611,6 +724,7 @@ export const industryDetails: IndustryDetail[] = [
           "Record guest calls and review them as text to understand service interactions.",
         outcome: "Understand service interactions as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -618,6 +732,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture guest requirements and follow-ups so requests don't get lost between shifts.",
         outcome: "Requests survive the shift change.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Analytics",
@@ -625,6 +740,7 @@ export const industryDetails: IndustryDetail[] = [
           "Understand service interactions and improve the overall guest experience over time.",
         outcome: "The guest experience keeps improving.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -655,6 +771,14 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink organises these conversations through business calling, routing, IVR, SMS, call recording and analytics — so customers, drivers and operations teams stay connected across sites.",
         "SMS supports operational updates and customer notifications, while call transcription and call notes capture delivery instructions, customer requests and follow-up information. Managers can use analytics to understand communication volume and identify operational bottlenecks.",
       ],
+      productLinks: [
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "SMS", slug: "sms-api" },
+        { phrase: "call recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "call transcription", slug: "call-recording" },
+        { phrase: "call notes", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -680,6 +804,7 @@ export const industryDetails: IndustryDetail[] = [
           "Direct customers, drivers and operations calls to the right branch or team.",
         outcome: "Calls reach the right branch or team.",
         icon: Route,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "SMS updates and notifications",
@@ -687,6 +812,7 @@ export const industryDetails: IndustryDetail[] = [
           "Send operational updates and customer notifications by message.",
         outcome: "Updates and notifications go out fast.",
         icon: Send,
+        products: [{ label: "SMS API", slug: "sms-api" }],
       },
       {
         title: "Call recording",
@@ -694,6 +820,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture conversations across dispatch, warehouse and customer communication.",
         outcome: "Conversations are captured across every site.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Transcription and call notes",
@@ -701,6 +828,10 @@ export const industryDetails: IndustryDetail[] = [
           "Capture delivery instructions, customer requests and follow-up information as text.",
         outcome: "Delivery instructions don't get lost.",
         icon: FileText,
+        products: [
+          { label: "Call Recording", slug: "call-recording" },
+          { label: "Call Analytics", slug: "call-analytics" },
+        ],
       },
       {
         title: "Multi-site communication",
@@ -708,6 +839,7 @@ export const industryDetails: IndustryDetail[] = [
           "Keep customers, drivers, dispatchers, warehouses and branches connected on one platform.",
         outcome: "Every part of the operation stays connected.",
         icon: Network,
+        products: [{ label: "SIP Trunking", slug: "sip-trunking" }],
       },
       {
         title: "Analytics",
@@ -715,6 +847,7 @@ export const industryDetails: IndustryDetail[] = [
           "Understand communication volume and identify operational bottlenecks.",
         outcome: "Find the bottlenecks slowing operations.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -745,6 +878,16 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink provides Voice API, SMS API, WhatsApp Business API, WebRTC SDK, SIP API, CRM integrations and programmable communication capabilities, so technology businesses can build calling and messaging directly into their applications.",
         "It also provides communication intelligence through AI, real-time and audio transcription, call notes and analytics — so SaaS products go beyond embedding a call to building workflows where conversations are transcribed, analysed, documented and connected to their applications. This supports CRM platforms, help-desk and staffing software, sales and healthcare applications, customer-service platforms and other products that need voice or messaging built in.",
       ],
+      productLinks: [
+        { phrase: "Voice API", slug: "voice-api" },
+        { phrase: "SMS API", slug: "sms-api" },
+        { phrase: "WhatsApp Business API", slug: "whatsapp-api" },
+        { phrase: "WebRTC SDK", slug: "webrtc-sdk" },
+        { phrase: "SIP API", slug: "sip-api" },
+        { phrase: "CRM integrations", slug: "crm-integration" },
+        { phrase: "call notes", slug: "call-analytics" },
+        { phrase: "analytics", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -770,6 +913,10 @@ export const industryDetails: IndustryDetail[] = [
           "Place and receive calls and send programmable messages from within your own application.",
         outcome: "Calls and messages run inside your product.",
         icon: Braces,
+        products: [
+          { label: "Voice API", slug: "voice-api" },
+          { label: "SMS API", slug: "sms-api" },
+        ],
       },
       {
         title: "WhatsApp Business API",
@@ -777,6 +924,7 @@ export const industryDetails: IndustryDetail[] = [
           "Reach customers on WhatsApp as part of your product's communication workflows.",
         outcome: "Reach customers on WhatsApp from your product.",
         icon: MessagesSquare,
+        products: [{ label: "WhatsApp Business API", slug: "whatsapp-api" }],
       },
       {
         title: "WebRTC SDK",
@@ -784,6 +932,7 @@ export const industryDetails: IndustryDetail[] = [
           "Add calling straight into the browser and your web application.",
         outcome: "Calling works right in the browser.",
         icon: Code2,
+        products: [{ label: "WebRTC SDK", slug: "webrtc-sdk" }],
       },
       {
         title: "SIP API",
@@ -791,6 +940,7 @@ export const industryDetails: IndustryDetail[] = [
           "Provision and manage SIP connectivity programmatically alongside your platform.",
         outcome: "Manage SIP connectivity programmatically.",
         icon: ServerCog,
+        products: [{ label: "SIP API", slug: "sip-api" }],
       },
       {
         title: "CRM integrations",
@@ -798,6 +948,7 @@ export const industryDetails: IndustryDetail[] = [
           "Connect communication to the CRM and business systems your product works with.",
         outcome: "Communication ties into your business systems.",
         icon: Workflow,
+        products: [{ label: "CRM Integration", slug: "crm-integration" }],
       },
       {
         title: "Transcription and analytics",
@@ -805,6 +956,10 @@ export const industryDetails: IndustryDetail[] = [
           "Transcribe, document and analyse conversations, and connect the results back to your app.",
         outcome: "Conversations become data in your app.",
         icon: FileText,
+        products: [
+          { label: "Call Recording", slug: "call-recording" },
+          { label: "Call Analytics", slug: "call-analytics" },
+        ],
       },
     ],
     idealFor: [
@@ -835,6 +990,15 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink helps organise these interactions through business numbers, IVR, call queues, routing, recording, analytics and messaging — so citizen and internal communication is directed and captured.",
         "For government support centers, transcription and call notes help authorised teams document conversations and identify follow-up requirements, while analytics provides management-level visibility into communication volumes and service demand.",
       ],
+      productLinks: [
+        { phrase: "business numbers", slug: "did-numbers" },
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "call queues", slug: "call-queue" },
+        { phrase: "recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "messaging", slug: "sms-api" },
+        { phrase: "call notes", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -860,6 +1024,7 @@ export const industryDetails: IndustryDetail[] = [
           "Guide citizens and staff to the right department or service center automatically.",
         outcome: "Citizens reach the right department.",
         icon: ListChecks,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Call queues",
@@ -867,6 +1032,7 @@ export const industryDetails: IndustryDetail[] = [
           "Keep service-center demand organised so citizens aren't met with a busy tone.",
         outcome: "Service demand stays organised.",
         icon: Route,
+        products: [{ label: "Call Queue", slug: "call-queue" }],
       },
       {
         title: "Business numbers and messaging",
@@ -874,6 +1040,10 @@ export const industryDetails: IndustryDetail[] = [
           "Organise departmental numbers and reach citizens and employees by message.",
         outcome: "Departmental lines stay organised.",
         icon: PhoneCall,
+        products: [
+          { label: "DID Numbers", slug: "did-numbers" },
+          { label: "SMS API", slug: "sms-api" },
+        ],
       },
       {
         title: "Recording and transcription",
@@ -881,6 +1051,7 @@ export const industryDetails: IndustryDetail[] = [
           "Record calls and let authorised teams document conversations as text.",
         outcome: "Authorised teams document conversations as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -888,6 +1059,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture follow-up requirements from citizen and internal conversations.",
         outcome: "Follow-up requirements are captured.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Analytics",
@@ -895,6 +1067,7 @@ export const industryDetails: IndustryDetail[] = [
           "Give management visibility into communication volumes and service demand.",
         outcome: "Management sees volumes and service demand.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -925,6 +1098,14 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink connects these environments through business calling, SIP connectivity, extensions, routing, IVR, messaging and centralised communication management — so multi-location communication runs through one platform.",
         "For operational and support teams, call recording, transcription, call notes and analytics capture important instructions, supplier conversations, service requests and follow-up requirements — keeping detail from slipping between sites.",
       ],
+      productLinks: [
+        { phrase: "SIP connectivity", slug: "sip-trunking" },
+        { phrase: "IVR", slug: "ivr" },
+        { phrase: "messaging", slug: "sms-api" },
+        { phrase: "call recording", slug: "call-recording" },
+        { phrase: "call notes", slug: "call-analytics" },
+        { phrase: "analytics", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -950,6 +1131,7 @@ export const industryDetails: IndustryDetail[] = [
           "Connect offices, factories and warehouses with SIP connectivity and organised extensions.",
         outcome: "Every site connects on one platform.",
         icon: Network,
+        products: [{ label: "SIP Trunking", slug: "sip-trunking" }],
       },
       {
         title: "IVR and routing",
@@ -957,6 +1139,7 @@ export const industryDetails: IndustryDetail[] = [
           "Direct calls to the right site, production team, supplier line or service department.",
         outcome: "Calls reach the right site or team.",
         icon: Route,
+        products: [{ label: "IVR System", slug: "ivr" }],
       },
       {
         title: "Messaging",
@@ -964,6 +1147,7 @@ export const industryDetails: IndustryDetail[] = [
           "Support operational communication across locations and teams.",
         outcome: "Teams coordinate across locations by message.",
         icon: MessagesSquare,
+        products: [{ label: "SMS API", slug: "sms-api" }],
       },
       {
         title: "Recording and transcription",
@@ -971,6 +1155,7 @@ export const industryDetails: IndustryDetail[] = [
           "Capture supplier conversations and service requests and review them as text.",
         outcome: "Supplier conversations are reviewable as text.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Call notes",
@@ -978,6 +1163,7 @@ export const industryDetails: IndustryDetail[] = [
           "Document instructions and follow-up requirements from operational calls.",
         outcome: "Instructions don't slip between sites.",
         icon: Notebook,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
       {
         title: "Centralised management and analytics",
@@ -985,6 +1171,7 @@ export const industryDetails: IndustryDetail[] = [
           "Manage multi-location communication centrally and understand activity across sites.",
         outcome: "Manage every site's communication centrally.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [
@@ -1015,6 +1202,13 @@ export const industryDetails: IndustryDetail[] = [
         "SipLink provides SIP connectivity, SBC capabilities, number management, voice infrastructure, APIs, routing and programmable communication services that integrate into operator environments.",
         "It can also add communication intelligence through call recording, audio, AI and real-time transcription, analytics and call notes — so operators and their customers move beyond basic voice connectivity toward more intelligent communication services.",
       ],
+      productLinks: [
+        { phrase: "SIP connectivity", slug: "sip-trunking" },
+        { phrase: "SBC capabilities", slug: "sbc" },
+        { phrase: "call recording", slug: "call-recording" },
+        { phrase: "analytics", slug: "call-analytics" },
+        { phrase: "call notes", slug: "call-analytics" },
+      ],
     },
     flow: [
       {
@@ -1040,6 +1234,7 @@ export const industryDetails: IndustryDetail[] = [
           "Support large numbers of customers, SIP connections and communication workflows.",
         outcome: "Carry large volumes of customers and connections.",
         icon: Network,
+        products: [{ label: "SIP Trunking", slug: "sip-trunking" }],
       },
       {
         title: "Session Border Controller",
@@ -1047,6 +1242,7 @@ export const industryDetails: IndustryDetail[] = [
           "A controlled layer between operator voice infrastructure and external SIP networks.",
         outcome: "A controlled layer to external SIP networks.",
         icon: ShieldCheck,
+        products: [{ label: "Session Border Controller", slug: "sbc" }],
       },
       {
         title: "Number management",
@@ -1054,6 +1250,7 @@ export const industryDetails: IndustryDetail[] = [
           "Manage numbers across operator environments and their customers.",
         outcome: "Manage numbers across operators and customers.",
         icon: MapPin,
+        products: [{ label: "DID Numbers", slug: "did-numbers" }],
       },
       {
         title: "APIs and programmable services",
@@ -1061,6 +1258,10 @@ export const industryDetails: IndustryDetail[] = [
           "Integrate voice, routing and programmable communication into operator platforms.",
         outcome: "Integrate voice into operator platforms.",
         icon: Braces,
+        products: [
+          { label: "Voice API", slug: "voice-api" },
+          { label: "SMS API", slug: "sms-api" },
+        ],
       },
       {
         title: "Recording and transcription",
@@ -1068,6 +1269,7 @@ export const industryDetails: IndustryDetail[] = [
           "Add call recording and audio, AI and real-time transcription on top of connectivity.",
         outcome: "Layer intelligence on top of connectivity.",
         icon: Mic,
+        products: [{ label: "Call Recording", slug: "call-recording" }],
       },
       {
         title: "Analytics and call notes",
@@ -1075,6 +1277,7 @@ export const industryDetails: IndustryDetail[] = [
           "Give operators and their customers more intelligent communication services.",
         outcome: "Move beyond basic voice connectivity.",
         icon: Gauge,
+        products: [{ label: "Call Analytics", slug: "call-analytics" }],
       },
     ],
     idealFor: [

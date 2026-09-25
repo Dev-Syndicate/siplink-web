@@ -2107,7 +2107,7 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     status: "Inbox connected",
     lines: [
       { text: "POST /whatsapp", accent: true },
-      { text: '  to: "+91 98..."' },
+      { text: '  to: "+1 415..."' },
       { text: '  template: "order"' },
     ],
     requestLabel: "Send",

@@ -10,13 +10,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ProductIllustration } from "@/components/site/product-illustration";
+import { RevealGroup } from "@/components/site/reveal-group";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { getProductDetail, productDetails } from "@/lib/products";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -65,6 +61,18 @@ export default async function ProductDetailPage({
     faqs,
     outcome,
   } = product;
+
+  // Migration steps sit on one row where they fit (up to five); six wraps
+  // as two rows of three. Full class names so Tailwind can see them.
+  const stepCount = migration?.steps.length ?? 0;
+  const stepColumns =
+    stepCount <= 3
+      ? { count: 3, className: "lg:grid-cols-3" }
+      : stepCount === 4
+        ? { count: 4, className: "lg:grid-cols-4" }
+        : stepCount === 5
+          ? { count: 5, className: "lg:grid-cols-5" }
+          : { count: 3, className: "lg:grid-cols-3" };
 
   // Sibling products in the same category, for onward navigation.
   const related = productDetails.filter(
@@ -206,9 +214,16 @@ export default async function ProductDetailPage({
               ) : null}
 
               {approach ? (
-                <div className="rounded-2xl border border-primary/30 bg-background p-8 ring-1 ring-primary/10">
+                /* A soft primary glow and a light running the outline mark
+                    this as the side to land on. */
+                <div className="border-run rounded-2xl p-8 shadow-[0_0_48px_-12px] shadow-primary/50 dark:shadow-primary/40">
                   <span className="inline-flex items-center gap-2 text-xs font-medium tracking-widest text-primary uppercase">
-                    <span className="size-1.5 rounded-full bg-primary" />
+                    {/* A live-status blink: the halo pings out from a
+                        steady dot. */}
+                    <span className="relative flex size-1.5">
+                      <span className="absolute inline-flex size-full rounded-full bg-primary opacity-75 motion-safe:animate-ping" />
+                      <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
+                    </span>
                     {problem ? "With SipLink" : "Our approach"}
                   </span>
                   <h2 className="mt-4 text-xl font-semibold tracking-tight text-balance">
@@ -231,55 +246,104 @@ export default async function ProductDetailPage({
         </section>
       ) : null}
 
-      {/* Features */}
-      <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
-        <div className="max-w-2xl">
-          <span className="text-sm font-medium tracking-widest text-primary uppercase">
-            Capabilities
-          </span>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance">
-            What {title} gives you
-          </h2>
+      {/* Features — frosted cards over drifting brand colour. */}
+      <section className="relative isolate overflow-hidden">
+        <div aria-hidden className="absolute inset-0 -z-10">
+          <span className="glass-orb top-1/4 left-[8%] size-80 bg-brand-from/30 [--orb-duration:16s]" />
+          <span className="glass-orb top-1/2 left-[42%] size-96 bg-brand-to/20 [--orb-duration:22s] [--orb-x:-80px] [--orb-y:30px]" />
+          <span className="glass-orb right-[6%] bottom-0 size-80 bg-chart-3/35 [--orb-duration:19s] [--orb-x:-40px] [--orb-y:-60px]" />
         </div>
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+          <div className="max-w-2xl">
+            <span className="text-sm font-medium tracking-widest text-primary uppercase">
+              Capabilities
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance">
+              What {title} gives you
+            </h2>
+          </div>
 
-        <div className="mt-10 grid gap-x-6 gap-y-7 md:grid-cols-2 lg:grid-cols-3">
-          {features.map(({ title: name, description, icon: FeatureIcon }) => (
-            <div key={name} className="flex gap-4">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <FeatureIcon className="size-5" aria-hidden />
-              </span>
-              <div className="min-w-0">
-                <h3 className="font-medium">{name}</h3>
-                <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
-                  {description}
-                </p>
-              </div>
-            </div>
-          ))}
+          {/* Cards rise in as the grid is reached, then answer the pointer:
+              lift, a primary edge and glow, and the icon tile filling in. The
+              reveal sits on the wrapper and the hover on the card, since a
+              finished animation would otherwise pin the card's transform. */}
+          <RevealGroup className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {features.map(
+              ({ title: name, description, icon: FeatureIcon }, index) => (
+                <div
+                  key={name}
+                  className="reveal-item"
+                  style={{ "--reveal-index": index } as React.CSSProperties}
+                >
+                  <Card className="relative bg-card/55 backdrop-blur-xl backdrop-saturate-150 h-full gap-0 p-6 ring-white/60 transition-all dark:ring-white/10 duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px] hover:shadow-primary/40 hover:ring-primary/40">
+                    {/* Accent line that draws across the top on hover */}
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-linear-to-r from-brand-from to-brand-to transition-transform duration-500 ease-out group-hover/card:scale-x-100"
+                    />
+                    <span
+                      aria-hidden
+                      className="absolute top-5 right-6 font-mono text-xs text-muted-foreground/50 transition-colors group-hover/card:text-primary"
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover/card:scale-110 group-hover/card:bg-primary group-hover/card:text-primary-foreground">
+                      <FeatureIcon className="size-5" aria-hidden />
+                    </span>
+                    <h3 className="mt-5 text-base font-medium">{name}</h3>
+                    <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
+                      {description}
+                    </p>
+                  </Card>
+                </div>
+              ),
+            )}
+          </RevealGroup>
         </div>
       </section>
 
-      {/* Technical summary — only what the source documents state. */}
+      {/* Technical summary — only what the source documents state. Always
+          dark (the `dark` class switches every token inside), with brand
+          light glowing behind a frosted glass pane: glass reads best on a
+          deep ground. */}
       {specs?.length ? (
-        <section className="border-t border-border bg-muted/30">
-          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+        <section className="dark relative isolate overflow-hidden bg-background text-foreground">
+          <div aria-hidden className="absolute inset-0 -z-10">
+            <span className="glass-orb top-[10%] right-[18%] size-96 bg-brand-to/20 [--orb-duration:16s] [--orb-x:-60px] [--orb-y:40px]" />
+            <span className="glass-orb right-[2%] bottom-[-10%] size-80 bg-brand-from/12 [--orb-duration:20s] [--orb-x:-40px] [--orb-y:-50px]" />
+            <span className="glass-orb bottom-[-20%] left-[30%] size-72 bg-chart-3/10 [--orb-duration:24s] [--orb-x:70px] [--orb-y:-30px]" />
+          </div>
+
+          <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
               <div>
                 <span className="text-sm font-medium tracking-widest text-primary uppercase">
                   At a glance
                 </span>
-                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-balance">
+                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
                   How {title} is delivered
                 </h2>
               </div>
 
-              <dl className="grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2">
+              {/* One pane, split by hairlines, rather than frosting each
+                  cell: stacked blurs compound and muddy it. The inset top
+                  line is the lit edge of the glass. */}
+              <dl className="grid overflow-hidden rounded-2xl bg-foreground/5 shadow-[inset_0_1px_0_0] ring-1 shadow-foreground/15 ring-foreground/10 backdrop-blur-2xl sm:grid-cols-2">
                 {specs.map(({ label, value }) => (
-                  <div key={label} className="bg-background p-5">
-                    <dt className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+                  <div
+                    key={label}
+                    className="group border-b border-foreground/10 p-6 transition-colors last:border-b-0 hover:bg-foreground/5 sm:odd:border-r sm:nth-last-2:odd:border-b-0"
+                  >
+                    <dt className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-primary uppercase">
+                      <span
+                        aria-hidden
+                        className="size-1.5 rounded-full bg-primary shadow-[0_0_8px_1px] shadow-primary/70"
+                      />
                       {label}
                     </dt>
-                    <dd className="mt-2 text-sm text-pretty">{value}</dd>
+                    <dd className="mt-2.5 text-sm text-pretty text-foreground/85">
+                      {value}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -342,35 +406,46 @@ export default async function ProductDetailPage({
 
       {/* The pay-off, as a dark band. The page has been light throughout, so
           the change of ground is what marks this as the conclusion — no box
-          required. Same treatment as the migration story on the homepage. */}
+          required. A brand glow and a lit top edge give it depth, and the
+          statement fades across so the eye lands on its opening. */}
       {outcome ? (
-        <section className="bg-foreground text-background">
-          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+        <section className="relative isolate overflow-hidden bg-foreground text-background">
+          <div aria-hidden className="absolute inset-0 -z-10">
+            <span className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary to-transparent" />
+            <span className="glass-orb -top-24 -right-16 size-96 bg-primary/25 [--orb-duration:18s] [--orb-x:-60px] [--orb-y:30px]" />
+            <span className="glass-orb -bottom-32 left-1/4 size-80 bg-brand-from/10 [--orb-duration:22s] [--orb-x:50px] [--orb-y:-30px]" />
+          </div>
+
+          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-24">
             {/* The single-column mobile track is explicit: left to `auto` it
                 sized itself to the longest line and pushed past the viewport. */}
-            <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-16">
+            <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-16">
               <div className="min-w-0">
-                <span className="font-mono text-xs tracking-widest text-primary uppercase">
+                <span className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3 py-1.5 font-mono text-[11px] font-semibold tracking-widest text-primary uppercase ring-1 ring-primary/30">
+                  <span aria-hidden className="relative flex size-1.5">
+                    <span className="absolute inline-flex size-full rounded-full bg-primary opacity-75 motion-safe:animate-ping" />
+                    <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
+                  </span>
                   {outcome.heading}
                 </span>
                 {/* `text-pretty` rather than `text-balance`: balancing a long
                     paragraph at narrow widths pushed it past the viewport. */}
-                <p className="font-heading mt-5 text-2xl leading-snug font-medium text-pretty sm:text-3xl">
+                <p className="font-heading mt-6 bg-linear-to-r from-background via-background to-background/55 bg-clip-text text-2xl leading-snug font-medium text-pretty text-transparent sm:text-3xl lg:text-4xl lg:leading-tight">
                   {outcome.body}
                 </p>
               </div>
 
-              {/* The band inverts with the theme, so the button is painted
-                  from the same pair of tokens rather than a fixed variant —
-                  `secondary` stayed dark against the light dark-mode band. */}
               <Button
                 asChild
                 size="lg"
-                className="shrink-0 bg-background text-foreground hover:bg-background/90"
+                className="group h-12 shrink-0 rounded-full px-6 shadow-[0_0_32px_-4px] shadow-primary/60 transition-shadow hover:shadow-[0_0_44px_-2px] hover:shadow-primary/70"
               >
                 <Link href="/contact">
                   Talk to us about {title}
-                  <ArrowRight className="size-4" aria-hidden />
+                  <ArrowRight
+                    className="size-4 transition-transform group-hover:translate-x-1"
+                    aria-hidden
+                  />
                 </Link>
               </Button>
             </div>
@@ -394,24 +469,69 @@ export default async function ProductDetailPage({
               </p>
             </div>
 
-            {/* A real sequence, so the numbering carries meaning. */}
-            <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {migration.steps.map(({ title: step, body }, index) => (
-                <li key={step} className="relative">
-                  <span className="font-mono text-xs font-semibold text-primary">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    aria-hidden
-                    className="mt-3 block h-px w-full bg-border"
-                  />
-                  <h3 className="mt-4 font-medium">{step}</h3>
-                  <p className="mt-2 text-sm text-pretty text-muted-foreground">
-                    {body}
-                  </p>
-                </li>
-              ))}
-            </ol>
+            {/* A real sequence, drawn as a route: numbered stops, each
+                joined to the next by a segment that fills in when reached.
+                Segments belong to their step rather than one measured track,
+                so any number of steps (and wrapped rows) lines up. */}
+            <RevealGroup className="mt-12">
+              <ol className={cn("grid gap-8", stepColumns.className)}>
+                {migration.steps.map(({ title: step, body }, index) => {
+                  const last = index === migration.steps.length - 1;
+                  const rowEnd = (index + 1) % stepColumns.count === 0;
+                  const clock = { "--step": index } as React.CSSProperties;
+
+                  return (
+                    <li
+                      key={step}
+                      className="reveal-item relative pl-16 lg:pl-0"
+                      style={
+                        { "--reveal-index": index * 4 } as React.CSSProperties
+                      }
+                    >
+                      {/* Down, when stacked */}
+                      {!last ? (
+                        <span
+                          aria-hidden
+                          className="absolute top-12 -bottom-6 left-5 w-0.5 -translate-x-1/2 rounded-full bg-border lg:hidden"
+                        >
+                          <span
+                            className="path-fill-y absolute inset-0 origin-top rounded-full bg-linear-to-b from-brand-from to-brand-to"
+                            style={clock}
+                          />
+                        </span>
+                      ) : null}
+
+                      {/* Across, on wide screens: from just past this stop
+                          to just short of the next, over the column gap. */}
+                      {!last && !rowEnd ? (
+                        <span
+                          aria-hidden
+                          className="absolute top-5 right-[-1.75rem] left-12 hidden h-0.5 -translate-y-1/2 rounded-full bg-border lg:block"
+                        >
+                          <span
+                            className="path-fill-x absolute inset-0 origin-left rounded-full bg-linear-to-r from-brand-from to-brand-to"
+                            style={clock}
+                          />
+                        </span>
+                      ) : null}
+
+                      <span
+                        className="path-node absolute top-0 left-0 flex size-10 items-center justify-center rounded-full border-2 border-primary bg-background font-mono text-xs font-semibold text-primary ring-4 ring-background lg:relative"
+                        style={clock}
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="pt-2.5 font-medium lg:mt-6 lg:pt-0">
+                        {step}
+                      </h3>
+                      <p className="mt-2 text-sm text-pretty text-muted-foreground">
+                        {body}
+                      </p>
+                    </li>
+                  );
+                })}
+              </ol>
+            </RevealGroup>
           </div>
         </section>
       ) : null}
@@ -454,43 +574,91 @@ export default async function ProductDetailPage({
         </section>
       ) : null}
 
-      {/* Related products */}
+      {/* Related products — onward cards that invite the click: they rise
+          in on scroll, and on hover lift, warm with a brand wash, turn their
+          arrow toward the reader and draw the "Explore" link. */}
       {related.length ? (
         <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            More in {category}
-          </h2>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <span className="text-sm font-medium tracking-widest text-primary uppercase">
+                Keep exploring
+              </span>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+                More in {category}
+              </h2>
+            </div>
+            <Link
+              href="/products#lifecycle"
+              className="group inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              All products
+              <ArrowRight
+                className="size-4 transition-transform group-hover:translate-x-1"
+                aria-hidden
+              />
+            </Link>
+          </div>
 
-          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <RevealGroup className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {related.map(
-              ({
-                slug: relatedSlug,
-                title: relatedTitle,
-                tagline: relatedTagline,
-                icon: RelatedIcon,
-              }) => (
-                <Link
+              (
+                {
+                  slug: relatedSlug,
+                  title: relatedTitle,
+                  tagline: relatedTagline,
+                  icon: RelatedIcon,
+                },
+                index,
+              ) => (
+                <div
                   key={relatedSlug}
-                  href={`/products/${relatedSlug}`}
-                  className="group flex"
+                  className="reveal-item"
+                  style={{ "--reveal-index": index } as React.CSSProperties}
                 >
-                  <Card className="h-full w-full transition-shadow hover:shadow-md">
-                    <CardHeader>
-                      <span className="mb-2 flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                        <RelatedIcon className="size-5" aria-hidden />
-                      </span>
-                      <CardTitle className="text-base">
+                  <Link
+                    href={`/products/${relatedSlug}`}
+                    className="group flex h-full rounded-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                  >
+                    <Card className="relative h-full w-full gap-0 p-6 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-[0_18px_40px_-18px] group-hover:shadow-primary/40 group-hover:ring-primary/40">
+                      {/* Brand wash that warms the card from the corner */}
+                      <span
+                        aria-hidden
+                        className="absolute -top-16 -right-16 size-48 rounded-full bg-primary/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+                      />
+                      {/* Oversized icon watermark */}
+                      <RelatedIcon
+                        aria-hidden
+                        className="absolute -right-6 -bottom-6 size-32 text-primary/5 transition-all duration-500 group-hover:-rotate-12 group-hover:text-primary/10"
+                      />
+
+                      <div className="relative flex items-start justify-between">
+                        <span className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                          <RelatedIcon className="size-5" aria-hidden />
+                        </span>
+                        <span className="flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 group-hover:-rotate-45 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                          <ArrowRight className="size-4" aria-hidden />
+                        </span>
+                      </div>
+
+                      <h3 className="relative mt-5 text-base font-medium">
                         {relatedTitle}
-                      </CardTitle>
-                      <CardDescription className="text-pretty">
+                      </h3>
+                      <p className="relative mt-1.5 text-sm text-pretty text-muted-foreground">
                         {relatedTagline}
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </Link>
+                      </p>
+
+                      <span className="relative mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-primary">
+                        <span className="bg-linear-to-r from-primary to-primary bg-size-[0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-300 group-hover:bg-size-[100%_1px]">
+                          Explore {relatedTitle}
+                        </span>
+                      </span>
+                    </Card>
+                  </Link>
+                </div>
               ),
             )}
-          </div>
+          </RevealGroup>
         </section>
       ) : null}
 

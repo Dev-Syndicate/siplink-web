@@ -7,6 +7,7 @@
 @theme inline {
   --color-brand-from: var(--brand-from);
   --color-brand-to: var(--brand-to);
+  --color-ink: var(--ink);
   --font-heading: var(--font-geist-sans);
   --font-accent: var(--font-script);
   --font-sans: var(--font-geist-sans);
@@ -54,6 +55,11 @@
 :root {
   --brand-from: oklch(0.7 0.175 12.8);
   --brand-to: oklch(0.552 0.211 12.8);
+  /* A blue-black evening rather than a tinted near-black. Nothing consumes
+     it at the moment: it was the after-hours ground for the small-business
+     hero, which now tells the hour with a schedule strip instead. Kept as a
+     palette value, and `bg-ink` / `text-ink` still resolve from it. */
+  --ink: oklch(0.235 0.045 268);
   --background: oklch(1 0 0);
   --foreground: oklch(0.18 0.012 260);
   --card: oklch(1 0 0);
@@ -91,6 +97,7 @@
 .dark {
   --brand-from: oklch(0.76 0.155 12.8);
   --brand-to: oklch(0.66 0.185 12.8);
+  --ink: oklch(0.275 0.05 268);
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -209,6 +216,173 @@
     }
   }
 
+}
+
+/* Registered so the conic angle interpolates; an unregistered custom
+   property would jump between keyframes instead of turning. */
+@property --run-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@layer components {
+  /* A light that runs around a card's outline. The border is transparent and
+     two backgrounds show through it: the card fill clipped to the padding
+     box, and a rotating conic gradient on the border box that only shows in
+     the border ring. */
+  .border-run {
+    border: 2.5px solid transparent;
+    background:
+      linear-gradient(var(--background), var(--background)) padding-box,
+      conic-gradient(
+          from var(--run-angle),
+          color-mix(in oklab, var(--primary) 30%, transparent) 0deg,
+          color-mix(in oklab, var(--primary) 30%, transparent) 200deg,
+          var(--brand-from) 270deg,
+          var(--primary) 330deg,
+          var(--brand-to) 352deg,
+          color-mix(in oklab, var(--primary) 30%, transparent) 360deg
+        )
+        border-box;
+    animation: border-run 4s linear infinite;
+  }
+
+  @keyframes border-run {
+    to {
+      --run-angle: 360deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .border-run {
+      animation: none;
+      background: var(--background);
+      border-color: color-mix(in oklab, var(--primary) 60%, transparent);
+    }
+  }
+}
+
+@layer components {
+  /* Soft brand-coloured blobs for frosted (`backdrop-blur`) panels to blur;
+     glass only reads as glass over colour. They drift slowly so the
+     frosting visibly shifts; each sets its own `--orb-duration`. */
+  .glass-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    pointer-events: none;
+    animation: orb-drift var(--orb-duration, 18s) ease-in-out infinite
+      alternate;
+  }
+
+  @keyframes orb-drift {
+    to {
+      transform: translate(var(--orb-x, 60px), var(--orb-y, -40px))
+        scale(1.1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glass-orb {
+      animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* Items of a <RevealGroup> rise in, staggered, once the group is scrolled
+     to. Hidden only while motion is allowed, so reduced-motion visitors and
+     anything that never observes still get the content. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-group .reveal-item {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .reveal-group[data-revealed] .reveal-item {
+      animation: reveal-item 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: calc(min(var(--reveal-index, 0), 12) * 70ms);
+    }
+  }
+
+  /* Step path: a segment joins each stop to the next — across on wide
+     screens, down when stacked — and they draw in turn, each stop filling
+     as its segment arrives. Stop n and segment n share one clock
+     (`--step`), so the timing holds for any number of steps. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-group .path-fill-x {
+      transform: scaleX(0);
+    }
+
+    .reveal-group .path-fill-y {
+      transform: scaleY(0);
+    }
+
+    .reveal-group[data-revealed] .path-fill-x {
+      animation: path-draw-x 0.4s linear both;
+      animation-delay: calc(var(--step, 0) * 400ms + 100ms);
+    }
+
+    .reveal-group[data-revealed] .path-fill-y {
+      animation: path-draw-y 0.4s linear both;
+      animation-delay: calc(var(--step, 0) * 400ms + 100ms);
+    }
+
+    .reveal-group[data-revealed] .path-node {
+      animation: path-node-fill 0.5s ease-out both;
+      animation-delay: calc(var(--step, 0) * 400ms + 100ms);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .path-node {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+  }
+
+  @keyframes path-node-fill {
+    50% {
+      transform: scale(1.15);
+    }
+    to {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      box-shadow:
+        0 0 0 4px var(--background),
+        0 0 18px 2px color-mix(in oklab, var(--primary) 45%, transparent);
+    }
+  }
+
+  @keyframes path-draw-x {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes path-draw-y {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes reveal-item {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
 @layer components {
@@ -1050,6 +1224,457 @@
 }
 
 @layer components {
+  /* ------------------------------------------------ by business size: ring
+
+     Startups. A call leaving the one number, as a wave off a stone. It grows
+     past the seats on the ring rather than stopping at them, because the
+     point is that the ring has no edge you have to buy more of. */
+  /* Scale only. The centring is done by Tailwind's `-translate-*` utilities,
+     which in v4 emit the standalone `translate` property — putting a
+     `translate()` in here as well applies the offset twice and throws the
+     wave off the number it is supposed to be leaving. `transform` composes
+     after `translate`, so scaling here still grows about the true centre. */
+  @keyframes ring-wave {
+    from {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(2.7);
+    }
+  }
+
+  .ring-wave {
+    animation: ring-wave 2.4s ease-out infinite;
+  }
+
+  /* A seat while it is ringing. The stagger is tiny — a few hundredths per
+     seat — because these phones ring together; a visible cascade would say
+     the call is being passed along, which is the opposite of the claim. */
+  @keyframes seat-ring {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(-3px);
+    }
+    60% {
+      transform: translateY(0);
+    }
+  }
+
+  .seat-ring {
+    animation: seat-ring 0.85s ease-in-out infinite;
+  }
+
+  /* ------------------------------------------------- by business size: day
+
+     Small business. The destination changing under the reader's hand. It is
+     keyed on the destination text, so it fires when the answer changes and
+     not when the clock merely moves. */
+  @keyframes dest-swap {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .dest-swap {
+    display: inline-block;
+    animation: dest-swap 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* ----------------------------------------------- by business size: queue
+
+     Mid-market. A caller joining the back of the line. Entrance only — the
+     queue shortening is the good news and does not need announcing. */
+  @keyframes queue-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .queue-in {
+    animation: queue-in 240ms ease-out both;
+  }
+
+  /* ----------------------------------------------- by business size: stack
+
+     Enterprise. A call falling the depth of the estate, and each layer
+     brightening as it passes through. Both run on the same period, and the
+     layer's delay is its depth, so the brightening tracks the fall without a
+     frame loop timing them together. */
+  /* `top` rather than a translate, so the fall is measured against the stack
+     it is falling through: the percentage resolves on the parent's height, a
+     transform would resolve on the 8px dot's own. Adding a sixth layer then
+     lengthens the fall by itself. */
+  @keyframes estate-fall {
+    0% {
+      opacity: 0;
+      top: 0%;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      top: 100%;
+    }
+  }
+
+  /* `backwards`, so a call waiting out its stagger holds the 0% frame — which
+     is transparent — instead of its unanimated style. Without it the two
+     not-yet-started calls sit parked and fully visible at the top of the
+     stack, which reads as three calls stuck at the carrier. */
+  .estate-fall {
+    animation: estate-fall 5.2s linear infinite backwards;
+  }
+
+  @keyframes estate-layer {
+    0%,
+    12%,
+    100% {
+      box-shadow: none;
+    }
+    4% {
+      box-shadow: inset 0 0 0 1px var(--primary);
+    }
+  }
+
+  .estate-layer {
+    animation: estate-layer 5.2s linear infinite;
+  }
+
+  /* Every one of these is illustration: the words beside each visual carry
+     the claim, and each visual has a control that works without any of this.
+     So under reduced motion the self-running parts simply stop, and the
+     reader drives. */
+  @media (prefers-reduced-motion: reduce) {
+    .ring-wave,
+    .seat-ring,
+    .dest-swap,
+    .queue-in,
+    .estate-fall,
+    .estate-layer {
+      animation: none;
+    }
+
+    .estate-fall {
+      opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* --------------------------------------- the startups "what's included"
+
+     A line ringing, on the phone screen. Two of these run a beat apart, so
+     the ring reads as repeating rather than as one expanding circle — the
+     same reason the ring figure above uses three. It grows only a little:
+     this is a ring around an avatar, not a broadcast. */
+  @keyframes call-pulse {
+    from {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.75);
+    }
+  }
+
+  .call-pulse {
+    animation: call-pulse 1.8s ease-out infinite;
+  }
+
+  /* The cards carry every claim the phone illustrates, and the phone is
+     hidden from assistive tech for that reason — so under reduced motion the
+     ring simply is not drawn. */
+  @media (prefers-reduced-motion: reduce) {
+    .call-pulse {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* ------------------------------------- small business: the working day
+
+     The hour used to be told by the ground: past closing, the panel
+     redefined `--background` to the evening ink the way `.dark` does. It
+     was contained to the panel rather than the section, so the viewport
+     never strobed — but the panel still flipped white to navy and back
+     every six seconds, unattended, beside a page holding perfectly still.
+     That reads as a rendering fault rather than as dusk.
+
+     The hour is told by the schedule strip in the panel header now: the
+     open span lit, and a marker at the hour the call came in — inside that
+     span in the morning, outside it in the evening. Same fact, one ground,
+     and it is the rule a small business actually sets rather than a mood.
+     The marker travelling between the two is all the motion it needs.
+
+     `--ink` is left defined in the theme; nothing consumes it now. */
+
+  /* Stops are keyed to the phase and faded in, so no frame holds the
+     morning's outcome over the evening's call. */
+  @keyframes phase-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .phase-in {
+    animation: phase-in 300ms ease-out 300ms both;
+  }
+
+  /* ------------------------------------------ small business: the ring
+
+     A stop on the call's path, ringing out. Two rings a beat apart rather
+     than one expanding circle, because a phone repeats — one ring reads as
+     a broadcast, two read as waiting for someone to pick up. */
+  @keyframes hunt-ring {
+    from {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(2.1);
+    }
+  }
+
+  .hunt-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 2px solid var(--color-primary);
+    animation: hunt-ring 1.15s ease-out infinite;
+  }
+
+  .hunt-ring-late {
+    animation-delay: 0.36s;
+  }
+
+  /* ------------------------------------------------- enterprise: the line
+
+     Traffic across the estate, under a list of steps being worked through.
+     Slow and thin on purpose: the thing that should draw the eye is a step
+     ticking to done, and the line only has to say that the estate is
+     carrying calls while that happens.
+
+     One line, carrying several calls — not one fill sweeping across it. A
+     part-width bar travelling a track is an indeterminate progress bar, and
+     it reads as the panel loading rather than as the estate running, which
+     is the opposite of the claim. Discrete packets on a shared wire read as
+     traffic, and match the travelling pulses on the integration wall.
+
+     Each packet is 9% of the track, so 1000% of its own width carries it
+     across a little over the full span — self-relative because the element
+     is the only thing a transform can measure. */
+  @keyframes estate-call {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(1000%);
+    }
+  }
+
+  .estate-call {
+    animation: estate-call 6.6s linear infinite;
+  }
+
+  @keyframes estate-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.28;
+    }
+  }
+
+  .estate-pulse {
+    animation: estate-pulse 2.1s ease-in-out infinite;
+  }
+
+  /* ------------------------------------------- small business: the reach
+
+     One call arriving in three places. The trunk draws, then all three
+     branches draw together and the devices light on the same frame — the
+     simultaneity is the claim, so nothing here is staggered across the
+     three. Each path carries `pathLength="1"`, so the same dash values
+     work whatever the path's real length. */
+  @keyframes reach-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .reach-trunk,
+  .reach-branch path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: reach-draw 260ms ease-out both;
+  }
+
+  .reach-branch path {
+    animation-duration: 440ms;
+    animation-delay: 260ms;
+  }
+
+  @keyframes reach-light {
+    to {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+  }
+
+  .reach-device {
+    animation: reach-light 320ms ease-out 640ms both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* The figures keep their finished state rather than their first frame:
+       a drawn line and a lit device are the content, the drawing is not. */
+    .hunt-ring,
+    .reach-trunk,
+    .reach-branch path,
+    .reach-device {
+      animation: none;
+    }
+
+    .reach-trunk,
+    .reach-branch path {
+      stroke-dashoffset: 0;
+    }
+
+    .hunt-ring {
+      display: none;
+    }
+
+    .estate-call,
+    .estate-pulse {
+      animation: none;
+    }
+
+    .phase-in {
+      animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* The hero's frame: two measurements the page grid cannot express, kept
+     here rather than in the class list because Tailwind has to find an
+     arbitrary value by scanning source text, and a `max()` wrapped around
+     a `calc()` is exactly the kind it silently misses — when it did, the
+     hero fell back to the 1.5rem phone gutter on a desktop screen.
+
+     The inline padding is half the gutter the rest of the page uses. The
+     photograph bleeds to the right edge, so a full page gutter on the
+     left made the section lopsided; a fixed inset fixed that but came
+     unstuck from the headings below on a wide screen. Half scales with
+     the viewport, so the hero stays related to the page while sitting
+     clearly inside it.
+
+     The height is whatever the header leaves, so the hero ends at the
+     fold instead of showing a band of the next section beneath it. The
+     7.5rem is the header's own height — keep it in sync with the offset
+     in app/layout.tsx. */
+  .hero-frame {
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 64rem) {
+    .hero-frame {
+      min-height: calc(100svh - 7.5rem);
+      padding-inline: max(3rem, calc((100vw - 80rem) / 4 + 2.5rem));
+    }
+  }
+}
+
+@layer components {
+  /* ------------------------------ customer support: the call at risk
+
+     The wait growing, and the answer landing before it reaches the point the
+     caller gives up. The fill stops short of the dashed marker and holds
+     there — the whole figure is that gap. */
+  @keyframes wait-grow {
+    0% {
+      width: 4%;
+    }
+    58%,
+    100% {
+      width: 62%;
+    }
+  }
+
+  .wait-grow {
+    animation: wait-grow 4.6s cubic-bezier(0.32, 0, 0.2, 1) infinite;
+  }
+
+  /* Lands once the fill has stopped, not while it is still running: the
+     order is the argument. */
+  @keyframes answer-land {
+    0%,
+    56% {
+      opacity: 0;
+      transform: translateY(5px) scale(0.96);
+    }
+    70%,
+    93% {
+      opacity: 1;
+      transform: none;
+    }
+    100% {
+      opacity: 0;
+      transform: none;
+    }
+  }
+
+  .answer-land {
+    animation: answer-land 4.6s ease-out infinite;
+  }
+
+  /* Held at the answered state rather than dropped: this figure's resting
+     frame is the outcome, so stopping it loses nothing. */
+  @media (prefers-reduced-motion: reduce) {
+    .wait-grow {
+      animation: none;
+      width: 62%;
+    }
+
+    .answer-land {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@layer components {
   /* The dialler scene runs on its own: the campaign works down the list
      while the engine paces against whoever is free. Each loop shares one
      8s cycle so the list, the engine and the agents stay in step, and each
@@ -1328,6 +1953,224 @@
     .route-step,
     .talk-bar {
       animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* ------------------------------------------------ migration: the cutover
+
+     Calls crossing the switch. `left` rather than a transform, so the run is
+     measured against the ribbon it crosses and adding width to the figure
+     lengthens the run by itself. The rate never changes and the dots never
+     stop: the system underneath changes hands, the calls do not. */
+  @keyframes cutover-run {
+    0% {
+      left: 0%;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+
+  .cutover-run {
+    animation: cutover-run 3.4s linear infinite backwards;
+  }
+
+  /* The ribbon is the claim, and the sides either end of it say the same
+     thing in words — so under reduced motion the dots simply are not drawn
+     and the figure rests on its migrated state. */
+  @media (prefers-reduced-motion: reduce) {
+    .cutover-run {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* ------------------------------------------ capability cards: cut, not fade
+
+     The what's-included figures switch between beats instead of easing
+     between them.
+
+     The shared vocabulary in schematic.tsx fades every state change over
+     700ms, which suits the full-page figures: they are read slowly, and a
+     box warming up is part of how they explain themselves. In a card the
+     same fade is longer than the beat it belongs to, so a state is still
+     arriving when the next one starts and the whole figure reads as soft —
+     perpetually resolving, never resolved.
+
+     Cutting is what a live panel does. A status light switches; it does not
+     dissolve. Removing the fade is the whole of the difference between these
+     reading as something running and something loading.
+
+     `!important` because the declarations being overridden are Tailwind
+     utilities on the descendants themselves, and utilities are a later layer
+     than this one — matching specificity would still lose. Scoped to the
+     figures by the class, so nothing else on the site is touched. */
+  .figure-cut,
+  .figure-cut * {
+    transition-property: none !important;
+  }
+}
+
+/* The calling-devices scene's motion inputs. Registered so they interpolate
+   (see .parallax); unregistered they would jump between values. */
+@property --sway-x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --sway-y {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --tilt-x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --tilt-y {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --lift {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@layer components {
+  /* ------------------------------------------ desktop, mobile and browser
+
+     The calling-devices scene. Pink glass is the brand token mixed down
+     towards the card, so it follows the theme like everything else. */
+
+  /* Depth without 3D. Each layer slides by its own `--depth`, so near
+     things travel further than far ones — parallax — while nothing is ever
+     rotated or scaled. A 3D stage rasterises its panels once and then
+     resamples them every frame, which is what made the small UI text soft;
+     a translation keeps every glyph drawn at its real size.
+
+     The sway and the pointer are registered numbers so they can animate
+     and transition, and every layer reads them through inheritance. */
+  @keyframes scene-sway {
+    0%,
+    100% {
+      --sway-x: -1;
+      --sway-y: 0.5;
+    }
+    50% {
+      --sway-x: 1;
+      --sway-y: -0.5;
+    }
+  }
+
+  .scene-sway {
+    animation: scene-sway 12s ease-in-out infinite;
+  }
+
+  .scene-pointer {
+    transition:
+      --tilt-x 600ms ease-out,
+      --tilt-y 600ms ease-out;
+  }
+
+  .parallax {
+    translate: calc((var(--sway-x) * 0.6 + var(--tilt-x) * 3) * var(--depth, 0.5) * 1cqw)
+      calc(
+        (var(--sway-y) * 0.6 + var(--tilt-y) * 2.4) * var(--depth, 0.5) * 1cqw -
+          var(--lift)
+      );
+    transition: --lift 600ms ease-out;
+  }
+
+  .glass-tile {
+    border: 1px solid color-mix(in oklab, var(--primary) 25%, transparent);
+    background: color-mix(in oklab, var(--card) 65%, transparent);
+    backdrop-filter: blur(6px);
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, var(--card) 90%, transparent),
+      0 0 1.4cqw color-mix(in oklab, var(--primary) 18%, transparent);
+  }
+
+  .glass-tile-lit {
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, var(--card) 90%, transparent),
+      0 0 2.6cqw color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+
+  .glass-panel {
+    border: 1px solid color-mix(in oklab, var(--primary) 22%, transparent);
+    background: color-mix(in oklab, var(--card) 72%, transparent);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 1.5cqw 3cqw color-mix(in oklab, var(--primary) 14%, transparent);
+  }
+
+  /* The device holding the call glows; the others stay flat. */
+  .device-lit {
+    filter: drop-shadow(0 0 1.6cqw color-mix(in oklab, var(--primary) 45%, transparent));
+  }
+
+  @keyframes ring-pulse {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 55%, transparent);
+    }
+    100% {
+      box-shadow: 0 0 0 1.6cqw color-mix(in oklab, var(--primary) 0%, transparent);
+    }
+  }
+
+  .ring-pulse {
+    animation: ring-pulse 1.2s ease-out infinite;
+  }
+
+  /* A soft second ring around the caller's portrait. */
+  .halo {
+    box-shadow: 0 0 0 0.5cqw color-mix(in oklab, var(--primary) 7%, transparent);
+  }
+
+  /* Specks of light in the background, fading in and out out of step. */
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.15;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .twinkle {
+    animation: twinkle 3.2s ease-in-out infinite;
+    animation-delay: var(--twinkle-delay, 0s);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scene-sway,
+    .ring-pulse,
+    .twinkle {
+      animation: none;
+    }
+
+    .scene-pointer,
+    .parallax {
+      transition: none;
     }
   }
 }
