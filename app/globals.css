@@ -2753,3 +2753,49 @@
     }
   }
 }
+
+@layer components {
+  /* Cargo crossing a lane, on /internet/business-broadband/plans.
+   *
+   * The chips on the two lanes are identical and the lanes are the same
+   * length; only `--lane-duration` differs, and that difference is the whole
+   * point the section makes — the download lane empties while the upload
+   * lane is still queueing. `--lane-delay` is set negative per chip, so the
+   * lane is already full the moment the scene is first looked at rather than
+   * filling from one end.
+   *
+   * `left` rather than a transform: the chips already carry a translate to
+   * sit on the lane's centre line, and animating the same property from two
+   * places is how a scene ends up with one of them silently winning. A
+   * handful of chips is well within what this costs.
+   */
+  .lane-run {
+    animation: lane-run var(--lane-duration, 6s) linear infinite;
+    animation-delay: var(--lane-delay, 0s);
+  }
+
+  @keyframes lane-run {
+    0% {
+      left: -14%;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+
+  /* Stopped, the chips keep the positions the component gives them, which
+     still shows one lane strung out behind the other. */
+  @media (prefers-reduced-motion: reduce) {
+    .lane-run {
+      animation: none;
+    }
+  }
+}

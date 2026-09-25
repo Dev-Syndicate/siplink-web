@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowRight, Check, Gauge, Minus } from "lucide-react";
 
 import { PlanBusyHour } from "@/components/site/plan-busy-hour";
+import { PlanDirectionScene } from "@/components/site/plan-direction-scene";
+import { PlanLoadScene } from "@/components/site/plan-load-scene";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Button } from "@/components/ui/button";
 import { planProfiles, planStepUp } from "@/lib/internet";
@@ -11,10 +13,19 @@ import { planProfiles, planStepUp } from "@/lib/internet";
  * after the page's own content.
  *
  * The page asserts that a plan is sized from the work rather than picked off
- * a tier list. These three sections are what make that credible: the shapes
- * of office we actually quote for, what a day puts on the line hour by hour,
- * and — last, and deliberately unprofitable — the point at which the honest
- * answer stops being broadband at all.
+ * a tier list. These sections are what make that credible: the shapes of
+ * office we actually quote for, everything that shares one line, what a day
+ * puts on it hour by hour, which direction the work travels — and, last and
+ * deliberately unprofitable, the point at which the honest answer stops
+ * being broadband at all.
+ *
+ * Two of them are drawn rather than written. The animated scenes come from
+ * the same kit as the capability scenes on the solutions pages (scene-kit),
+ * which is the point: this page is arguing about load, and load is a thing
+ * that happens over time. A table of workloads states it; watching six of
+ * them arrive on one line, or watching the same chips cross a wide lane and
+ * a narrow one, is what makes it land. Both carry the section heading above
+ * them and the stage full width beneath, as those pages do.
  */
 export function PlansSections() {
   return (
@@ -100,8 +111,56 @@ export function PlansSections() {
         </div>
       </section>
 
+      {/* Everything that shares the line */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              One line
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Everything the office does goes down the same line
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Laptops, calls, meetings, card terminals, cameras and the backup
+              that runs after everyone leaves. None of them asks first, and
+              none of them waits its turn. Watch them arrive.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <PlanLoadScene label="Six workloads — staff laptops, business voice, video meetings, card payments, cameras and cloud backup — joining one office connection until all six are live on it at the same time." />
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* The working day */}
       <PlanBusyHour />
+
+      {/* Which way the work travels */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Up and down
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              The half of the line nobody is sold on
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              A connection is advertised on the direction things come in.
+              Almost everything a business complains about happens in the
+              other one — the meeting, the file that will not send, the backup
+              that is still running at nine. Growth shows up there first.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <PlanDirectionScene label="The same day's traffic crossing two lanes of equal length: a wide download lane that clears quickly, and a narrow upload lane where video calls, file sharing, voice, cameras and backup are still queueing behind each other." />
+          </ScrollReveal>
+        </div>
+      </section>
+
 
       {/* Where broadband stops being the answer */}
       <section className="border-b border-border">

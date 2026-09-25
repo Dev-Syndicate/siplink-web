@@ -149,7 +149,7 @@ export function PlanBusyHour() {
                   <span
                     key={active}
                     aria-hidden
-                    className="dwell-fill absolute inset-x-0 bottom-0 h-0.5 origin-left bg-primary"
+                    className="dwell-bar absolute inset-x-0 bottom-0 h-0.5 origin-left bg-primary"
                     style={
                       { "--dwell-duration": `${DWELL}ms` } as React.CSSProperties
                     }
