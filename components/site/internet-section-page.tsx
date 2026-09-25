@@ -32,6 +32,7 @@ export function InternetSectionPage({
   section,
   prelude,
   extra,
+  visual,
 }: {
   service: InternetService;
   section: SectionPage;
@@ -47,6 +48,12 @@ export function InternetSectionPage({
    * rendered after the body and before the closing call to action.
    */
   extra?: ReactNode;
+  /**
+   * Replaces the hero's diagram entirely, for a page whose illustration has
+   * outgrown a single SVG. It brings its own container, so the default
+   * panel below is skipped rather than wrapped around it.
+   */
+  visual?: ReactNode;
 }) {
   const { title, heading, tagline, intro, eyebrow, scene } = section;
   const siblings = getSectionPages(service);
@@ -118,10 +125,17 @@ export function InternetSectionPage({
           <div
             className={cn(
               "mt-8 grid items-center gap-12 lg:gap-16",
+              // A bespoke `visual` is a composition rather than a single
+              // diagram, so it gets an even split — 28rem is enough for an
+              // SVG and too narrow for a grid of cards.
               layout === "split" &&
-                "lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)]",
+                (visual
+                  ? "lg:grid-cols-2"
+                  : "lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)]"),
               layout === "reverse" &&
-                "lg:grid-cols-[minmax(0,28rem)_minmax(0,1fr)]",
+                (visual
+                  ? "lg:grid-cols-2"
+                  : "lg:grid-cols-[minmax(0,28rem)_minmax(0,1fr)]"),
             )}
           >
             <ScrollReveal className={cn(layout === "reverse" && "lg:order-2")}>
@@ -166,21 +180,28 @@ export function InternetSectionPage({
               delay={120}
               className={cn(layout === "reverse" && "lg:order-1")}
             >
-              <div
-                className={cn(
-                  "rounded-2xl border border-border p-6 lg:p-8",
-                  // The wide variant gives the diagram the full measure and a
-                  // stronger ground, since it is the only thing on its row.
-                  wide
-                    ? "bg-gradient-to-br from-primary/5 to-muted/40 lg:p-12"
-                    : "bg-muted/30",
-                )}
-              >
-                <ConnectivityScene
-                  scene={scene ?? service.scene}
-                  className={cn(wide && "mx-auto max-w-3xl")}
-                />
-              </div>
+              {visual ?? (
+                /* An elevated card rather than a flat tinted box: a soft pink
+                   hairline, a pale gradient ground and a shadow, so the
+                   diagram sits above the white section instead of dissolving
+                   into it. `accent` is the palest brand tint in the theme, so
+                   the gradient stays correct when the theme inverts. */
+                <div
+                  className={cn(
+                    "rounded-2xl border border-primary/15 p-6 shadow-lg shadow-primary/5 lg:p-8",
+                    // The wide variant gives the diagram the full measure and
+                    // a stronger ground, as it is the only thing on its row.
+                    wide
+                      ? "bg-gradient-to-br from-accent/70 via-background to-accent/30 lg:p-12"
+                      : "bg-gradient-to-br from-accent/50 via-background to-accent/20",
+                  )}
+                >
+                  <ConnectivityScene
+                    scene={scene ?? service.scene}
+                    className={cn(wide && "mx-auto max-w-3xl")}
+                  />
+                </div>
+              )}
             </ScrollReveal>
           </div>
         </div>

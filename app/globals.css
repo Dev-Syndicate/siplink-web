@@ -1595,23 +1595,6 @@
     }
   }
 
-  /* A knob settling on a slider — the sizing conversation, drawn. */
-  .scene-slide {
-    animation: scene-slide 4.2s ease-in-out infinite;
-    animation-delay: var(--slide-delay, 0s);
-  }
-
-  @keyframes scene-slide {
-    0%,
-    100% {
-      transform: translateX(0);
-    }
-    40%,
-    70% {
-      transform: translateX(var(--slide-distance, 40px));
-    }
-  }
-
   /* Every scene labels its parts in words, so the loops are decoration and
      can stop. The two that leave a misleading still frame are handled
      individually: a half-swapped address would show two values at once, and
@@ -1619,7 +1602,6 @@
   @media (prefers-reduced-motion: reduce) {
     .scene-jitter,
     .scene-sweep,
-    .scene-slide,
     .scene-tick,
     .scene-swap {
       animation: none;
@@ -1783,6 +1765,148 @@
     .share-steps {
       animation: none;
       transform: none;
+    }
+  }
+}
+
+@layer components {
+  /* The animated network on /internet/business-broadband/plans.
+     Motion borrowed from the reference: capacity travelling routed paths
+     into a hub, and each node lighting as it arrives. */
+
+  /* A packet with a short tail, crossing its path. Every path declares
+     `pathLength="100"`, so one dash definition crosses a long route and a
+     short one at the same rate. */
+  .net-packet {
+    stroke-dasharray: 14 86;
+    animation: net-packet var(--net-duration, 3.2s) linear infinite;
+    animation-delay: var(--net-delay, 0s);
+  }
+
+  @keyframes net-packet {
+    from {
+      stroke-dashoffset: 100;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* A node lighting as the packet reaches it. The delay is set from the
+     packet's own duration, so the glow lands on arrival rather than on a
+     rhythm of its own. */
+  .net-arrive {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: net-arrive var(--net-duration, 3.2s) ease-out infinite;
+    animation-delay: var(--net-delay, 0s);
+  }
+
+  @keyframes net-arrive {
+    0%,
+    72% {
+      opacity: 0.18;
+      transform: scale(0.82);
+    }
+    86% {
+      opacity: 1;
+      transform: scale(1.12);
+    }
+    100% {
+      opacity: 0.18;
+      transform: scale(0.82);
+    }
+  }
+
+  /* The hub's halo, breathing outward. */
+  .net-halo {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: net-halo 4.2s ease-in-out infinite;
+    animation-delay: var(--net-delay, 0s);
+  }
+
+  @keyframes net-halo {
+    0%,
+    100% {
+      transform: scale(0.88);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.14);
+      opacity: 0.12;
+    }
+  }
+
+  /* Signal waves. The path is drawn wider than the frame and shifted by
+     exactly one wavelength, so the loop has no seam. */
+  .net-wave {
+    animation: net-wave var(--net-duration, 7s) linear infinite;
+  }
+
+  @keyframes net-wave {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(var(--net-shift, -130px));
+    }
+  }
+
+  /* Parallax. Layers drift different distances over different periods, so
+     the composition never settles into one beat. */
+  .net-drift {
+    animation: net-drift var(--net-duration, 9s) ease-in-out infinite;
+    animation-delay: var(--net-delay, 0s);
+  }
+
+  @keyframes net-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(var(--net-x, 0), var(--net-y, -6px), 0);
+    }
+  }
+
+  /* Small geometry, catching the light in turn. */
+  .net-twinkle {
+    animation: net-twinkle 5s ease-in-out infinite;
+    animation-delay: var(--net-delay, 0s);
+  }
+
+  @keyframes net-twinkle {
+    0%,
+    100% {
+      opacity: 0.15;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Stopped, the diagram has to still read as a connected network: the
+     packets go (a frozen comet is a stray dash), and everything else rests
+     at its lit, settled state rather than mid-transit. */
+  @media (prefers-reduced-motion: reduce) {
+    .net-packet {
+      animation: none;
+      opacity: 0;
+    }
+
+    .net-arrive,
+    .net-halo,
+    .net-wave,
+    .net-drift,
+    .net-twinkle {
+      animation: none;
+      transform: none;
+      opacity: 1;
+    }
+
+    .net-halo {
+      opacity: 0.35;
     }
   }
 }

@@ -33,6 +33,7 @@ import { FeaturesHero } from "@/components/site/features-hero";
 import { FeaturesSections } from "@/components/site/features-sections";
 import { PlansHero } from "@/components/site/plans-hero";
 import { PlansSections } from "@/components/site/plans-sections";
+import { PlansSizingVisual } from "@/components/site/plans-sizing-visual";
 import {
   connectivityServices,
   getInternetSectionPage,
@@ -72,6 +73,13 @@ const EXTRAS: Record<string, () => React.JSX.Element> = {
   "static-ip/what-is-static-ip": WhatIsStaticIpSections,
   "static-ip/business-uses": BusinessUsesSections,
   "static-ip/add-static-ip": AddStaticIpSections,
+};
+
+/**
+ * Hero illustrations that replace the shared diagram, keyed the same way.
+ */
+const VISUALS: Record<string, () => React.JSX.Element> = {
+  "business-broadband/plans": PlansSizingVisual,
 };
 
 /**
@@ -119,6 +127,7 @@ export default async function InternetSectionRoute({
   const key = `${slug}/${section}`;
   const Prelude = PRELUDES[key];
   const Extra = EXTRAS[key];
+  const Visual = VISUALS[key];
 
   return (
     <InternetSectionPage
@@ -126,6 +135,7 @@ export default async function InternetSectionRoute({
       section={found.section}
       prelude={Prelude ? <Prelude /> : undefined}
       extra={Extra ? <Extra /> : undefined}
+      visual={Visual ? <Visual /> : undefined}
     />
   );
 }

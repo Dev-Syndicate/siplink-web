@@ -182,7 +182,6 @@ export type SceneKind =
   | "modules"
   // Business broadband
   | "broadband"
-  | "sizing"
   | "applications"
   | "workday"
   // Dedicated internet
@@ -667,7 +666,6 @@ const businessBroadband: InternetService = {
       tagline: "There is no standard office, so there is no standard plan.",
       intro:
         "Rather than publishing a speed tier and hoping it fits, we size a business broadband connection against what actually runs on it — how many people, which applications, and how much of the traffic travels upward.",
-      scene: "sizing",
       body: [
         "Most connections that disappoint were not undersized on paper. They were sized on headcount alone, and nobody asked what those people would be doing: a twelve-person design studio pushing renders to the cloud is a heavier load than a forty-person office reading email.",
         "So the conversation starts with the work, not the number. The nine factors below are what we actually ask about.",

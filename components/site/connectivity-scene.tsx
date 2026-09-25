@@ -760,118 +760,6 @@ function MultiSiteScene({ uid }: { uid: string }) {
 
 /* ------------------------------------------------ business broadband */
 
-/** SIZING — the plan is the output of a conversation, not a tier you pick. */
-function SizingScene({ uid }: { uid: string }) {
-  const dials = [
-    { y: 56, label: "Users", travel: 54 },
-    { y: 102, label: "Applications", travel: 82 },
-    { y: 148, label: "Upload", travel: 38 },
-    { y: 194, label: "Devices", travel: 68 },
-  ];
-
-  return (
-    <>
-      <Caption x={116} y={34} text="what you actually run" />
-
-      {dials.map(({ y, label, travel }, index) => (
-        <g key={label}>
-          <text
-            x={22}
-            y={y + 4}
-            className="fill-muted-foreground/70 text-[7.5px] font-medium [font-family:var(--font-mono)]"
-          >
-            {label}
-          </text>
-          {/* The track, and a knob that settles somewhere along it. Each
-              input lands in a different place, which is the whole point. */}
-          <rect
-            x={96}
-            y={y - 2}
-            width={112}
-            height={4}
-            rx="2"
-            className="fill-border"
-          />
-          <g
-            className="scene-slide"
-            style={
-              {
-                "--slide-distance": `${travel}px`,
-                "--slide-delay": `${index * 0.24}s`,
-              } as React.CSSProperties
-            }
-          >
-            <rect
-              x={96}
-              y={y - 2}
-              width={14}
-              height={4}
-              rx="2"
-              className="fill-primary"
-            />
-            <circle
-              cx={103}
-              cy={y}
-              r="5.5"
-              className="fill-background stroke-primary"
-              strokeWidth="1.75"
-            />
-          </g>
-        </g>
-      ))}
-
-      {/* Everything above resolves into one number on the right. */}
-      <path
-        d="M224 124 H250"
-        className="stroke-border"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      />
-      <rect
-        x={256}
-        y={80}
-        width={158}
-        height={90}
-        rx="12"
-        className="fill-primary/5 stroke-primary"
-        strokeWidth="1.75"
-      />
-      <text
-        x={335}
-        y={116}
-        textAnchor="middle"
-        className="fill-muted-foreground/70 text-[7.5px] font-medium [font-family:var(--font-mono)]"
-      >
-        YOUR PLAN
-      </text>
-      <rect
-        x={280}
-        y={128}
-        width={110}
-        height={7}
-        rx="3.5"
-        className="fill-border"
-      />
-      <rect
-        x={280}
-        y={128}
-        width={110}
-        height={7}
-        rx="3.5"
-        className="scene-meter fill-primary"
-      />
-      <circle
-        cx={335}
-        cy={155}
-        r="3.5"
-        className="scene-pulse fill-primary"
-        filter={`url(#cglow-${uid})`}
-      />
-      <Caption x={335} y={190} text="sized, not picked from a tier" />
-    </>
-  );
-}
-
 /** APPLICATIONS — one line, and everything a workday puts on it at once. */
 function ApplicationsScene({ uid }: { uid: string }) {
   const apps = [
@@ -1890,7 +1778,6 @@ const SCENES: Record<SceneKind, (props: { uid: string }) => React.JSX.Element> =
   vpn: VpnScene,
   sdwan: SdWanScene,
   multisite: MultiSiteScene,
-  sizing: SizingScene,
   applications: ApplicationsScene,
   workday: WorkdayScene,
   contention: ContentionScene,
