@@ -5,9 +5,9 @@ import { CtaPanel } from "@/components/site/cta-panel";
 import {
   CloudUntether,
   NumberKept,
-  PbxMove,
-  PriCeiling,
 } from "@/components/site/migration-figures";
+import { PbxScene } from "@/components/site/pbx-scene";
+import { PriScene } from "@/components/site/pri-scene";
 import { Button } from "@/components/ui/button";
 import { solutionDetails, type SolutionDetail } from "@/lib/solutions";
 import { cn } from "@/lib/utils";
@@ -130,7 +130,11 @@ export function MigrationSolution({ solution }: { solution: SolutionDetail }) {
                 <div className="mt-8">{actions}</div>
               </div>
               <div>
-                {shape === "swap" ? <NumberKept /> : <PriCeiling />}
+                {shape === "swap" ? (
+                  <NumberKept />
+                ) : (
+                  <PriScene label="A PRI circuit fills all twelve of its channels and refuses the next caller as engaged. On SIP the same caller connects, because capacity is not a fixed bank of lines." />
+                )}
                 <p className="mt-4 text-sm text-pretty text-muted-foreground">
                   {FIGURE_LEAD[shape]}
                 </p>
@@ -151,7 +155,7 @@ export function MigrationSolution({ solution }: { solution: SolutionDetail }) {
                 <div className="mt-8">{actions}</div>
               </div>
               <div className="mt-14">
-                <PbxMove />
+                <PbxScene label="A PBX migration carries the configuration across: extensions, departments, call flows, routing rules, business hours and voicemail each move from the on-premise PBX into SipLink under the same names." />
                 <p className="mt-4 text-sm text-pretty text-muted-foreground">
                   {FIGURE_LEAD.transfer}
                 </p>

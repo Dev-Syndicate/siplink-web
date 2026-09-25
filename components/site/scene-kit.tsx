@@ -199,15 +199,6 @@ export function Joint({
 
 /* ------------------------------------------------------------ stage */
 
-const SPARKS = [
-  [12, 11],
-  [33, 7],
-  [95, 32],
-  [6, 59],
-  [56, 5],
-  [98, 92],
-];
-
 /**
  * The frameless stage: a backdrop that fades out at the edges, the wires,
  * and a swaying, pointer-following layer for the scene's objects.
@@ -255,31 +246,11 @@ export function Scene({
       onPointerLeave={settle}
       className={cn("@container relative w-full", aspect)}
     >
-      {/* No frame: the scene sits straight on the page. The backdrop is
-          masked so its glow fades out rather than stopping at a hard edge. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_72%)]"
-      >
-        <div className="absolute inset-0 bg-radial from-accent via-accent/40 to-transparent" />
-        <div className="absolute top-[-8%] left-1/2 aspect-square w-[74%] -translate-x-1/2 rounded-full bg-radial from-primary/15 via-primary/5 to-transparent" />
-        {SPARKS.map(([x, y], i) => (
-          <span
-            key={`${x}-${y}`}
-            className={cn(
-              "absolute size-[0.45cqw] rounded-full bg-primary",
-              !still && "twinkle",
-            )}
-            style={
-              {
-                left: `${x}%`,
-                top: `${y}%`,
-                "--twinkle-delay": `${i * -0.7}s`,
-              } as CSSProperties
-            }
-          />
-        ))}
-      </div>
+      {/* No frame: the scene sits straight on the page. The backdrop is a
+          faint dot grid in the border colour — neutral, so it reads as a
+          surface rather than a pink wash competing with the cards — masked
+          to fade out well before the edges. */}
+      <div aria-hidden className="scene-grid absolute inset-0" />
 
       {/* Wires, in screen space. Behind the stage, so each one runs under the
           joints it connects. Paths are filled in by useWirePaths. */}

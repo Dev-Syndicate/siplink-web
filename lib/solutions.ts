@@ -91,7 +91,11 @@ export type SolutionPoint = {
           | "voice-video"
           | "collaboration"
           | "integrations"
-          | "environment";
+          | "environment"
+          | "branch-identity"
+          | "cross-branch"
+          | "branch-admin"
+          | "standards";
       }
   );
 };
@@ -706,24 +710,48 @@ const useCase: SolutionDetail[] = [
         description:
           "Each location keeps its own numbers, greetings and call handling.",
         icon: Store,
+        image: {
+          scene: "branch-identity",
+          alt: "Three branches on one account, each answering its own local number with its own greeting, hours and call handling.",
+          width: 1600,
+          height: 820,
+        },
       },
       {
         title: "Cross-branch calling",
         description:
           "Move calls and staff between sites without callers noticing the hand-off.",
         icon: ArrowLeftRight,
+        image: {
+          scene: "cross-branch",
+          alt: "New York dialling Chicago on a four-digit extension, then transferring a customer to Denver without the call breaking.",
+          width: 1600,
+          height: 760,
+        },
       },
       {
         title: "Central management",
         description:
           "Administer every branch, user and routing rule from a single portal.",
         icon: ServerCog,
+        image: {
+          scene: "branch-admin",
+          alt: "One portal listing every branch, adding a user in Chicago, setting holiday hours in Denver and provisioning a desk phone in New York.",
+          width: 1600,
+          height: 620,
+        },
       },
       {
         title: "Consistent standards",
         description:
           "Apply the same communication policies and quality across all locations.",
         icon: ShieldCheck,
+        image: {
+          scene: "standards",
+          alt: "One set of standards reaching every branch, and a newly opened branch inheriting each rule on its first day.",
+          width: 1600,
+          height: 760,
+        },
       },
     ],
     idealFor: [
