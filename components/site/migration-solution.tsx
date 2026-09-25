@@ -2,11 +2,9 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { CtaPanel } from "@/components/site/cta-panel";
-import {
-  CloudUntether,
-  NumberKept,
-} from "@/components/site/migration-figures";
+import { CloudScene } from "@/components/site/cloud-scene";
 import { PbxScene } from "@/components/site/pbx-scene";
+import { PortingScene } from "@/components/site/porting-scene";
 import { PriScene } from "@/components/site/pri-scene";
 import { Button } from "@/components/ui/button";
 import { solutionDetails, type SolutionDetail } from "@/lib/solutions";
@@ -131,7 +129,7 @@ export function MigrationSolution({ solution }: { solution: SolutionDetail }) {
               </div>
               <div>
                 {shape === "swap" ? (
-                  <NumberKept />
+                  <PortingScene label="A customer dials the same business number before and after porting. The call first runs through the old provider, then the number ports and the same call runs through SipLink to the same desk." />
                 ) : (
                   <PriScene label="A PRI circuit fills all twelve of its channels and refuses the next caller as engaged. On SIP the same caller connects, because capacity is not a fixed bank of lines." />
                 )}
@@ -168,7 +166,7 @@ export function MigrationSolution({ solution }: { solution: SolutionDetail }) {
                starts on the building and reads out to the copy. */
             <div className="mt-8 grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-14">
               <div>
-                <CloudUntether />
+                <CloudScene label="One business number and four people — at the head office, at home, at a branch and on the road — on the same phone system in the cloud, each answering calls wherever they are." />
                 <p className="mt-4 text-sm text-pretty text-muted-foreground">
                   {FIGURE_LEAD.scatter}
                 </p>
