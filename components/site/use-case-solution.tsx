@@ -2,12 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Check } from "lucide-react";
 
+import { BusinessNumbersScene } from "@/components/site/business-numbers-scene";
 import { CallingDevicesScene } from "@/components/site/calling-devices-scene";
 import { CentralControlScene } from "@/components/site/central-control-scene";
 import { CapabilityFigure } from "@/components/site/capability-figures";
+import { CollaborationScene } from "@/components/site/collaboration-scene";
+import { ConversationScene } from "@/components/site/conversation-scene";
+import { CrmScene } from "@/components/site/crm-scene";
 import { CtaPanel } from "@/components/site/cta-panel";
+import { EnvironmentScene } from "@/components/site/environment-scene";
 import { ExtensionMobilityScene } from "@/components/site/extension-mobility-scene";
+import { IntegrationsScene } from "@/components/site/integrations-scene";
+import { OutboundScene } from "@/components/site/outbound-scene";
 import { PresenceScene } from "@/components/site/presence-scene";
+import { VoiceVideoScene } from "@/components/site/voice-video-scene";
 import { UseCaseFigure } from "@/components/site/use-case-figures";
 import { Button } from "@/components/ui/button";
 import { productDetails } from "@/lib/products";
@@ -71,6 +79,13 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
 
   const cards = capabilityLayout === "cards";
 
+  /* The hero title sits in a 26rem column from lg up, and a word can't wrap.
+     At text-6xl anything past ~12 characters — "Communications" — runs out
+     of the column and under the figure, so a title with a word that long
+     steps down to a size where it fits. Below lg the column is the page's
+     full width and the usual sizes hold. */
+  const longWord = Math.max(...title.split(/\s+/).map((w) => w.length)) > 12;
+
   /* Under "banner" one mock runs the full width and every capability sits in
      a single row beneath it, so the image stands for the section rather than
      for one capability. First one found wins — see the note on
@@ -109,7 +124,12 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
 
           <div className="mt-8 grid items-center gap-12 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-14">
             <div>
-              <h1 className="max-w-[15ch] text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              <h1
+                className={cn(
+                  "max-w-[15ch] text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl",
+                  longWord ? "lg:text-[2.625rem]" : "lg:text-6xl",
+                )}
+              >
                 {title}
               </h1>
               <p className="mt-5 max-w-[40ch] text-lg text-pretty text-primary sm:text-xl">
@@ -571,6 +591,14 @@ const SCENES = {
   "extension-mobility": ExtensionMobilityScene,
   presence: PresenceScene,
   "central-control": CentralControlScene,
+  outbound: OutboundScene,
+  "business-numbers": BusinessNumbersScene,
+  conversation: ConversationScene,
+  crm: CrmScene,
+  "voice-video": VoiceVideoScene,
+  collaboration: CollaborationScene,
+  integrations: IntegrationsScene,
+  environment: EnvironmentScene,
 };
 
 /**
