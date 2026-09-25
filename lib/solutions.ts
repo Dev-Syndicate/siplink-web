@@ -83,7 +83,11 @@ export type SolutionPoint = {
           | "calling-devices"
           | "extension-mobility"
           | "presence"
-          | "central-control";
+          | "central-control"
+          | "outbound"
+          | "business-numbers"
+          | "conversation"
+          | "crm";
       }
   );
 };
@@ -416,7 +420,7 @@ const useCase: SolutionDetail[] = [
           "Spend more time speaking with prospects and less time on the repetitive parts of dialling.",
         icon: PhoneOutgoing,
         image: {
-          src: "/solns-salesTeam/streamlined-outbound-calling.webp",
+          scene: "outbound",
           alt: "An outbound calling app working through a synced lead list one click at a time, logging each call as it moves from dialling to speaking.",
           width: 1600,
           height: 930,
@@ -428,7 +432,7 @@ const useCase: SolutionDetail[] = [
           "Reach prospects from consistent business numbers rather than personal lines.",
         icon: Phone,
         image: {
-          src: "/solns-salesTeam/professional-business-numbers.webp",
+          scene: "business-numbers",
           alt: "A softphone and call log showing outbound calls placed from the company's business line rather than a personal number.",
           width: 1600,
           height: 930,
@@ -440,7 +444,7 @@ const useCase: SolutionDetail[] = [
           "Keep track of customer conversations so the whole team knows where each relationship stands.",
         icon: Gauge,
         image: {
-          src: "/solns-salesTeam/conversation-visibility.webp",
+          scene: "conversation",
           alt: "A shared conversations inbox with each customer thread, its history, and a summary of what was agreed.",
           width: 1600,
           height: 930,
@@ -452,7 +456,7 @@ const useCase: SolutionDetail[] = [
           "Connect calling to the CRM workflows your team already relies on, where the integration supports it.",
         icon: Workflow,
         image: {
-          src: "/solns-salesTeam/crm-integration.webp",
+          scene: "crm",
           alt: "A live call beside the matching CRM record, showing the contact's details, open deals and a logged history of calls, notes and emails.",
           width: 1600,
           height: 930,
