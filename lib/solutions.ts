@@ -87,7 +87,11 @@ export type SolutionPoint = {
           | "outbound"
           | "business-numbers"
           | "conversation"
-          | "crm";
+          | "crm"
+          | "voice-video"
+          | "collaboration"
+          | "integrations"
+          | "environment";
       }
   );
 };
@@ -519,7 +523,7 @@ const useCase: SolutionDetail[] = [
           "Calls, HD video meetings, instant messaging and presence on one platform.",
         icon: Video,
         image: {
-          src: "/solns-unifiedComm/voice-video-and-messaging.webp",
+          scene: "voice-video",
           alt: "A team video meeting running beside its chat thread, with an incoming call arriving and a presence menu set to available.",
           width: 1600,
           height: 800,
@@ -531,7 +535,7 @@ const useCase: SolutionDetail[] = [
           "Bring team communication together instead of spreading it across separate apps.",
         icon: MessagesSquare,
         image: {
-          src: "/solns-unifiedComm/collaboration-in-one-place.webp",
+          scene: "collaboration",
           alt: "One workspace holding team channels, the conversation, shared files and the next meeting, rather than separate apps for each.",
           width: 1600,
           height: 800,
@@ -543,7 +547,7 @@ const useCase: SolutionDetail[] = [
           "Connect communication to the business applications your teams already use, where supported.",
         icon: Workflow,
         image: {
-          src: "/solns-unifiedComm/business-app-integrations.webp",
+          scene: "integrations",
           alt: "An integrations directory connecting calling to the CRM, helpdesk and productivity tools a team already runs.",
           width: 1600,
           height: 800,
@@ -555,7 +559,7 @@ const useCase: SolutionDetail[] = [
           "Administer calls, video, chat and collaboration from a single platform.",
         icon: Layers,
         image: {
-          src: "/solns-unifiedComm/one-environment-to-manage.webp",
+          scene: "environment",
           alt: "A single dashboard covering calls, video meetings, messages and teams, with the same platform running on desktop, mobile and web.",
           width: 1600,
           height: 900,

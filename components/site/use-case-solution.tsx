@@ -6,12 +6,16 @@ import { BusinessNumbersScene } from "@/components/site/business-numbers-scene";
 import { CallingDevicesScene } from "@/components/site/calling-devices-scene";
 import { CentralControlScene } from "@/components/site/central-control-scene";
 import { CapabilityFigure } from "@/components/site/capability-figures";
+import { CollaborationScene } from "@/components/site/collaboration-scene";
 import { ConversationScene } from "@/components/site/conversation-scene";
 import { CrmScene } from "@/components/site/crm-scene";
 import { CtaPanel } from "@/components/site/cta-panel";
+import { EnvironmentScene } from "@/components/site/environment-scene";
 import { ExtensionMobilityScene } from "@/components/site/extension-mobility-scene";
+import { IntegrationsScene } from "@/components/site/integrations-scene";
 import { OutboundScene } from "@/components/site/outbound-scene";
 import { PresenceScene } from "@/components/site/presence-scene";
+import { VoiceVideoScene } from "@/components/site/voice-video-scene";
 import { UseCaseFigure } from "@/components/site/use-case-figures";
 import { Button } from "@/components/ui/button";
 import { productDetails } from "@/lib/products";
@@ -591,6 +595,10 @@ const SCENES = {
   "business-numbers": BusinessNumbersScene,
   conversation: ConversationScene,
   crm: CrmScene,
+  "voice-video": VoiceVideoScene,
+  collaboration: CollaborationScene,
+  integrations: IntegrationsScene,
+  environment: EnvironmentScene,
 };
 
 /**
