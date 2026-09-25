@@ -261,12 +261,9 @@ function ExtensionCard({
   elapsed: number;
 }) {
   return (
-    <div
-      className={cn(
-        "glass-panel flex flex-col gap-[0.8cqw] rounded-[1.2cqw] p-[1cqw] transition-opacity duration-500",
-        !on && "opacity-75",
-      )}
-    >
+    /* Solid, not glass: it sits over the photo, and a translucent card let
+       the picture show through its text. */
+    <div className="flex flex-col gap-[0.8cqw] rounded-[1.2cqw] border border-border bg-card p-[1cqw] shadow-lg shadow-primary/15">
       <div className="flex items-center gap-[0.8cqw]">
         <span className="relative">
           <Portrait
