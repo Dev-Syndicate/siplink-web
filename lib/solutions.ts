@@ -83,7 +83,15 @@ export type SolutionPoint = {
           | "calling-devices"
           | "extension-mobility"
           | "presence"
-          | "central-control";
+          | "central-control"
+          | "outbound"
+          | "business-numbers"
+          | "conversation"
+          | "crm"
+          | "voice-video"
+          | "collaboration"
+          | "integrations"
+          | "environment";
       }
   );
 };
@@ -416,7 +424,7 @@ const useCase: SolutionDetail[] = [
           "Spend more time speaking with prospects and less time on the repetitive parts of dialling.",
         icon: PhoneOutgoing,
         image: {
-          src: "/solns-salesTeam/streamlined-outbound-calling.webp",
+          scene: "outbound",
           alt: "An outbound calling app working through a synced lead list one click at a time, logging each call as it moves from dialling to speaking.",
           width: 1600,
           height: 930,
@@ -428,7 +436,7 @@ const useCase: SolutionDetail[] = [
           "Reach prospects from consistent business numbers rather than personal lines.",
         icon: Phone,
         image: {
-          src: "/solns-salesTeam/professional-business-numbers.webp",
+          scene: "business-numbers",
           alt: "A softphone and call log showing outbound calls placed from the company's business line rather than a personal number.",
           width: 1600,
           height: 930,
@@ -440,7 +448,7 @@ const useCase: SolutionDetail[] = [
           "Keep track of customer conversations so the whole team knows where each relationship stands.",
         icon: Gauge,
         image: {
-          src: "/solns-salesTeam/conversation-visibility.webp",
+          scene: "conversation",
           alt: "A shared conversations inbox with each customer thread, its history, and a summary of what was agreed.",
           width: 1600,
           height: 930,
@@ -452,7 +460,7 @@ const useCase: SolutionDetail[] = [
           "Connect calling to the CRM workflows your team already relies on, where the integration supports it.",
         icon: Workflow,
         image: {
-          src: "/solns-salesTeam/crm-integration.webp",
+          scene: "crm",
           alt: "A live call beside the matching CRM record, showing the contact's details, open deals and a logged history of calls, notes and emails.",
           width: 1600,
           height: 930,
@@ -515,7 +523,7 @@ const useCase: SolutionDetail[] = [
           "Calls, HD video meetings, instant messaging and presence on one platform.",
         icon: Video,
         image: {
-          src: "/solns-unifiedComm/voice-video-and-messaging.webp",
+          scene: "voice-video",
           alt: "A team video meeting running beside its chat thread, with an incoming call arriving and a presence menu set to available.",
           width: 1600,
           height: 800,
@@ -527,7 +535,7 @@ const useCase: SolutionDetail[] = [
           "Bring team communication together instead of spreading it across separate apps.",
         icon: MessagesSquare,
         image: {
-          src: "/solns-unifiedComm/collaboration-in-one-place.webp",
+          scene: "collaboration",
           alt: "One workspace holding team channels, the conversation, shared files and the next meeting, rather than separate apps for each.",
           width: 1600,
           height: 800,
@@ -539,7 +547,7 @@ const useCase: SolutionDetail[] = [
           "Connect communication to the business applications your teams already use, where supported.",
         icon: Workflow,
         image: {
-          src: "/solns-unifiedComm/business-app-integrations.webp",
+          scene: "integrations",
           alt: "An integrations directory connecting calling to the CRM, helpdesk and productivity tools a team already runs.",
           width: 1600,
           height: 800,
@@ -551,7 +559,7 @@ const useCase: SolutionDetail[] = [
           "Administer calls, video, chat and collaboration from a single platform.",
         icon: Layers,
         image: {
-          src: "/solns-unifiedComm/one-environment-to-manage.webp",
+          scene: "environment",
           alt: "A single dashboard covering calls, video meetings, messages and teams, with the same platform running on desktop, mobile and web.",
           width: 1600,
           height: 900,

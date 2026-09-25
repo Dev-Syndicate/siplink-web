@@ -10,7 +10,7 @@ import {
   type RefObject,
 } from "react";
 import Image from "next/image";
-import type { LucideIcon } from "lucide-react";
+import { Phone, type LucideIcon } from "lucide-react";
 
 import { useInView } from "@/hooks/use-in-view";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -133,10 +133,13 @@ function useWirePaths(
         return a && b ? curve(a, b) : null;
       });
 
+      /* A wire whose joint is gone — its object hidden, say — is cleared
+         rather than left where it was last drawn, trailing off to nothing. */
       shapes.forEach((d, i) => {
-        if (!d) return;
-        paths.current[i * 2]?.setAttribute("d", d);
-        paths.current[i * 2 + 1]?.setAttribute("d", d);
+        for (const path of [paths.current[i * 2], paths.current[i * 2 + 1]]) {
+          if (d) path?.setAttribute("d", d);
+          else path?.removeAttribute("d");
+        }
       });
     };
 
@@ -502,5 +505,68 @@ export function Wave() {
         />
       ))}
     </span>
+  );
+}
+
+/* ------------------------------------------------------------ app chrome */
+
+/** The SipLink app's mark: a phone in a brand tile, then the name. */
+export function AppMark({ className }: { className?: string }) {
+  return (
+    <span
+      className={cn(
+        "flex items-center gap-[0.55cqw] text-[1.05cqw] font-semibold",
+        className,
+      )}
+    >
+      <span className="flex size-[2cqw] items-center justify-center rounded-[0.55cqw] bg-primary text-primary-foreground">
+        <Phone className="size-1/2" />
+      </span>
+      SipLink
+    </span>
+  );
+}
+
+export type NavItem = { icon: LucideIcon; label: string; badge?: number };
+
+/** The app's left-hand navigation, with one item current. */
+export function AppNav({
+  items,
+  active,
+  className,
+}: {
+  items: NavItem[];
+  active: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-[0.3cqw] border-r border-border p-[0.8cqw] text-[0.75cqw] text-muted-foreground",
+        className,
+      )}
+    >
+      <AppMark className="mb-[0.8cqw] px-[0.3cqw] text-foreground" />
+      {items.map(({ icon: Icon, label, badge }) => {
+        const on = label === active;
+        return (
+          <span
+            key={label}
+            className={cn(
+              "flex items-center gap-[0.5cqw] rounded-[0.5cqw] px-[0.5cqw] py-[0.45cqw] transition-colors duration-300",
+              on && "bg-accent font-medium text-accent-foreground",
+            )}
+          >
+            <Icon className={cn("size-[0.9cqw]", on && "text-primary")} />
+            {label}
+            {badge ? (
+              <span className="ml-auto flex size-[1.1cqw] items-center justify-center rounded-full bg-primary text-[0.55cqw] font-semibold text-primary-foreground">
+                {badge}
+              </span>
+            ) : null}
+          </span>
+        );
+      })}
+    </div>
   );
 }
