@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check, CirclePlus } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 import {
   Accordion,
@@ -17,38 +17,23 @@ import {
 } from "@/lib/internet";
 import { cn } from "@/lib/utils";
 import { StaticProvisionScene } from "@/components/site/scene-static-provision";
+import { AddStaticIpHeroScene } from "@/components/site/scene-add-hero";
 
 /**
  * /internet/static-ip/add-static-ip
  *
- * The hero is the request itself, drawn as the record it becomes: a ticket
- * whose four stages tick over in sequence and end on an address being issued.
- * The other two Static IP pages use a config file and a live log, so this one
- * takes the third artefact in that family — the same visual register, a
- * different document.
- *
- * `.scene-tick` carries the stage marks, staggered so they complete in order
- * rather than together. Under reduced motion they resolve ticked, which is
- * the honest still frame: the point of the sequence is that it finishes.
+ * The hero used to be a ticket card whose four stages ticked over and
+ * stopped. The stages were the right content; what a checklist cannot show
+ * is the sentence beside it that people actually want answered — that the
+ * existing connection keeps running throughout. It is an animated stage now,
+ * drawn in solid white rather than glass; see scene-add-hero.
  */
-const stages = [
-  "Requirement confirmed",
-  "Eligibility checked",
-  "Address assigned",
-  "Configured and tested",
-];
-
 export function AddStaticIpHero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-border">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 -right-24 -z-10 size-[560px] rounded-full bg-brand-to/10 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="absolute inset-y-0 right-0 -z-10 hidden w-2/5 bg-gradient-to-b from-accent/50 to-transparent lg:block"
-      />
+      {/* Nothing painted behind the right-hand column. The stage there is
+          plain white cards on plain white ground, and a wash under them is
+          exactly what made the old panel look like a gradient. */}
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-6 pt-10 pb-16 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-20 lg:px-10 lg:pt-14 lg:pb-20">
         <ScrollReveal>
@@ -85,49 +70,11 @@ export function AddStaticIpHero() {
           </div>
         </ScrollReveal>
 
-        {/* The request, as the record it becomes. */}
+        {/* The request, and the thing beside it that never drops. */}
         <ScrollReveal delay={140}>
-          <div
-            aria-hidden
-            className="overflow-hidden rounded-2xl border border-border bg-background shadow-sm"
-          >
-            <div className="flex items-center justify-between border-b border-border bg-muted/50 px-5 py-3">
-              <span className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
-                <CirclePlus className="size-3.5 text-primary" />
-                static-ip / request
-              </span>
-              <span className="font-mono text-[11px] text-primary">open</span>
-            </div>
-
-            <ul className="space-y-4 p-6 lg:p-8">
-              {stages.map((stage, index) => (
-                <li key={stage} className="flex items-center gap-3">
-                  <span
-                    className="scene-tick flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"
-                    style={
-                      { "--tick-delay": `${index * 0.55}s` } as React.CSSProperties
-                    }
-                  >
-                    <Check className="size-3.5" />
-                  </span>
-                  <span className="text-sm text-muted-foreground">{stage}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="border-t border-border bg-muted/30 px-6 py-5 lg:px-8">
-              <p className="font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
-                Issued
-              </p>
-              <p className="mt-1.5 font-mono text-xl font-semibold text-primary">
-                203.0.113.24
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Recorded against your service, in writing
-              </p>
-            </div>
-          </div>
+          <AddStaticIpHeroScene label="A static IP request advancing through requirement, eligibility, address assignment and configuration, with the internet service shown live throughout and the issued address appearing at the end." />
         </ScrollReveal>
+
       </div>
     </section>
   );

@@ -31,6 +31,7 @@ export function InternetSectionPage({
   service,
   section,
   prelude,
+  afterHero,
   extra,
   visual,
 }: {
@@ -48,6 +49,13 @@ export function InternetSectionPage({
    * rendered after the body and before the closing call to action.
    */
   extra?: ReactNode;
+  /**
+   * Two scenes that open the page, rendered between the hero and the page's
+   * own content: the room this page is about, then the kit in it. They make
+   * the argument in pictures before the prose makes it in words, which is
+   * why they sit above the content rather than after it.
+   */
+  afterHero?: ReactNode;
   /**
    * Replaces the hero's diagram entirely, for a page whose illustration has
    * outgrown a single SVG. It brings its own container, so the default
@@ -206,6 +214,8 @@ export function InternetSectionPage({
           </div>
         </div>
       </section>
+
+      {afterHero}
 
       {/* Sibling rail — every section of this service, current one marked. */}
       <section className="border-b border-border bg-muted/30">

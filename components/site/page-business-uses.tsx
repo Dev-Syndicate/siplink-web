@@ -1,43 +1,31 @@
 import Link from "next/link";
-import { ArrowRight, Check, X } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { StaticIpSituations } from "@/components/site/static-ip-situations";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { staticIpLimits } from "@/lib/internet";
-import { cn } from "@/lib/utils";
 import { StaticUsesScene } from "@/components/site/scene-static-uses";
+import { BusinessUsesHeroScene } from "@/components/site/scene-uses-hero";
 
 /**
  * /internet/static-ip/business-uses
  *
- * The hero is a live request log: inbound connections arriving at a gate and
- * being matched against an allowlist, one after another. It is the same
- * argument the page makes in words, but a log is how an administrator would
- * actually see it happen.
- *
- * `.feature-arrive` carries the rows — it fades in, holds, then clears, which
- * is exactly the shape of a line scrolling past. Staggering the delays is
- * what keeps the column from flashing in unison.
+ * The hero used to be a request log — allowed, refused, allowed. It was
+ * honest and it answered the wrong question: a log shows that a gate is
+ * checking something, where the heading is about *who* is doing the
+ * recognising, and that three unrelated parties recognise you by the same
+ * address. It is an animated checkpoint now; see scene-uses-hero.
  *
  * Addresses are RFC 5737 documentation space; see lib/internet.ts.
  */
-const requests = [
-  { address: "203.0.113.24", allowed: true },
-  { address: "198.51.100.9", allowed: false },
-  { address: "203.0.113.24", allowed: true },
-  { address: "192.0.2.77", allowed: false },
-  { address: "203.0.113.24", allowed: true },
-];
-
 export function BusinessUsesHero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-border">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 -left-24 -z-10 size-[560px] rounded-full bg-brand-from/10 blur-3xl"
-      />
+      {/* The wash that used to sit under the right-hand column is gone: the
+          stage there paints its own ground, and two of them stacked turn
+          that half of the page pink. */}
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-6 pt-10 pb-16 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-20 lg:px-10 lg:pt-14 lg:pb-20">
         <ScrollReveal>
@@ -73,62 +61,11 @@ export function BusinessUsesHero() {
           </div>
         </ScrollReveal>
 
-        {/* The gate, as a log. */}
+        {/* Who is doing the recognising, one at a time. */}
         <ScrollReveal delay={140}>
-          <div
-            aria-hidden
-            className="overflow-hidden rounded-2xl border border-border bg-background shadow-sm"
-          >
-            <div className="flex items-center justify-between border-b border-border bg-muted/50 px-5 py-3">
-              <span className="font-mono text-[11px] text-muted-foreground">
-                inbound
-              </span>
-              <span className="font-mono text-[11px] text-primary">
-                allowlist: 203.0.113.24
-              </span>
-            </div>
-
-            <ul className="divide-y divide-border">
-              {requests.map(({ address, allowed }, index) => (
-                <li
-                  key={`${address}-${index}`}
-                  className="feature-arrive flex items-center gap-3 px-5 py-3.5"
-                  style={
-                    { "--arrive-delay": `${index * 0.85}s` } as React.CSSProperties
-                  }
-                >
-                  <span
-                    className={cn(
-                      "flex size-6 shrink-0 items-center justify-center rounded-full",
-                      allowed
-                        ? "bg-primary/10 text-primary"
-                        : "bg-destructive/10 text-destructive",
-                    )}
-                  >
-                    {allowed ? (
-                      <Check className="size-3.5" />
-                    ) : (
-                      <X className="size-3.5" />
-                    )}
-                  </span>
-                  <span className="font-mono text-[13px]">{address}</span>
-                  <span
-                    className={cn(
-                      "ml-auto font-mono text-[11px] tracking-wider uppercase",
-                      allowed ? "text-primary" : "text-muted-foreground/60",
-                    )}
-                  >
-                    {allowed ? "allowed" : "refused"}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <p className="border-t border-border px-5 py-3.5 text-xs text-muted-foreground">
-              One known address, and a rule that keeps being true.
-            </p>
-          </div>
+          <BusinessUsesHeroScene label="Four arrivals at one checkpoint — a partner platform, a trunk provider, a colleague connecting from home and an address nobody listed — each presenting a public address and being recognised or refused against the same rule." />
         </ScrollReveal>
+
       </div>
     </section>
   );

@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils";
 export function InternetServicePage({
   service,
   prelude,
+  afterHero,
   extra,
 }: {
   service: InternetService;
@@ -41,6 +42,13 @@ export function InternetServicePage({
   prelude?: ReactNode;
   /** Extra sections, rendered after the body and before the add-ons. */
   extra?: ReactNode;
+  /**
+   * Two scenes that open the page, rendered between the hero and the page's
+   * own content: the room this page is about, then the kit in it. They make
+   * the argument in pictures before the prose makes it in words, which is
+   * why they sit above the content rather than after it.
+   */
+  afterHero?: ReactNode;
 }) {
   const {
     slug,
@@ -164,6 +172,8 @@ export function InternetServicePage({
           ) : null}
         </div>
       </section>
+
+      {afterHero}
 
       {/* Sections.
 

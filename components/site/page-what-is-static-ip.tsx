@@ -7,32 +7,26 @@ import { Button } from "@/components/ui/button";
 import { addressAnatomy, dynamicBreakage } from "@/lib/internet";
 import { cn } from "@/lib/utils";
 import { StaticAddressScene } from "@/components/site/scene-static-address";
+import { StaticIpHeroScene } from "@/components/site/scene-static-hero";
 
 /**
  * /internet/static-ip/what-is-static-ip
  *
- * The hero is a configuration file, because that is where an address is
- * actually met — nobody encounters an IP as a concept, they encounter it as a
- * line someone has to type into a firewall. Nothing else on the site uses a
- * terminal treatment, which is what keeps this page distinct from the other
- * eleven under /internet.
- *
- * The rotating value on the left is the same `.scene-swap` the address scene
- * uses: four values stacked in one place, one visible at a time, switched
- * rather than faded — an address changes, it does not dissolve.
+ * The hero used to be a configuration file: a dynamic value struck through,
+ * a static one below it. It said the right thing standing still, which is
+ * the trouble — the reader never saw the forty days in which nothing appears
+ * to be wrong, and those are the entire reason the failure is expensive. It
+ * is an animated stage now; see scene-static-hero.
  *
  * Every address on this page is from RFC 5737 documentation space. See the
  * note above `addressAnatomy` in lib/internet.ts.
  */
-const rotating = ["198.51.100.7", "203.0.113.88", "192.0.2.41", "198.51.100.62"];
-
 export function WhatIsStaticIpHero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-border">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 -right-24 -z-10 size-[560px] rounded-full bg-brand-to/10 blur-3xl"
-      />
+      {/* No wash behind the right-hand column. The stage there paints its
+          own ground, and two of them stacked turned the half of the page the
+          scene sits in pink. */}
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-6 pt-10 pb-16 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-20 lg:px-10 lg:pt-14 lg:pb-20">
         <ScrollReveal>
@@ -68,63 +62,11 @@ export function WhatIsStaticIpHero() {
           </div>
         </ScrollReveal>
 
-        {/* The rule, as it is actually written. */}
+        {/* The forty days the config file could not show. */}
         <ScrollReveal delay={140}>
-          <div
-            aria-hidden
-            className="overflow-hidden rounded-2xl border border-border bg-background shadow-sm"
-          >
-            <div className="flex items-center gap-2 border-b border-border bg-muted/50 px-5 py-3">
-              <span className="size-2.5 rounded-full bg-muted-foreground/25" />
-              <span className="size-2.5 rounded-full bg-muted-foreground/25" />
-              <span className="size-2.5 rounded-full bg-muted-foreground/25" />
-              <span className="ml-3 font-mono text-[11px] text-muted-foreground">
-                partner-allowlist.conf
-              </span>
-            </div>
-
-            <div className="space-y-4 p-6 font-mono text-[13px] leading-relaxed lg:p-8">
-              <p className="text-muted-foreground/60"># allow our office</p>
-
-              <p className="flex flex-wrap items-baseline gap-x-2">
-                <span className="text-muted-foreground">allow</span>
-                <span className="relative inline-flex h-6 min-w-[10.5rem] items-baseline">
-                  {/* Four values in one place, one shown at a time. */}
-                  {rotating.map((value, index) => (
-                    <span
-                      key={value}
-                      className="scene-swap absolute inset-0 text-muted-foreground line-through decoration-destructive/70"
-                      style={
-                        { "--swap-delay": `${index * 1.2}s` } as React.CSSProperties
-                      }
-                    >
-                      {value}
-                    </span>
-                  ))}
-                </span>
-                <span className="text-muted-foreground/60">
-                  # dynamic — moves
-                </span>
-              </p>
-
-              <p className="flex flex-wrap items-baseline gap-x-2">
-                <span className="text-muted-foreground">allow</span>
-                <span className="font-semibold text-primary">203.0.113.24</span>
-                <span className="text-muted-foreground/60">
-                  # static — stays
-                </span>
-                <span className="type-caret text-primary">▌</span>
-              </p>
-
-              <div className="!mt-6 flex items-center gap-2 border-t border-border pt-5 text-xs">
-                <Check className="size-4 shrink-0 text-primary" />
-                <span className="text-muted-foreground">
-                  Written once. Still correct next month.
-                </span>
-              </div>
-            </div>
-          </div>
+          <StaticIpHeroScene label="An office address being reissued from a pool between day one and day forty-one while a partner's allowlist still holds the original, so the request is refused and a person is the first to find out — then the same address held static, and accepted again." />
         </ScrollReveal>
+
       </div>
     </section>
   );

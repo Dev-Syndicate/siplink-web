@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, Lock, X } from "lucide-react";
+import { ArrowRight, Check, X } from "lucide-react";
 
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
@@ -11,18 +12,16 @@ import { VpnTunnelScene } from "@/components/site/scene-vpn";
 /**
  * /internet/network-solutions/vpn
  *
- * No artwork was supplied for the last three Network Solutions pages, so each
- * builds its own from theme tokens. Here it is the tunnel itself: two sites,
- * a sheath between them, and traffic crossing in both directions on the same
- * duration offset so the pair reads as one exchange rather than two loops.
+ * The hero was a tunnel drawn from theme tokens, back when no artwork had
+ * been supplied for this page. There is artwork now, and it says more than
+ * the drawing could: the two sites, the remote users and the systems behind
+ * them all arriving at one encrypted tunnel.
  */
 export function VpnHero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-border">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 -right-24 -z-10 size-[560px] rounded-full bg-brand-to/10 blur-3xl"
-      />
+      {/* No wash behind the right-hand column: the artwork there is opaque
+          and already pink, so a blob under it only tints the margins. */}
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 pt-10 pb-16 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-16 lg:px-10 lg:pt-14 lg:pb-20">
         <ScrollReveal>
@@ -58,85 +57,31 @@ export function VpnHero() {
           </div>
         </ScrollReveal>
 
-        {/* The tunnel. */}
+        {/* Supplied artwork, and it already carries the argument: two
+            sites, remote users and the business systems behind, all meeting
+            in one encrypted tunnel rather than reaching each other through
+            exceptions.
+
+            Framed rather than bare. The cut-outs on the Wi-Fi and LAN pages
+            sit straight on the section ground because their edges dissolve;
+            this one is an opaque rectangle with its own pale ground, so
+            without a clipped corner and a hairline it reads as a screenshot
+            somebody pasted in. */}
         <ScrollReveal delay={140}>
-          <div
-            aria-hidden
-            className="rounded-2xl border border-border bg-background/70 p-8 backdrop-blur-md lg:p-10"
-          >
-            <div className="flex items-center justify-between gap-4">
-              {["Head office", "Branch"].map((site) => (
-                <div
-                  key={site}
-                  className="flex-1 rounded-xl border border-primary/30 bg-background p-4 text-center"
-                >
-                  <p className="font-mono text-[10px] tracking-[0.16em] text-primary uppercase">
-                    {site}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* The sheath, with traffic crossing inside it. */}
-            <div className="relative my-6 h-20 rounded-2xl border border-primary/25 bg-primary/5">
-              <svg
-                viewBox="0 0 320 80"
-                preserveAspectRatio="none"
-                className="absolute inset-0 size-full"
-              >
-                <path
-                  d="M8 28 H312"
-                  pathLength={100}
-                  className="stroke-border"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M8 28 H312"
-                  pathLength={100}
-                  className="scene-dash stroke-primary"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                  style={{ "--dash-duration": "2.8s" } as React.CSSProperties}
-                />
-                <path
-                  d="M312 52 H8"
-                  pathLength={100}
-                  className="stroke-border"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M312 52 H8"
-                  pathLength={100}
-                  className="scene-dash stroke-primary"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                  style={
-                    {
-                      "--dash-duration": "2.8s",
-                      "--dash-delay": "1.4s",
-                    } as React.CSSProperties
-                  }
-                />
-              </svg>
-
-              <span className="absolute inset-0 m-auto flex size-11 items-center justify-center rounded-xl border border-primary bg-background text-primary">
-                <Lock className="size-5" />
-              </span>
-            </div>
-
-            <p className="text-center font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
-              encrypted, both directions
-            </p>
-
-            <div className="mt-7 rounded-xl border border-border bg-background p-4 text-center">
-              <p className="font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
-                Remote users join the same tunnel
-              </p>
-            </div>
+          <div className="overflow-hidden rounded-2xl border border-border shadow-sm">
+            <Image
+              src="/internet/vpn.png"
+              alt=""
+              aria-hidden
+              width={1444}
+              height={746}
+              priority
+              sizes="(min-width: 1024px) 50vw, 90vw"
+              className="h-auto w-full"
+            />
           </div>
         </ScrollReveal>
+
       </div>
     </section>
   );

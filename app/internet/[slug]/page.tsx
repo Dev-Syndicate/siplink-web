@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { BroadbandFloorScene } from "@/components/site/scene-bb-floor";
+import { BroadbandKitScene } from "@/components/site/scene-bb-kit";
+import { InternetOpeners, type InternetOpener } from "@/components/site/internet-openers";
 import { InternetServicePage } from "@/components/site/internet-service-page";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { ServiceStackScene } from "@/components/site/scene-service-stack";
@@ -46,13 +49,44 @@ export default async function InternetServiceRoute({
   // canonical one is nested under /internet/network-solutions.
   if (!service || service.parent) notFound();
 
+  const openers = OPENERS[slug];
+
   return (
     <InternetServicePage
       service={service}
+      afterHero={openers ? <InternetOpeners scenes={openers()} /> : undefined}
       extra={<ServiceStackSection slug={slug} title={service.title} />}
     />
   );
 }
+
+/**
+ * The opening pair for each connectivity hub: the room, then the kit.
+ *
+ * Built lazily per request rather than as a module constant, because the
+ * scenes are client components and a shared frozen array of elements would
+ * be the kind of thing that works until two routes render in the same tick.
+ */
+const OPENERS: Record<string, () => [InternetOpener, InternetOpener]> = {
+  "business-broadband": () => [
+    {
+      eyebrow: "A floor at eleven",
+      heading: "Five different jobs, one line, nobody waiting",
+      lede: "This is what a business connection is actually for. A client call, the CRM, a job going out to a customer, a card payment and somebody on the phone three rooms away — all at the same moment, none of them aware of each other.",
+      scene: (
+        <BroadbandFloorScene label="An office floor at eleven in the morning: a video call with a client, cloud applications loading, files uploading to a customer, a card payment at the front desk and a colleague on the business number over Wi-Fi — all carried by one connection." />
+      ),
+    },
+    {
+      eyebrow: "What turns up",
+      heading: "The cupboard, and what is in it",
+      lede: "Nobody asks this in a sales meeting and everybody wants to know it. Here is what physically arrives, where each piece goes, and which of it is optional rather than quietly included.",
+      scene: (
+        <BroadbandKitScene label="The equipment a business broadband service puts in a building: fibre into the premises, a managed router and firewall on the wall, LAN switching in the cabinet, access points in the ceiling, and a static IP that sits on the service rather than on any hardware." />
+      ),
+    },
+  ],
+};
 
 /**
  * Where this service sits in the whole picture.

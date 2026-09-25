@@ -218,6 +218,7 @@ export function Scene({
   still,
   aspect,
   wires,
+  backdrop = "full",
   children,
 }: {
   sceneRef: RefObject<HTMLDivElement | null>;
@@ -226,6 +227,17 @@ export function Scene({
   /** The original artwork's ratio, as a Tailwind aspect class. */
   aspect: string;
   wires: SceneWire[];
+  /**
+   * How much ground the stage paints behind itself.
+   *
+   * A scene given a section of its own is the only thing in that band, so it
+   * can afford the full wash. One sitting in a hero column is not — it has a
+   * heading, a paragraph and two buttons beside it, and the same wash then
+   * reads as a pink half to the page rather than as a stage. `soft` keeps
+   * the shape and takes the saturation out of it, and `none` paints nothing
+   * at all — for a stage whose own cards are meant to sit on plain white.
+   */
+  backdrop?: "full" | "soft" | "none";
   children: ReactNode;
 }) {
   const stage = useRef<HTMLDivElement>(null);
@@ -256,18 +268,36 @@ export function Scene({
       className={cn("@container relative w-full", aspect)}
     >
       {/* No frame: the scene sits straight on the page. The backdrop is
-          masked so its glow fades out rather than stopping at a hard edge. */}
+          masked so its glow fades out rather than stopping at a hard edge —
+          and is skipped entirely at `none`, sparks included, since a stray
+          dot on white is the one thing that would give the ground away. */}
       <div
         aria-hidden
+        hidden={backdrop === "none"}
         className="absolute inset-0 overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_72%)]"
       >
-        <div className="absolute inset-0 bg-radial from-accent via-accent/40 to-transparent" />
-        <div className="absolute top-[-8%] left-1/2 aspect-square w-[74%] -translate-x-1/2 rounded-full bg-radial from-primary/15 via-primary/5 to-transparent" />
+        <div
+          className={cn(
+            "absolute inset-0 bg-radial to-transparent",
+            backdrop === "soft"
+              ? "from-accent/35 via-accent/10"
+              : "from-accent via-accent/40",
+          )}
+        />
+        <div
+          className={cn(
+            "absolute top-[-8%] left-1/2 aspect-square w-[74%] -translate-x-1/2 rounded-full bg-radial to-transparent",
+            backdrop === "soft"
+              ? "from-primary/6 via-primary/2"
+              : "from-primary/15 via-primary/5",
+          )}
+        />
         {SPARKS.map(([x, y], i) => (
           <span
             key={`${x}-${y}`}
             className={cn(
-              "absolute size-[0.45cqw] rounded-full bg-primary",
+              "absolute size-[0.45cqw] rounded-full",
+              backdrop === "soft" ? "bg-primary/40" : "bg-primary",
               !still && "twinkle",
             )}
             style={
