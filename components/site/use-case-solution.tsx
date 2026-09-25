@@ -2,12 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Check } from "lucide-react";
 
+import { CallingDevicesScene } from "@/components/site/calling-devices-scene";
 import { CapabilityFigure } from "@/components/site/capability-figures";
 import { CtaPanel } from "@/components/site/cta-panel";
 import { UseCaseFigure } from "@/components/site/use-case-figures";
 import { Button } from "@/components/ui/button";
 import { productDetails } from "@/lib/products";
-import { solutionDetails, type SolutionDetail } from "@/lib/solutions";
+import {
+  solutionDetails,
+  type SolutionDetail,
+  type SolutionPoint,
+} from "@/lib/solutions";
 import { cn } from "@/lib/utils";
 
 /**
@@ -247,11 +252,8 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
                lines of it and stop being a heading. */
             <>
               <div className="mt-12 lg:mt-14">
-                <Image
-                  src={banner.src}
-                  alt={banner.alt}
-                  width={banner.width}
-                  height={banner.height}
+                <CapabilityMedia
+                  image={banner}
                   sizes="(min-width: 1536px) 75rem, (min-width: 1024px) 67rem, 100vw"
                   className="w-full rounded-2xl border border-border"
                 />
@@ -299,11 +301,8 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
                   className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card"
                 >
                   {image ? (
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      width={image.width}
-                      height={image.height}
+                    <CapabilityMedia
+                      image={image}
                       sizes="(min-width: 1536px) 37rem, (min-width: 1024px) 33rem, 100vw"
                       className="w-full border-b border-border"
                     />
@@ -338,7 +337,12 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
             <ul className="mt-14 lg:mt-16">
             {capabilities.map(
               ({ title: name, description, icon: Icon, image }, index) => {
-                const mirrored = index % 2 === 1;
+                /* A live scene takes the row's full width, copy above it.
+                   Its UI is drawn at scale inside it, so in the 1fr track
+                   the labels shrank past reading size; given the whole
+                   container it roughly doubles. */
+                const wide = image !== undefined && "scene" in image;
+                const mirrored = !wide && index % 2 === 1;
 
                 return (
                   <li
@@ -352,7 +356,9 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
                          was authored against a 480×280 canvas and reads
                          worse enlarged, so it splits at lg as it always
                          did. */
-                      image
+                      wide
+                        ? "lg:gap-10"
+                        : image
                         ? cn(
                             "xl:gap-14",
                             /* `order` moves a child into a different track
@@ -386,7 +392,11 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
                       <p
                         className={cn(
                           "mt-4 text-lg text-pretty text-muted-foreground",
-                          image ? "max-w-[62ch] xl:max-w-[46ch]" : "max-w-[46ch]",
+                          wide
+                            ? "max-w-[62ch]"
+                            : image
+                              ? "max-w-[62ch] xl:max-w-[46ch]"
+                              : "max-w-[46ch]",
                         )}
                       >
                         {description}
@@ -408,12 +418,13 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
                            next/image derives the aspect ratio from them, so a
                            shared pair silently squashes any mock shaped
                            differently — which it was doing, by up to 3%. */
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          width={image.width}
-                          height={image.height}
-                          sizes="(min-width: 1536px) 46rem, (min-width: 1280px) 38rem, 100vw"
+                        <CapabilityMedia
+                          image={image}
+                          sizes={
+                            wide
+                              ? "(min-width: 1152px) 72rem, 100vw"
+                              : "(min-width: 1536px) 46rem, (min-width: 1280px) 38rem, 100vw"
+                          }
                           className="w-full rounded-2xl border border-border"
                         />
                       ) : (
@@ -549,5 +560,36 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
         </section>
       ) : null}
     </>
+  );
+}
+
+/**
+ * A capability's artwork: the file, or — where the data names a `scene` — the
+ * live rendering of it. The scene draws its own hairline and radius, so the
+ * call sites pass the same props either way.
+ */
+function CapabilityMedia({
+  image,
+  sizes,
+  className,
+}: {
+  image: NonNullable<SolutionPoint["image"]>;
+  sizes: string;
+  className: string;
+}) {
+  if ("scene" in image) {
+    return <CallingDevicesScene label={image.alt} />;
+  }
+
+  return (
+    <Image
+      src={image.src}
+      alt={image.alt}
+      width={image.width}
+      height={image.height}
+      sizes={sizes}
+      quality={90}
+      className={className}
+    />
   );
 }
