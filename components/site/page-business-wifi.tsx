@@ -10,12 +10,9 @@ import { wifiFailures, wifiProcess } from "@/lib/internet";
 /**
  * /internet/network-solutions/business-wifi
  *
- * `business_wifi.png` is the odd one of the three: it is not a cut-out, and
- * its own background is near-black. Dropped onto a light page that reads as a
- * mistake, so it is set into a deliberately dark panel instead — the site
- * already goes dark for the assurances band on /internet, so the register
- * exists. The panel's rounded corners and the image's dark ground meet
- * without a seam, which is the only way this artwork works here.
+ * `business_wifi.png` was rendered on near-black and has since been cut out:
+ * the devices, tiles and server are fully opaque, and the glow fades to
+ * transparent by brightness, so it composites over light and dark grounds.
  */
 export function BusinessWifiHero() {
   return (
@@ -59,26 +56,19 @@ export function BusinessWifiHero() {
           </div>
         </ScrollReveal>
 
-        {/* The dark panel. The artwork's own ground is black, so the panel is
-            what turns that into a deliberate choice rather than a clash. */}
+        {/* No panel: the artwork is a cut-out, so it sits on the section
+            ground and its glow falls onto the page. */}
         <ScrollReveal delay={140}>
-          <div
+          <Image
+            src="/internet/business_wifi.png"
+            alt=""
             aria-hidden
-            className="relative overflow-hidden rounded-3xl border border-border bg-neutral-950 shadow-lg"
-          >
-            <Image
-              src="/internet/business_wifi.png"
-              alt=""
-              width={1536}
-              height={1024}
-              priority
-              sizes="(min-width: 1024px) 50vw, 90vw"
-              className="h-auto w-full object-cover"
-            />
-            {/* A brand wash over the top, so the panel belongs to this site
-                rather than looking like a pasted-in stock render. */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-brand-to/20 via-transparent to-transparent" />
-          </div>
+            width={1536}
+            height={1024}
+            priority
+            sizes="(min-width: 1024px) 50vw, 90vw"
+            className="h-auto w-full"
+          />
         </ScrollReveal>
       </div>
     </section>
