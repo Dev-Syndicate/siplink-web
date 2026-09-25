@@ -38,6 +38,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} ${script.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {/* ScrollReveal hides its children until its observer fires, which
+            needs JavaScript. Without this, a reader with scripts disabled
+            gets a page of invisible sections — the rule below returns every
+            revealed block to its rest state before that can happen. CSS
+            alone cannot detect the missing script, so it has to live here. */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         <SiteHeader />
         {/* Offset matches the fixed header: the h-16 nav pill plus its pt-3
             gap, and above `sm` the h-10 announcement bar as well. The bar is

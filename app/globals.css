@@ -2174,3 +2174,628 @@
     }
   }
 }
+
+@layer components {
+  /* Entrance for a section's own content, driven by ScrollReveal: the
+     component flips `data-visible` when the block crosses into view, and the
+     transition runs once. Staggering is a custom property rather than a set
+     of variant classes, so a list can deal itself in without N classes.
+
+     The rest state is the *hidden* one, so a reader who never scrolls past
+     never sees a flash of positioned content. */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(var(--reveal-shift, 14px));
+    transition:
+      opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Reduced motion, and the no-JS case: content must be readable either way,
+     so both resolve to the visible rest state rather than to the hidden one. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+@layer components {
+  /* A packet crossing a scene wire. Every wire declares `pathLength="100"`,
+     so one dash definition covers wires of different real lengths and each
+     pulse crosses at the same rate — the same trick `.signal-path` uses,
+     but without the heavy bloom, because these scenes sit on a light ground
+     where a drop-shadow reads as a smudge. */
+  .scene-dash {
+    stroke-dasharray: 3 97;
+    animation: scene-dash var(--dash-duration, 3s) linear infinite;
+    animation-delay: var(--dash-delay, 0s);
+  }
+
+  @keyframes scene-dash {
+    from {
+      stroke-dashoffset: 100;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* A node lighting as traffic reaches it. Opacity only — a scaling node
+     shifts the labels around it, which is worse than no animation at all. */
+  .scene-pulse {
+    animation: scene-pulse var(--pulse-duration, 3s) ease-in-out infinite;
+    animation-delay: var(--pulse-delay, 0s);
+  }
+
+  @keyframes scene-pulse {
+    0%,
+    100% {
+      opacity: 0.25;
+    }
+    45% {
+      opacity: 1;
+    }
+  }
+
+  /* Wi-Fi coverage: rings leaving the access point. They expand and fade
+     together, so the ring is gone before it reaches the labels. */
+  .scene-ring {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: scene-ring 2.8s ease-out infinite;
+    animation-delay: var(--ring-delay, 0s);
+  }
+
+  @keyframes scene-ring {
+    from {
+      transform: scale(0.35);
+      opacity: 0.55;
+    }
+    to {
+      transform: scale(1.35);
+      opacity: 0;
+    }
+  }
+
+  /* A throughput bar filling. Used for the symmetrical up/down comparison,
+     where the point is that the two bars reach the same place. */
+  .scene-meter {
+    transform-origin: left center;
+    transform-box: fill-box;
+    animation: scene-meter 3.4s ease-in-out infinite;
+    animation-delay: var(--meter-delay, 0s);
+  }
+
+  @keyframes scene-meter {
+    0%,
+    100% {
+      transform: scaleX(0.08);
+    }
+    40%,
+    70% {
+      transform: scaleX(1);
+    }
+  }
+
+  /* The connector between two tiers of the network stack. The gradient is a
+     token, so the descent reads in both themes. */
+  .stack-drop {
+    animation: stack-drop 2.4s ease-in-out infinite;
+    animation-delay: var(--drop-delay, 0s);
+  }
+
+  @keyframes stack-drop {
+    0%,
+    100% {
+      transform: translateY(-3px);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(3px);
+      opacity: 1;
+    }
+  }
+
+  /* Every scene labels what it draws in words, so the loops are decoration
+     and can simply stop. `.scene-ring` is the exception: a ring frozen
+     mid-expansion is a stray circle, so it is hidden rather than paused. */
+  @media (prefers-reduced-motion: reduce) {
+    .scene-dash,
+    .scene-pulse,
+    .scene-meter,
+    .stack-drop {
+      animation: none;
+    }
+
+    .scene-dash {
+      stroke-dasharray: none;
+      opacity: 0.45;
+    }
+
+    .scene-pulse {
+      opacity: 1;
+    }
+
+    .scene-meter {
+      transform: none;
+    }
+
+    .scene-ring {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
+
+@layer components {
+  /* A second wave of scene motion, for the per-page diagrams under
+     /internet. Each one exists because a particular page has a particular
+     thing to say — a contended line wobbles, a symmetrical pair does not,
+     a dynamic address keeps changing and a fixed one never does. */
+
+  /* Throughput on a contended line: steps rather than a smooth ease, because
+     the point is that it lurches unpredictably instead of holding. */
+  .scene-jitter {
+    transform-origin: left center;
+    transform-box: fill-box;
+    animation: scene-jitter 2.8s steps(1, end) infinite;
+  }
+
+  @keyframes scene-jitter {
+    0% {
+      transform: scaleX(0.88);
+    }
+    12% {
+      transform: scaleX(0.42);
+    }
+    25% {
+      transform: scaleX(0.71);
+    }
+    37% {
+      transform: scaleX(0.29);
+    }
+    50% {
+      transform: scaleX(0.83);
+    }
+    62% {
+      transform: scaleX(0.47);
+    }
+    75% {
+      transform: scaleX(0.63);
+    }
+    87% {
+      transform: scaleX(0.34);
+    }
+    100% {
+      transform: scaleX(0.88);
+    }
+  }
+
+  /* One of a stack of alternatives showing at a time — a dynamic IP being
+     reassigned. `steps(1)` because an address switches; it does not fade. */
+  .scene-swap {
+    animation: scene-swap 4.8s steps(1, end) infinite;
+    animation-delay: var(--swap-delay, 0s);
+  }
+
+  @keyframes scene-swap {
+    0%,
+    24% {
+      opacity: 1;
+    }
+    25%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* A mark being made against a checklist, then the list resetting. */
+  .scene-tick {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: scene-tick 4.4s ease-out infinite;
+    animation-delay: var(--tick-delay, 0s);
+  }
+
+  @keyframes scene-tick {
+    0%,
+    6% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    16%,
+    90% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  /* A playhead crossing the working day. */
+  .scene-sweep {
+    animation: scene-sweep 7s ease-in-out infinite;
+  }
+
+  @keyframes scene-sweep {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(var(--sweep-distance, 240px));
+    }
+  }
+
+  /* Every scene labels its parts in words, so the loops are decoration and
+     can stop. The two that leave a misleading still frame are handled
+     individually: a half-swapped address would show two values at once, and
+     an unticked checklist would read as unmet. */
+  @media (prefers-reduced-motion: reduce) {
+    .scene-jitter,
+    .scene-sweep,
+    .scene-tick,
+    .scene-swap {
+      animation: none;
+    }
+
+    .scene-jitter {
+      transform: none;
+    }
+
+    .scene-tick {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Only the first alternative remains, so the stack reads as one value. */
+    .scene-swap {
+      opacity: 0;
+    }
+
+    .scene-swap:first-of-type {
+      opacity: 1;
+    }
+  }
+}
+
+@layer components {
+  /* Motion for the four Dedicated Internet pages.
+
+     The references these come from lean on floating UI cards, dotted step
+     rails and oversized figures. Those translate; their colour-blocking and
+     invented statistics do not, so what is borrowed here is the movement and
+     the depth, not the numbers. */
+
+  /* A token travelling a dotted step rail. The rail is drawn in CSS, so the
+     dot moves in pixels rather than along a path — `--rail-distance` is set
+     by the component from the rail's own width. */
+  .rail-dot {
+    animation: rail-dot var(--rail-duration, 5.6s) ease-in-out infinite;
+  }
+
+  @keyframes rail-dot {
+    0%,
+    4% {
+      transform: translateX(0);
+    }
+    96%,
+    100% {
+      transform: translateX(var(--rail-distance, 100%));
+    }
+  }
+
+  /* An item carried upward and released — the outbound half of a
+     symmetrical link. Paired with `.flow-down` so the two read as one
+     exchange rather than two unrelated loops. */
+  .flow-up {
+    animation: flow-up var(--flow-duration, 4.4s) ease-in-out infinite;
+    animation-delay: var(--flow-delay, 0s);
+  }
+
+  @keyframes flow-up {
+    0%,
+    100% {
+      transform: translateY(6px);
+      opacity: 0.35;
+    }
+    45% {
+      transform: translateY(-6px);
+      opacity: 1;
+    }
+  }
+
+  .flow-down {
+    animation: flow-down var(--flow-duration, 4.4s) ease-in-out infinite;
+    animation-delay: var(--flow-delay, 0s);
+  }
+
+  @keyframes flow-down {
+    0%,
+    100% {
+      transform: translateY(-6px);
+      opacity: 0.35;
+    }
+    45% {
+      transform: translateY(6px);
+      opacity: 1;
+    }
+  }
+
+  /* Your share of a contended segment as more subscribers join it. Stepped,
+     not eased: capacity is given away in whole neighbours, and the recovery
+     at the end of the loop is the segment emptying again overnight. */
+  .share-steps {
+    transform-origin: left center;
+    animation: share-steps 6s steps(1, end) infinite;
+  }
+
+  @keyframes share-steps {
+    0%,
+    14% {
+      transform: scaleX(1);
+    }
+    15%,
+    29% {
+      transform: scaleX(0.72);
+    }
+    30%,
+    44% {
+      transform: scaleX(0.55);
+    }
+    45%,
+    59% {
+      transform: scaleX(0.38);
+    }
+    60%,
+    88% {
+      transform: scaleX(0.26);
+    }
+    89%,
+    100% {
+      transform: scaleX(1);
+    }
+  }
+
+  /* A neighbour arriving on the segment, in time with the shrink above. */
+  .share-join {
+    animation: share-join 6s ease-out infinite;
+    animation-delay: var(--join-delay, 0s);
+  }
+
+  @keyframes share-join {
+    0%,
+    10% {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    18%,
+    88% {
+      opacity: 1;
+      transform: none;
+    }
+    92%,
+    100% {
+      opacity: 0;
+      transform: none;
+    }
+  }
+
+  /* Each of these is decoration over content that is also written out, so
+     they simply stop. `.share-steps` is the exception: frozen mid-loop it
+     would show an arbitrary share, so it resets to the full bar. */
+  @media (prefers-reduced-motion: reduce) {
+    .rail-dot,
+    .flow-up,
+    .flow-down,
+    .share-join {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .share-steps {
+      animation: none;
+      transform: none;
+    }
+  }
+}
+
+@layer components {
+  /* The animated network on /internet/business-broadband/plans.
+     Motion borrowed from the reference: capacity travelling routed paths
+     into a hub, and each node lighting as it arrives. */
+
+  /* A packet with a short tail, crossing its path. Every path declares
+     `pathLength="100"`, so one dash definition crosses a long route and a
+     short one at the same rate. */
+  .net-packet {
+    stroke-dasharray: 14 86;
+    animation: net-packet var(--net-duration, 3.2s) linear infinite;
+    animation-delay: var(--net-delay, 0s);
+  }
+
+  @keyframes net-packet {
+    from {
+      stroke-dashoffset: 100;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* A node lighting as the packet reaches it. The delay is set from the
+     packet's own duration, so the glow lands on arrival rather than on a
+     rhythm of its own. */
+  .net-arrive {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: net-arrive var(--net-duration, 3.2s) ease-out infinite;
+    animation-delay: var(--net-delay, 0s);
+  }
+
+  @keyframes net-arrive {
+    0%,
+    72% {
+      opacity: 0.18;
+      transform: scale(0.82);
+    }
+    86% {
+      opacity: 1;
+      transform: scale(1.12);
+    }
+    100% {
+      opacity: 0.18;
+      transform: scale(0.82);
+    }
+  }
+
+  /* The hub's halo, breathing outward. */
+  .net-halo {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: net-halo 4.2s ease-in-out infinite;
+    animation-delay: var(--net-delay, 0s);
+  }
+
+  @keyframes net-halo {
+    0%,
+    100% {
+      transform: scale(0.88);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.14);
+      opacity: 0.12;
+    }
+  }
+
+  /* Signal waves. The path is drawn wider than the frame and shifted by
+     exactly one wavelength, so the loop has no seam. */
+  .net-wave {
+    animation: net-wave var(--net-duration, 7s) linear infinite;
+  }
+
+  @keyframes net-wave {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(var(--net-shift, -130px));
+    }
+  }
+
+  /* Parallax. Layers drift different distances over different periods, so
+     the composition never settles into one beat. */
+  .net-drift {
+    animation: net-drift var(--net-duration, 9s) ease-in-out infinite;
+    animation-delay: var(--net-delay, 0s);
+  }
+
+  @keyframes net-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(var(--net-x, 0), var(--net-y, -6px), 0);
+    }
+  }
+
+  /* Small geometry, catching the light in turn. */
+  .net-twinkle {
+    animation: net-twinkle 5s ease-in-out infinite;
+    animation-delay: var(--net-delay, 0s);
+  }
+
+  @keyframes net-twinkle {
+    0%,
+    100% {
+      opacity: 0.15;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Stopped, the diagram has to still read as a connected network: the
+     packets go (a frozen comet is a stray dash), and everything else rests
+     at its lit, settled state rather than mid-transit. */
+  @media (prefers-reduced-motion: reduce) {
+    .net-packet {
+      animation: none;
+      opacity: 0;
+    }
+
+    .net-arrive,
+    .net-halo,
+    .net-wave,
+    .net-drift,
+    .net-twinkle {
+      animation: none;
+      transform: none;
+      opacity: 1;
+    }
+
+    .net-halo {
+      opacity: 0.35;
+    }
+  }
+}
+
+@layer components {
+  /* Cargo crossing a lane, on /internet/business-broadband/plans.
+   *
+   * The chips on the two lanes are identical and the lanes are the same
+   * length; only `--lane-duration` differs, and that difference is the whole
+   * point the section makes — the download lane empties while the upload
+   * lane is still queueing. `--lane-delay` is set negative per chip, so the
+   * lane is already full the moment the scene is first looked at rather than
+   * filling from one end.
+   *
+   * `left` rather than a transform: the chips already carry a translate to
+   * sit on the lane's centre line, and animating the same property from two
+   * places is how a scene ends up with one of them silently winning. A
+   * handful of chips is well within what this costs.
+   */
+  .lane-run {
+    animation: lane-run var(--lane-duration, 6s) linear infinite;
+    animation-delay: var(--lane-delay, 0s);
+  }
+
+  @keyframes lane-run {
+    0% {
+      left: -14%;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+
+  /* Stopped, the chips keep the positions the component gives them, which
+     still shows one lane strung out behind the other. */
+  @media (prefers-reduced-motion: reduce) {
+    .lane-run {
+      animation: none;
+    }
+  }
+}
