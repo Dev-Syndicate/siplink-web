@@ -10,12 +10,25 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ProductIllustration } from "@/components/site/product-illustration";
+import { CloudPbxScene } from "@/components/site/cloud-pbx-scene";
+import { SipTrunkScene } from "@/components/site/sip-trunk-scene";
 import { RevealGroup } from "@/components/site/reveal-group";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getProductDetail, productDetails } from "@/lib/products";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+
+
+/** Products whose hero is a live scene rather than a drawn illustration. */
+const PRODUCT_SCENES = {
+  "sip-trunking": (
+    <SipTrunkScene label="Desk phones, IP phones and softphones on your existing PBX placing local, mobile and international calls over a SipLink SIP trunk, which carries them with room to add more." />
+  ),
+  "cloud-pbx": (
+    <CloudPbxScene label="A customer calls and the cloud phone system answers with its menu, checks business hours and rings the sales queue; one person picks up and the call is logged to the call records." />
+  ),
+};
 
 export function generateStaticParams() {
   return productDetails.map(({ slug }) => ({ slug }));
@@ -123,10 +136,18 @@ export default async function ProductDetailPage({
               </div>
             </div>
 
-            {/* Scene showing what this product actually does. */}
-            <div className="hidden rounded-2xl border border-border bg-muted/30 p-8 lg:block">
-              <ProductIllustration slug={slug} />
-            </div>
+            {/* Scene showing what this product actually does. A live scene
+                sits straight on the page like the ones on the solution
+                pages; the drawn illustrations keep their plate. */}
+            {slug in PRODUCT_SCENES ? (
+              <div className="hidden lg:block">
+                {PRODUCT_SCENES[slug as keyof typeof PRODUCT_SCENES]}
+              </div>
+            ) : (
+              <div className="hidden rounded-2xl border border-border bg-muted/30 p-8 lg:block">
+                <ProductIllustration slug={slug} />
+              </div>
+            )}
           </div>
         </div>
       </section>
