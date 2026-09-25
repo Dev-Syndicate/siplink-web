@@ -47,8 +47,8 @@ export function InternetClose({
   body?: string;
 }) {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-24">
-      <ScrollReveal className="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-brand-to via-brand-to to-brand-from px-8 py-14 text-primary-foreground lg:px-14 lg:py-16">
+    <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-16">
+      <ScrollReveal className="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-brand-to via-brand-to to-brand-from px-8 py-10 text-primary-foreground lg:px-12 lg:py-12">
         {/* Soft light falling from the top-right, so the flat gradient reads
             as a lit surface rather than a solid fill. */}
         <div
@@ -61,15 +61,15 @@ export function InternetClose({
           Business connectivity
         </span>
 
-        <h2 className="font-heading mt-6 max-w-xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+        <h2 className="font-heading mt-5 max-w-xl text-2xl leading-[1.15] font-semibold tracking-tight text-balance sm:text-3xl lg:text-4xl">
           {heading}
         </h2>
 
-        <p className="mt-5 max-w-xl text-pretty text-primary-foreground/85 lg:text-lg">
+        <p className="mt-4 max-w-xl text-pretty text-primary-foreground/85">
           {body}
         </p>
 
-        <div className="mt-9 flex flex-wrap gap-4">
+        <div className="mt-7 flex flex-wrap gap-3">
           <Button
             asChild
             size="lg"
@@ -94,7 +94,7 @@ export function InternetClose({
 
         {/* Kept from the band this replaced: three short promises that
             answer what actually happens after the click. */}
-        <ul className="mt-10 flex flex-wrap gap-x-7 gap-y-3">
+        <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2.5">
           {assurances.map((item, index) => (
             <ScrollReveal
               as="li"
@@ -112,7 +112,7 @@ export function InternetClose({
         {secondaryLabel && secondaryHref ? (
           <Link
             href={secondaryHref}
-            className="mt-8 inline-block text-sm font-medium text-primary-foreground underline underline-offset-4 decoration-primary-foreground/40 transition-colors hover:decoration-primary-foreground"
+            className="mt-6 inline-block text-sm font-medium text-primary-foreground underline underline-offset-4 decoration-primary-foreground/40 transition-colors hover:decoration-primary-foreground"
           >
             {secondaryLabel}
           </Link>
@@ -122,7 +122,7 @@ export function InternetClose({
       <ScrollReveal
         as="p"
         delay={120}
-        className="mx-auto mt-8 max-w-3xl text-xs text-muted-foreground"
+        className="mx-auto mt-6 max-w-3xl text-xs text-muted-foreground"
       >
         Availability, service levels and the exact scope of managed services
         are confirmed per location and set out in your agreement. All services
