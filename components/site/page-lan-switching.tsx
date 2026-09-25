@@ -6,6 +6,7 @@ import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { lanSegments, lanTriggers } from "@/lib/internet";
+import { LanSegmentsScene } from "@/components/site/scene-lan";
 
 /**
  * /internet/network-solutions/lan-switching
@@ -178,6 +179,27 @@ export function LanSwitchingSections() {
               ))}
             </ol>
           </div>
+        </div>
+      </section>
+
+      {/* Inside the cabinet */}
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Inside the cabinet
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              What segmentation actually looks like
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              It happens in a cabinet, it looks like nothing, and the argument for it is entirely about what does not happen. So here is the port map: four segments, and what each one is kept apart from.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <LanSegmentsScene label="A switch port map coloured by segment — voice, data, Wi-Fi and devices — with each segment lit in turn beside the equipment patched into it and the reason it is kept separate." />
+          </ScrollReveal>
         </div>
       </section>
     </>

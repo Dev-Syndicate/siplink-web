@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { slaLifecycle } from "@/lib/internet";
+import { SlaLifecycleScene } from "@/components/site/scene-sla";
 
 /**
  * /internet/dedicated-internet/sla
@@ -147,77 +148,100 @@ export function SlaHero() {
  */
 export function SlaSections() {
   return (
-    <section className="border-b border-border bg-muted/30">
-      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-        <ScrollReveal className="max-w-2xl">
-          <span className="font-mono text-xs tracking-widest text-primary uppercase">
-            When something breaks
-          </span>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            What an SLA looks like in motion
-          </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            The value of agreeing this in advance is that none of it has to be
-            decided while your office is offline.
-          </p>
-        </ScrollReveal>
+    <>
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              When something breaks
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              What an SLA looks like in motion
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              The value of agreeing this in advance is that none of it has to be
+              decided while your office is offline.
+            </p>
+          </ScrollReveal>
 
-        <ol className="relative mt-16 grid gap-10 md:grid-cols-3 xl:grid-cols-5">
-          {/* The rail itself, behind the steps. Only drawn where the steps
-              sit in a single row, since a dotted line across a wrapped grid
-              would join things that do not follow each other. */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute top-6 right-0 left-0 hidden xl:block"
-          >
-            <div className="relative h-px w-full border-t-2 border-dashed border-border">
-              <span
-                className="rail-dot absolute -top-[5px] left-0 block size-2.5 rounded-full bg-primary shadow-[0_0_0_4px_var(--background)]"
-                style={
-                  { "--rail-distance": "calc(100% - 0.625rem)" } as React.CSSProperties
-                }
-              />
-            </div>
-          </div>
-
-          {slaLifecycle.map(({ title, body }, index) => (
-            <ScrollReveal
-              as="li"
-              key={title}
-              delay={index * 90}
-              shift={12}
-              className="relative"
+          <ol className="relative mt-16 grid gap-10 md:grid-cols-3 xl:grid-cols-5">
+            {/* The rail itself, behind the steps. Only drawn where the steps
+                sit in a single row, since a dotted line across a wrapped grid
+                would join things that do not follow each other. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute top-6 right-0 left-0 hidden xl:block"
             >
-              <span className="relative z-10 flex size-12 items-center justify-center rounded-full border-2 border-primary bg-background font-mono text-sm font-semibold text-primary">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-5 text-base font-semibold tracking-tight">
-                {title}
-              </h3>
-              <p className="mt-2 text-sm text-pretty text-muted-foreground">
-                {body}
-              </p>
-            </ScrollReveal>
-          ))}
-        </ol>
+              <div className="relative h-px w-full border-t-2 border-dashed border-border">
+                <span
+                  className="rail-dot absolute -top-[5px] left-0 block size-2.5 rounded-full bg-primary shadow-[0_0_0_4px_var(--background)]"
+                  style={
+                    { "--rail-distance": "calc(100% - 0.625rem)" } as React.CSSProperties
+                  }
+                />
+              </div>
+            </div>
 
-        <ScrollReveal
-          delay={120}
-          className="mt-14 flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-background p-7"
-        >
-          <p className="max-w-xl text-pretty text-muted-foreground">
-            Ask us for the availability, response and restoration targets that
-            apply to your service and site. We would rather give you figures we
-            can stand behind than headline ones we cannot.
-          </p>
-          <Button asChild variant="outline" className="ml-auto">
-            <Link href="/contact">
-              Request your SLA terms
-              <ArrowRight className="size-4" aria-hidden />
-            </Link>
-          </Button>
-        </ScrollReveal>
-      </div>
-    </section>
+            {slaLifecycle.map(({ title, body }, index) => (
+              <ScrollReveal
+                as="li"
+                key={title}
+                delay={index * 90}
+                shift={12}
+                className="relative"
+              >
+                <span className="relative z-10 flex size-12 items-center justify-center rounded-full border-2 border-primary bg-background font-mono text-sm font-semibold text-primary">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-5 text-base font-semibold tracking-tight">
+                  {title}
+                </h3>
+                <p className="mt-2 text-sm text-pretty text-muted-foreground">
+                  {body}
+                </p>
+              </ScrollReveal>
+            ))}
+          </ol>
+
+          <ScrollReveal
+            delay={120}
+            className="mt-14 flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-background p-7"
+          >
+            <p className="max-w-xl text-pretty text-muted-foreground">
+              Ask us for the availability, response and restoration targets that
+              apply to your service and site. We would rather give you figures we
+              can stand behind than headline ones we cannot.
+            </p>
+            <Button asChild variant="outline" className="ml-auto">
+              <Link href="/contact">
+                Request your SLA terms
+                <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </Button>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* One fault, end to end */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              One fault, end to end
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              What actually happens between a fault and a fix
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Not a promise — a procedure. The circuit is watched, the fault becomes a ticket with a reference, the escalation path was agreed before anything went wrong, and the whole thing is written up afterwards.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <SlaLifecycleScene label="A fault moving through its lifecycle: detected on the NOC trace, raised as a ticket with a reference, diagnosed across SipLink equipment, the access network and the IP network, restored, then reviewed." />
+          </ScrollReveal>
+        </div>
+      </section>
+    </>
   );
 }

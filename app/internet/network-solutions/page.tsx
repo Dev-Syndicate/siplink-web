@@ -8,6 +8,7 @@ import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { networkServices, networkSolutionsHub } from "@/lib/internet";
+import { SiteLayersScene } from "@/components/site/scene-site-layers";
 
 export const metadata: Metadata = {
   title: networkSolutionsHub.title,
@@ -145,6 +146,29 @@ export default function NetworkSolutionsPage() {
               </ScrollReveal>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Where each of them actually sits */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              One site, six places
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              These are not six separate purchases
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Six cards make them look like six decisions. They are six places
+              in the same design — the edge, the floor, the cabinet, and three
+              that are not in the building at all.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <SiteLayersScene label="One site with its network services shown where each physically belongs: the managed router and firewall at the edge, business Wi-Fi across the floor, LAN switching in the cabinet, and VPN, SD-WAN and multi-location networking reaching beyond the building." />
+          </ScrollReveal>
         </div>
       </section>
 

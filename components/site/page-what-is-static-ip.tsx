@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { addressAnatomy, dynamicBreakage } from "@/lib/internet";
 import { cn } from "@/lib/utils";
+import { StaticAddressScene } from "@/components/site/scene-static-address";
 
 /**
  * /internet/static-ip/what-is-static-ip
@@ -265,6 +266,27 @@ export function WhatIsStaticIpSections() {
               </ScrollReveal>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Two kinds of address */}
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Two kinds of address
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              The one on your laptop is not the one that matters
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Almost everyone has seen a 192.168 address and assumed it was theirs on the internet. It is not — it exists only inside the building. Watch where the two part company, and what each one is actually attached to.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <StaticAddressScene label="Private addresses inside a building being translated by the router into one public address the internet sees, then the same address surviving a router replacement but not a change of provider." />
+          </ScrollReveal>
         </div>
       </section>
     </>

@@ -6,6 +6,7 @@ import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { contentionNeighbours, dedicatedFacts } from "@/lib/internet";
+import { DedicatedLineScene } from "@/components/site/scene-dedicated-line";
 
 /**
  * /internet/dedicated-internet/dedicated-bandwidth
@@ -149,100 +150,127 @@ export function DedicatedBandwidthHero() {
  */
 export function DedicatedBandwidthSections() {
   return (
-    <section className="border-b border-border bg-muted/30">
-      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-        <ScrollReveal className="max-w-2xl">
-          <span className="font-mono text-xs tracking-widest text-primary uppercase">
-            Contention
-          </span>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            What &ldquo;up to&rdquo; actually means
-          </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            A contended service quotes the best case. The rest of the segment
-            decides what you get, and they all arrive at roughly the hours you
-            are busiest.
-          </p>
-        </ScrollReveal>
-
-        <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-border lg:grid-cols-2">
-          {/* Shared */}
-          <div className="bg-background p-8 lg:p-10">
-            <p className="font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
-              A shared segment, through the day
+    <>
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Contention
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              What &ldquo;up to&rdquo; actually means
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              A contended service quotes the best case. The rest of the segment
+              decides what you get, and they all arrive at roughly the hours you
+              are busiest.
             </p>
+          </ScrollReveal>
 
-            <div aria-hidden className="mt-7">
-              <div className="h-8 w-full overflow-hidden rounded-lg bg-muted">
-                <div className="share-steps h-full w-full rounded-lg bg-gradient-to-r from-muted-foreground/50 to-muted-foreground/25" />
-              </div>
-              <p className="mt-2 font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
-                your share
+          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-border lg:grid-cols-2">
+            {/* Shared */}
+            <div className="bg-background p-8 lg:p-10">
+              <p className="font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
+                A shared segment, through the day
               </p>
 
-              <ul className="mt-6 space-y-2.5">
-                {contentionNeighbours.map((name, index) => (
-                  <li
-                    key={name}
-                    className="share-join flex items-center gap-2.5 text-sm text-muted-foreground"
-                    style={
-                      {
-                        "--join-delay": `${0.9 + index * 0.9}s`,
-                      } as React.CSSProperties
-                    }
-                  >
-                    <Users className="size-4 shrink-0 text-muted-foreground/50" />
-                    {name} joins
+              <div aria-hidden className="mt-7">
+                <div className="h-8 w-full overflow-hidden rounded-lg bg-muted">
+                  <div className="share-steps h-full w-full rounded-lg bg-gradient-to-r from-muted-foreground/50 to-muted-foreground/25" />
+                </div>
+                <p className="mt-2 font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                  your share
+                </p>
+
+                <ul className="mt-6 space-y-2.5">
+                  {contentionNeighbours.map((name, index) => (
+                    <li
+                      key={name}
+                      className="share-join flex items-center gap-2.5 text-sm text-muted-foreground"
+                      style={
+                        {
+                          "--join-delay": `${0.9 + index * 0.9}s`,
+                        } as React.CSSProperties
+                      }
+                    >
+                      <Users className="size-4 shrink-0 text-muted-foreground/50" />
+                      {name} joins
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* The same thing in words, for anyone the loop is hidden from. */}
+              <p className="mt-8 text-sm text-pretty text-muted-foreground">
+                Every subscriber who joins the segment takes a share of the same
+                capacity. Nothing has broken and nothing will show on a fault
+                report — the service is behaving exactly as sold.
+              </p>
+            </div>
+
+            {/* Dedicated */}
+            <div className="bg-gradient-to-br from-primary/5 to-background p-8 lg:p-10">
+              <p className="font-mono text-[10px] tracking-[0.18em] text-primary uppercase">
+                A dedicated port, through the day
+              </p>
+
+              <div aria-hidden className="mt-7">
+                <div className="h-8 w-full overflow-hidden rounded-lg bg-primary/15">
+                  <div className="h-full w-full rounded-lg bg-gradient-to-r from-brand-from to-brand-to" />
+                </div>
+                <p className="mt-2 font-mono text-[10px] tracking-wider text-primary uppercase">
+                  your share
+                </p>
+
+                <ul className="mt-6 space-y-2.5">
+                  <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                    <Users className="size-4 shrink-0 text-primary/40" />
+                    nobody joins
                   </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* The same thing in words, for anyone the loop is hidden from. */}
-            <p className="mt-8 text-sm text-pretty text-muted-foreground">
-              Every subscriber who joins the segment takes a share of the same
-              capacity. Nothing has broken and nothing will show on a fault
-              report — the service is behaving exactly as sold.
-            </p>
-          </div>
-
-          {/* Dedicated */}
-          <div className="bg-gradient-to-br from-primary/5 to-background p-8 lg:p-10">
-            <p className="font-mono text-[10px] tracking-[0.18em] text-primary uppercase">
-              A dedicated port, through the day
-            </p>
-
-            <div aria-hidden className="mt-7">
-              <div className="h-8 w-full overflow-hidden rounded-lg bg-primary/15">
-                <div className="h-full w-full rounded-lg bg-gradient-to-r from-brand-from to-brand-to" />
+                </ul>
               </div>
-              <p className="mt-2 font-mono text-[10px] tracking-wider text-primary uppercase">
-                your share
+
+              <p className="mt-8 text-sm text-pretty text-muted-foreground">
+                Capacity is provisioned against your requirement and delivered to
+                a committed rate. The bar does not move, which is the entire
+                thing you are buying.
               </p>
 
-              <ul className="mt-6 space-y-2.5">
-                <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                  <Users className="size-4 shrink-0 text-primary/40" />
-                  nobody joins
-                </li>
-              </ul>
+              <Button asChild className="mt-8">
+                <Link href="/contact">
+                  Size a dedicated port
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              </Button>
             </div>
-
-            <p className="mt-8 text-sm text-pretty text-muted-foreground">
-              Capacity is provisioned against your requirement and delivered to
-              a committed rate. The bar does not move, which is the entire
-              thing you are buying.
-            </p>
-
-            <Button asChild className="mt-8">
-              <Link href="/contact">
-                Size a dedicated port
-                <ArrowRight className="size-4" aria-hidden />
-              </Link>
-            </Button>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Where the line goes */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              End to end
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Uncontended at your wall is not the same as uncontended
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              A service can be yours alone on the last stretch and heavily
+              shared three hops later, and no speed figure will tell you
+              which you bought. Follow the circuit out of the building and
+              watch the band: it is the same width the whole way.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <DedicatedLineScene label="A dedicated circuit followed hop by hop — the building, the access tail, your port at 50 Mbps to 100 Gbps, our DoT-licensed IP core and the internet — with a capacity band that stays the same width at every one of them." />
+          </ScrollReveal>
+        </div>
+      </section>
+
+    </>
   );
 }

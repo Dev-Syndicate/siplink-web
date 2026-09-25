@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { staticIpLimits } from "@/lib/internet";
 import { cn } from "@/lib/utils";
+import { StaticUsesScene } from "@/components/site/scene-static-uses";
 
 /**
  * /internet/static-ip/business-uses
@@ -217,6 +218,27 @@ export function BusinessUsesSections() {
                 <ArrowRight className="size-4" aria-hidden />
               </Link>
             </Button>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* All pointing one way */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              All pointing one way
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Six things that have to be told where you are
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              A static IP is the rare thing whose whole value is in the inbound direction. Every wire here points at the same address, and every one of them had it typed into a configuration somewhere else.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <StaticUsesScene label="Six inbound connections — a site-to-site VPN, remote access, remote monitoring, SIP trunking, partner allowlists and a hosted system — all configured against the same fixed public address." />
           </ScrollReveal>
         </div>
       </section>

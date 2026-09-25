@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { enterpriseQuestions } from "@/lib/internet";
+import { EnterpriseDesignScene } from "@/components/site/scene-enterprise";
 
 /**
  * /internet/dedicated-internet/enterprise-connectivity
@@ -121,86 +122,109 @@ export function EnterpriseConnectivityHero() {
  */
 export function EnterpriseConnectivitySections() {
   return (
-    <section className="border-b border-border bg-muted/30">
-      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-        <ScrollReveal className="max-w-2xl">
-          <span className="font-mono text-xs tracking-widest text-primary uppercase">
-            Before a port size
-          </span>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Twelve questions we ask first
-          </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            None of them is about speed. Answer these and the port size falls
-            out of the conversation — which is the right way round.
-          </p>
-        </ScrollReveal>
+    <>
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Before a port size
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Twelve questions we ask first
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              None of them is about speed. Answer these and the port size falls
+              out of the conversation — which is the right way round.
+            </p>
+          </ScrollReveal>
 
-        <ul className="mt-14 grid gap-6 lg:grid-cols-2">
-          {enterpriseQuestions.map(
-            ({ group, icon: Icon, questions }, index) => (
-              <ScrollReveal
-                as="li"
-                key={group}
-                delay={index * 80}
-                shift={14}
-                className="group relative overflow-hidden rounded-2xl border border-border bg-background p-7 transition-colors hover:border-primary/40 lg:p-8"
-              >
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute -top-20 -right-20 size-48 rounded-full bg-primary/5 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
-                />
+          <ul className="mt-14 grid gap-6 lg:grid-cols-2">
+            {enterpriseQuestions.map(
+              ({ group, icon: Icon, questions }, index) => (
+                <ScrollReveal
+                  as="li"
+                  key={group}
+                  delay={index * 80}
+                  shift={14}
+                  className="group relative overflow-hidden rounded-2xl border border-border bg-background p-7 transition-colors hover:border-primary/40 lg:p-8"
+                >
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute -top-20 -right-20 size-48 rounded-full bg-primary/5 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+                  />
 
-                <div className="relative flex items-center gap-4">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                    <Icon className="size-5" aria-hidden />
-                  </span>
-                  <h3 className="text-lg font-semibold tracking-tight">
-                    {group}
-                  </h3>
-                </div>
+                  <div className="relative flex items-center gap-4">
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                      <Icon className="size-5" aria-hidden />
+                    </span>
+                    <h3 className="text-lg font-semibold tracking-tight">
+                      {group}
+                    </h3>
+                  </div>
 
-                <ul className="relative mt-6 space-y-3.5">
-                  {questions.map((question, questionIndex) => (
-                    <ScrollReveal
-                      as="li"
-                      key={question}
-                      delay={questionIndex * 60}
-                      shift={8}
-                      className="flex items-start gap-3 border-t border-border pt-3.5 first:border-t-0 first:pt-0"
-                    >
-                      <span
-                        aria-hidden
-                        className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary/50"
-                      />
-                      <span className="text-pretty text-muted-foreground">
-                        {question}
-                      </span>
-                    </ScrollReveal>
-                  ))}
-                </ul>
-              </ScrollReveal>
-            ),
-          )}
-        </ul>
+                  <ul className="relative mt-6 space-y-3.5">
+                    {questions.map((question, questionIndex) => (
+                      <ScrollReveal
+                        as="li"
+                        key={question}
+                        delay={questionIndex * 60}
+                        shift={8}
+                        className="flex items-start gap-3 border-t border-border pt-3.5 first:border-t-0 first:pt-0"
+                      >
+                        <span
+                          aria-hidden
+                          className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary/50"
+                        />
+                        <span className="text-pretty text-muted-foreground">
+                          {question}
+                        </span>
+                      </ScrollReveal>
+                    ))}
+                  </ul>
+                </ScrollReveal>
+              ),
+            )}
+          </ul>
 
-        <ScrollReveal
-          delay={120}
-          className="mt-12 flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-background p-7"
-        >
-          <p className="max-w-xl text-pretty text-muted-foreground">
-            Tell us what your sites look like, where your applications live and
-            what cannot be allowed to stop. We will come back with a design
-            rather than a price list.
-          </p>
-          <Button asChild variant="outline" className="ml-auto">
-            <Link href="/contact">
-              Talk to a connectivity expert
-              <ArrowRight className="size-4" aria-hidden />
-            </Link>
-          </Button>
-        </ScrollReveal>
-      </div>
-    </section>
+          <ScrollReveal
+            delay={120}
+            className="mt-12 flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-background p-7"
+          >
+            <p className="max-w-xl text-pretty text-muted-foreground">
+              Tell us what your sites look like, where your applications live and
+              what cannot be allowed to stop. We will come back with a design
+              rather than a price list.
+            </p>
+            <Button asChild variant="outline" className="ml-auto">
+              <Link href="/contact">
+                Talk to a connectivity expert
+                <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </Button>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* In order */}
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              In order
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              A design, assembling itself
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              This is the order the questions are actually asked in. What you run, then where you are, then what it has to survive, then where it is going. The bandwidth dial stays dark until every one of those has an answer.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <EnterpriseDesignScene label="An enterprise design being built question by question: applications first, then the estate of sites, then a second resilient path, and only at the end a bandwidth figure sized against all of it." />
+          </ScrollReveal>
+        </div>
+      </section>
+    </>
   );
 }

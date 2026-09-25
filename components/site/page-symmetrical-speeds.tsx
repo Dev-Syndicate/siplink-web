@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { symmetryFlows } from "@/lib/internet";
 import { cn } from "@/lib/utils";
+import { SymmetryScene } from "@/components/site/scene-symmetry";
 
 /**
  * /internet/dedicated-internet/symmetrical-speeds
@@ -166,76 +167,99 @@ const DIRECTION = {
  */
 export function SymmetricalSpeedsSections() {
   return (
-    <section className="border-b border-border bg-muted/30">
-      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-        <ScrollReveal className="max-w-2xl">
-          <span className="font-mono text-xs tracking-widest text-primary uppercase">
-            Which way it goes
-          </span>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Five of these six travel upward
-          </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            Only the last one is what a consumer connection is built for. Every
-            other item here is bounded by the half of the line nobody checks.
-          </p>
-        </ScrollReveal>
+    <>
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Which way it goes
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Five of these six travel upward
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Only the last one is what a consumer connection is built for. Every
+              other item here is bounded by the half of the line nobody checks.
+            </p>
+          </ScrollReveal>
 
-        <ul className="mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {symmetryFlows.map(({ label, direction, note }, index) => {
-            const { label: dirLabel, Icon, motion, tone } = DIRECTION[direction];
+          <ul className="mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {symmetryFlows.map(({ label, direction, note }, index) => {
+              const { label: dirLabel, Icon, motion, tone } = DIRECTION[direction];
 
-            return (
-              <ScrollReveal
-                as="li"
-                key={label}
-                delay={index * 70}
-                shift={12}
-                className={cn(
-                  "rounded-2xl border p-7 transition-colors",
-                  tone,
-                )}
-              >
-                <div className="flex items-center justify-between">
-                  <span
-                    aria-hidden
-                    className={cn(
-                      motion,
-                      "flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary",
-                    )}
-                    style={
-                      { "--flow-delay": `${index * 0.3}s` } as React.CSSProperties
-                    }
-                  >
-                    <Icon className="size-5" />
-                  </span>
-                  <span className="font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
-                    {dirLabel}
-                  </span>
-                </div>
+              return (
+                <ScrollReveal
+                  as="li"
+                  key={label}
+                  delay={index * 70}
+                  shift={12}
+                  className={cn(
+                    "rounded-2xl border p-7 transition-colors",
+                    tone,
+                  )}
+                >
+                  <div className="flex items-center justify-between">
+                    <span
+                      aria-hidden
+                      className={cn(
+                        motion,
+                        "flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary",
+                      )}
+                      style={
+                        { "--flow-delay": `${index * 0.3}s` } as React.CSSProperties
+                      }
+                    >
+                      <Icon className="size-5" />
+                    </span>
+                    <span className="font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
+                      {dirLabel}
+                    </span>
+                  </div>
 
-                <h3 className="mt-5 text-lg font-semibold tracking-tight">
-                  {label}
-                </h3>
-                <p className="mt-2 text-sm text-pretty text-muted-foreground">
-                  {note}
-                </p>
-              </ScrollReveal>
-            );
-          })}
-        </ul>
+                  <h3 className="mt-5 text-lg font-semibold tracking-tight">
+                    {label}
+                  </h3>
+                  <p className="mt-2 text-sm text-pretty text-muted-foreground">
+                    {note}
+                  </p>
+                </ScrollReveal>
+              );
+            })}
+          </ul>
 
-        <ScrollReveal
-          delay={120}
-          className="mt-12 rounded-2xl border border-border bg-background p-7"
-        >
-          <p className="max-w-3xl text-pretty text-muted-foreground">
-            Symmetrical delivery applies where the selected service specifies
-            it. We confirm in writing whether it applies to the service quoted
-            for your site, rather than leaving you to assume it.
-          </p>
-        </ScrollReveal>
-      </div>
-    </section>
+          <ScrollReveal
+            delay={120}
+            className="mt-12 rounded-2xl border border-border bg-background p-7"
+          >
+            <p className="max-w-3xl text-pretty text-muted-foreground">
+              Symmetrical delivery applies where the selected service specifies
+              it. We confirm in writing whether it applies to the service quoted
+              for your site, rather than leaving you to assume it.
+            </p>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* The mirror */}
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              The mirror
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              The same line, read from both ends
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Six kinds of business traffic, each taking its turn. Watch which way each one actually travels, and the two meters either side of the middle — on a symmetrical service they read the same whichever flow is running.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <SymmetryScene label="Traffic crossing between the cloud and an office in both directions at once: cloud backup and file sharing going up, web and SaaS coming down, video calls and VoIP doing both, with the upload and download meters matching." />
+          </ScrollReveal>
+        </div>
+      </section>
+    </>
   );
 }

@@ -16,6 +16,7 @@ import {
   staticIpShapes,
 } from "@/lib/internet";
 import { cn } from "@/lib/utils";
+import { StaticProvisionScene } from "@/components/site/scene-static-provision";
 
 /**
  * /internet/static-ip/add-static-ip
@@ -287,6 +288,27 @@ export function AddStaticIpSections() {
               </Accordion>
             </ScrollReveal>
           </div>
+        </div>
+      </section>
+
+      {/* How the request runs */}
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              How the request runs
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Five answers, then an address
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              People expect to ask for an address and be handed one. What actually decides it is what needs it, who configures it and which service it is for — so the request completes in that order, and the address arrives at the end of it.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <StaticProvisionScene label="A static IP request completing one answer at a time — what needs it, who configures it, the service, what already points at you and the deadline — followed by the address being issued and configured on the router." />
+          </ScrollReveal>
         </div>
       </section>
     </>

@@ -29,6 +29,7 @@ import {
   networkSolutionsHub,
   networkServices,
 } from "@/lib/internet";
+import { DeliveryScene } from "@/components/site/scene-delivery";
 
 export const metadata: Metadata = {
   title: "Internet",
@@ -425,6 +426,29 @@ export default function InternetPage() {
               </ScrollReveal>
             ))}
           </ol>
+        </div>
+      </section>
+
+      {/* The build, as it happens */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              The same five steps, moving
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              What the weeks between order and live actually contain
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Five boxes on a page read as five boxes. Watch the rail instead:
+              feasibility, a programme manager, the last-mile build, testing,
+              and a circuit that is being watched before you have used it.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <DeliveryScene label="A circuit being built from order to live: feasibility at the address, a programme manager confirming the timeline, the last-mile build, end-to-end testing and handover, and the finished link watched around the clock from the Chennai NOC." />
+          </ScrollReveal>
         </div>
       </section>
 

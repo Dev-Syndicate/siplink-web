@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { scaleThresholds, siteTiers } from "@/lib/internet";
+import { MultiSiteScene } from "@/components/site/scene-multi-site";
 
 /**
  * /internet/network-solutions/multi-location-networking
@@ -267,6 +268,27 @@ export function MultiLocationSections() {
               ))}
             </ol>
           </div>
+        </div>
+      </section>
+
+      {/* As it grows */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              As it grows
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              The tenth site should be the same work as the second
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Watch the estate multiply through the four thresholds above, and watch what does not multiply with it: one platform, one view and one escalation path, whatever the count on the left says.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <MultiSiteScene label="An estate growing from a handful of sites to fifty and beyond, with head office, major sites, branches and remote workers filling in against one platform that keeps a single view and a single escalation path throughout." />
+          </ScrollReveal>
         </div>
       </section>
     </>

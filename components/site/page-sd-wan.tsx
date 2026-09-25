@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { sdwanBeforeAfter, sdwanDecisions } from "@/lib/internet";
 import { cn } from "@/lib/utils";
+import { SdWanPathScene } from "@/components/site/scene-sdwan";
 
 /**
  * /internet/network-solutions/sd-wan
@@ -234,6 +235,27 @@ export function SdWanSections() {
               </ScrollReveal>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Moment to moment */}
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Moment to moment
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Two links, and nobody deciding by hand
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              All four rules above are running on the same pair of links, continuously. Watch the third one: the primary path degrades, and the traffic has already moved before the warning finishes appearing.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <SdWanPathScene label="A central policy steering traffic across two links: voice placed on the most stable path, a backup moved to the link with room for it, traffic shifting away automatically when the primary degrades, and the same policy applied to a new branch." />
+          </ScrollReveal>
         </div>
       </section>
     </>

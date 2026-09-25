@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { vpnLimits, vpnShapes } from "@/lib/internet";
 import { cn } from "@/lib/utils";
+import { VpnTunnelScene } from "@/components/site/scene-vpn";
 
 /**
  * /internet/network-solutions/vpn
@@ -244,6 +245,27 @@ export function VpnSections() {
               </ScrollReveal>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Both shapes, one office */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Both shapes, one office
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              These are not alternatives
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Site-to-site and remote access read as a choice when they sit side by side. Most estates end up with both, doing different jobs — and with the limit that neither of them is a firewall.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <VpnTunnelScene label="One office with two ways in: an always-on site-to-site tunnel from another building, and a per-person remote access tunnel that is connected on demand and revoked centrally when somebody leaves." />
+          </ScrollReveal>
         </div>
       </section>
     </>

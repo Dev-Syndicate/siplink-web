@@ -6,6 +6,7 @@ import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { firewallLayers, firewallManagedVsNot } from "@/lib/internet";
+import { FirewallLayersScene } from "@/components/site/scene-firewall";
 
 /**
  * /internet/network-solutions/managed-router-firewall
@@ -182,6 +183,27 @@ export function ManagedRouterFirewallSections() {
               </ScrollReveal>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Four verdicts */}
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Four verdicts
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              The same four layers, judging four different arrivals
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              A list of layers makes them sound like a queue a packet joins. They are not. Each one answers a different question, and two of the four arrivals below never get past the one that asks it.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <FirewallLayersScene label="Four arrivals judged by a managed firewall: an unsolicited connection refused at the perimeter, an expected reply allowed, a guest network request for the file server stopped by segmentation, and a remote worker admitted from a known address." />
+          </ScrollReveal>
         </div>
       </section>
     </>

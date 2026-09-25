@@ -6,6 +6,7 @@ import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { wifiFailures, wifiProcess } from "@/lib/internet";
+import { WifiCoverageScene } from "@/components/site/scene-wifi";
 
 /**
  * /internet/network-solutions/business-wifi
@@ -173,6 +174,27 @@ export function BusinessWifiSections() {
               </ScrollReveal>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Walk it first */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Walk it first
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Coverage is a question about a building, not a box
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Every failure above happens somewhere specific — the far room, the room that fills up, the corridor between two access points. Here is the same floor as a plan, with a call that survives the walk across it.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <WifiCoverageScene label="A floor plan with three access points and their coverage, and a phone on a call walking from reception across the open floor to the far meeting room, handing over cleanly between access points, beside the employee, guest and device networks." />
+          </ScrollReveal>
         </div>
       </section>
     </>
