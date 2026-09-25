@@ -7,6 +7,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { BenefitQuietScene } from "@/components/site/benefit-quiet-scene";
+import { BenefitWeekScene } from "@/components/site/benefit-week-scene";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Button } from "@/components/ui/button";
 import { benefitRoles, benefitScenarios } from "@/lib/internet";
@@ -25,6 +27,14 @@ import { benefitRoles, benefitScenarios } from "@/lib/internet";
  * moment you can picture is what keeps it honest: a scenario cannot hide
  * behind an adjective the way "reliable connectivity" can. The first item is
  * open by default so the pattern is visible without a click.
+ *
+ * Two of those moments are then shown rather than told, as animated scenes
+ * built from scene-kit — the same kit, and the same photographs, as the
+ * capability scenes on /solutions/remote-workforce, so the places and the
+ * faces are the site's own. The week is the one that suits the treatment
+ * best (three places, one line) and Saturday at two in the morning is the
+ * one that needs it most, because what it describes is an absence: a phone
+ * that did not ring.
  */
 export function BenefitsSections() {
   return (
@@ -85,6 +95,30 @@ export function BenefitsSections() {
               </Accordion>
             </ScrollReveal>
           </div>
+        </div>
+      </section>
+
+      {/* The same week, from three places */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Three places, one line
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              The week does not stay at the office
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Monday is the floor arriving at once. Wednesday is a call taken
+              somewhere else entirely. Thursday is somebody starting before
+              seven from a kitchen table. The connection underneath all three
+              is the same one.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <BenefitWeekScene label="One business connection carrying three moments of the same week: the office on Monday morning, a client call taken on the move on Wednesday, and an early start from home on Thursday." />
+          </ScrollReveal>
         </div>
       </section>
 
@@ -151,6 +185,29 @@ export function BenefitsSections() {
                 <ArrowRight className="size-4" aria-hidden />
               </Link>
             </Button>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* The hour nobody is there for */}
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Saturday, 02:00
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              The benefit you are asleep for
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              The last item on the list above is the hardest one to show,
+              because what it describes is something that did not happen: the
+              call from a customer telling you your office is offline.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <BenefitQuietScene label="A closed office at two in the morning while the circuit is watched from our Chennai NOC: the fault is raised automatically, an engineer picks it up, and nothing in the building rings." />
           </ScrollReveal>
         </div>
       </section>

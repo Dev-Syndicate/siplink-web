@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 
+import { FeatureGrowthScene } from "@/components/site/feature-growth-scene";
+import { FeatureVoiceScene } from "@/components/site/feature-voice-scene";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import {
   broadbandAddOnSlugs,
@@ -22,6 +24,15 @@ import { cn } from "@/lib/utils";
  * What is different here is that these cards are not links. On the home page
  * each one opens a product; these four describe one service the reader is
  * already on, so turning them into links would send people in a circle.
+ *
+ * Two of the four cards then get a section of their own, because their claim
+ * is about behaviour over time and a static drawing cannot make it: voice
+ * holding its lane while a backup runs, and a plan stepping up as the floor
+ * fills. Those are animated scenes built from scene-kit — the same kit the
+ * capability scenes on /solutions/remote-workforce use, with the same
+ * photographs, so the people and places are the site's own rather than a
+ * second cast. They carry their heading above and the stage full width
+ * beneath, as those pages do.
  */
 
 /** Seconds between one item taking its turn and the next. */
@@ -310,6 +321,53 @@ export function FeaturesSections() {
               },
             )}
           </div>
+        </div>
+      </section>
+
+      {/* Voice, while everything else is running */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              The hour it has to survive
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              A meeting, a call, and a backup that wants the whole line
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              This is the second of the four above, happening. The backup
+              starts, takes everything the line has left, and finishes. Watch
+              the lane underneath the conversation — and the timer on it,
+              which never restarts.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <FeatureVoiceScene label="A team meeting on a laptop and a client call on a handset, both running while a cloud backup fills the rest of the line. The voice lane holds its width throughout and the call timer keeps counting." />
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* A year of the same office */}
+      <section className="border-b border-border bg-muted/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+          <ScrollReveal className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              A year later
+            </span>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              The office changes first. The plan follows it.
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              People join, a second room opens, and the kit on the wall grows
+              with them. A plan sized only for the first of those is one you
+              are arguing about by the third.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+            <FeatureGrowthScene label="One office across four quarters: desks filling with people, a managed router, business Wi-Fi and LAN switching arriving in turn, and the plan stepping up beside them each time." />
+          </ScrollReveal>
         </div>
       </section>
 
