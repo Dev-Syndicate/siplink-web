@@ -3,8 +3,11 @@ import Link from "next/link";
 import { ArrowLeft, Check } from "lucide-react";
 
 import { CallingDevicesScene } from "@/components/site/calling-devices-scene";
+import { CentralControlScene } from "@/components/site/central-control-scene";
 import { CapabilityFigure } from "@/components/site/capability-figures";
 import { CtaPanel } from "@/components/site/cta-panel";
+import { ExtensionMobilityScene } from "@/components/site/extension-mobility-scene";
+import { PresenceScene } from "@/components/site/presence-scene";
 import { UseCaseFigure } from "@/components/site/use-case-figures";
 import { Button } from "@/components/ui/button";
 import { productDetails } from "@/lib/products";
@@ -563,10 +566,17 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
   );
 }
 
+const SCENES = {
+  "calling-devices": CallingDevicesScene,
+  "extension-mobility": ExtensionMobilityScene,
+  presence: PresenceScene,
+  "central-control": CentralControlScene,
+};
+
 /**
  * A capability's artwork: the file, or — where the data names a `scene` — the
- * live rendering of it. The scene draws its own hairline and radius, so the
- * call sites pass the same props either way.
+ * live rendering of it. A scene has no frame and sizes itself, so the call
+ * sites pass the same props either way.
  */
 function CapabilityMedia({
   image,
@@ -578,7 +588,8 @@ function CapabilityMedia({
   className: string;
 }) {
   if ("scene" in image) {
-    return <CallingDevicesScene label={image.alt} />;
+    const Scene = SCENES[image.scene];
+    return <Scene label={image.alt} />;
   }
 
   return (

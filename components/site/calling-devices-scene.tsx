@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type PointerEvent,
-  type ReactNode,
-} from "react";
-import Image from "next/image";
+import type { CSSProperties } from "react";
 import {
   AppWindow,
   ArrowLeftRight,
@@ -38,10 +30,20 @@ import {
   Volume2,
   Wifi,
   X,
+  type LucideIcon,
 } from "lucide-react";
 
-import { useInView } from "@/hooks/use-in-view";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import {
+  Control,
+  Joint,
+  Layer,
+  Portrait as ScenePortrait,
+  Scene,
+  Wave,
+  clock,
+  useSceneClock,
+  type JointSpec,
+} from "@/components/site/scene-kit";
 import { cn } from "@/lib/utils";
 
 /**
@@ -53,17 +55,8 @@ import { cn } from "@/lib/utils";
  * everywhere, is answered on the laptop, then carries on from the phone and
  * the browser without the timer ever resetting.
  *
- * Depth is parallax rather than 3D. Every object slides by its own depth —
- * slowly on its own, and towards the pointer while one is over it — so near
- * things travel further than far ones. Nothing is rotated or scaled: a 3D
- * stage (the first version) rasterises each panel and resamples it every
- * frame, which blurred the small UI text. Translation keeps it sharp, keeps
- * the scene in theme tokens and the page's own fonts, and keeps it out of a
- * 600 kB 3D runtime for one figure.
- *
- * Everything is laid out in percentages of a box with the artwork's aspect
- * ratio, and sized in container units, so it scales as a picture does. The
- * portraits are cut from the original render, so the people are the same.
+ * Stage, parallax and wiring come from scene-kit. The portraits are cut from
+ * the original render, so the people are the same.
  */
 
 type Device = "laptop" | "phone" | "browser";
@@ -98,24 +91,7 @@ const PRESENCE_LABEL: Record<Presence, string> = {
   away: "Away",
 };
 
-/* The background art is drawn in a 1000-wide viewBox with the artwork's
-   ratio, and the tiles are placed in the same units. */
-const VIEW_H = 563;
-
-type Side = "l" | "r" | "t" | "b";
-
-/** Where a wire leaves an object, and which way it heads out. */
-type JointSpec = { id: string; side: Side; left: string; top: string };
-
-/*
- * Wires run joint to joint, and are measured, not drawn in fixed coordinates.
- *
- * The objects they connect sit at different depths and slide by different
- * amounts, so a path drawn once lands in the right place only while the
- * scene is at rest. Instead each joint is part of its object,
- * and the paths are redrawn in screen space from where the joints actually
- * are — every frame while the scene is on screen.
- */
+/** Which device each wire lights for. */
 const WIRES: { from: string; to: string; device: Device }[] = [
   { from: "monitor", to: "laptop", device: "laptop" },
   { from: "handset-tile", to: "phone-top", device: "phone" },
@@ -123,13 +99,6 @@ const WIRES: { from: string; to: string; device: Device }[] = [
   { from: "browser", to: "app-in", device: "browser" },
   { from: "app-out", to: "webrtc-in", device: "browser" },
 ];
-
-const NORMAL: Record<Side, [number, number]> = {
-  l: [-1, 0],
-  r: [1, 0],
-  t: [0, -1],
-  b: [0, 1],
-};
 
 const DEVICE_JOINTS: Record<Device, JointSpec[]> = {
   laptop: [{ id: "laptop", side: "l", left: "0%", top: "30%" }],
@@ -140,19 +109,20 @@ const DEVICE_JOINTS: Record<Device, JointSpec[]> = {
   ],
 };
 
+/** Glass tiles, centred on (x%, y%) of the scene. */
 const TILES: {
   x: number;
   y: number;
   depth: number;
-  icon: typeof Monitor;
+  icon: LucideIcon;
   label?: string;
   device: Device;
   delay: string;
   joints: JointSpec[];
 }[] = [
   {
-    x: 185,
-    y: 100,
+    x: 18.5,
+    y: 17.8,
     depth: 0.6,
     icon: Monitor,
     device: "laptop",
@@ -160,8 +130,8 @@ const TILES: {
     joints: [{ id: "monitor", side: "r", left: "100%", top: "50%" }],
   },
   {
-    x: 870,
-    y: 80,
+    x: 87,
+    y: 14.2,
     depth: 0.6,
     icon: Smartphone,
     device: "phone",
@@ -169,8 +139,8 @@ const TILES: {
     joints: [{ id: "handset-tile", side: "b", left: "50%", top: "100%" }],
   },
   {
-    x: 480,
-    y: 480,
+    x: 48,
+    y: 85.3,
     depth: 1,
     icon: AppWindow,
     device: "browser",
@@ -181,8 +151,8 @@ const TILES: {
     ],
   },
   {
-    x: 635,
-    y: 480,
+    x: 63.5,
+    y: 85.3,
     depth: 1,
     icon: Globe,
     label: "WebRTC",
@@ -195,78 +165,8 @@ const TILES: {
   },
 ];
 
-const SPARKS = [
-  [120, 60],
-  [330, 40],
-  [950, 180],
-  [60, 330],
-  [560, 30],
-  [980, 520],
-];
-
 export function CallingDevicesScene({ label }: { label: string }) {
-  const [ref, seen] = useInView<HTMLDivElement>();
-  const still = useReducedMotion();
-  const stage = useRef<HTMLDivElement>(null);
-  const wires = useRef<SVGPathElement[]>([]);
-  const [t, setT] = useState(0);
-
-  useEffect(() => {
-    if (!seen || still) return;
-    const id = window.setInterval(() => setT((s) => s + 1), 1000);
-    return () => window.clearInterval(id);
-  }, [seen, still]);
-
-  /* Redraw the wires from where their joints are on screen. Every frame
-     while the scene is visible, since the drift, the tilt, the floating tiles
-     and the device lifts all move them; once, and on resize, when still. */
-  useEffect(() => {
-    const root = ref.current;
-    if (!root) return;
-
-    const draw = () => {
-      const box = root.getBoundingClientRect();
-      const ox = box.left + root.clientLeft;
-      const oy = box.top + root.clientTop;
-
-      // Read every joint before writing any path, so a frame costs one layout.
-      const shapes = WIRES.map(({ from, to }) => {
-        const a = joint(root, from, ox, oy);
-        const b = joint(root, to, ox, oy);
-        return a && b ? curve(a, b) : null;
-      });
-
-      shapes.forEach((d, i) => {
-        if (!d) return;
-        wires.current[i * 2]?.setAttribute("d", d);
-        wires.current[i * 2 + 1]?.setAttribute("d", d);
-      });
-    };
-
-    if (still) {
-      draw();
-      const resize = new ResizeObserver(draw);
-      resize.observe(root);
-      document.fonts?.ready.then(draw);
-      return () => resize.disconnect();
-    }
-
-    let frame = 0;
-    const loop = () => {
-      draw();
-      frame = requestAnimationFrame(loop);
-    };
-    const visible = new IntersectionObserver(([entry]) => {
-      cancelAnimationFrame(frame);
-      if (entry?.isIntersecting) loop();
-    });
-    visible.observe(root);
-
-    return () => {
-      visible.disconnect();
-      cancelAnimationFrame(frame);
-    };
-  }, [ref, still]);
+  const { ref, still, t } = useSceneClock();
 
   // Reduced motion rests on the answered call, mid-conversation.
   const inLoop = t % LOOP_S;
@@ -278,176 +178,87 @@ export function CallingDevicesScene({ label }: { label: string }) {
 
   const lit = (device: Device) => ringing || active === device;
 
-  function tilt(event: PointerEvent<HTMLDivElement>) {
-    if (still || !stage.current) return;
-    const box = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - box.left) / box.width - 0.5;
-    const y = (event.clientY - box.top) / box.height - 0.5;
-    stage.current.style.setProperty("--tilt-x", x.toFixed(3));
-    stage.current.style.setProperty("--tilt-y", y.toFixed(3));
-  }
-
-  function settle() {
-    stage.current?.style.setProperty("--tilt-x", "0");
-    stage.current?.style.setProperty("--tilt-y", "0");
-  }
-
   return (
-    <div
-      ref={ref}
-      role="img"
-      aria-label={label}
-      onPointerMove={tilt}
-      onPointerLeave={settle}
-      className="@container relative aspect-[1671/941] w-full"
+    <Scene
+      sceneRef={ref}
+      label={label}
+      still={still}
+      aspect="aspect-[1671/941]"
+      wires={WIRES.map(({ from, to, device }) => ({
+        from,
+        to,
+        lit: lit(device),
+      }))}
     >
-      {/* No frame: the scene sits straight on the page. The backdrop is
-          masked so the glow and light lines fade out rather than stopping at
-          a hard edge. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_72%)]"
-      >
-        <div className="absolute inset-0 bg-radial from-accent via-accent/40 to-transparent" />
-        {/* The bloom behind the laptop. */}
-        <div
-          aria-hidden
-          className="absolute top-[-8%] left-1/2 aspect-square w-[74%] -translate-x-1/2 rounded-full bg-radial from-primary/15 via-primary/5 to-transparent"
-        />
-
-        <svg
-          aria-hidden
-          viewBox={`0 0 1000 ${VIEW_H}`}
-          preserveAspectRatio="none"
-          className="absolute inset-0 size-full"
-          fill="none"
-        >
-          {SPARKS.map(([cx, cy], i) => (
-            <circle
-              key={`${cx}-${cy}`}
-              cx={cx}
-              cy={cy}
-              r={2.2}
-              className={cn("fill-primary", !still && "twinkle")}
-              style={{ "--twinkle-delay": `${i * -0.7}s` } as CSSProperties}
-            />
-          ))}
-        </svg>
-      </div>
-
-      {/* Wires, in screen space. Behind the stage, so each one runs under the
-          joints it connects. Paths are filled in by the effect above. */}
-      <svg
-        aria-hidden
-        className="absolute inset-0 size-full overflow-visible"
-        fill="none"
-      >
-        {WIRES.map(({ from, device }, i) => (
-          <g key={from} strokeLinecap="round">
-            <path
-              ref={(el) => {
-                if (el) wires.current[i * 2] = el;
-              }}
-              className="stroke-primary/30"
-              strokeWidth={2.5}
-            />
-            <path
-              ref={(el) => {
-                if (el) wires.current[i * 2 + 1] = el;
-              }}
-              pathLength={100}
+      {TILES.map(
+        ({ x, y, depth, icon: Icon, label: text, device, delay, joints }) => (
+          <div
+            key={`${x}-${y}`}
+            className="parallax absolute z-20 w-[7.5%]"
+            style={
+              {
+                left: `${x}%`,
+                top: `${y}%`,
+                transform: "translate(-50%, -50%)",
+                "--depth": depth,
+              } as CSSProperties
+            }
+          >
+            <div
               className={cn(
-                "signal-path stroke-primary transition-opacity duration-500",
-                !lit(device) && "opacity-0",
+                "glass-tile relative flex aspect-square flex-col items-center justify-center gap-[0.3cqw] rounded-[1.4cqw] text-primary transition-shadow duration-500",
+                !still && "card-float",
+                lit(device) && "glass-tile-lit",
               )}
-              strokeWidth={3}
-            />
-          </g>
-        ))}
-      </svg>
+              style={{ "--float-delay": delay } as CSSProperties}
+            >
+              <Icon className="size-[3cqw]" strokeWidth={1.75} />
+              {text ? (
+                <span className="text-[1.1cqw] font-semibold text-foreground">
+                  {text}
+                </span>
+              ) : null}
+              {joints.map((spec) => (
+                <Joint key={spec.id} {...spec} lit={lit(device)} />
+              ))}
+            </div>
+          </div>
+        ),
+      )}
 
-      <div className={cn("absolute inset-0", !still && "scene-sway")}>
-        <div ref={stage} className="scene-pointer absolute inset-0">
-          {TILES.map(
-            ({
-              x,
-              y,
-              depth,
-              icon: Icon,
-              label: text,
-              device,
-              delay,
-              joints,
-            }) => (
-              <div
-                key={`${x}-${y}`}
-                className="parallax absolute z-20 w-[7.5%]"
-                style={
-                  {
-                    left: `${x / 10}%`,
-                    top: `${(y / VIEW_H) * 100}%`,
-                    transform: "translate(-50%, -50%)",
-                    "--depth": depth,
-                  } as CSSProperties
-                }
-              >
-                <div
-                  className={cn(
-                    "glass-tile relative flex aspect-square flex-col items-center justify-center gap-[0.3cqw] rounded-[1.4cqw] text-primary transition-shadow duration-500",
-                    !still && "card-float",
-                    lit(device) && "glass-tile-lit",
-                  )}
-                  style={{ "--float-delay": delay } as CSSProperties}
-                >
-                  <Icon className="size-[3cqw]" strokeWidth={1.75} />
-                  {text ? (
-                    <span className="text-[1.1cqw] font-semibold text-foreground">
-                      {text}
-                    </span>
-                  ) : null}
-                  {joints.map((spec) => (
-                    <Joint key={spec.id} {...spec} lit={lit(device)} />
-                  ))}
-                </div>
-              </div>
-            ),
-          )}
+      <Layer
+        className="top-[9%] left-[30%] w-[45%]"
+        depth={0.35}
+        order={10}
+        active={active === "laptop"}
+        joints={DEVICE_JOINTS.laptop}
+        lit={lit("laptop")}
+      >
+        <Laptop {...call} />
+      </Layer>
 
-          <Layer
-            className="top-[9%] left-[30%] w-[45%]"
-            depth={0.35}
-            order={10}
-            active={active === "laptop"}
-            joints={DEVICE_JOINTS.laptop}
-            lit={lit("laptop")}
-          >
-            <Laptop {...call} />
-          </Layer>
+      <Layer
+        className="top-[40%] left-[6%] w-[32%]"
+        depth={0.8}
+        order={30}
+        active={active === "browser"}
+        joints={DEVICE_JOINTS.browser}
+        lit={lit("browser")}
+      >
+        <Browser {...call} />
+      </Layer>
 
-          <Layer
-            className="top-[40%] left-[6%] w-[32%]"
-            depth={0.8}
-            order={30}
-            active={active === "browser"}
-            joints={DEVICE_JOINTS.browser}
-            lit={lit("browser")}
-          >
-            <Browser {...call} />
-          </Layer>
-
-          <Layer
-            className="top-[27%] right-[9%] w-[15%]"
-            depth={0.9}
-            order={30}
-            active={active === "phone"}
-            joints={DEVICE_JOINTS.phone}
-            lit={lit("phone")}
-          >
-            <Handset {...call} />
-          </Layer>
-        </div>
-      </div>
-    </div>
+      <Layer
+        className="top-[27%] right-[9%] w-[15%]"
+        depth={0.9}
+        order={30}
+        active={active === "phone"}
+        joints={DEVICE_JOINTS.phone}
+        lit={lit("phone")}
+      >
+        <Handset {...call} />
+      </Layer>
+    </Scene>
   );
 }
 
@@ -455,179 +266,12 @@ export function CallingDevicesScene({ label }: { label: string }) {
 
 type CallState = { ringing: boolean; active: Device | null; elapsed: number };
 
-function clock(seconds: number) {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-}
-
-function joint(root: HTMLElement, id: string, ox: number, oy: number) {
-  const el = root.querySelector<HTMLElement>(`[data-joint="${id}"]`);
-  if (!el) return null;
-  const box = el.getBoundingClientRect();
-  return {
-    x: box.left + box.width / 2 - ox,
-    y: box.top + box.height / 2 - oy,
-    side: el.dataset.side as Side,
-  };
-}
-
-/** A cubic that leaves each joint square to the face it sits on. */
-function curve(
-  a: { x: number; y: number; side: Side },
-  b: { x: number; y: number; side: Side },
-) {
-  const reach = Math.max(12, Math.hypot(b.x - a.x, b.y - a.y) * 0.45);
-  const [ax, ay] = NORMAL[a.side];
-  const [bx, by] = NORMAL[b.side];
-  const n = (v: number) => v.toFixed(1);
-  return `M${n(a.x)} ${n(a.y)} C ${n(a.x + ax * reach)} ${n(a.y + ay * reach)}, ${n(
-    b.x + bx * reach,
-  )} ${n(b.y + by * reach)}, ${n(b.x)} ${n(b.y)}`;
-}
-
-/** The glass bead a wire plugs into. Part of its object, so it moves with it. */
-function Joint({ id, side, left, top, lit }: JointSpec & { lit: boolean }) {
-  return (
-    <span
-      data-joint={id}
-      data-side={side}
-      className={cn(
-        "absolute z-10 flex size-[1.25cqw] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[0.15cqw] bg-card shadow-sm transition-[border-color,box-shadow] duration-500",
-        lit ? "border-primary shadow-primary/50" : "border-primary/40",
-      )}
-      style={{ left, top }}
-    >
-      <span
-        className={cn(
-          "size-[45%] rounded-full transition-colors duration-500",
-          lit ? "bg-primary" : "bg-primary/35",
-        )}
-      />
-    </span>
-  );
-}
-
-/**
- * A device. `depth` sets how far it slides; `order` its resting stack. The one
- * holding the call rises a little and comes to the front — lifted by a
- * translation, never a scale, so its screen stays sharp.
- */
-function Layer({
-  className,
-  depth,
-  order,
-  active,
-  joints,
-  lit,
-  children,
-}: {
-  className: string;
-  depth: number;
-  order: number;
-  active: boolean;
-  joints: JointSpec[];
-  lit: boolean;
-  children: ReactNode;
-}) {
-  return (
-    <div
-      className={cn(
-        "parallax absolute transition-[filter] duration-700 ease-out",
-        active && "device-lit",
-        className,
-      )}
-      style={
-        {
-          "--depth": depth,
-          "--lift": active ? "0.9cqw" : "0cqw",
-          zIndex: active ? 40 : order,
-        } as CSSProperties
-      }
-    >
-      {children}
-      {joints.map((spec) => (
-        <Joint key={spec.id} {...spec} lit={lit} />
-      ))}
-    </div>
-  );
-}
-
+/** The kit's portrait, defaulting to the caller. */
 function Portrait({
   src = CALLER.photo,
-  ringing,
-  halo,
-  className,
-}: {
-  src?: string;
-  ringing?: boolean;
-  halo?: boolean;
-  className?: string;
-}) {
-  return (
-    <span
-      className={cn(
-        "relative block aspect-square shrink-0 rounded-full",
-        halo && "halo bg-primary/10 p-[0.55cqw]",
-        className,
-      )}
-    >
-      <span
-        className={cn(
-          "relative block size-full overflow-hidden rounded-full border-[0.2cqw] border-card bg-muted shadow-md shadow-primary/20",
-          ringing && "ring-pulse",
-        )}
-      >
-        {/* Eager: lazy loading judges visibility before the 3D transform is
-          applied, and can leave a portrait unloaded. They are a few kB. */}
-        <Image
-          src={src}
-          alt=""
-          fill
-          sizes="12vw"
-          loading="eager"
-          className="object-cover"
-        />
-      </span>
-    </span>
-  );
-}
-
-function Control({
-  icon: Icon,
-  hangup,
-  label,
-  className,
-}: {
-  icon: typeof Mic;
-  hangup?: boolean;
-  label?: string;
-  className?: string;
-}) {
-  const button = (
-    <span
-      className={cn(
-        "flex aspect-square items-center justify-center rounded-full shadow-sm",
-        hangup
-          ? "bg-primary text-primary-foreground shadow-primary/40"
-          : "bg-card text-foreground/80 ring-1 ring-border",
-        label ? "w-full" : className,
-      )}
-    >
-      <Icon className="size-1/2" />
-    </span>
-  );
-
-  if (!label) return button;
-
-  return (
-    <span className={cn("flex flex-col items-center gap-[0.3cqw]", className)}>
-      {button}
-      <span className="text-[0.7cqw] whitespace-nowrap text-muted-foreground">
-        {label}
-      </span>
-    </span>
-  );
+  ...rest
+}: Omit<Parameters<typeof ScenePortrait>[0], "src"> & { src?: string }) {
+  return <ScenePortrait src={src} {...rest} />;
 }
 
 /** What a device that is not holding the call shows once it is answered. */
@@ -636,20 +280,6 @@ function Elsewhere({ on, elapsed }: { on: Device; elapsed: number }) {
     <span className="flex items-center gap-[0.4cqw] rounded-full bg-accent px-[0.8cqw] py-[0.3cqw] text-[0.9cqw] font-medium whitespace-nowrap text-accent-foreground">
       <ArrowLeftRight className="size-[0.9cqw]" />
       On {on} · <span className="tabular-nums">{clock(elapsed)}</span>
-    </span>
-  );
-}
-
-function Wave() {
-  return (
-    <span className="flex h-[1.5cqw] items-center gap-[0.22cqw]">
-      {[0, 0.15, 0.3, 0.45, 0.6, 0.45, 0.3, 0.15, 0].map((delay, i) => (
-        <span
-          key={i}
-          className="wave-bar h-full w-[0.22cqw] rounded-full bg-primary"
-          style={{ "--bar-delay": `${delay}s` } as CSSProperties}
-        />
-      ))}
     </span>
   );
 }
