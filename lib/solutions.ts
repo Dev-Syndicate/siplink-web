@@ -71,8 +71,21 @@ export type SolutionPoint = {
    * shared default would silently squash any mock that did not happen to
    * match it — and the four sets so far arrive at four different ratios
    * (1.50, 1.72, 1.78, 2.00).
+   *
+   * `scene` swaps the file for a live, animated rendering of the same
+   * artwork (see CapabilityMedia). It keeps the alt text and the aspect
+   * ratio, so the row lays out exactly as the image did.
    */
-  image?: { src: string; alt: string; width: number; height: number };
+  image?: { alt: string; width: number; height: number } & (
+    | { src: string }
+    | {
+        scene:
+          | "calling-devices"
+          | "extension-mobility"
+          | "presence"
+          | "central-control";
+      }
+  );
 };
 
 /** Which schematic the page's hero draws (see SolutionIllustration). */
@@ -200,10 +213,10 @@ const useCase: SolutionDetail[] = [
           "Take business calls from a softphone, a phone in the pocket or straight from the browser with WebRTC.",
         icon: Smartphone,
         image: {
-          src: "/solns-remoteWorkforce/desktop-mobile-and-browser-calling.webp",
+          scene: "calling-devices",
           alt: "One call running on a laptop softphone, in a browser window and on a mobile handset at the same time.",
-          width: 1620,
-          height: 930,
+          width: 1671,
+          height: 941,
         },
       },
       {
@@ -212,10 +225,10 @@ const useCase: SolutionDetail[] = [
           "An extension follows the person, not the desk, so moving location changes nothing for callers.",
         icon: ArrowLeftRight,
         image: {
-          src: "/solns-remoteWorkforce/extension-mobility.webp",
+          scene: "extension-mobility",
           alt: "The same extension, 1024, answering from the office, from home and out on the move.",
-          width: 1649,
-          height: 930,
+          width: 1672,
+          height: 941,
         },
       },
       {
@@ -224,10 +237,10 @@ const useCase: SolutionDetail[] = [
           "See who's available and pick up on whichever device is closest, with calls staying in sync.",
         icon: Users,
         image: {
-          src: "/solns-remoteWorkforce/presence-and-multi-device.webp",
+          scene: "presence",
           alt: "A team presence list showing who is available, beside the same person's call on desktop, mobile and browser.",
-          width: 1600,
-          height: 959,
+          width: 1619,
+          height: 971,
         },
       },
       {
@@ -236,10 +249,10 @@ const useCase: SolutionDetail[] = [
           "Provision users, set routing and manage the whole team from one web portal.",
         icon: ServerCog,
         image: {
-          src: "/solns-remoteWorkforce/centralised-control.webp",
+          scene: "central-control",
           alt: "The admin dashboard, with user management, call routing and team presence panels around it.",
-          width: 1600,
-          height: 931,
+          width: 1671,
+          height: 941,
         },
       },
     ],

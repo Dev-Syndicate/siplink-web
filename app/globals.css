@@ -2022,3 +2022,155 @@
     transition-property: none !important;
   }
 }
+
+/* The calling-devices scene's motion inputs. Registered so they interpolate
+   (see .parallax); unregistered they would jump between values. */
+@property --sway-x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --sway-y {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --tilt-x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --tilt-y {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --lift {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@layer components {
+  /* ------------------------------------------ desktop, mobile and browser
+
+     The calling-devices scene. Pink glass is the brand token mixed down
+     towards the card, so it follows the theme like everything else. */
+
+  /* Depth without 3D. Each layer slides by its own `--depth`, so near
+     things travel further than far ones — parallax — while nothing is ever
+     rotated or scaled. A 3D stage rasterises its panels once and then
+     resamples them every frame, which is what made the small UI text soft;
+     a translation keeps every glyph drawn at its real size.
+
+     The sway and the pointer are registered numbers so they can animate
+     and transition, and every layer reads them through inheritance. */
+  @keyframes scene-sway {
+    0%,
+    100% {
+      --sway-x: -1;
+      --sway-y: 0.5;
+    }
+    50% {
+      --sway-x: 1;
+      --sway-y: -0.5;
+    }
+  }
+
+  .scene-sway {
+    animation: scene-sway 12s ease-in-out infinite;
+  }
+
+  .scene-pointer {
+    transition:
+      --tilt-x 600ms ease-out,
+      --tilt-y 600ms ease-out;
+  }
+
+  .parallax {
+    translate: calc((var(--sway-x) * 0.6 + var(--tilt-x) * 3) * var(--depth, 0.5) * 1cqw)
+      calc(
+        (var(--sway-y) * 0.6 + var(--tilt-y) * 2.4) * var(--depth, 0.5) * 1cqw -
+          var(--lift)
+      );
+    transition: --lift 600ms ease-out;
+  }
+
+  .glass-tile {
+    border: 1px solid color-mix(in oklab, var(--primary) 25%, transparent);
+    background: color-mix(in oklab, var(--card) 65%, transparent);
+    backdrop-filter: blur(6px);
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, var(--card) 90%, transparent),
+      0 0 1.4cqw color-mix(in oklab, var(--primary) 18%, transparent);
+  }
+
+  .glass-tile-lit {
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, var(--card) 90%, transparent),
+      0 0 2.6cqw color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+
+  .glass-panel {
+    border: 1px solid color-mix(in oklab, var(--primary) 22%, transparent);
+    background: color-mix(in oklab, var(--card) 72%, transparent);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 1.5cqw 3cqw color-mix(in oklab, var(--primary) 14%, transparent);
+  }
+
+  /* The device holding the call glows; the others stay flat. */
+  .device-lit {
+    filter: drop-shadow(0 0 1.6cqw color-mix(in oklab, var(--primary) 45%, transparent));
+  }
+
+  @keyframes ring-pulse {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 55%, transparent);
+    }
+    100% {
+      box-shadow: 0 0 0 1.6cqw color-mix(in oklab, var(--primary) 0%, transparent);
+    }
+  }
+
+  .ring-pulse {
+    animation: ring-pulse 1.2s ease-out infinite;
+  }
+
+  /* A soft second ring around the caller's portrait. */
+  .halo {
+    box-shadow: 0 0 0 0.5cqw color-mix(in oklab, var(--primary) 7%, transparent);
+  }
+
+  /* Specks of light in the background, fading in and out out of step. */
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.15;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .twinkle {
+    animation: twinkle 3.2s ease-in-out infinite;
+    animation-delay: var(--twinkle-delay, 0s);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scene-sway,
+    .ring-pulse,
+    .twinkle {
+      animation: none;
+    }
+
+    .scene-pointer,
+    .parallax {
+      transition: none;
+    }
+  }
+}

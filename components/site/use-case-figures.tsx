@@ -10,6 +10,14 @@ import {
   Wire,
   usePhases,
 } from "@/components/site/schematic";
+import { OneNumberStory } from "@/components/site/one-number-story";
+import {
+  AppsMerge,
+  BranchDashboard,
+  CallerJourney,
+  DialerList,
+  LocalNumbersHub,
+} from "@/components/site/use-case-stories";
 import { cn } from "@/lib/utils";
 
 /**
@@ -435,12 +443,15 @@ export function BranchSpine() {
 /* -------------------------------------------------------------------------- */
 
 const FIGURES: Record<string, () => React.JSX.Element> = {
-  "remote-workforce": OneIdentity,
-  "customer-support": TriagedCall,
-  "sales-teams": DialerTime,
-  "unified-communications": ChannelsConverge,
-  "global-offices": LocalGlobal,
-  "multi-branch": BranchSpine,
+  // Plain-language figures in place of the schematics: readers found the
+  // wiring diagrams hard to follow. Each takes a different form so the pages
+  // do not read as one template. The schematics above are kept for reference.
+  "remote-workforce": OneNumberStory,
+  "customer-support": CallerJourney,
+  "sales-teams": DialerList,
+  "unified-communications": AppsMerge,
+  "global-offices": LocalNumbersHub,
+  "multi-branch": BranchDashboard,
 };
 
 export function UseCaseFigure({ slug }: { slug: string }) {
