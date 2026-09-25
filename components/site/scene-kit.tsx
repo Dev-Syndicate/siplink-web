@@ -209,6 +209,7 @@ export function Scene({
   still,
   aspect,
   wires,
+  backdrop = "full",
   children,
 }: {
   sceneRef: RefObject<HTMLDivElement | null>;
@@ -217,6 +218,16 @@ export function Scene({
   /** The original artwork's ratio, as a Tailwind aspect class. */
   aspect: string;
   wires: SceneWire[];
+  /**
+   * How much ground the stage paints behind itself.
+   *
+   * A scene given a section of its own is the only thing in that band, so it
+   * can take the full grid. One sitting in a hero column is not — it has a
+   * heading, a paragraph and two buttons beside it — so `soft` draws the
+   * grid fainter, and `none` paints nothing at all, for a stage whose own
+   * cards are meant to sit on plain white.
+   */
+  backdrop?: "full" | "soft" | "none";
   children: ReactNode;
 }) {
   const stage = useRef<HTMLDivElement>(null);
@@ -247,10 +258,18 @@ export function Scene({
       className={cn("@container relative w-full", aspect)}
     >
       {/* No frame: the scene sits straight on the page. The backdrop is a
-          faint dot grid in the border colour — neutral, so it reads as a
+          faint dot grid in the foreground colour — neutral, so it reads as a
           surface rather than a pink wash competing with the cards — masked
-          to fade out well before the edges. */}
-      <div aria-hidden className="scene-grid absolute inset-0" />
+          to fade out well before the edges. `soft` draws it fainter, for a
+          scene sharing a hero column with copy; `none` paints nothing. */}
+      <div
+        aria-hidden
+        hidden={backdrop === "none"}
+        className={cn(
+          "scene-grid absolute inset-0",
+          backdrop === "soft" && "opacity-60",
+        )}
+      />
 
       {/* Wires, in screen space. Behind the stage, so each one runs under the
           joints it connects. Paths are filled in by useWirePaths. */}

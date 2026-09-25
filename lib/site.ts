@@ -1122,6 +1122,16 @@ export type NavLeaf = {
 
 export type NavGroup = {
   heading: string;
+  /**
+   * Where the heading itself points, when the group is named after a real
+   * page. Set it rather than repeating that page as the first row: a link
+   * labelled the same as the heading directly beneath it reads as a
+   * duplicate, and the heading is the obvious place to click.
+   *
+   * Groups that only label a set of links leave this unset and stay plain
+   * text.
+   */
+  href?: string;
   /** Not rendered in the mega menu; see the note on `NavLeaf.description`. */
   description?: string;
   icon?: LucideIcon;
@@ -1159,6 +1169,44 @@ export type NavItem = {
   /** Renders groups as one flat column instead of grouped columns. */
   flat?: boolean;
 };
+
+/**
+ * Whether a nav leaf — a single link inside a mega-menu group — is the page
+ * being viewed.
+ *
+ * This is an exact match rather than a prefix test, and that matters now that
+ * nav links nest: `/internet/business-broadband` is a prefix of
+ * `/internet/business-broadband/plans`, so a prefix test lights up the parent
+ * and the child together and the menu shows two current pages at once.
+ *
+ * A leaf gets no ancestor state. The section pages carry a breadcrumb and a
+ * sibling rail of their own, so the path back up is already on the page.
+ */
+export function isNavLeafCurrent(href: string, pathname: string) {
+  return pathname === href;
+}
+
+/**
+ * Whether a top-level nav item is the section being viewed.
+ *
+ * Unlike a leaf, this *is* a prefix test — the tab marks which part of the
+ * site you are in, so everything beneath it counts. The `/` guard keeps the
+ * boundary on a segment, so `/internet` does not claim `/internet-archive`.
+ */
+export function isNavItemActive(item: NavItem, pathname: string) {
+  if (item.href === "/") return pathname === "/";
+  if (pathname === item.href || pathname.startsWith(`${item.href}/`)) {
+    return true;
+  }
+
+  return (
+    item.groups?.some(
+      (group) =>
+        (group.href ? isNavLeafCurrent(group.href, pathname) : false) ||
+        group.links.some((link) => isNavLeafCurrent(link.href, pathname)),
+    ) ?? false
+  );
+}
 
 export const nav: NavItem[] = [
   {
@@ -1482,132 +1530,138 @@ export const nav: NavItem[] = [
     },
   },
   {
-    // The connectivity line, alongside voice. Links are in-page anchors: the
-    // four pillars live on one /internet page rather than four thin routes,
-    // which is how internet.md describes them.
+    // The connectivity line, alongside voice. Every entry here is a real
+    // page, per the URL structure in docs/INTERNET.md:
+    // three connectivity services under /internet, each with its own
+    // sections routed beneath it, and six network services under
+    // /internet/network-solutions. Nothing here is an in-page anchor.
     label: "Internet",
     href: "/internet",
     groups: [
       {
         heading: "Business Broadband",
+        href: "/internet/business-broadband",
         icon: Wifi,
         description: "Shared-port connectivity for the office.",
         links: [
           {
             label: "Plans",
             icon: LayoutGrid,
-            href: "/internet#broadband-plans",
+            href: "/internet/business-broadband/plans",
             description: "Committed rate with burst, sized per site",
           },
           {
             label: "Features",
             icon: ListChecks,
-            href: "/internet#broadband-features",
+            href: "/internet/business-broadband/features",
             description: "Static IP, managed router, 24/7 monitoring",
           },
           {
             label: "Business Benefits",
             icon: TrendingUp,
-            href: "/internet#broadband-business-benefits",
+            href: "/internet/business-broadband/business-benefits",
             description: "Voice and internet from one provider",
           },
         ],
       },
       {
         heading: "Dedicated Internet",
+        href: "/internet/dedicated-internet",
         icon: Gauge,
         description: "Uncontended leased lines on fibre.",
         links: [
           {
             label: "Dedicated Bandwidth",
             icon: Gauge,
-            href: "/internet#dedicated-dedicated-bandwidth",
+            href: "/internet/dedicated-internet/dedicated-bandwidth",
             description: "50 Mbps to 100 Gbps, shared with nobody",
           },
           {
             label: "Symmetrical Speeds",
             icon: ArrowLeftRight,
-            href: "/internet#dedicated-symmetrical-speeds",
+            href: "/internet/dedicated-internet/symmetrical-speeds",
             description: "Equal upstream for cloud, voice and video",
           },
           {
             label: "SLA",
             icon: ScrollText,
-            href: "/internet#dedicated-sla",
+            href: "/internet/dedicated-internet/sla",
             description: "Availability and throughput, set out in writing",
           },
           {
             label: "Enterprise Connectivity",
             icon: Building2,
-            href: "/internet#dedicated-enterprise-connectivity",
+            href: "/internet/dedicated-internet/enterprise-connectivity",
             description: "Point-to-point, Tier-1 peering, data centres",
           },
         ],
       },
       {
         heading: "Static IP",
+        href: "/internet/static-ip",
         icon: MapPin,
         description: "A fixed public address that stays yours.",
         links: [
           {
             label: "What is Static IP?",
             icon: MapPin,
-            href: "/internet#static-ip-what-is-static-ip",
+            href: "/internet/static-ip/what-is-static-ip",
             description: "Permanent addressing, single or routed block",
           },
           {
             label: "Business Uses",
             icon: Briefcase,
-            href: "/internet#static-ip-business-uses",
+            href: "/internet/static-ip/business-uses",
             description: "VPN endpoints, SIP trunks, allow-listing",
           },
           {
             label: "Add Static IP",
             icon: CirclePlus,
-            href: "/internet#static-ip-add-static-ip",
+            href: "/internet/static-ip/add-static-ip",
             description: "With a new order or on a live circuit",
           },
         ],
       },
       {
         heading: "Network Solutions",
+        href: "/internet/network-solutions",
         icon: Network,
         description: "Everything past the router, managed.",
         links: [
           {
             label: "Managed Router & Firewall",
             icon: Router,
-            href: "/internet#network-managed-router-firewall",
+            href: "/internet/network-solutions/managed-router-firewall",
             description: "Edge equipment configured and monitored",
           },
           {
             label: "Business Wi-Fi",
             icon: Wifi,
-            href: "/internet#network-business-wi-fi",
+            href: "/internet/network-solutions/business-wifi",
             description: "Coverage designed around the floor plan",
           },
           {
             label: "LAN & Switching",
             icon: EthernetPort,
-            href: "/internet#network-lan-switching",
+            href: "/internet/network-solutions/lan-switching",
             description: "Cabling, VLANs and QoS for voice",
           },
           {
             label: "VPN",
             icon: Lock,
-            href: "/internet#network-vpn",
+            href: "/internet/network-solutions/vpn",
             description: "Encrypted tunnels across fixed sites",
           },
           {
             label: "SD-WAN",
             icon: Waypoints,
-            href: "/internet#network-sd-wan",
+            href: "/internet/network-solutions/sd-wan",
             description: "Application-aware routing across links",
           },
           {
             label: "Multi-Location Networking",
             icon: Share2,
-            href: "/internet#network-multi-location-networking",
+            href: "/internet/network-solutions/multi-location-networking",
             description: "One network across every office",
           },
         ],

@@ -15,17 +15,13 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { nav, type NavGroup, type NavItem } from "@/lib/site";
-
-function isItemActive(item: NavItem, pathname: string) {
-  if (item.href === "/") return pathname === "/";
-  if (pathname.startsWith(item.href)) return true;
-  return (
-    item.groups?.some((group) =>
-      group.links.some((link) => pathname.startsWith(link.href)),
-    ) ?? false
-  );
-}
+import {
+  isNavItemActive,
+  isNavLeafCurrent,
+  nav,
+  type NavGroup,
+  type NavItem,
+} from "@/lib/site";
 
 /**
  * One navigation row: icon tile, label, and an arrow that slides in on hover.
@@ -130,11 +126,33 @@ function MenuColumn({
   return (
     <div className="mb-4 break-inside-avoid last:mb-0">
       {/* Heading, then a hairline that fades out — it reads as a rule without
-          drawing a hard line across the column. */}
+          drawing a hard line across the column.
+
+          Where the group is named after a real page the heading is the link
+          to it, rather than that page appearing again as the first row. */}
       <div className="flex items-center gap-2 px-2 pb-1.5">
-        <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-muted-foreground/70 uppercase">
-          {group.heading}
-        </span>
+        {group.href ? (
+          <NavigationMenuLink asChild>
+            <Link
+              href={group.href}
+              aria-current={
+                isNavLeafCurrent(group.href, pathname) ? "page" : undefined
+              }
+              className={cn(
+                "font-mono text-[10px] font-semibold tracking-[0.16em] uppercase transition-colors hover:text-primary focus-visible:text-primary focus-visible:outline-none",
+                isNavLeafCurrent(group.href, pathname)
+                  ? "text-primary"
+                  : "text-muted-foreground/70",
+              )}
+            >
+              {group.heading}
+            </Link>
+          </NavigationMenuLink>
+        ) : (
+          <span className="font-mono text-[10px] font-semibold tracking-[0.16em] text-muted-foreground/70 uppercase">
+            {group.heading}
+          </span>
+        )}
         <span
           aria-hidden
           className="h-px flex-1 bg-gradient-to-r from-border to-transparent"
@@ -149,7 +167,7 @@ function MenuColumn({
             href={link.href}
             icon={link.icon ?? group.icon}
             index={offset + i}
-            active={pathname.startsWith(link.href)}
+            active={isNavLeafCurrent(link.href, pathname)}
           />
         ))}
       </ul>
@@ -237,7 +255,7 @@ export function MegaMenu() {
     <NavigationMenu className="hidden lg:flex">
       <NavigationMenuList className="gap-0.5">
         {nav.map((item) => {
-          const isActive = isItemActive(item, pathname);
+          const isActive = isNavItemActive(item, pathname);
 
           // Plain link — no dropdown.
           if (!item.groups?.length) {
