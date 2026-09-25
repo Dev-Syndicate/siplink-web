@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Check } from "lucide-react";
 
+import { BranchAdminScene } from "@/components/site/branch-admin-scene";
+import { BranchIdentityScene } from "@/components/site/branch-identity-scene";
 import { BusinessNumbersScene } from "@/components/site/business-numbers-scene";
 import { CallingDevicesScene } from "@/components/site/calling-devices-scene";
 import { CentralControlScene } from "@/components/site/central-control-scene";
@@ -9,12 +11,14 @@ import { CapabilityFigure } from "@/components/site/capability-figures";
 import { CollaborationScene } from "@/components/site/collaboration-scene";
 import { ConversationScene } from "@/components/site/conversation-scene";
 import { CrmScene } from "@/components/site/crm-scene";
+import { CrossBranchScene } from "@/components/site/cross-branch-scene";
 import { CtaPanel } from "@/components/site/cta-panel";
 import { EnvironmentScene } from "@/components/site/environment-scene";
 import { ExtensionMobilityScene } from "@/components/site/extension-mobility-scene";
 import { IntegrationsScene } from "@/components/site/integrations-scene";
 import { OutboundScene } from "@/components/site/outbound-scene";
 import { PresenceScene } from "@/components/site/presence-scene";
+import { StandardsScene } from "@/components/site/standards-scene";
 import { VoiceVideoScene } from "@/components/site/voice-video-scene";
 import { UseCaseFigure } from "@/components/site/use-case-figures";
 import { Button } from "@/components/ui/button";
@@ -599,6 +603,10 @@ const SCENES = {
   collaboration: CollaborationScene,
   integrations: IntegrationsScene,
   environment: EnvironmentScene,
+  "branch-identity": BranchIdentityScene,
+  "cross-branch": CrossBranchScene,
+  "branch-admin": BranchAdminScene,
+  standards: StandardsScene,
 };
 
 /**

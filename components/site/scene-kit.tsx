@@ -199,15 +199,6 @@ export function Joint({
 
 /* ------------------------------------------------------------ stage */
 
-const SPARKS = [
-  [12, 11],
-  [33, 7],
-  [95, 32],
-  [6, 59],
-  [56, 5],
-  [98, 92],
-];
-
 /**
  * The frameless stage: a backdrop that fades out at the edges, the wires,
  * and a swaying, pointer-following layer for the scene's objects.
@@ -231,11 +222,10 @@ export function Scene({
    * How much ground the stage paints behind itself.
    *
    * A scene given a section of its own is the only thing in that band, so it
-   * can afford the full wash. One sitting in a hero column is not — it has a
-   * heading, a paragraph and two buttons beside it, and the same wash then
-   * reads as a pink half to the page rather than as a stage. `soft` keeps
-   * the shape and takes the saturation out of it, and `none` paints nothing
-   * at all — for a stage whose own cards are meant to sit on plain white.
+   * can take the full grid. One sitting in a hero column is not — it has a
+   * heading, a paragraph and two buttons beside it — so `soft` draws the
+   * grid fainter, and `none` paints nothing at all, for a stage whose own
+   * cards are meant to sit on plain white.
    */
   backdrop?: "full" | "soft" | "none";
   children: ReactNode;
@@ -267,49 +257,19 @@ export function Scene({
       onPointerLeave={settle}
       className={cn("@container relative w-full", aspect)}
     >
-      {/* No frame: the scene sits straight on the page. The backdrop is
-          masked so its glow fades out rather than stopping at a hard edge —
-          and is skipped entirely at `none`, sparks included, since a stray
-          dot on white is the one thing that would give the ground away. */}
+      {/* No frame: the scene sits straight on the page. The backdrop is a
+          faint dot grid in the foreground colour — neutral, so it reads as a
+          surface rather than a pink wash competing with the cards — masked
+          to fade out well before the edges. `soft` draws it fainter, for a
+          scene sharing a hero column with copy; `none` paints nothing. */}
       <div
         aria-hidden
         hidden={backdrop === "none"}
-        className="absolute inset-0 overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_72%)]"
-      >
-        <div
-          className={cn(
-            "absolute inset-0 bg-radial to-transparent",
-            backdrop === "soft"
-              ? "from-accent/35 via-accent/10"
-              : "from-accent via-accent/40",
-          )}
-        />
-        <div
-          className={cn(
-            "absolute top-[-8%] left-1/2 aspect-square w-[74%] -translate-x-1/2 rounded-full bg-radial to-transparent",
-            backdrop === "soft"
-              ? "from-primary/6 via-primary/2"
-              : "from-primary/15 via-primary/5",
-          )}
-        />
-        {SPARKS.map(([x, y], i) => (
-          <span
-            key={`${x}-${y}`}
-            className={cn(
-              "absolute size-[0.45cqw] rounded-full",
-              backdrop === "soft" ? "bg-primary/40" : "bg-primary",
-              !still && "twinkle",
-            )}
-            style={
-              {
-                left: `${x}%`,
-                top: `${y}%`,
-                "--twinkle-delay": `${i * -0.7}s`,
-              } as CSSProperties
-            }
-          />
-        ))}
-      </div>
+        className={cn(
+          "scene-grid absolute inset-0",
+          backdrop === "soft" && "opacity-60",
+        )}
+      />
 
       {/* Wires, in screen space. Behind the stage, so each one runs under the
           joints it connects. Paths are filled in by useWirePaths. */}
