@@ -1,10 +1,8 @@
+import { ClosingCta } from "@/components/site/closing-cta";
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -167,25 +165,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-2xl px-6 py-20 text-center lg:px-10">
-          <h2 className="text-3xl font-semibold tracking-tight text-balance">
-            Let&apos;s talk
-          </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            Discover what makes SipLink different — book a walkthrough with our
-            team.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
-              <Link href="/contact">Book a demo</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/solutions">Browse solutions</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <ClosingCta heading="Let’s talk" body="Discover what makes SipLink different — book a walkthrough with our team." secondary={{ label: "Browse solutions", href: "/solutions" }} />
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { ClosingCta } from "@/components/site/closing-cta";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -168,25 +169,7 @@ export default function IndustriesPage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────────────────── */}
-      <section className="border-t border-border bg-muted/30">
-        <div className="mx-auto max-w-7xl px-6 py-20 text-center lg:px-10">
-          <h2 className="text-3xl font-semibold tracking-tight text-balance">
-            Don&apos;t see your industry?
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-            Our solutions are configured per deployment. Tell us how your teams
-            communicate today and we will map it to a plan.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
-              <Link href="/contact">Book a demo</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/solutions">Browse solutions</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <ClosingCta heading="Don’t see your industry?" body="Our solutions are configured per deployment. Tell us how your teams communicate today and we will map it to a plan." secondary={{ label: "Browse solutions", href: "/solutions" }} />
     </>
   );
 }

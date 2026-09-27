@@ -266,6 +266,28 @@ export function CallingDevicesScene({ label }: { label: string }) {
 
 type CallState = { ringing: boolean; active: Device | null; elapsed: number };
 
+/** Reuse the solutions laptop without mounting the entire three-device scene. */
+export function CallingLaptop() {
+  const { ref, still, t } = useSceneClock();
+  const elapsed = t % 30;
+  return (
+    <div ref={ref} data-scene-laptop>
+      <Laptop ringing={!still && elapsed < 3} active="laptop" elapsed={still ? 24 : Math.max(0, elapsed - 3)} />
+    </div>
+  );
+}
+
+/** The same tall handset used beside the solutions laptop. */
+export function CallingHandset() {
+  const { ref, still, t } = useSceneClock();
+  const elapsed = t % 30;
+  return (
+    <div ref={ref} data-scene-handset style={{ "--handset-scale": 4 / 3 } as CSSProperties}>
+      <Handset ringing={!still && elapsed < 3} active="laptop" elapsed={still ? 24 : Math.max(0, elapsed - 3)} />
+    </div>
+  );
+}
+
 /** The kit's portrait, defaulting to the caller. */
 function Portrait({
   src = CALLER.photo,
@@ -525,33 +547,33 @@ function Handset({ ringing, active, elapsed }: CallState) {
   const mine = active === "phone";
 
   return (
-    <div className="rounded-[2.4cqw] bg-foreground/90 p-[0.45cqw] shadow-2xl shadow-primary/25">
-      <div className="relative flex aspect-[9/18.5] flex-col overflow-hidden rounded-[2cqw] bg-card">
-        <div className="flex h-[47%] flex-col items-center bg-linear-to-b from-primary to-primary/80 px-[1cqw] pt-[0.55cqw] text-primary-foreground">
+    <div className="rounded-[calc(2.4cqw*var(--handset-scale,1))] bg-foreground/90 p-[calc(0.45cqw*var(--handset-scale,1))] shadow-2xl shadow-primary/25">
+      <div className="relative flex aspect-[9/18.5] flex-col overflow-hidden rounded-[calc(2cqw*var(--handset-scale,1))] bg-card">
+        <div className="flex h-[47%] flex-col items-center bg-linear-to-b from-primary to-primary/80 px-[calc(1cqw*var(--handset-scale,1))] pt-[calc(0.55cqw*var(--handset-scale,1))] text-primary-foreground">
           {/* Status bar and island */}
-          <span className="flex w-full items-center justify-between text-[0.7cqw] font-semibold">
+          <span className="flex w-full items-center justify-between text-[calc(0.7cqw*var(--handset-scale,1))] font-semibold">
             9:41
-            <span className="flex items-center gap-[0.2cqw]">
-              <Signal className="size-[0.75cqw]" />
-              <Wifi className="size-[0.75cqw]" />
-              <BatteryFull className="size-[0.85cqw]" />
+            <span className="flex items-center gap-[calc(0.2cqw*var(--handset-scale,1))]">
+              <Signal className="size-[calc(0.75cqw*var(--handset-scale,1))]" />
+              <Wifi className="size-[calc(0.75cqw*var(--handset-scale,1))]" />
+              <BatteryFull className="size-[calc(0.85cqw*var(--handset-scale,1))]" />
             </span>
           </span>
-          <span className="absolute top-[0.45cqw] left-1/2 h-[1cqw] w-[32%] -translate-x-1/2 rounded-full bg-foreground" />
-          <span className="mt-[0.9cqw] text-[1.1cqw] font-medium">
+          <span className="absolute top-[calc(0.45cqw*var(--handset-scale,1))] left-1/2 h-[calc(1cqw*var(--handset-scale,1))] w-[32%] -translate-x-1/2 rounded-full bg-foreground" />
+          <span className="mt-[calc(0.9cqw*var(--handset-scale,1))] text-[calc(1.1cqw*var(--handset-scale,1))] font-medium">
             {CALLER.name}
           </span>
-          <span className="text-[0.8cqw] tabular-nums opacity-85">
+          <span className="text-[calc(0.8cqw*var(--handset-scale,1))] tabular-nums opacity-85">
             {ringing
               ? "Incoming call…"
               : mine
                 ? clock(elapsed)
                 : `On ${active} · ${clock(elapsed)}`}
           </span>
-          <Portrait ringing={ringing} className="mt-[0.8cqw] w-[5.6cqw]" />
+          <Portrait ringing={ringing} className="mt-[calc(0.8cqw*var(--handset-scale,1))] w-[calc(5.6cqw*var(--handset-scale,1))]" />
         </div>
-        <div className="-mt-[1.4cqw] flex flex-1 flex-col items-center justify-evenly rounded-t-[1.6cqw] bg-card px-[0.9cqw]">
-          <div className="grid grid-cols-3 gap-x-[0.9cqw] gap-y-[0.5cqw]">
+        <div className="-mt-[calc(1.4cqw*var(--handset-scale,1))] flex flex-1 flex-col items-center justify-evenly rounded-t-[calc(1.6cqw*var(--handset-scale,1))] bg-card px-[calc(0.9cqw*var(--handset-scale,1))]">
+          <div className="grid grid-cols-3 gap-x-[calc(0.9cqw*var(--handset-scale,1))] gap-y-[calc(0.5cqw*var(--handset-scale,1))]">
             {(
               [
                 [Mic, "Mute"],
@@ -566,17 +588,17 @@ function Handset({ ringing, active, elapsed }: CallState) {
                 key={text}
                 icon={Icon}
                 label={text}
-                className="w-[2.6cqw]"
+                className="w-[calc(2.6cqw*var(--handset-scale,1))]"
               />
             ))}
           </div>
           <Control
             icon={ringing ? Phone : PhoneOff}
             hangup
-            className={cn("w-[3.2cqw]", (ringing || mine) && "ring-pulse")}
+            className={cn("w-[calc(3.2cqw*var(--handset-scale,1))]", (ringing || mine) && "ring-pulse")}
           />
         </div>
-        <span className="absolute bottom-[0.45cqw] left-1/2 h-[0.3cqw] w-[36%] -translate-x-1/2 rounded-full bg-foreground/80" />
+        <span className="absolute bottom-[calc(0.45cqw*var(--handset-scale,1))] left-1/2 h-[calc(0.3cqw*var(--handset-scale,1))] w-[36%] -translate-x-1/2 rounded-full bg-foreground/80" />
       </div>
     </div>
   );

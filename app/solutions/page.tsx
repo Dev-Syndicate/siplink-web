@@ -1,8 +1,8 @@
+import { ClosingCta } from "@/components/site/closing-cta";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import {
   platformFeatures,
   segments,
@@ -376,33 +375,7 @@ export default function SolutionsPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border bg-muted/30">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-card px-8 py-14 text-center sm:px-16">
-            <div className="relative">
-              <Badge variant="outline" className="mb-5 font-mono">
-                Number porting included
-              </Badge>
-              <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                Not sure which layer you need?
-              </h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-                Tell us how your teams work today and we&rsquo;ll recommend a
-                configuration — and port your existing numbers across.
-              </p>
-              <Separator className="mx-auto my-9 max-w-24" />
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button asChild size="lg">
-                  <Link href="/contact">Book a demo</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link href="/pricing">View pricing</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ClosingCta heading="Not sure which layer you need?" body="Tell us how your teams work today and we’ll recommend a configuration — and port your existing numbers across." secondary={{ label: "View pricing", href: "/pricing" }} eyebrow="Number porting included" />
     </>
   );
 }
