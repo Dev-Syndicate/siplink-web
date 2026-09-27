@@ -1,8 +1,9 @@
+import { ClosingCta } from "@/components/site/closing-cta";
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import { FlagCA, FlagUS } from "@/components/site/flags";
 import Link from "next/link";
-import { ArrowRight, Check, CircleCheck } from "lucide-react";
+import { Check, CircleCheck } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -299,44 +300,10 @@ export default function PricingPage() {
       </section>
 
       {/* Trial */}
-      <section className="border-y border-border bg-muted/30">
-        <div className="mx-auto max-w-2xl px-6 py-20 text-center lg:px-10">
-          <h2 className="text-3xl font-semibold tracking-tight text-balance">
-            See SipLink on your own workflows
-          </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            Book a walkthrough on any plan and our team will help you port your
-            existing numbers and configure your extensions.
-          </p>
-          <Button asChild size="lg" className="mt-8">
-            <Link href="/contact">Book a demo</Link>
-          </Button>
-        </div>
-      </section>
+      <ClosingCta heading="See SipLink on your own workflows" body="Book a walkthrough on any plan and our team will help you port your existing numbers and configure your extensions." />
 
       {/* Custom quote */}
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="flex flex-col items-start justify-between gap-8 rounded-2xl border border-border bg-gradient-to-br from-brand-from/10 to-brand-to/5 px-8 py-12 md:flex-row md:items-center">
-          <div className="max-w-xl">
-            <h2 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-              Need a custom setup for high volume?
-            </h2>
-            <p className="mt-3 text-pretty text-muted-foreground">
-              For larger deployments or specialised integration requirements, our
-              team will design a configuration around your workflows.
-            </p>
-          </div>
-          <Button asChild size="lg" className="group shrink-0">
-            <Link href="/contact">
-              Request a custom quote
-              <ArrowRight
-                className="transition-transform group-hover:translate-x-0.5"
-                aria-hidden
-              />
-            </Link>
-          </Button>
-        </div>
-      </section>
+      <ClosingCta id="custom-quote" heading="Need a custom setup for high volume?" body="For larger deployments or specialised integration requirements, our team will design a configuration around your workflows." action="Request a custom quote" />
     </>
   );
 }

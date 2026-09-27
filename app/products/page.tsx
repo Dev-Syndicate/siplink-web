@@ -1,3 +1,4 @@
+import { ClosingCta } from "@/components/site/closing-cta";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
@@ -282,45 +283,10 @@ export default function ProductsPage() {
       </section>
 
       {/* Close */}
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Tell us how your customers reach you today
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-            We will map it to a configuration, plan the migration and port your
-            existing numbers — before you commit to anything.
-          </p>
-
-          <ul className="mx-auto mt-8 flex max-w-lg flex-col gap-3 sm:flex-row sm:justify-center sm:gap-6">
-            {[
-              "No obligation",
-              "Talk to an engineer",
-              "Migration planned with you",
-            ].map((item) => (
-              <li key={item} className="flex items-center gap-2 text-sm">
-                <Check className="size-4 shrink-0 text-primary" aria-hidden />
-                <span className="text-muted-foreground">{item}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
-              <Link href="/contact">Book a demo</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/pricing">View pricing</Link>
-            </Button>
-          </div>
-
-          <p className="mt-12 text-xs text-muted-foreground/70">
-            * Port availability figure as stated in current service
-            documentation. Certifications and availability commitments are
-            subject to scope and confirmation.
-          </p>
-        </div>
-      </section>
+      <ClosingCta heading="Tell us how your customers reach you today" body="We will map it to a configuration, plan the migration and port your existing numbers — before you commit to anything." secondary={{ label: "View pricing", href: "/pricing" }}>
+        <ul className="flex flex-wrap gap-x-6 gap-y-3">{["No obligation", "Talk to an engineer", "Migration planned with you"].map(item => <li key={item} className="flex items-center gap-2 text-sm text-primary-foreground/85"><Check className="size-4 shrink-0" aria-hidden />{item}</li>)}</ul>
+        <p className="max-w-2xl text-xs leading-relaxed text-primary-foreground/75">* Port availability figure as stated in current service documentation. Certifications and availability commitments are subject to scope and confirmation.</p>
+      </ClosingCta>
     </>
   );
 }

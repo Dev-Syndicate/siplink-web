@@ -2,6 +2,39 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* One accent travels through each Teams rollout step in sequence. */
+.teams-rollout-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: color-mix(in oklab, var(--primary) 15%, transparent);
+}
+
+.teams-rollout-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0;
+  animation: teams-rollout-trace 8s linear infinite;
+  animation-delay: var(--rollout-delay, 0s);
+}
+
+@keyframes teams-rollout-trace {
+  0% { transform: translateX(-100%); opacity: 0; }
+  3% { opacity: 1; }
+  22% { opacity: 1; }
+  25%, 100% { transform: translateX(300%); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teams-rollout-card::after { animation: none; }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -188,6 +221,46 @@
 
   ::-webkit-scrollbar-corner {
     background: transparent;
+  }
+}
+
+@property --approach-outline-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@layer components {
+  .analytics-running-outline {
+    position: relative;
+    isolation: isolate;
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--primary) 15%, transparent);
+  }
+
+  .analytics-running-outline::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    pointer-events: none;
+    background: conic-gradient(from var(--approach-outline-angle), transparent 0deg 235deg, color-mix(in oklab, var(--primary) 25%, transparent) 285deg, var(--primary) 325deg, transparent 360deg);
+    -webkit-mask: linear-gradient(var(--foreground) 0 0) content-box, linear-gradient(var(--foreground) 0 0);
+    mask: linear-gradient(var(--foreground) 0 0) content-box, linear-gradient(var(--foreground) 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: approach-outline-run 6s linear infinite;
+  }
+
+  @keyframes approach-outline-run {
+    to { --approach-outline-angle: 360deg; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .analytics-running-outline::before {
+      animation: none;
+      background: color-mix(in oklab, var(--primary) 35%, transparent);
+    }
   }
 }
 

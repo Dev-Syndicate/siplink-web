@@ -2,9 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // 75 is the default. 90 is for product mocks, whose small UI text
-    // (extension numbers, names, buttons) goes soft at 75.
-    qualities: [75, 90],
+    // Keep defaults for ordinary images, 90 for UI mocks, and 95 for the
+    // large product artwork so glass edges and fine ridges retain detail.
+    qualities: [75, 90, 95],
     remotePatterns: [
       // YouTube thumbnail for the explainer video facade.
       { protocol: "https", hostname: "i.ytimg.com" },

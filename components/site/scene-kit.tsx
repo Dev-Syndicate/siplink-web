@@ -108,7 +108,7 @@ function curve(
  * redrawn in screen space from where the joints actually are — every frame
  * while the scene is on screen; once, and on resize, when still.
  */
-function useWirePaths(
+export function useWirePaths(
   root: RefObject<HTMLDivElement | null>,
   paths: RefObject<SVGPathElement[]>,
   wires: { from: string; to: string }[],
