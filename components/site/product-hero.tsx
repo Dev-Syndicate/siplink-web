@@ -45,11 +45,10 @@ export function ProductHero({ product, headline, action, secondaryLabel, seconda
   const accent = emphasis[product.slug];
   const hasAccent = !!accent && headline.endsWith(accent);
   const Icon = product.icon;
-  // With object-cover, a tall slot can display more image pixels than its
-  // width suggests. Account for the source aspect ratio at each breakpoint
-  // rather than letting the browser choose an undersized source candidate.
-  const landscape = product.slug === "sip-trunking" || product.slug === "teams-calling";
-  const aspectRatio = landscape ? 1.5 : 1;
+  // Every product hero uses the same high-resolution 3:2 art direction now.
+  // With object-cover, the tall mobile slot can display more image pixels than
+  // its width suggests, so include the source aspect ratio in each candidate.
+  const aspectRatio = 1.5;
   const artworkSizes = `(min-width: 1024px) max(62vw, ${720 * aspectRatio}px), (min-width: 640px) max(100vw, ${384 * aspectRatio}px), max(100vw, ${320 * aspectRatio}px)`;
   return <section data-product-hero={product.slug} className="relative isolate overflow-hidden border-b border-border bg-background">
     <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 pt-8 pb-10 lg:min-h-180 lg:px-10 lg:pt-6 lg:pb-8 xl:pt-8 xl:pb-10">
@@ -65,7 +64,7 @@ export function ProductHero({ product, headline, action, secondaryLabel, seconda
       <ul aria-label={`${product.title} capabilities`} className="mt-auto flex max-w-3xl flex-wrap gap-2">{product.features.slice(0,3).map(({title}) => <li key={title}><Badge variant="outline" className="h-auto rounded-full bg-background/80 px-3 py-2 text-sm font-normal backdrop-blur-sm">{title}</Badge></li>)}</ul>
     </div>
     <div data-hero-artwork className="relative h-80 sm:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:left-[38%] lg:h-auto">
-      <Image src={product.slug === "sip-trunking" ? "/images/sip-trunking-hero.png" : `/images/products/${product.slug}.png`} alt={imageAlt} fill preload quality={95} sizes={artworkSizes} className="object-cover object-center dark:opacity-45" />
+      <Image src={product.slug === "sip-trunking" ? "/images/sip-trunking-hero-v2.png" : `/images/products/${product.slug}-v2.png`} alt={imageAlt} fill preload quality={95} sizes={artworkSizes} className="object-cover object-right sm:object-contain dark:opacity-45" />
       <div aria-hidden className="absolute inset-0 bg-linear-to-b from-background via-transparent to-background/10 lg:bg-linear-to-r lg:from-background lg:from-15% lg:via-background/65 lg:via-25% lg:to-transparent lg:to-45%" />
       <div aria-hidden className="absolute inset-x-0 bottom-0 h-8 bg-linear-to-t from-background/30 to-transparent" />
     </div>
