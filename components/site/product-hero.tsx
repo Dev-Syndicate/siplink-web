@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { ProductDetail } from "@/lib/products";
@@ -63,7 +63,6 @@ export function ProductHero({ product, headline, action, secondaryLabel, seconda
     : `/images/products/${product.slug}-${maskedArtworkSlugs.has(product.slug) ? "v3" : "v2"}.png`;
   return <section data-product-hero={product.slug} className="relative isolate overflow-hidden border-b border-border bg-background">
     <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 pt-8 pb-10 lg:min-h-180 lg:px-10 lg:pt-6 lg:pb-8 xl:pt-8 xl:pb-10">
-      <div><Button asChild size="sm" variant="ghost" className="-ml-3 text-muted-foreground"><Link href="/products#lifecycle"><ArrowLeft aria-hidden />{product.category}</Link></Button></div>
       <div className="mt-6 mb-8 max-w-2xl lg:w-3/5 xl:w-full">
         <Badge variant="secondary" className="gap-2"><Icon aria-hidden className="size-3.5" />{product.title}</Badge>
         <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl xl:text-7xl">
@@ -75,7 +74,7 @@ export function ProductHero({ product, headline, action, secondaryLabel, seconda
       <ul aria-label={`${product.title} capabilities`} className="mt-auto flex max-w-3xl flex-wrap gap-2">{product.features.slice(0,3).map(({title}) => <li key={title}><Badge variant="outline" className="h-auto rounded-full bg-background/80 px-3 py-2 text-sm font-normal backdrop-blur-sm">{title}</Badge></li>)}</ul>
     </div>
     <div data-hero-artwork className="relative h-80 sm:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:left-[38%] lg:h-auto">
-      <Image src={artworkSrc} alt={imageAlt} fill preload quality={95} sizes={artworkSizes} className="object-cover object-right sm:object-contain dark:opacity-45" />
+      <Image src={artworkSrc} alt={imageAlt} fill preload quality={95} sizes={artworkSizes} className="object-cover object-right dark:opacity-45" />
       <div aria-hidden className="absolute inset-0 bg-linear-to-b from-background via-transparent to-background/10 lg:bg-linear-to-r lg:from-background lg:from-15% lg:via-background/65 lg:via-25% lg:to-transparent lg:to-45%" />
       <div aria-hidden className="absolute inset-x-0 bottom-0 h-8 bg-linear-to-t from-background/30 to-transparent" />
     </div>
