@@ -96,12 +96,12 @@ export const conversationStages: ConversationStage[] = [
         note: "A wait, never a busy signal",
       },
       {
-        title: "Cloud PBX",
+        title: "CCaaS",
         slug: "cloud-pbx",
-        note: "Extensions and flows you control",
+        note: "Route, answer and improve customer calls",
       },
       {
-        title: "Hosted PBX",
+        title: "UCaaS",
         slug: "hosted-pbx",
         note: "We run it, your team uses it",
       },
@@ -129,11 +129,6 @@ export const conversationStages: ConversationStage[] = [
         title: "Predictive Dialer",
         slug: "predictive-dialer",
         note: "More talking, less waiting",
-      },
-      {
-        title: "Auto Dialer",
-        slug: "auto-dialer",
-        note: "Volume without manual dialling",
       },
       {
         title: "Microsoft Teams Calling",

@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, AudioLines, Bot, CalendarDays, Check, Clock, FileAudio, GitBranch, Headset, ListOrdered, LockKeyhole, MessageSquare, Mic, Phone, Play, Search, ShieldCheck, SkipForward, SlidersHorizontal, Users, Volume2 } from "lucide-react";
+import { Activity, ArrowRight, AudioLines, Bot, CalendarDays, Check, Clock, FileAudio, GitBranch, Headset, ListOrdered, LockKeyhole, MessageSquare, Mic, Phone, Play, Search, ShieldCheck, SlidersHorizontal, Users, Volume2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProductSceneStage, SceneCallControls, SceneLaptop, ScenePerson, ScenePhone, ScenePosition, SceneRow, SceneStatus, SceneTile, SceneWave, SceneWindow } from "@/components/site/product-scene-primitives";
@@ -25,13 +25,6 @@ function PredictiveScene() {
   </ProductSceneStage>;
 }
 
-function AutoScene() {
-  return <ProductSceneStage name="auto-dialer" label="Illustrative auto dialler campaign board, contact list and active handset with recorded campaign outcomes" wires={[{ from: "campaign-call", to: "campaign-handset", lit: true }, { from: "campaign-results", to: "record-outcome", lit: true }]}>
-    <ScenePosition x={35} y={70} w={690} joints={[{ id: "campaign-call", side: "r", left: "100%", top: "49%" }, { id: "campaign-results", side: "b", left: "85%", top: "100%" }]}><SceneWindow title="Campaign manager"><div className="flex items-center justify-between border-b border-border p-[1.8cqw]"><div><p className="text-[1.7cqw] font-semibold">Service follow-up</p><p className="text-[1cqw] text-muted-foreground">Contact list · Weekday campaign</p></div><SceneStatus>Running</SceneStatus></div><div className="grid grid-cols-[1fr_2fr]"><div className="border-r border-border bg-muted/25 p-[1.5cqw]"><p className="font-semibold">Campaign settings</p>{["Imported contacts", "Weekday calling hours", "Agent-led dialling", "Retry unanswered calls"].map(text => <p key={text} className="mt-[1.5cqw] flex items-center gap-[0.7cqw] text-[1cqw]"><Check className="size-[1cqw] text-primary" />{text}</p>)}<div className="mt-[2cqw] rounded-[0.8cqw] bg-accent p-[1cqw] text-[1cqw]">Next action<br /><span className="font-semibold">Continue contact list</span></div></div><div><SceneRow><span className="font-semibold">Contact</span><span className="font-semibold">Outcome</span></SceneRow>{[["Sarah Johnson","Calling"],["Daniel Ortiz","Completed"],["Elena Ruiz","Retry scheduled"],["Marcus Lee","Next in list"]].map(([name,status],i)=><SceneRow key={name} active={i===0}><span className="flex gap-[0.6cqw]"><Phone className={small}/>{name}</span><Badge size="scene" variant={i===0?"default":"secondary"} className="text-[0.8cqw]">{status}</Badge></SceneRow>)}<div className="flex items-center gap-[1cqw] p-[1.5cqw] text-[1cqw] text-muted-foreground"><span className="h-[0.5cqw] flex-1 rounded bg-muted"><span className="block h-full w-2/5 rounded bg-primary" /></span>List progress</div></div></div></SceneWindow></ScenePosition>
-    <ScenePosition x={790} y={25} w={185} joints={[{ id: "campaign-handset", side: "l", left: "0%", top: "60%" }]}><ScenePhone title="Campaign call"><div className="space-y-[1.7cqw] p-[1.5cqw]"><ScenePerson detail="Service follow-up" /><SceneWave animated /><SceneCallControls /><div className="rounded-[0.8cqw] bg-accent p-[1cqw] text-[1cqw]">Call script<br /><span className="text-muted-foreground">Check if the customer needs more help.</span></div></div></ScenePhone></ScenePosition>
-    <ScenePosition x={120} y={485} w={570} joints={[{ id: "record-outcome", side: "t", left: "80%", top: "0%" }]}><SceneWindow title="Record the outcome"><div className="flex items-center justify-between p-[1.5cqw]">{["Completed","Call back","No answer"].map(text=><Badge size="scene" key={text} variant="secondary" className="px-[1cqw] text-[1cqw]">{text}</Badge>)}<SkipForward className="size-[2cqw] text-primary" /></div></SceneWindow></ScenePosition>
-  </ProductSceneStage>;
-}
 
 function IvrScene() {
   return <ProductSceneStage name="ivr" label="Illustrative interactive voice response call-flow editor with greeting, menu choices, department routes and after-hours voicemail" wires={[{ from: "ivr-greeting-menu", to: "ivr-menu", lit: true }, { from: "ivr-greeting-hours", to: "ivr-after-hours", lit: true }, { from: "ivr-sales-route", to: "ivr-sales", lit: true }, { from: "ivr-support-route", to: "ivr-support", lit: true }, { from: "ivr-accounts-route", to: "ivr-accounts", lit: true }]}>
@@ -85,7 +78,6 @@ export function CallingProductScene({ slug }: { slug: string }) {
   switch (slug) {
     case "call-center": return <CallCenterScene />;
     case "predictive-dialer": return <PredictiveScene />;
-    case "auto-dialer": return <AutoScene />;
     case "ivr": return <IvrScene />;
     case "call-recording": return <RecordingScene />;
     case "call-analytics": return <AnalyticsScene />;

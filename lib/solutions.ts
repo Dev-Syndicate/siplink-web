@@ -494,7 +494,7 @@ const useCase: SolutionDetail[] = [
         },
       ],
     },
-    builtFrom: ["predictive-dialer", "auto-dialer", "crm-integration", "call-recording"],
+    builtFrom: ["predictive-dialer", "crm-integration", "call-recording"],
     gain: {
       heading: "More selling time, less busywork",
       body: "Cut the manual work around every call so representatives can focus on building relationships and closing.",

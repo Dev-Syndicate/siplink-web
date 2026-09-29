@@ -62,7 +62,7 @@ function SameNumber() {
         <PhoneCall className="size-5" aria-hidden />
       </span>
       <p className="font-mono text-lg tracking-tight text-foreground">
-        080 4718 2200
+        080 4718 22**
       </p>
       <p className="text-[11px] text-muted-foreground">Incoming · line 1</p>
       <div className="mt-2 w-full rounded-xl bg-muted p-3">

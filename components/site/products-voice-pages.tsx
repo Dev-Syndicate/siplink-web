@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { ProductConnectionDiagram } from "@/components/site/product-connection-diagram";
 import { ProductHero } from "@/components/site/product-hero";
 import Link from "next/link";
-import { ArrowRight, Check, Cloud, Building2, Server, Phone, ShieldCheck, MapPin, ClipboardCheck } from "lucide-react";
+import { ArrowRight, Check, Cloud, Building2, Server, Phone, ShieldCheck, MapPin, ClipboardCheck, GitBranch, Headset, BarChart3, Monitor, Smartphone, Users } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,8 @@ import { productDetails, type ProductDetail } from "@/lib/products";
 export const VOICE_PRODUCT_SLUGS: string[] = ["cloud-pbx", "hosted-pbx", "ip-pbx", "did-numbers", "toll-free-numbers", "virtual-numbers", "number-porting"];
 
 const stories: Record<string, { headline: string; action: string; title: string; alt: string }> = {
-  "cloud-pbx": { headline: "One phone system. Wherever work happens.", action: "Plan your cloud phone system", title: "A workspace for every conversation", alt: "Pink glass cloud connecting white desk phones and laptop workspaces" },
-  "hosted-pbx": { headline: "Your business calls. Our platform to look after.", action: "Discuss a managed phone system", title: "A clear division of responsibility", alt: "White managed server sheltered by a pink glass arch and connected to branch offices" },
+  "cloud-pbx": { headline: "Every customer call. A better way forward.", action: "Design your contact centre", title: "Advanced calling, built around your agents", alt: "Pink glass cloud connecting customer calls, agents and reporting" },
+  "hosted-pbx": { headline: "One team calling experience. Wherever work happens.", action: "Plan your team communications", title: "One workspace for the whole team", alt: "White managed server sheltered by a pink glass arch and connected to branch offices" },
   "ip-pbx": { headline: "Call control stays inside your network.", action: "Design your on-site system", title: "Your premises at the centre", alt: "White telephone server inside a pink glass network perimeter" },
   "did-numbers": { headline: "A direct line to the right person.", action: "Find your direct numbers", title: "Give each destination its own front door", alt: "Individual white telephone tiles leading to separate department doorways on pink glass paths" },
   "toll-free-numbers": { headline: "Make it easier for customers to call.", action: "Discuss a toll-free number", title: "One entry point. The right team behind it.", alt: "White telephone receiver in an open pink glass gateway with customer paths" },
@@ -23,9 +23,54 @@ const stories: Record<string, { headline: string; action: string; title: string;
   "number-porting": { headline: "Move your service. Keep your number.", action: "Check your numbers for porting", title: "Continuity starts with the details", alt: "White telephone crossing a pink glass bridge between two network towers" },
 };
 
-function Feature({ feature }: { feature: ProductDetail["features"][number] }) {
-  const Icon = feature.icon;
-  return <><Icon className="mb-4 size-6 text-primary" aria-hidden /><h3 className="text-lg font-semibold">{feature.title}</h3><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{feature.description}</p></>;
+function CcaasCallFlow() {
+  const stages = [
+    { label: "01 / ARRIVE", title: "Understand the caller", body: "Business numbers, IVR and time-based flows give every customer a clear entry point.", icon: Phone },
+    { label: "02 / ROUTE", title: "Find the right agent", body: "Queues, availability and skills decide where the conversation should go next.", icon: GitBranch },
+    { label: "03 / IMPROVE", title: "See the whole operation", body: "Live supervision, recording and reports reveal what is happening and what to change.", icon: BarChart3 },
+  ];
+  return <section aria-labelledby="ccaas-journey-heading" className="mx-auto max-w-7xl px-6 py-10 lg:px-10 lg:py-16">
+    <Card className="overflow-hidden border-0 bg-linear-to-br from-brand-from to-brand-to py-0 text-primary-foreground shadow-xl">
+      <CardContent className="p-7 sm:p-10 lg:p-14">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:items-end">
+          <div><Badge className="border-primary-foreground/20 bg-primary-foreground/15 text-primary-foreground">Contact Centre as a Service</Badge><h2 id="ccaas-journey-heading" className="mt-5 max-w-xl text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">From first ring to a better outcome.</h2></div>
+          <p className="max-w-xl text-base leading-relaxed text-primary-foreground/85 lg:justify-self-end">CCaaS is built for customer-facing teams. It connects the route into your business, the agent who answers and the insight your supervisors need afterwards.</p>
+        </div>
+        <ol className="mt-10 grid gap-3 md:grid-cols-3">{stages.map(({ label, title, body, icon: Icon }) => <li key={label}>
+          <Card className="group h-full border-primary-foreground/20 bg-primary-foreground/10 py-0 text-primary-foreground shadow-none backdrop-blur-sm transition-colors duration-300 hover:bg-primary-foreground/20"><CardContent className="p-6">
+            <div className="flex items-center justify-between"><span className="text-xs font-semibold tracking-widest text-primary-foreground/70">{label}</span><Icon aria-hidden className="size-5 transition-transform duration-300 motion-safe:group-hover:scale-110" /></div>
+            <h3 className="mt-10 text-xl font-semibold">{title}</h3><p className="mt-3 text-sm leading-relaxed text-primary-foreground/80">{body}</p>
+          </CardContent></Card>
+        </li>)}</ol>
+      </CardContent>
+    </Card>
+  </section>;
+}
+
+function CcaasCapabilities({ features }: { features: ProductDetail["features"] }) {
+  const groups = [
+    { number: "01", label: "Route & retain", description: "Make the path to an answer deliberate, even at peak demand.", items: features.slice(0, 4) },
+    { number: "02", label: "Run the floor", description: "Give agents and supervisors the control to keep work moving.", items: features.slice(4, 7) },
+    { number: "03", label: "Learn & connect", description: "Carry customer context forward and turn activity into insight.", items: features.slice(7) },
+  ];
+  return <div className="grid gap-5 lg:grid-cols-3">{groups.map(group => <Card key={group.number} className="group gap-0 overflow-hidden py-0 transition-[border-color,box-shadow,transform] duration-300 hover:border-primary/40 hover:shadow-lg motion-safe:hover:-translate-y-1">
+    <CardHeader className="min-h-48 bg-primary/5 p-7"><Badge variant="outline" className="w-fit border-primary/20 text-primary">{group.number} / {group.label}</Badge><CardTitle className="mt-5 text-2xl tracking-tight">{group.label}</CardTitle><CardDescription className="mt-2 text-sm leading-relaxed">{group.description}</CardDescription></CardHeader>
+    <CardContent className="p-7"><ul className="divide-y divide-border">{group.items.map(feature => { const Icon = feature.icon; return <li key={feature.title} className="py-5 first:pt-0 last:pb-0"><div className="flex items-start gap-3"><Icon aria-hidden className="mt-0.5 size-5 shrink-0 text-primary" /><div><h3 className="font-semibold">{feature.title}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{feature.description}</p></div></div></li>; })}</ul></CardContent>
+  </Card>)}</div>;
+}
+
+function UcaasWorkspaces() {
+  const places = [
+    { title: "At a desk", detail: "IP phones and shared business extensions", icon: Monitor },
+    { title: "In the browser", detail: "WebRTC and desktop softphone calling", icon: Headset },
+    { title: "On the move", detail: "Mobile access and find me / follow me", icon: Smartphone },
+  ];
+  return <section aria-labelledby="ucaas-workspaces-heading" className="mx-auto max-w-7xl px-6 py-10 lg:px-10 lg:py-16">
+    <Card className="gap-0 overflow-hidden py-0 shadow-none"><div className="grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+      <CardHeader className="flex flex-col justify-between bg-primary/5 p-8 sm:p-10"><div><Badge variant="outline" className="border-primary/20 text-primary">Unified Communications as a Service</Badge><h2 id="ucaas-workspaces-heading" className="mt-7 max-w-md text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">One calling identity for a team that moves.</h2><CardDescription className="mt-5 max-w-md text-base leading-relaxed">People, numbers and call flows stay together across the office, branches and home. Your team manages the day-to-day experience; SipLink hosts and looks after the platform.</CardDescription></div><div className="mt-10 flex items-center gap-3 border-t border-border pt-5 text-sm font-medium"><Users aria-hidden className="size-5 text-primary" /> One directory. One set of call flows.</div></CardHeader>
+      <CardContent className="p-6 sm:p-8 lg:p-10"><ul className="divide-y divide-border">{places.map(place => <li key={place.title} className="group flex items-start gap-5 py-7 first:pt-0 last:pb-0"><div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground"><place.icon aria-hidden className="size-6" /></div><div><h3 className="text-lg font-semibold">{place.title}</h3><p className="mt-2 leading-relaxed text-muted-foreground">{place.detail}</p></div></li>)}</ul></CardContent>
+    </div></Card>
+  </section>;
 }
 
 function HostedResponsibilities({ features }: { features: ProductDetail["features"] }) {
@@ -146,7 +191,7 @@ function HostedMigration({ migration }: { migration: NonNullable<ProductDetail["
         <Badge variant="secondary">A planned move, not a switch-off</Badge>
         <h2 id="hosted-migration-heading" className="mt-5 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{migration.heading}</h2>
         <p className="mt-6 leading-relaxed text-muted-foreground">{migration.intro}</p>
-        <div className="mt-8 flex items-center gap-3 text-sm font-medium"><Server aria-hidden className="size-5 text-muted-foreground" /><span>On-premises</span><ArrowRight aria-hidden className="size-4 text-primary" /><Cloud aria-hidden className="size-5 text-primary" /><span>Hosted PBX</span></div>
+        <div className="mt-8 flex items-center gap-3 text-sm font-medium"><Server aria-hidden className="size-5 text-muted-foreground" /><span>On-premises</span><ArrowRight aria-hidden className="size-4 text-primary" /><Cloud aria-hidden className="size-5 text-primary" /><span>UCaaS</span></div>
         <Button asChild variant="outline" className="mt-8"><Link href="/contact">Plan your migration<ArrowRight /></Link></Button>
       </div>
       <Card data-hosted-migration className="gap-0 overflow-hidden py-0 shadow-none lg:col-span-8">
@@ -226,7 +271,7 @@ function Capabilities({ product }: { product: ProductDetail }) {
   const features = product.features;
   switch (product.slug) {
     case "cloud-pbx":
-      return <div className="grid gap-5 md:grid-cols-3">{features.map((feature, i) => <Card key={feature.title} className={i === 0 ? "bg-primary/5 md:col-span-2" : ""}><CardContent><Feature feature={feature} /></CardContent></Card>)}</div>;
+      return <CcaasCapabilities features={features} />;
     case "hosted-pbx":
       return <HostedResponsibilities features={features} />;
     case "ip-pbx":
@@ -299,7 +344,7 @@ export function VoiceProductPage({ product }: { product: ProductDetail }) {
     migration: (product.migration && (product.slug === "hosted-pbx" ? <HostedMigration migration={product.migration} /> : product.slug === "did-numbers" ? <DirectNumberSetup migration={product.migration} /> : product.slug === "toll-free-numbers" ? <TollFreeSetup migration={product.migration} /> : product.slug === "virtual-numbers" ? <VirtualNumberSetup migration={product.migration} /> : <section className="border-y border-border"><div className="mx-auto max-w-7xl px-6 py-16 lg:px-10"><div className="max-w-2xl"><Badge variant="outline">{port ? "Your porting plan" : "Getting started"}</Badge><h2 className="mt-5 text-3xl font-semibold">{product.migration.heading}</h2><p className="mt-5 leading-relaxed text-muted-foreground">{product.migration.intro}</p></div><ol className={port ? "mt-12 space-y-0" : product.slug === "cloud-pbx" ? "mt-12 grid gap-5 md:grid-cols-2" : "mt-12 grid gap-8 lg:grid-cols-3"}>{product.migration.steps.map((step, i) => <li key={step.title}>{port ? <div className="grid gap-5 border-t border-border py-7 sm:grid-cols-3"><h3 className="flex gap-4 text-xl font-semibold"><Badge className="size-8 shrink-0 justify-center rounded-full">{i + 1}</Badge>{step.title}</h3><p className="leading-relaxed text-muted-foreground sm:col-span-2">{step.body}</p></div> : <Card className={product.slug === "virtual-numbers" && i === 0 ? "bg-primary/5" : ""}><CardHeader><Badge variant="secondary" className="mb-3 w-fit">Step {i + 1}</Badge><CardTitle className="text-lg">{step.title}</CardTitle><CardDescription className="mt-3 leading-relaxed">{step.body}</CardDescription></CardHeader></Card>}</li>)}</ol></div></section>)),
   };
   const sectionOrder: Record<string, (keyof typeof sections)[]> = {
-    "cloud-pbx": ["process", "capabilities", "audiences", "problem", "specs", "migration"],
+    "cloud-pbx": ["capabilities", "process", "audiences", "problem", "specs", "migration"],
     "hosted-pbx": ["problem", "capabilities", "migration", "specs", "process", "audiences"],
     "ip-pbx": ["problem", "specs", "capabilities", "process", "audiences", "migration"],
     "did-numbers": ["process", "capabilities", "specs", "audiences", "problem", "migration"],
@@ -309,6 +354,8 @@ export function VoiceProductPage({ product }: { product: ProductDetail }) {
   };
   return <>
     <ProductHero product={product} headline={story.headline} action={story.action} secondaryLabel="How it works" imageAlt={story.alt} />
+    {product.slug === "cloud-pbx" && <CcaasCallFlow />}
+    {product.slug === "hosted-pbx" && <UcaasWorkspaces />}
     <ProductConnectionDiagram product={product} />
     {sectionOrder[product.slug].map(key => <Fragment key={key}>{sections[key]}</Fragment>)}
     {product.faqs?.length && <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10"><div className="grid gap-10 lg:grid-cols-3"><div><h2 className="text-3xl font-semibold">Questions about {product.title}</h2><p className="mt-4 text-muted-foreground">Talk through your requirements with the SipLink team.</p><Button asChild variant="link" className="mt-3 px-0"><Link href="/contact">Ask us directly<ArrowRight /></Link></Button></div><Accordion type="single" collapsible className="lg:col-span-2">{product.faqs.map(faq => <AccordionItem key={faq.question} value={faq.question}><AccordionTrigger className="text-left text-base">{faq.question}</AccordionTrigger><AccordionContent className="leading-relaxed text-muted-foreground">{faq.answer}</AccordionContent></AccordionItem>)}</Accordion></div></section>}

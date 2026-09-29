@@ -231,13 +231,13 @@
 }
 
 @layer components {
-  .analytics-running-outline {
+  .approach-running-outline {
     position: relative;
     isolation: isolate;
     box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--primary) 15%, transparent);
   }
 
-  .analytics-running-outline::before {
+  .approach-running-outline::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -257,7 +257,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .analytics-running-outline::before {
+    .approach-running-outline::before {
       animation: none;
       background: color-mix(in oklab, var(--primary) 35%, transparent);
     }

@@ -284,7 +284,7 @@ export const industryDetails: IndustryDetail[] = [
           "Voice and fax together support the patient, provider and document-based workflows healthcare teams depend on.",
         outcome: "Voice and document workflows sit together.",
         icon: PhoneCall,
-        products: [{ label: "Cloud PBX", slug: "cloud-pbx" }],
+        products: [{ label: "CCaaS", slug: "cloud-pbx" }],
       },
       {
         title: "IVR and contact-center capabilities",

@@ -54,7 +54,7 @@ const TEAM_ASSETS = "/solns-remoteWorkforce/scene";
 
 const KRISTINE = {
   name: "Kristine Yee",
-  phone: "+1 (415) 555-0132",
+  phone: "+1 (415) 555-01**",
   email: "kristine@acmeretail.com",
   company: "Acme Retail",
   photo: `${ASSETS}/kristine.webp`,

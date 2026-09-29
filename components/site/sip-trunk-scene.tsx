@@ -52,7 +52,7 @@ const CALLS: Call[] = [
     ext: "201",
     dest: "Local",
     destIcon: Building2,
-    number: "+1 (212) 555-0199",
+    number: "+1 (212) 555-01**",
   },
   {
     device: "IP phone",
@@ -60,7 +60,7 @@ const CALLS: Call[] = [
     ext: "214",
     dest: "Mobile",
     destIcon: Smartphone,
-    number: "+1 (917) 555-0142",
+    number: "+1 (917) 555-01**",
   },
   {
     device: "Softphone",
@@ -68,7 +68,7 @@ const CALLS: Call[] = [
     ext: "305",
     dest: "International",
     destIcon: Globe,
-    number: "+44 20 7946 0321",
+    number: "+44 20 7946 03**",
   },
 ];
 

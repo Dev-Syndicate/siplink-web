@@ -40,7 +40,7 @@ const TEAM_ASSETS = "/solns-remoteWorkforce/scene";
 
 const KRISTINE = {
   name: "Kristine Yee",
-  number: "+1 (415) 555-0132",
+  number: "+1 (415) 555-01**",
   photo: `${ASSETS}/kristine.webp`,
 };
 

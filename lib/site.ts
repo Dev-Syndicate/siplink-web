@@ -1225,13 +1225,13 @@ export const nav: NavItem[] = [
             description: "Connect your PBX to our IP network",
           },
           {
-            label: "Cloud PBX",
+            label: "CCaaS",
             icon: Cloud,
             href: "/products/cloud-pbx",
             description: "A full phone system in the cloud",
           },
           {
-            label: "Hosted PBX",
+            label: "UCaaS",
             icon: ServerCog,
             href: "/products/hosted-pbx",
             description: "We host and manage it end to end",
@@ -1291,12 +1291,6 @@ export const nav: NavItem[] = [
             icon: Target,
             href: "/products/predictive-dialer",
             description: "Maximise agent talk time",
-          },
-          {
-            label: "Auto Dialer",
-            icon: PhoneOutgoing,
-            href: "/products/auto-dialer",
-            description: "Automate outbound campaigns",
           },
           {
             label: "IVR System",
@@ -1725,7 +1719,7 @@ export const nav: NavItem[] = [
         icon: Receipt,
         links: [
           { label: "SIP Trunk Pricing", href: "/pricing/sip-trunk", icon: Cable },
-          { label: "Cloud PBX Plans", href: "/pricing/cloud-pbx", icon: Cloud },
+          { label: "CCaaS Plans", href: "/pricing/cloud-pbx", icon: Cloud },
           { label: "DID Pricing", href: "/pricing/did", icon: PhoneIncoming },
           { label: "Toll-Free Pricing", href: "/pricing/toll-free", icon: PhoneCall },
           { label: "Contact Center Pricing", href: "/pricing/contact-center", icon: Headset },
@@ -1846,15 +1840,15 @@ export const productCategories: ProductCategory[] = [
           "Businesses with existing PBX hardware, multi-site organisations, high call volumes",
       },
       {
-        title: "Cloud PBX",
+        title: "CCaaS",
         description:
-          "A complete business phone system delivered from the cloud — extensions, routing, IVR, voicemail and reporting, managed from a web portal with no hardware to maintain.",
+          "A cloud contact-centre environment for customer calls — intelligent routing, queues, agent tools, supervision and reporting in one operation.",
         href: "/products/cloud-pbx",
         idealFor:
-          "Growing teams, remote and hybrid workforces, businesses replacing legacy systems",
+          "Customer service and support teams, high-volume operations, blended inbound and outbound teams",
       },
       {
-        title: "Hosted PBX",
+        title: "UCaaS",
         description:
           "We host, manage and monitor the PBX end to end. Business extensions, IP phones, softphones and mobile access with centralised administration and no on-premise box.",
         href: "/products/hosted-pbx",
@@ -1936,13 +1930,6 @@ export const productCategories: ProductCategory[] = [
           "Automate the repetitive work of dialling. The system manages outbound calling and connects answered calls to available agents, so teams spend more time talking to real prospects.",
         href: "/products/predictive-dialer",
         idealFor: "Outbound sales teams, collections, campaign-driven calling",
-      },
-      {
-        title: "Auto Dialer",
-        description:
-          "Run automated outbound campaigns with configurable pacing, call outcomes and campaign reporting for teams that need volume without manual dialling.",
-        href: "/products/auto-dialer",
-        idealFor: "Notification campaigns, reminders, outbound follow-up",
       },
       {
         title: "IVR System",
@@ -2152,7 +2139,7 @@ export const heroHighlights: {
   label: string;
   icon: LucideIcon;
 }[] = [
-  { value: "Hosted PBX", label: "No hardware on site", icon: Cloud },
+  { value: "UCaaS", label: "No hardware on site", icon: Cloud },
   { value: "SIP trunking", label: "Keep your own kit", icon: Network },
   { value: "Number porting", label: "Keep your numbers", icon: PhoneCall },
 ];
@@ -2386,7 +2373,7 @@ export const homePillars: {
 }[] = [
   {
     eyebrow: "Replace the hardware",
-    title: "Hosted PBX",
+    title: "UCaaS",
     description:
       "Your whole phone system in the cloud — extensions, IVR, voicemail and routing, with no box to maintain.",
     href: "/products/hosted-pbx",

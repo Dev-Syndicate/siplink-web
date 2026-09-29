@@ -102,17 +102,22 @@ const VIEW = { w: 900, h: 520 } as const;
 /** Percentage of the frame, so the HTML plates track the SVG at every width. */
 const pct = (value: number, of: number) => `${(value / of) * 100}%`;
 
-export function IntegrationWall() {
+export function IntegrationWall({
+  heading = "Everything wired to one number",
+  description = "SipLink sits in the middle of the tools your team already runs, so calls, contacts and records stay in one place.",
+}: {
+  heading?: string;
+  description?: string;
+}) {
   return (
     <section className="border-b border-border bg-foreground text-background">
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
         <div className="mx-auto max-w-xl text-center">
           <h2 className="font-heading text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl">
-            Everything wired to one number
+            {heading}
           </h2>
           <p className="mt-5 text-pretty text-background/60">
-            SipLink sits in the middle of the tools your team already runs, so
-            calls, contacts and records stay in one place.
+            {description}
           </p>
         </div>
 
@@ -353,7 +358,7 @@ export function IntegrationWall() {
             only place a screen reader meets the names — it stays in the tree
             at every width, and is only hidden from sight on a phone, where
             the grid already spells each one out. */}
-        <ul className="mt-14 hidden flex-wrap justify-center gap-2.5 md:flex">
+        <ul className="sr-only md:not-sr-only md:mt-14 md:flex md:flex-wrap md:justify-center md:gap-2.5">
           {integrations.map((name) => (
             <li
               key={name}

@@ -48,7 +48,7 @@ function SameNumber() {
   return (
     <div className="flex flex-col items-center gap-3">
       <p className="font-mono text-2xl tracking-tight text-foreground">
-        080 4718 2200
+        080 4718 22**
       </p>
 
       {/* Both labels occupy one grid cell, so the block never changes width

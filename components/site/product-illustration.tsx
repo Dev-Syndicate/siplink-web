@@ -1991,30 +1991,6 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     ],
   },
 
-  "auto-dialer": {
-    layout: "broadcast",
-    status: "Campaign running",
-    message: {
-      icon: AudioLines,
-      title: "Your recorded voice message",
-      note: "Recorded once, played aloud on every answered call",
-    },
-    sent: 348,
-    total: 500,
-    calls: [
-      { number: "+44 20 7946 ···", stage: "playing" },
-      { number: "+44 161 496 ···", stage: "ringing" },
-      { number: "+44 121 234 ···", stage: "done" },
-    ],
-    outcomes: [
-      { icon: PhoneCall, label: "Answered" },
-      { icon: Headset, label: "To an agent" },
-      { icon: BarChart3, label: "Logged" },
-    ],
-  },
-
-
-
   /* -------------------------------------------- panel: a surface to read */
   "call-analytics": {
     layout: "panel",
@@ -2124,7 +2100,7 @@ const SCENE_SPECS: Record<string, SceneSpec> = {
     layout: "journey",
     status: "Continuity kept",
     subject: {
-      number: "+44 20 7946 0123",
+      number: "+44 20 7946 01**",
       note: "Your number, unchanged",
     },
     from: "Old carrier",

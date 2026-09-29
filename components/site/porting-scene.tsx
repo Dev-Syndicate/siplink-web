@@ -33,7 +33,7 @@ import { cn } from "@/lib/utils";
  * and wiring come from scene-kit.
  */
 
-const NUMBER = "+1 (212) 555-0147";
+const NUMBER = "+1 (212) 555-01**";
 const CUSTOMER = {
   name: "Kristine Yee",
   photo: "/solns-salesTeam/scene/kristine.webp",

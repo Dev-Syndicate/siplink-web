@@ -136,7 +136,7 @@ export function CloudScene({ label }: { label: string }) {
             SipLink
           </span>
           <span className="text-[1.9cqw] text-muted-foreground tabular-nums">
-            Main line · +1 (212) 555-0100
+            Main line · +1 (212) 555-01**
           </span>
           <span className="flex items-center gap-[0.6cqw] rounded-full bg-accent px-[1.4cqw] py-[0.5cqw] text-[1.8cqw] font-medium whitespace-nowrap text-accent-foreground">
             <PhoneIncoming className="size-[2cqw]" />

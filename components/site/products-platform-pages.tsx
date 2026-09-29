@@ -2,6 +2,7 @@ import { ClosingCta } from "@/components/site/closing-cta";
 import { Fragment, type CSSProperties } from "react";
 import { ProductHero } from "@/components/site/product-hero";
 import { ProductConnectionDiagram } from "@/components/site/product-connection-diagram";
+import { IntegrationWall } from "@/components/site/integration-wall";
 import { ArrowRight, Braces, Check, CheckCheck, MessageCircle, Phone, ShieldCheck, Users, type LucideIcon } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -172,6 +173,7 @@ export function PlatformProductPage({ product }: { product: ProductDetail }) {
   const direction = directions[product.slug];
   const sections = {
 story: (<section id="how-it-works" className="scroll-mt-28"><div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-24"><h2 className="mb-9 max-w-3xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{direction.story}</h2><ProductStory product={product} direction={direction} /></div></section>),
+integrations: (product.slug === "crm-integration" && <IntegrationWall heading="Your CRM, connected to the call." description="SipLink connects with Salesforce, HubSpot, Zoho, Bitrix24, Odoo, Zendesk and CEIPAL, alongside the workplace tools your team uses. The exact calling workflows depend on your setup and are confirmed during onboarding." />),
 problem: (product.problem && product.slug !== "teams-calling" && <section className="border-y border-border bg-muted/30"><div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-2 lg:px-10"><div><h2 className="text-2xl font-semibold tracking-tight">{product.problem.heading}</h2><p className="mt-4 leading-relaxed text-muted-foreground">{product.problem.body}</p></div>{product.slug === "sip-api" ? <Card id="sip-approach" className="gap-5 border-l-4 border-l-primary bg-primary/5 py-7 shadow-none ring-primary/20 sm:py-8"><CardHeader className="px-6 sm:px-8"><CardTitle><h2 className="text-2xl font-semibold tracking-tight">{product.approach?.heading}</h2></CardTitle></CardHeader><CardContent className="space-y-4 px-6 sm:px-8">{product.approach?.body.map((paragraph) => <p key={paragraph} className="leading-relaxed text-muted-foreground">{paragraph}</p>)}</CardContent></Card> : <div><h2 className="text-2xl font-semibold tracking-tight">{product.approach?.heading}</h2>{product.approach?.body.map((paragraph) => <p key={paragraph} className="mt-4 leading-relaxed text-muted-foreground">{paragraph}</p>)}</div>}</div></section>),
 approach: (product.slug === "teams-calling" && product.approach && <section className="bg-muted/30"><div className="mx-auto max-w-7xl px-6 py-12 lg:px-10"><h2 className="text-2xl font-semibold">{product.approach.heading}</h2>{product.approach.body.map((paragraph) => <p key={paragraph} className="mt-4 max-w-4xl leading-relaxed text-muted-foreground">{paragraph}</p>)}</div></section>),
 capabilities: (<section id="capabilities" className="scroll-mt-36"><div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-24"><h2 className="mb-10 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">{direction.capabilities}</h2><Capabilities product={product} /></div></section>),
@@ -187,7 +189,7 @@ migration: (product.migration && <section id={product.slug === "teams-calling" ?
     "sip-api": ["problem", "story", "specs", "capabilities", "audiences", "migration", "approach"],
     "teams-calling": ["story", "approach", "migration", "capabilities", "audiences", "specs", "problem"],
     "sbc": ["story", "specs", "problem", "capabilities", "audiences", "migration", "approach"],
-    "crm-integration": ["story", "problem", "audiences", "capabilities", "specs", "migration", "approach"],
+    "crm-integration": ["story", "integrations", "problem", "audiences", "capabilities", "specs", "migration", "approach"],
   };
   return <>
     <ProductHero product={product} headline={direction.headline} action={direction.action} secondaryLabel={`Explore ${product.title}`} imageAlt={direction.alt} />

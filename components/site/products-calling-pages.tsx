@@ -8,12 +8,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import type { ProductDetail } from "@/lib/products";
 import { cn } from "@/lib/utils";
 
-export const CALLING_PRODUCT_SLUGS: string[] = ["call-center", "predictive-dialer", "auto-dialer", "ivr", "call-recording", "call-analytics", "call-queue", "ai-voice-assistant"];
+export const CALLING_PRODUCT_SLUGS: string[] = ["call-center", "predictive-dialer", "ivr", "call-recording", "call-analytics", "call-queue", "ai-voice-assistant"];
 
 const direction: Record<string, { heading: string; label: string; note: string; featureHeading: string; alt: string }> = {
   "call-center": { heading: "Bring every call and every agent together.", label: "One connected operation", note: "Routing, queues and agents", featureHeading: "Your operation, connected", alt: "White headset hub connecting pink glass agent stations" },
   "predictive-dialer": { heading: "Keep your next conversation moving.", label: "Paced around your team", note: "Agent availability guides dialling", featureHeading: "From waiting to speaking", alt: "Pink glass call lanes approaching white agent stations" },
-  "auto-dialer": { heading: "Put your calling campaign in motion.", label: "Campaign control", note: "Lists, pacing and outcomes", featureHeading: "Build a campaign that stays organised", alt: "White telephone receiver beside a pink glass campaign carousel" },
   ivr: { heading: "Give every caller a clear way forward.", label: "A greeting. A choice. A destination.", note: "Your call flow, in your words", featureHeading: "Design the path your callers take", alt: "Pink glass branching voice menu connecting white destination platforms" },
   "call-recording": { heading: "Keep the conversation. Find the detail.", label: "Capture with control", note: "Recording rules and access permissions", featureHeading: "A useful record of what was said", alt: "Pink glass audio waveform on a white archive reel beside a padlock" },
   "call-analytics": { heading: "See the story behind your calls.", label: "Decisions from call activity", note: "Volumes, outcomes and team performance", featureHeading: "Look beyond the call count", alt: "White reporting sheets with pink glass analytical columns and arcs" },
@@ -42,8 +41,6 @@ function Features({ product }: { product: ProductDetail }) {
           <CardContent className="grid flex-1 gap-x-8 gap-y-10 px-7 sm:grid-cols-2 sm:grid-rows-2 sm:px-10">{group.indices.map(i => { const feature = features[i]; const Icon = feature.icon; return <div key={feature.title} data-predictive-feature><Icon className="mb-4 size-6 text-primary" aria-hidden /><h4 className="text-lg font-semibold leading-snug">{feature.title}</h4><p className="mt-3 text-base leading-relaxed text-muted-foreground">{feature.description}</p></div>; })}</CardContent>
         </Card>)}
       </div>;
-    case "auto-dialer":
-      return <div className="grid gap-8 lg:grid-cols-2">{[features.filter((_, i) => i % 2 === 0), features.filter((_, i) => i % 2 === 1)].map((group, i) => <Card key={i} className={i === 0 ? "bg-accent/50" : "bg-muted/40"}><CardHeader><Badge variant="outline" className="w-fit">{i === 0 ? "Prepare and run" : "Control and review"}</Badge><CardTitle className="mt-3 text-2xl">{i === 0 ? "Set the campaign up" : "Keep the campaign on track"}</CardTitle></CardHeader><CardContent className="space-y-7">{group.map((f) => <div key={f.title} className="border-t border-border pt-5"><h3 className="text-lg font-medium">{f.title}</h3><p className="mt-2 leading-relaxed text-muted-foreground">{f.description}</p></div>)}</CardContent></Card>)}</div>;
     case "ivr":
       return <div className="relative"><Card className="mx-auto mb-8 max-w-lg bg-primary text-primary-foreground"><CardHeader className="text-center"><Mic className="mx-auto mb-3 size-8" aria-hidden /><CardTitle className="text-2xl">Welcome to your business</CardTitle><CardDescription className="text-primary-foreground/80">A voice menu built around what callers need</CardDescription></CardHeader></Card><div className="grid gap-5 border-t border-primary/30 pt-8 md:grid-cols-2 lg:grid-cols-3">{features.map((f) => <Feature key={f.title} feature={f} className="border-t-4 border-t-primary/40 transition-[transform,box-shadow,background-color,border-color] duration-300 ease-out hover:border-t-primary hover:bg-primary/5 hover:shadow-lg hover:shadow-primary/10 motion-safe:hover:-translate-y-1 [&_svg]:transition-transform [&_svg]:duration-300 motion-safe:hover:[&_svg]:scale-110 motion-reduce:transition-none motion-reduce:[&_svg]:transition-none" />)}</div></div>;
     case "call-recording":
@@ -96,7 +93,7 @@ function Features({ product }: { product: ProductDetail }) {
 function Explainer({ product }: { product: ProductDetail }) {
   if (!product.explainer) return null;
   const { question, definition, steps } = product.explainer;
-  const vertical = ["call-recording", "auto-dialer", "ai-voice-assistant"].includes(product.slug);
+  const vertical = ["call-recording", "ai-voice-assistant"].includes(product.slug);
   return <section className="border-y border-border bg-muted/30"><div className={cn("mx-auto max-w-7xl px-6 py-20 lg:px-10", vertical && "grid gap-12 lg:grid-cols-2")}><SectionHeading body={definition}>{question}</SectionHeading><div className={cn("grid gap-6", !vertical && "md:grid-cols-3")}>{steps.map((step, i) => <Card key={step.title} className={cn("bg-background", product.slug === "ivr" && i > 0 && "md:mt-8", product.slug === "predictive-dialer" && "border-b-4 border-b-primary/30")}><CardHeader><Badge variant="outline" className="w-fit">{i + 1}</Badge><CardTitle className="mt-2 text-xl">{step.title}</CardTitle></CardHeader><CardContent><p className="leading-relaxed text-muted-foreground">{step.body}</p></CardContent></Card>)}</div></div></section>;
 }
 
@@ -121,8 +118,8 @@ function AssistantSpecs({ specs }: { specs: NonNullable<ProductDetail["specs"]> 
 
 function Details({ product }: { product: ProductDetail }) {
   const audiences = product.audiences ?? product.idealFor.map((situation) => ({ situation, fit: product.tagline }));
-  if (["ivr", "call-queue", "auto-dialer"].includes(product.slug)) {
-    return <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10"><SectionHeading>{product.slug === "ivr" ? "Build around the people calling you" : product.slug === "call-queue" ? "For teams facing the next busy hour" : "For teams with a calling plan"}</SectionHeading><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{audiences.map((a) => <Card key={a.situation} className="bg-accent/30"><CardHeader><CardTitle className="text-xl">{a.situation}</CardTitle></CardHeader><CardContent><p className="leading-relaxed text-muted-foreground">{a.fit}</p></CardContent></Card>)}</div>{product.specs && <div className="mt-12 border-y border-border py-8"><h3 className="mb-6 text-xl font-semibold">Inside {product.title}</h3><dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">{product.specs.map((s) => <div key={s.label}><dt className="font-medium text-primary">{s.label}</dt><dd className="mt-2 leading-relaxed text-muted-foreground">{s.value}</dd></div>)}</dl></div>}</section>;
+  if (["ivr", "call-queue"].includes(product.slug)) {
+    return <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10"><SectionHeading>{product.slug === "ivr" ? "Build around the people calling you" : "For teams facing the next busy hour"}</SectionHeading><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{audiences.map((a) => <Card key={a.situation} className="bg-accent/30"><CardHeader><CardTitle className="text-xl">{a.situation}</CardTitle></CardHeader><CardContent><p className="leading-relaxed text-muted-foreground">{a.fit}</p></CardContent></Card>)}</div>{product.specs && <div className="mt-12 border-y border-border py-8"><h3 className="mb-6 text-xl font-semibold">Inside {product.title}</h3><dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">{product.specs.map((s) => <div key={s.label}><dt className="font-medium text-primary">{s.label}</dt><dd className="mt-2 leading-relaxed text-muted-foreground">{s.value}</dd></div>)}</dl></div>}</section>;
   }
   if (["call-recording", "ai-voice-assistant"].includes(product.slug)) {
 return <section className="border-b border-border"><div className="mx-auto max-w-7xl px-6 py-20 lg:px-10"><SectionHeading>{product.slug === "call-recording" ? "Define the record your business needs" : "Where conversation makes a difference"}</SectionHeading><div className="grid gap-10 lg:grid-cols-2">{audiences.map((a, i) => <div key={a.situation} className={cn("border-l-2 border-primary/30 pl-6", i % 2 === 1 && "lg:pt-10")}><h3 className="text-xl font-medium">{a.situation}</h3><p className="mt-3 leading-relaxed text-muted-foreground">{a.fit}</p></div>)}</div>{product.specs && (product.slug === "ai-voice-assistant" ? <AssistantSpecs specs={product.specs} /> : <Card className="mt-12 bg-primary text-primary-foreground"><CardHeader><CardTitle className="text-2xl">{product.slug === "call-recording" ? "Recording and access" : "Assistant capabilities"}</CardTitle></CardHeader><CardContent><dl className="grid gap-6 md:grid-cols-2">{product.specs.map((s) => <div key={s.label} className="border-t border-primary-foreground/20 pt-4"><dt className="font-medium">{s.label}</dt><dd className="mt-2 leading-relaxed text-primary-foreground/80">{s.value}</dd></div>)}</dl></CardContent></Card>)}</div></section>;
@@ -132,11 +129,20 @@ return <section className="border-b border-border"><div className="mx-auto max-w
 
 function Strategy({ product }: { product: ProductDetail }) {
   if (!product.problem && !product.approach) return null;
+  if (product.slug === "call-center") return <section id="call-center-strategy" className="scroll-mt-36 border-b border-border">
+    <div className="mx-auto grid max-w-7xl items-start gap-8 px-6 py-16 lg:grid-cols-2 lg:gap-12 lg:px-10">
+      {product.problem && <div className="py-2 sm:py-5"><Badge variant="outline" className="mb-5">The challenge</Badge><h2 className="max-w-lg text-2xl leading-snug font-semibold tracking-tight sm:text-3xl">{product.problem.heading}</h2><p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">{product.problem.body}</p></div>}
+      {product.approach && <Card data-call-center-approach className="approach-running-outline gap-5 bg-primary/5 py-7 shadow-none ring-0 sm:py-8">
+        <CardHeader className="gap-4 px-6 sm:px-8"><p className="text-sm font-medium text-primary">SipLink’s approach</p><CardTitle><h2 className="text-2xl leading-snug font-semibold tracking-tight sm:text-3xl">{product.approach.heading}</h2></CardTitle></CardHeader>
+        <CardContent className="space-y-4 px-6 sm:px-8">{product.approach.body.map(p => <p key={p} className="text-base leading-relaxed text-muted-foreground">{p}</p>)}</CardContent>
+      </Card>}
+    </div>
+  </section>;
   if (product.slug === "call-analytics") {
     return <section id="analytics-strategy" className="mx-auto max-w-7xl scroll-mt-36 px-6 py-16 lg:px-10">
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
         {product.problem && <div className="py-7 sm:py-8 lg:pr-4"><p className="mb-4 text-sm font-medium text-muted-foreground">The challenge</p><h2 className="max-w-lg text-2xl font-semibold tracking-tight text-balance sm:text-3xl">{product.problem.heading}</h2><p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">{product.problem.body}</p></div>}
-        {product.approach && <Card className="analytics-running-outline gap-6 bg-primary/5 py-7 shadow-none ring-0 sm:py-8"><CardHeader className="px-7 sm:px-8"><p className="mb-3 text-sm font-medium text-primary">SipLink’s approach</p><CardTitle><h2 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">{product.approach.heading}</h2></CardTitle></CardHeader><CardContent className="space-y-4 px-7 text-base leading-relaxed text-muted-foreground sm:px-8 sm:text-lg">{product.approach.body.map(p => <p key={p}>{p}</p>)}</CardContent></Card>}
+        {product.approach && <Card className="approach-running-outline gap-6 bg-primary/5 py-7 shadow-none ring-0 sm:py-8"><CardHeader className="px-7 sm:px-8"><p className="mb-3 text-sm font-medium text-primary">SipLink’s approach</p><CardTitle><h2 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">{product.approach.heading}</h2></CardTitle></CardHeader><CardContent className="space-y-4 px-7 text-base leading-relaxed text-muted-foreground sm:px-8 sm:text-lg">{product.approach.body.map(p => <p key={p}>{p}</p>)}</CardContent></Card>}
       </div>
     </section>;
   }
@@ -200,7 +206,6 @@ export function CallingProductPage({ product }: { product: ProductDetail }) {
   const sectionOrder: Record<string, BodySection[]> = {
     "call-center": ["strategy", "features", "migration", "explainer", "details"],
     "predictive-dialer": ["explainer", "strategy", "features", "details", "migration"],
-    "auto-dialer": ["strategy", "details", "explainer", "features", "migration"],
     ivr: ["explainer", "features", "strategy", "details", "migration"],
     "call-recording": ["details", "strategy", "features", "explainer", "migration"],
     "call-analytics": ["features", "strategy", "details", "explainer", "migration"],

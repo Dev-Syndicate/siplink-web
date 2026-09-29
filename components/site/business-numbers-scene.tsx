@@ -51,7 +51,7 @@ import { cn } from "@/lib/utils";
 
 const ASSETS = "/solns-salesTeam/scene";
 
-const LINE = { name: "Northwind Sales", number: "+1 (212) 555-0180" };
+const LINE = { name: "Northwind Sales", number: "+1 (212) 555-01**" };
 const CUSTOMER = {
   name: "Kristine Yee",
   company: "Acme Retail",
@@ -59,7 +59,7 @@ const CUSTOMER = {
 };
 
 /** The customer's number, typed a group at a time. */
-const DIGITS = ["415", "555", "0132"];
+const DIGITS = ["415", "555", "01**"];
 
 /** 0–2 dial, 3 ring, 4–8 talk, 9–11 wrap up. */
 const LOOP_S = 12;

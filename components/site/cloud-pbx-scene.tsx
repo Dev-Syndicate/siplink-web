@@ -38,7 +38,7 @@ import { cn } from "@/lib/utils";
 
 const CALLER = {
   name: "Kristine Yee",
-  number: "+1 (415) 555-0132",
+  number: "+1 (415) 555-01**",
   photo: "/solns-salesTeam/scene/kristine.webp",
 };
 

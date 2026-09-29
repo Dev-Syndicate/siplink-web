@@ -300,200 +300,200 @@ export const productDetails: ProductDetail[] = [
   },
   {
     slug: "cloud-pbx",
-    title: "Cloud PBX",
+    title: "CCaaS",
     category: "Business Voice",
     categorySlug: "business-voice",
-    tagline: "A full phone system in the cloud.",
+    tagline: "Customer conversations, routed and managed as one operation.",
     intro:
-      "A complete business phone system delivered from the cloud — extensions, call routing, IVR, voicemail and reporting, all managed from a web portal with no hardware to maintain.",
+      "SipLink CCaaS brings inbound and outbound customer calling into a cloud contact-centre environment. Intelligent routing, queues, agent tools and live reporting help every conversation reach the right person — and give supervisors the visibility to keep service moving.",
     icon: CloudCog,
     features: [
       {
-        title: "Business extensions",
+        title: "Automatic call distribution",
         description:
-          "Three- or four-digit extensions created according to how your teams are organised.",
-        icon: Phone,
+          "Distribute incoming calls to available agents using a strategy that fits your team.",
+        icon: GitBranch,
       },
       {
-        title: "IVR and auto attendant",
+        title: "IVR and voice prompts",
         description:
-          "Multi-level menus that route callers to the right department without a receptionist.",
+          "Let callers choose the right route before the conversation reaches an agent.",
         icon: ListOrdered,
       },
       {
-        title: "Ring groups and queues",
+        title: "Skill-based routing",
         description:
-          "Distribute incoming calls across teams instead of a single handset.",
+          "Connect callers to agents equipped to handle their request.",
         icon: Users,
       },
       {
-        title: "Time conditions",
+        title: "Queue strategies and callback",
         description:
-          "Different call flows for business hours, holidays and after-hours.",
-        icon: Clock,
-      },
-      {
-        title: "Voicemail to email",
-        description:
-          "Messages delivered to the inbox so nothing waits for someone to check a handset.",
-        icon: MessageCircle,
-      },
-      {
-        title: "CDR reporting",
-        description:
-          "Call history viewable in the portal and downloadable as Excel or CSV.",
-        icon: BarChart3,
-      },
-          {
-        title: "Hot desking and extension mobility",
-        description:
-          "A user's extension, permissions and settings follow the person rather than the handset, so staff can log in at any desk or device.",
-        icon: MonitorSmartphone,
-      },
-      {
-        title: "Call park and pickup",
-        description:
-          "Hold a call on the system rather than on one phone, so a colleague anywhere in the organisation can collect it.",
+          "Organise the wait, announce progress and offer a callback when agents are busy.",
         icon: PhoneForwarded,
       },
       {
-        title: "Central company phonebook",
+        title: "Live supervisor controls",
         description:
-          "Shared business contacts alongside personal ones, so the whole organisation dials from the same directory.",
-        icon: Users,
+          "Watch queues and agent status, with listen, whisper and barge where licensed and authorised.",
+        icon: Headset,
       },
       {
-        title: "IP phone auto provisioning",
+        title: "Recording and analytics",
         description:
-          "Handsets configured from central SIP device templates, with BLF settings and bulk extension provisioning for larger rollouts.",
-        icon: ServerCog,
+          "Review conversations and report on queue, agent and calling outcomes.",
+        icon: BarChart3,
+      },
+          {
+        title: "Blended inbound and outbound",
+        description:
+          "Run service and outreach conversations on the same platform.",
+        icon: Repeat,
+      },
+      {
+        title: "CRM-connected context",
+        description:
+          "Bring customer records into the workflow through supported CRM integrations.",
+        icon: Webhook,
+      },
+      {
+        title: "Agent and queue reporting",
+        description:
+          "See performance across active queues, agents and outcomes instead of relying on guesswork.",
+        icon: Activity,
+      },
+      {
+        title: "Role-based access",
+        description:
+          "Give agents and supervisors the tools and visibility appropriate to their role.",
+        icon: ShieldCheck,
       },
     ],
     idealFor: [
-      "Growing teams",
-      "Remote and hybrid workforces",
-      "Businesses replacing legacy systems",
-      "Organisations opening new locations",
+      "Customer service and support teams",
+      "High-volume inbound operations",
+      "Sales and outreach teams",
+      "Distributed contact-centre agents",
     ],
       problem: {
-      heading: "Your phone system is tied to a building",
-      body: "A traditional PBX lives in a cupboard at one site, which quietly makes that site the centre of everything. Adding an extension means a visit and a new office means a new system, while staff working from home end up on personal mobiles outside the business numbering plan.",
+      heading: "More calls need more than more handsets",
+      body: "When customer volume rises, a simple phone system can leave callers waiting without a clear route and supervisors without a live view of demand. The result is missed calls, uneven workloads and conversations that arrive with too little context.",
     },
     approach: {
       heading: "How SipLink handles it",
       body: [
-        "Your phone system runs in our cloud and is administered through a web portal. Extensions, call flows, business hours and permissions are configured centrally and take effect across every site at once, rather than being programmed into a box at each location. Capacity grows by adding users in the portal, not by ordering hardware.",
+        "SipLink places routing, IVR, queues, agents and reporting in one cloud contact-centre environment. Calls are distributed by your rules and the skills and availability of your team. Supervisors can watch queue activity as it happens, while recordings and reports help you understand what happened afterwards. Live-call controls depend on licensing and authorisation.",
       ],
     },
     audiences: [
       {
-        situation: "Your team no longer sits in one office",
-        fit: "The same extensions, routing and business numbers work from desk phones, laptops, browsers and mobiles, so remote and hybrid staff stay inside the business phone system rather than beside it.",
+        situation: "Callers reach a busy team",
+        fit: "Queues and automatic call distribution organise demand and send the next conversation to an available agent, with announcements and callback options for the wait.",
       },
       {
-        situation: "Your PBX hardware is reaching the end of its life",
-        fit: "Rather than replacing a box with another box, the system moves into the cloud — and your users, extensions, departments and call flows are mapped across as part of the move.",
+        situation: "Different requests need different expertise",
+        fit: "IVR and skill-based routing direct a caller towards the team or agent equipped to help instead of ringing every extension in the same order.",
       },
       {
-        situation: "You keep opening new locations",
-        fit: "A new site is a set of extensions in the portal, not a new phone system. Branch and remote extensions join the existing numbering plan and the same central administration.",
+        situation: "Supervisors need to see the floor live",
+        fit: "Real-time queue and agent status, wallboards and authorised call monitoring show where demand is building and where help is needed.",
       },
       {
-        situation: "You have no one in-house who wants to run telephony",
-        fit: "Day-to-day administration is done from a browser by whoever owns it, with role-based access and group permissions so you can delegate menus and users without handing over the whole system.",
+        situation: "Service and outreach share the same people",
+        fit: "Blended inbound and outbound calling gives teams one environment for customer service and campaigns, with activity visible in reporting.",
       },
     ],
     explainer: {
-      question: "What is a Cloud PBX?",
-      definition: "A PBX is the system that makes a business phone estate behave like one organisation — internal extensions, transfers, hold, menus and the routing that decides which phone rings. Traditionally that system was a physical appliance installed at your premises. A Cloud PBX is the same set of capabilities delivered from our infrastructure over the internet instead, so there is nothing at your site to power, patch or replace. You administer it through a web portal, and your people reach it from IP phones, softphones, browsers or mobiles wherever they happen to be working.",
+      question: "What is CCaaS?",
+      definition: "CCaaS means Contact Centre as a Service. Rather than simply connecting employees to a business phone system, it organises the customer-call operation: how conversations enter, wait, reach agents and are measured. SipLink brings routing, queues, supervision, recording and reporting together in a cloud-based calling environment.",
       steps: [
         {
-          title: "Your numbering plan is built in the portal",
-          body: "Extensions — commonly three or four digits — are created around how your departments and teams are actually organised, along with the users, roles and permissions that go with them.",
+          title: "A customer call arrives",
+          body: "A business number receives the call. IVR prompts, business hours and caller context help identify the right destination before an agent answers.",
         },
         {
-          title: "Call flows decide what happens to a call",
-          body: "Inbound calls meet an IVR menu, a ring group or a queue, with time conditions applying different handling for business hours, holidays and after hours before the call reaches a person.",
+          title: "Routing finds the right agent",
+          body: "Automatic call distribution applies queue strategies, skills and agent availability. Announcements and callback options help manage periods when everyone is busy.",
         },
         {
-          title: "People answer on whatever device they have",
-          body: "The call is delivered to an IP phone, desktop softphone, browser or mobile app, with find me / follow me chasing through devices and voicemail-to-email catching what is missed.",
+          title: "The operation stays visible",
+          body: "Agents handle the conversation, supervisors follow live queue activity and the resulting recordings and reports support review and improvement.",
         },
       ],
     },
     specs: [
-      { label: "Deployment", value: "Cloud-based, with hybrid and on-premise IP-PBX options available" },
-      { label: "Extensions", value: "Business extensions, commonly three or four digits, plus branch and remote extensions" },
-      { label: "Routing", value: "Multi-level IVR, ring groups, queues, time conditions and find me / follow me" },
-      { label: "Endpoints", value: "IP phones, desktop and laptop softphones, WebRTC and mobile applications" },
-      { label: "Reporting", value: "CDR and call history in the web portal, downloadable as Excel or CSV" },
-      { label: "Security", value: "Role-based permissions and two-factor authentication on user and admin portals, where enabled" },
+      { label: "Routing", value: "Automatic call distribution, queue strategies, skill-based routing and IVR" },
+      { label: "Supervision", value: "Real-time agent and queue monitoring; listen, whisper and barge where licensed and authorised" },
+      { label: "Waiting experience", value: "Queue announcements, estimated wait and callback options" },
+      { label: "Recording", value: "Automatic, manual and on-demand recording with controlled playback and storage" },
+      { label: "Reporting", value: "Agent, queue and call-outcome reporting, with real-time and scheduled views" },
+      { label: "Integration", value: "CRM and API integration, confirmed against your applications and deployment" },
     ],
     migration: {
-      heading: "Moving from an on-premise PBX",
-      intro: "Many businesses still depend on an on-premise PBX that needs dedicated hardware, maintenance and upgrades. Moving to the cloud is treated as a structured process rather than switching one system off and another on, so the calling workflows your teams and customers rely on are preserved rather than rebuilt from memory.",
+      heading: "Move the operation, not just the numbers",
+      intro: "A contact-centre move has to preserve the routes, queues and agent workflows behind each customer call. We map the existing operation, validate the new call flows and plan the cutover around continuity.",
       steps: [
         {
-          title: "Review what you run today",
-          body: "We look at the existing environment — users, extensions, numbers, departments, call flows and routing requirements — along with the business-critical communication your organisation cannot be without.",
+          title: "Review the current operation",
+          body: "We examine numbers, queue volumes, agent groups, routing rules, reports and the conversations your team cannot afford to lose.",
         },
         {
-          title: "Map it into the new environment",
-          body: "Those requirements are mapped into the cloud system and the migration plan is designed around your organisation, so employees and customers can keep communicating with minimal disruption.",
+          title: "Design the new call flow",
+          body: "Routing, skills, IVR, waiting experiences and supervisor access are configured around how your teams actually work.",
         },
         {
-          title: "Configure, test and validate",
-          body: "Before the production environment moves, the new setup can be validated to identify potential issues and confirm the required call flows behave as expected.",
+          title: "Test before customers reach it",
+          body: "The configured environment is validated ahead of cutover so routes, queues and agent handling behave as expected.",
         },
         {
-          title: "Port numbers and cut over",
-          body: "Eligible existing business numbers can be ported so customers keep dialling what they already know, and the cutover is planned around continuity rather than a hard switch.",
+          title: "Port and go live",
+          body: "Eligible business numbers can move with you; the production change is planned to minimise disruption for callers and agents.",
         },
         {
-          title: "Monitor and adjust",
-          body: "After migration the environment can be monitored and adjusted to match how the business actually works, and it becomes the place to add IVR, queues, recording and analytics as you want them.",
+          title: "Tune with real activity",
+          body: "After go-live, live queue activity and reports guide adjustments to routing, staffing and the customer waiting experience.",
         },
       ],
     },
     faqs: [
       {
-        question: "How many extensions or users can we have?",
-        answer: "Extensions are created according to how your organisation is structured rather than sold in fixed blocks, so the practical answer depends on your teams, sites and call volumes. Tell us how many people and locations you need to cover and we will size the environment with you.",
+        question: "How many agents can we support?",
+        answer: "The environment is sized around your agent numbers, call volumes and campaign patterns rather than described here as a fixed capacity. Share your operating requirements and we will design the right setup with you.",
       },
       {
         question: "Can we keep our existing phone numbers?",
         answer: "Eligible business numbers can be ported to SipLink, so you do not have to update websites, advertisements, invoices and CRM records. The process involves validating the numbers and account details, planning the migration and configuring the numbers in your environment before anything moves.",
       },
       {
-        question: "What do our people actually use to make calls?",
-        answer: "IP phones, desktop and laptop softphones, browser-based calling over WebRTC and mobile applications all connect to the same system. Extension mobility and hot desking let a user's identity move between devices rather than being fixed to one handset.",
+        question: "Can agents work from different locations?",
+        answer: "Yes. Softphone and mobile access can put distributed agents into the same queues, routing and supervisor view, subject to the deployment agreed for your operation.",
       },
       {
-        question: "Who administers it — us or SipLink?",
-        answer: "Day-to-day administration is done by your own team through the web portal, with role-based access and user and group permissions controlling who can change what. If you would rather not run it at all, Hosted PBX is the fully managed option.",
+        question: "What can supervisors see and do?",
+        answer: "Supervisors can see real-time agent and queue activity. Live listen, whisper and barge are available where licensed and authorised, with role-based controls over who can use them.",
       },
       {
-        question: "What happens to our calls if a site loses connectivity?",
-        answer: "Because call control sits in the cloud rather than in your building, calls can be routed to mobiles, softphones or alternate destinations instead of stopping at a failed site. High-availability, failover and business-continuity options are available depending on the deployment, and we design the resilience around your requirements before go-live.",
+        question: "Is CCaaS just a phone system with queues?",
+        answer: "No. Queues are one part of the operation. CCaaS also brings routing and IVR in front of the call, agent and supervisor tools during it, and recording and analytics afterwards.",
       },
       {
         question: "Will it work with our CRM?",
-        answer: "API support for CRM integrations is part of the platform, covering click-to-dial, screen pop, call logging and contact synchronisation where the integration supports it. Which of your systems can be connected, and how, is confirmed against your specific applications during the design.",
+        answer: "CRM and API integration is supported, including workflows such as click-to-dial, screen pop and call logging where the application supports them. We confirm the exact integration against your systems during design.",
       },
     ],
     outcome: {
       heading: "What you gain",
-      body: "A phone system that grows by adding users rather than hardware, administered by your own team from a browser, and reachable from wherever employees actually work — with the call flows, reporting and number continuity your business already depends on carried across intact.",
+      body: "A customer-calling operation in which the next conversation has a route, waiting callers have a plan and supervisors can see what needs attention — backed by recording and reporting for what happens after the call.",
     },
   },
   {
     slug: "hosted-pbx",
-    title: "Hosted PBX",
+    title: "UCaaS",
     category: "Business Voice",
     categorySlug: "business-voice",
     tagline: "We host and manage it end to end.",
     intro:
-      "SipLink Hosted PBX is a cloud-based business phone system delivered over the internet, giving employees, branches and remote users a common communications environment without operating a traditional on-premises PBX.",
+      "SipLink UCaaS is a cloud-based business phone system delivered over the internet, giving employees, branches and remote users a common communications environment without operating a traditional on-premises PBX.",
     icon: ServerCog,
     features: [
       {
@@ -592,8 +592,8 @@ export const productDetails: ProductDetail[] = [
       },
     ],
     explainer: {
-      question: "What is Hosted PBX?",
-      definition: "A PBX is the system that connects calls inside a business — it holds your extensions, decides which phone rings, and handles transfers, voicemail and menus. Traditionally it was a physical box installed in your building that you bought, maintained and eventually replaced. Hosted PBX is that same phone system delivered over the internet from SipLink's cloud instead, with no equipment on your site. You still get your own extensions, call routing and administration; what you no longer have is the hardware and the maintenance that comes with it.",
+      question: "What is UCaaS?",
+      definition: "UCaaS means Unified Communications as a Service. SipLink delivers the business calling environment from the cloud, with extensions, call routing, voicemail and menus brought together for teams across locations. There is no PBX appliance to maintain on site. Your people retain the calling tools and administration they need, while SipLink looks after the underlying platform.",
       steps: [
         {
           title: "The system is built in our cloud",
@@ -852,7 +852,7 @@ export const productDetails: ProductDetail[] = [
       {
         title: "Platform integration",
         description:
-          "Use DIDs with SIP trunks, Cloud PBX, IVR and call routing.",
+          "Use DIDs with SIP trunks, CCaaS, IVR and call routing.",
         icon: Boxes,
       },
           {
@@ -936,7 +936,7 @@ export const productDetails: ProductDetail[] = [
     specs: [
       { label: "Routing", value: "DID-based, extension-based and department-based" },
       { label: "Assignment", value: "Numbers mapped to employees, departments, extensions or applications" },
-      { label: "Platform", value: "Works with SIP, Cloud PBX, call routing and IVR" },
+      { label: "Platform", value: "Works with SIP, CCaaS, call routing and IVR" },
       { label: "Management", value: "Number and DID management from central administration" },
       { label: "Portability", value: "Number portability support for eligible existing numbers" },
       { label: "Endpoints", value: "IP phones, softphones and mobile access" },
@@ -1109,7 +1109,7 @@ export const productDetails: ProductDetail[] = [
     specs: [
       { label: "Routing", value: "Department, time-based and DID-based call routing" },
       { label: "Handling", value: "Multi-level IVR, call queues and agent groups" },
-      { label: "Platform", value: "Works with SIP, Cloud PBX and contact-centre services" },
+      { label: "Platform", value: "Works with SIP, CCaaS and contact-centre services" },
       { label: "Continuity", value: "Failover routing and after-hours call flows" },
       { label: "Management", value: "Web portal administration with role-based access" },
       { label: "Reporting", value: "CDR history, call recording and real-time analytics" },
@@ -1282,7 +1282,7 @@ export const productDetails: ProductDetail[] = [
       { label: "Routing", value: "Configured destinations, with time-based and department-based rules" },
       { label: "Destinations", value: "SIP phones, softphones, mobile devices and extensions" },
       { label: "Presence", value: "Business number without a physical line or on-site PBX" },
-      { label: "Platform", value: "Works with SIP, Cloud PBX, IVR and call routing" },
+      { label: "Platform", value: "Works with SIP, CCaaS, IVR and call routing" },
       { label: "Management", value: "Centralised number and DID management via the web portal" },
       { label: "Portability", value: "Number portability support for eligible existing numbers" },
     ],
@@ -1841,134 +1841,6 @@ export const productDetails: ProductDetail[] = [
     outcome: {
       heading: "What you gain",
       body: "Your agents spend their shift in conversations rather than in the waiting between them, and you get campaign, outcome and agent reporting that shows what the outbound effort is actually producing.",
-    },
-  },
-  {
-    slug: "auto-dialer",
-    title: "Auto Dialer",
-    category: "Contact Center",
-    categorySlug: "contact-center",
-    tagline: "Automate outbound campaigns.",
-    intro:
-      "Run automated outbound campaigns with configurable pacing, call outcomes and campaign reporting, for teams that need volume without manual dialling.",
-    icon: Radio,
-    sparseSource: true,
-    features: [
-      {
-        title: "Configurable pacing",
-        description:
-          "Control dialling rate to match the size and skill of the team.",
-        icon: Gauge,
-      },
-      {
-        title: "Campaign lists",
-        description: "Load, segment and manage contact lists per campaign.",
-        icon: ListOrdered,
-      },
-      {
-        title: "Automated prompts",
-        description:
-          "Deliver recorded or generated announcements where appropriate.",
-        icon: Mic,
-      },
-      {
-        title: "Campaign reporting",
-        description: "Track completion, outcomes and campaign performance.",
-        icon: BarChart3,
-      },
-          {
-        title: "Text-to-speech announcements",
-        description:
-          "Generate campaign messages from text where recording a prompt for every variation is impractical.",
-        icon: Sparkles,
-      },
-      {
-        title: "Disposition and wrap-up",
-        description:
-          "Capture the result of each attempt against its contact record as the campaign runs.",
-        icon: Workflow,
-      },
-    ],
-    idealFor: [
-      "Notification campaigns",
-      "Appointment reminders",
-      "Outbound follow-up",
-    ],
-      problem: {
-      heading: "The same message, dialled one number at a time",
-      body: "When a reminder, notice or update has to reach a long list of customers, someone ends up working down that list by hand. Most of the day goes into ringing, engaged tones and voicemail, and by the end there is no reliable record of who was actually reached.",
-    },
-    approach: {
-      heading: "How SipLink handles it",
-      body: [
-        "You load a contact list into a campaign and it works through the list on its own, with progressive, predictive and auto dialling available where supported by your deployment, so the campaign can be paced to suit the work. Answered calls either hear an automated voice prompt or pass to an available agent.",
-      ],
-    },
-    audiences: [
-      {
-        situation: "You send the same message to hundreds of customers",
-        fit: "One recorded or generated announcement is delivered to the whole list, instead of being repeated by hand on every call.",
-      },
-      {
-        situation: "You spend the morning on appointment reminders",
-        fit: "The campaign places the reminders while your staff get on with the work the appointments are for.",
-      },
-      {
-        situation: "You never know who actually got the message",
-        fit: "Outcomes are recorded against each contact, so you can see what completed and what still needs following up.",
-      },
-      {
-        situation: "You follow up leads or enquiries in batches",
-        fit: "The list is dialled automatically and answered calls are connected to an available agent, so your team only joins the ones worth talking to.",
-      },
-    ],
-    explainer: {
-      question: "What is an auto dialer?",
-      definition: "An auto dialer is a system that works through a list of contact numbers and places the calls for you. You supply the list, set the pace you want it dialled at, and decide what happens when someone picks up. If the campaign is informational, an automated prompt plays the message; if it needs a person, the call is handed to an available agent. Results are written back against each contact as the campaign runs, so you can see how far it has got and what came of it.",
-      steps: [
-        {
-          title: "Load and segment the list",
-          body: "Contacts are loaded into a campaign and can be segmented so different groups receive different treatment or a different message.",
-        },
-        {
-          title: "The campaign dials at the pace you set",
-          body: "Dialling runs automatically at a configured rate rather than agent by agent, with progressive, predictive and auto dialling available where supported by the deployment.",
-        },
-        {
-          title: "Answered calls get the message or an agent",
-          body: "An automated voice prompt delivers the announcement, or the call is connected to an available agent where a conversation is needed. The outcome is recorded either way.",
-        },
-      ],
-    },
-    specs: [
-      { label: "Dialling", value: "Progressive, predictive and auto dialling, where supported by deployment" },
-      { label: "Campaigns", value: "Outbound campaign management from the platform" },
-      { label: "Lists", value: "Load, segment and manage contact lists per campaign" },
-      { label: "Prompts", value: "Automated voice prompts, recorded or text-to-speech" },
-      { label: "Outcomes", value: "Call disposition and wrap-up recorded against each contact" },
-      { label: "Reporting", value: "Campaign completion, call detail records and analytics" },
-    ],
-    faqs: [
-      {
-        question: "How is this different from a predictive dialer?",
-        answer: "The auto dialer is the simpler of the two. It works through a contact list at a pace you configure and suits campaigns where a recorded or generated announcement carries the message. The predictive dialer is built around agent pacing, for conversation-heavy outbound where the point is to keep people talking rather than to deliver a notice.",
-      },
-      {
-        question: "Do we need agents for a campaign to run?",
-        answer: "Not for an informational campaign — an automated voice prompt can deliver the message on its own. Where a conversation is needed, answered calls are connected to available agents instead, and the two approaches can be used for different campaigns.",
-      },
-      {
-        question: "What are the rules on outbound dialling where we operate?",
-        answer: "Requirements around outbound calling, consent and permitted calling hours vary by jurisdiction and by the kind of campaign you are running. We cannot advise on what applies to you — please confirm the obligations for your operation with your own legal or compliance advisers, and we will configure the campaign around what you tell us.",
-      },
-      {
-        question: "Can we tell who was reached and who was not?",
-        answer: "Yes. Call disposition and wrap-up are recorded against each contact, and campaign reporting covers completion and outcomes. That gives you a list of who still needs following up rather than an estimate.",
-      },
-    ],
-    outcome: {
-      heading: "What you gain",
-      body: "A list that gets worked through reliably instead of partially, and a record of what each call produced — so notices and reminders reach people without occupying a team for the day.",
     },
   },
   {
@@ -3785,7 +3657,7 @@ export const productDetails: ProductDetail[] = [
     faqs: [
       {
         question: "Which CRMs do you support?",
-        answer: "SipLink integrates with CRM platforms generally rather than with a fixed list, and the current material references integration work built for platforms including Salesforce, Zoho, Sugar and Zendesk as examples. Which platforms apply to you, and exactly what each integration does, is confirmed per deployment before anything is committed — so treat those as illustrations rather than as capabilities you can assume are already in place for your environment.",
+        answer: "SipLink connects with Salesforce, HubSpot, Zoho, Bitrix24, Odoo, Zendesk and CEIPAL. Microsoft 365, Google Workspace and WhatsApp can also be part of the wider workflow. The calling features available in each platform depend on your setup, so we confirm the exact integration during onboarding.",
       },
       {
         question: "Does the agent see who is calling before they answer?",
