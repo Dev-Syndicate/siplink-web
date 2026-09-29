@@ -325,10 +325,10 @@ const useCase: SolutionDetail[] = [
           "Send each caller to the right team and hold the rest in an organised queue instead of a busy tone.",
         icon: Route,
         image: {
-          src: "/solns-customerSupport/intelligent-routing-and-queues.webp",
+          src: "/solns-customerSupport/intelligent-routing-and-queues-masked.png",
           alt: "A routing rules panel sending each caller to the support, sales, accounts or technical team, with a queue holding the overflow rather than a busy tone.",
-          width: 1404,
-          height: 936,
+          width: 1536,
+          height: 1024,
         },
       },
       {
@@ -642,10 +642,10 @@ const useCase: SolutionDetail[] = [
           "Give each market the local presence it needs while routing stays centrally managed.",
         icon: MapPin,
         image: {
-          src: "/solns-Global/local-numbers-and-routing.webp",
+          src: "/solns-Global/local-numbers-and-routing-masked.png",
           alt: "A local number for each market beside a numbers table showing where each one routes, all managed from one place.",
-          width: 1600,
-          height: 800,
+          width: 1774,
+          height: 887,
         },
       },
       {
