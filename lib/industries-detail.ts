@@ -1,4 +1,5 @@
 import {
+  BadgeCheck,
   Braces,
   Building2,
   Cloud,
@@ -8,6 +9,7 @@ import {
   Gauge,
   GraduationCap,
   Headset,
+  HeartHandshake,
   HeartPulse,
   Landmark,
   ListChecks,
@@ -26,6 +28,8 @@ import {
   ShieldCheck,
   ShoppingCart,
   Truck,
+  UserPlus,
+  UsersRound,
   Workflow,
   type LucideIcon,
 } from "lucide-react";
@@ -223,6 +227,119 @@ export const industryDetails: IndustryDetail[] = [
     gain: {
       heading: "Conversations become information",
       body: "Turn every call into something you can review, measure and act on — so agents improve, managers stay informed, and the whole floor performs more consistently.",
+    },
+  },
+  {
+    slug: "staffing-recruitment",
+    title: "Staffing & Recruitment",
+    icon: UsersRound,
+    tagline: "Connect recruiters. Engage candidates. Accelerate hiring.",
+    intro:
+      "Recruitment moves at the speed of communication. SIPLINK brings business voice, candidate SMS, CloudPBX, CRM integrations, and intelligent communication tools together on one platform—helping recruitment teams stay connected from the first interaction through successful placement.",
+    parties: ["Candidates", "Recruiters", "Employers", "Hiring Managers"],
+    challenge: {
+      heading: "Recruitment teams handle high volume across fragmented tools",
+      body: "Recruiters manage a continuous flow of screening calls, interview coordination, follow-ups, and client updates. When communication is distributed across personal phones, separate messaging apps, and disconnected CRM systems, important follow-ups become harder to manage and managers lose visibility into conversations.",
+    },
+    handling: {
+      heading: "One platform for every candidate and client conversation",
+      body: [
+        "SIPLINK helps staffing and recruitment teams streamline communication across the hiring lifecycle by bringing candidate calling, 10DLC business SMS, CloudPBX, and CRM integrations into one connected workspace.",
+        "With cloud-based calling, recruiters maintain a professional business identity from anywhere. Supervisors gain visibility through call tracking, recording, AI audio transcription, and live call controls like Whisper and Barge.",
+        "10DLC-ready business messaging keeps candidates engaged with interview confirmations, application updates, reminders, and onboarding communication — keeping recruitment workflows moving forward fast.",
+      ],
+      productLinks: [
+        { phrase: "CloudPBX", slug: "cloud-pbx" },
+        { phrase: "10DLC business SMS", slug: "sip-trunking" },
+        { phrase: "CRM integrations", slug: "cloud-pbx" },
+        { phrase: "AI audio transcription", slug: "call-center" },
+        { phrase: "Whisper and Barge", slug: "call-center" },
+      ],
+    },
+    flow: [
+      {
+        label: "Candidate Sourcing",
+        detail: "Reach candidates quickly via professional voice & 10DLC SMS.",
+        icon: UserPlus,
+      },
+      {
+        label: "Candidate Screening",
+        detail: "Conduct screening calls with recorded, transcribed notes.",
+        icon: PhoneCall,
+      },
+      {
+        label: "Interview Scheduling",
+        detail: "Send SMS confirmations, reminders, and application updates.",
+        icon: MessagesSquare,
+      },
+      {
+        label: "Interview Follow-Ups",
+        detail: "Stay connected through timely callbacks and candidate updates.",
+        icon: ListChecks,
+      },
+      {
+        label: "Client Coordination",
+        detail: "Align recruiters, employers, and hiring managers seamlessly.",
+        icon: HeartHandshake,
+      },
+      {
+        label: "Placement & Onboarding",
+        detail: "Guide candidates through final offers and onboarding steps.",
+        icon: BadgeCheck,
+      },
+    ],
+    capabilities: [
+      {
+        title: "Candidate Calling & CloudPBX",
+        description:
+          "Professional business calling with IVR, call routing, queues, forwarding, call notes, and analytics.",
+        outcome: "Maintain a professional business identity from anywhere.",
+        icon: PhoneCall,
+        products: [{ label: "CloudPBX", slug: "cloud-pbx" }],
+      },
+      {
+        title: "10DLC-Ready Candidate SMS",
+        description:
+          "Send job opportunities, interview confirmations, reminders, document requests, and placement updates with full US A2P registration.",
+        outcome: "Engage candidates quickly with high response rates.",
+        icon: MessagesSquare,
+        products: [{ label: "Business Voice & SMS", slug: "sip-trunking" }],
+      },
+      {
+        title: "Recruiter CRM & ATS Integration",
+        description:
+          "Connect calls, SMS threads, candidate records, and follow-ups directly with your existing recruitment CRM.",
+        outcome: "Eliminate manual data entry and unify candidate histories.",
+        icon: Workflow,
+        products: [{ label: "CRM Integration", slug: "cloud-pbx" }],
+      },
+      {
+        title: "Live Call Supervision & Controls",
+        description:
+          "Monitor calls, guide recruiters live with Whisper, step in with Barge, and review AI audio transcriptions.",
+        outcome: "Supervise recruiter activity and ensure call quality.",
+        icon: ShieldCheck,
+        products: [{ label: "Call Analytics", slug: "call-center" }],
+      },
+      {
+        title: "Remote & Multi-Branch Communication",
+        description:
+          "Unified cloud phone system and caller ID for remote recruiters, hybrid teams, offshore offices, and global operations.",
+        outcome: "Connect your distributed workforce on one platform.",
+        icon: Network,
+        products: [{ label: "Hosted PBX", slug: "hosted-pbx" }],
+      },
+    ],
+    idealFor: [
+      "Staffing & recruitment agencies",
+      "Executive search & headhunting firms",
+      "High-volume hourly & seasonal staffing teams",
+      "Remote & hybrid recruitment workforces",
+      "RPO & global staffing operations",
+    ],
+    gain: {
+      heading: "Recruit More. Communicate Better. Grow Faster.",
+      body: "Bring candidate calling, business SMS, CloudPBX, CRM integration, call management, and intelligent communication capabilities together in one connected platform built for recruitment teams.",
     },
   },
   {
