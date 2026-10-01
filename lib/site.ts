@@ -159,9 +159,9 @@ export const trustPoints: Trust[] = [
     icon: Headphones,
   },
   {
-    title: "DoT certified",
+    title: "DoT-licensed",
     description:
-      "Department of Telecommunications certified, with quality of service guaranteed across our network.",
+      "Licensed by the Department of Telecommunications as a Category A ISP.",
     icon: Lock,
   },
 ];
@@ -172,7 +172,7 @@ export const trustPoints: Trust[] = [
  */
 export const certifications = [
   "HIPAA COMPLIANT",
-  "DoT CERTIFIED",
+  "DoT-LICENSED",
   "D-U-N-S REGISTERED",
 ] as const;
 
@@ -187,7 +187,7 @@ export const announcement = {
     "Voice AI Assistant and WhatsApp Business v2 API endpoints are now live.",
   href: "/products",
   linkLabel: "Explore documentation",
-  status: ["HIPAA compliant", "DoT certified"],
+  status: ["HIPAA compliant", "DoT-licensed"],
 } as const;
 
 export type Segment = {
@@ -234,7 +234,7 @@ export const segments: Segment[] = [
   {
     title: "Government",
     description:
-      "DoT-certified telephony for public sector departments and agencies.",
+      "Public sector communications backed by our DoT-licensed ISP network.",
     icon: Landmark,
     href: "/industries/government",
   },
@@ -2145,7 +2145,7 @@ export const heroHighlights: {
 
 export const heroProof: { value: string; label: string }[] = [
   { value: "HIPAA", label: "Compliant cloud phone system" },
-  { value: "DoT", label: "Certified carrier network" },
+  { value: "DoT", label: "Category A ISP license" },
   { value: "4.5", label: "Average rating on Google" },
   { value: "24/7", label: "Support, by people who answer" },
 ];
@@ -2181,7 +2181,7 @@ export const whyPoints: Simple[] = [
   {
     title: "Security",
     description:
-      "HIPAA compliant and DoT certified, on a dedicated IP network — suitable for healthcare and other regulated work.",
+      "HIPAA compliant, with connectivity on our DoT-licensed ISP network — suitable for healthcare and other regulated work.",
     icon: ShieldCheck,
   },
   {

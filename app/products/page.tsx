@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 
 import { ConversationFlow } from "@/components/site/conversation-flow";
+import { ProductsHeroVisual } from "@/components/site/products-hero-visual";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,29 +31,34 @@ export default function ProductsPage() {
           className="pointer-events-none absolute -top-40 -right-24 size-[640px] rounded-full bg-brand-to/10 blur-3xl"
         />
         <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-16 lg:px-10 lg:pt-28 lg:pb-20">
-          <Badge variant="secondary" className="font-mono tracking-widest">
-            THE SIPLINK PLATFORM
-          </Badge>
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-6">
+            <div className="min-w-0">
+              <Badge variant="secondary" className="font-mono tracking-widest">
+                THE SIPLINK PLATFORM
+              </Badge>
 
-          <h1 className="font-heading mt-6 max-w-4xl text-5xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-6xl lg:text-7xl">
-            Every customer conversation,{" "}
-            <span className="text-primary">from hello to insight</span>
-          </h1>
+              <h1 className="font-heading mt-6 text-5xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-6xl lg:text-5xl xl:text-6xl">
+                Every customer conversation,{" "}
+                <span className="text-primary">from hello to insight</span>
+              </h1>
 
-          <p className="mt-8 max-w-2xl text-lg text-pretty text-muted-foreground lg:text-xl">
-            A call reaches you, gets routed, is handled, and becomes something
-            you can act on. SipLink is the platform underneath all four — voice,
-            contact centre, messaging and APIs on one network, in 150+
-            countries.
-          </p>
+              <p className="mt-8 max-w-2xl text-lg text-pretty text-muted-foreground lg:text-xl">
+                A call reaches you, gets routed, is handled, and becomes something
+                you can act on. SipLink is the platform underneath all four — voice,
+                contact centre, messaging and APIs on one network, in 150+
+                countries.
+              </p>
 
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Button asChild size="lg">
-              <Link href="/contact">Book a demo</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="#lifecycle">See how it works</Link>
-            </Button>
+              <div className="mt-10 flex flex-wrap gap-4">
+                <Button asChild size="lg">
+                  <Link href="/contact">Book a demo</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="#lifecycle">See how it works</Link>
+                </Button>
+              </div>
+            </div>
+            <ProductsHeroVisual />
           </div>
 
           {/* Proof, stated plainly */}
