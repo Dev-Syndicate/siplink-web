@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
+import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { CtaPanel } from "@/components/site/cta-panel";
 import { EstatePanel } from "@/components/site/estate-panel";
 import { EstateSteps } from "@/components/site/estate-steps";
@@ -70,9 +71,10 @@ export function EnterpriseSolution({
               estate still carrying calls. */}
           <div className="mt-10 grid items-center gap-12 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:gap-14">
             <div>
-              <h1 className="max-w-[18ch] text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-                {size.headline ?? title}
-              </h1>
+              <BicolorHeading
+                text={size.headline ?? title}
+                className="max-w-[18ch] text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
+              />
 
               <p className="mt-6 max-w-[50ch] text-lg text-pretty text-muted-foreground">
                 {size.standfirst ?? intro}

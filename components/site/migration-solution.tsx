@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { CtaPanel } from "@/components/site/cta-panel";
 import { CloudScene } from "@/components/site/cloud-scene";
 import { PbxScene } from "@/components/site/pbx-scene";
@@ -99,10 +100,11 @@ export function MigrationSolution({ solution }: { solution: SolutionDetail }) {
 
   const lead = (
     <>
-      <h1 className="max-w-[15ch] text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-        {title}
-      </h1>
-      <p className="mt-5 max-w-[42ch] text-lg text-pretty text-primary sm:text-xl">
+      <BicolorHeading
+        text={title}
+        className="max-w-[15ch] text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
+      />
+      <p className="mt-5 max-w-[42ch] text-lg text-pretty text-muted-foreground sm:text-xl">
         {tagline}
       </p>
       <p className="mt-5 max-w-[54ch] text-pretty text-muted-foreground">

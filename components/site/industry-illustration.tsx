@@ -6,7 +6,10 @@ import {
   BellRing,
   Boxes,
   Building2,
+  CheckCheck,
+  Cloud,
   Code2,
+  Eye,
   FileAudio,
   FileText,
   Gauge,
@@ -15,8 +18,11 @@ import {
   Landmark,
   MessageSquare,
   Mic,
+  MicOff,
+  Pause,
   PhoneCall,
   PhoneIncoming,
+  PhoneOff,
   RadioTower,
   Router,
   ScrollText,
@@ -26,7 +32,9 @@ import {
   Stethoscope,
   Store,
   Truck,
+  UserCheck,
   UserRound,
+  UsersRound,
   Utensils,
   Warehouse,
   Workflow,
@@ -770,10 +778,215 @@ function TelecomOperators({ uid }: { uid: string }) {
   );
 }
 
+/* ============================================================ 12. staffing-recruitment
+   SIPLINK RECRUITMENT COMMUNICATION HUB
+   Candidates + Clients -> SIPLINK Hub -> Recruiters + Supervisors + CRM
+   ============================================================================ */
+function StaffingRecruitment({ uid }: { uid: string }) {
+  const callWave = [35, 75, 45, 90, 60, 85, 40];
+
+  const queue = [
+    { label: "Candidate — Call", type: "call" },
+    { label: "Candidate — SMS", type: "sms" },
+    { label: "Candidate — Follow-up", type: "call" },
+    { label: "Client — Call", type: "call" },
+    { label: "Hiring Manager — SMS", type: "sms" },
+  ];
+
+  const recruiters = [
+    { name: "Elena R.", status: "On a call", free: false },
+    { name: "Marcus T.", status: "Available", free: true },
+    { name: "Priya S.", status: "Available", free: true },
+  ];
+
+  const activities = [
+    { type: "CALL", desc: "Candidate screening", time: "10:15" },
+    { type: "SMS", desc: "Interview reminder", time: "10:30" },
+    { type: "CALL", desc: "Candidate follow-up", time: "10:45" },
+  ];
+
+  return (
+    <Stage uid={uid} status="SIPLINK Recruitment Communication Hub">
+      <Window icon={UsersRound} title="Recruitment Communication Hub">
+        <div className="space-y-2.5 p-3 sm:p-3.5">
+          {/* Top Bar: Cloud Voice + CRM Sync */}
+          <div className="flex items-center justify-between border-b border-border pb-2">
+            <span className="inline-flex items-center gap-1.5 font-mono text-[8px] font-semibold text-foreground uppercase tracking-wider">
+              <Cloud className="size-3 text-primary" aria-hidden />
+              SIPLINK Cloud Voice
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/[0.06] px-2 py-0.5 font-mono text-[7.5px] font-semibold text-primary">
+              <span className="size-1 rounded-full bg-primary" />
+              CRM · COMMUNICATION SYNCED
+            </span>
+          </div>
+
+          {/* Prominent Active Business Call Banner */}
+          <div className="rounded-xl border-2 border-primary bg-primary/[0.04] p-2.5 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+                  <PhoneCall className="size-4" aria-hidden />
+                </span>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10.5px] font-bold leading-tight">Sarah K.</span>
+                    <span className="text-[8.5px] text-muted-foreground font-medium">— Interview Candidate</span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-[7.5px] text-muted-foreground">Recruiter: Elena R.</span>
+                    <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-1.5 py-0.2 font-mono text-[6.5px] font-semibold text-amber-700 dark:text-amber-400 border border-amber-500/20">
+                      <Eye className="size-2" />
+                      LIVE CALL · Supervisor monitoring
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Call Wave, Duration & Controls */}
+              <div className="flex items-center gap-2">
+                <div className="flex h-4 items-center gap-[2px]">
+                  {callWave.map((h, i) => (
+                    <span
+                      key={i}
+                      className="w-[2px] rounded-full bg-primary"
+                      style={{ height: `${h * 0.16}px` }}
+                    />
+                  ))}
+                </div>
+                <span className="flex items-center gap-1 rounded-md bg-background px-1.5 py-0.5 font-mono text-[8px] font-semibold text-primary border border-border">
+                  <LiveDot />
+                  On a call (03:12)
+                </span>
+                <div className="flex items-center gap-1">
+                  <span className="flex size-5 items-center justify-center rounded bg-background border border-border text-muted-foreground">
+                    <MicOff className="size-2.5" />
+                  </span>
+                  <span className="flex size-5 items-center justify-center rounded bg-background border border-border text-muted-foreground">
+                    <Pause className="size-2.5" />
+                  </span>
+                  <span className="flex size-5 items-center justify-center rounded bg-destructive/15 text-destructive border border-destructive/30">
+                    <PhoneOff className="size-2.5" />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Main 3-Column Content Workspace */}
+          <div className="grid grid-cols-[1.1fr_1.3fr_1fr] gap-2.5">
+            {/* 1. Candidate / Client Queue */}
+            <div className="space-y-1">
+              <span className="font-mono text-[7.5px] font-semibold tracking-widest text-muted-foreground uppercase block mb-1">
+                Conversations Queue
+              </span>
+              <div className="space-y-1">
+                {queue.map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between rounded-lg border border-border bg-background px-2 py-1 shadow-xs text-[7.5px]"
+                  >
+                    <span className="font-medium text-foreground truncate">{item.label}</span>
+                    <span className="flex size-4 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
+                      {item.type === "call" ? (
+                        <PhoneCall className="size-2" />
+                      ) : (
+                        <MessageSquare className="size-2" />
+                      )}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 2. Business SMS Thread */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-mono text-[7.5px] font-semibold tracking-widest text-muted-foreground uppercase">
+                  Business SMS
+                </span>
+                <span className="font-mono text-[6.5px] text-muted-foreground">10DLC Line</span>
+              </div>
+              <div className="rounded-lg border border-border bg-background p-2 shadow-xs space-y-1.5">
+                {/* Candidate bubble */}
+                <div className="rounded-md bg-muted/60 p-1.5 text-[7px] space-y-0.5">
+                  <span className="font-semibold text-foreground block">Sarah K.</span>
+                  <p className="text-muted-foreground leading-tight">
+                    &ldquo;Hi, your interview is confirmed for tomorrow.&rdquo;
+                  </p>
+                </div>
+                {/* Recruiter reply */}
+                <div className="rounded-md bg-primary/10 border border-primary/20 p-1.5 text-[7px] space-y-0.5 ml-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-primary block">Recruiter</span>
+                    <CheckCheck className="size-2.5 text-primary shrink-0" />
+                  </div>
+                  <p className="text-foreground leading-tight">
+                    &ldquo;Thank you. We&rsquo;ll speak with you then.&rdquo;
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. Team & Activity Rail */}
+            <div className="space-y-2 border-l border-border pl-2.5">
+              {/* Recruiter availability */}
+              <div>
+                <span className="font-mono text-[7.5px] font-semibold tracking-widest text-muted-foreground uppercase block mb-1">
+                  Recruiters
+                </span>
+                <div className="space-y-1">
+                  {recruiters.map((r) => (
+                    <div
+                      key={r.name}
+                      className="flex items-center justify-between rounded border border-border bg-background px-1.5 py-0.5 text-[7px]"
+                    >
+                      <span className="font-medium truncate">{r.name}</span>
+                      <span className="flex items-center gap-1 text-[6.5px] text-muted-foreground">
+                        <span
+                          className={cn(
+                            "size-1 rounded-full",
+                            r.free ? "bg-emerald-500" : "bg-primary"
+                          )}
+                        />
+                        {r.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Activity / Transcription */}
+              <div>
+                <span className="font-mono text-[7.5px] font-semibold tracking-widest text-muted-foreground uppercase block mb-1">
+                  History & Tracking
+                </span>
+                <div className="space-y-0.5">
+                  {activities.map((a, i) => (
+                    <div key={i} className="flex items-center gap-1 text-[6.5px] text-muted-foreground">
+                      <span className="font-mono font-semibold text-primary">{a.type}</span>
+                      <span className="truncate flex-1">{a.desc}</span>
+                    </div>
+                  ))}
+                  <div className="mt-1 rounded bg-primary/[0.08] px-1 py-0.5 text-[6.5px] font-medium text-primary flex items-center gap-1">
+                    <Mic className="size-2 shrink-0" />
+                    AI TRANSCRIPTION · Available
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Window>
+    </Stage>
+  );
+}
+
 /* --------------------------------------------------------------- registry */
 
 const SCENES: Record<string, (p: { uid: string }) => React.JSX.Element> = {
   "call-centers": CallCenters,
+  "staffing-recruitment": StaffingRecruitment,
   healthcare: Healthcare,
   "banking-finance": BankingFinance,
   education: Education,

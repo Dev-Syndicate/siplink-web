@@ -1755,7 +1755,6 @@ export const nav: NavItem[] = [
           { label: "Certifications", href: "/company/certifications", icon: BadgeCheck },
           { label: "Careers", href: "/company/careers", icon: Briefcase },
           { label: "News", href: "/company/news", icon: Newspaper },
-          { label: "Contact Us", href: "/contact", icon: Mail },
         ],
       },
     ],

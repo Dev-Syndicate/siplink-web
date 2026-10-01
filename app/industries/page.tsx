@@ -31,8 +31,11 @@ export default function IndustriesPage() {
             <span className="text-sm font-medium tracking-widest text-primary uppercase">
               Industry verticals
             </span>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-              Built around how your sector works
+            <h1 className="mt-3 text-4xl leading-[1.08] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              Built around how
+              <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
+                your sector works.
+              </span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
               The same platform, configured for the demands of each industry —
