@@ -192,7 +192,7 @@ export function MobileNav() {
                       onClick={close}
                       className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-muted px-4 py-2.5 text-sm font-semibold text-foreground transition-colors active:bg-primary active:text-primary-foreground"
                     >
-                      View all {item.label}
+                      View All
                       <ArrowRight className="size-4" aria-hidden />
                     </Link>
                   </AccordionContent>
