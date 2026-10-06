@@ -58,7 +58,7 @@ export function FeaturesHero() {
       <div className="relative mx-auto max-w-7xl px-6 pt-10 pb-16 lg:px-10 lg:pt-14 lg:pb-20">
         <ScrollReveal className="max-w-2xl">
           <Badge variant="secondary" className="font-mono tracking-widest">
-            Business broadband features
+            Business internet leased line features
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
@@ -78,7 +78,7 @@ export function FeaturesHero() {
           <div className="mt-9 flex flex-wrap gap-4">
             <Button asChild size="lg">
               <Link href="/contact">
-                Get a business broadband quote
+                Get a business internet leased line quote
                 <ArrowRight className="size-4" aria-hidden />
               </Link>
             </Button>

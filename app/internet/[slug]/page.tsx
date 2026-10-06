@@ -82,7 +82,7 @@ const OPENERS: Record<string, () => [InternetOpener, InternetOpener]> = {
       heading: "The cupboard, and what is in it",
       lede: "Nobody asks this in a sales meeting and everybody wants to know it. Here is what physically arrives, where each piece goes, and which of it is optional rather than quietly included.",
       scene: (
-        <BroadbandKitScene label="The equipment a business broadband service puts in a building: fibre into the premises, a managed router and firewall on the wall, LAN switching in the cabinet, access points in the ceiling, and a static IP that sits on the service rather than on any hardware." />
+        <BroadbandKitScene label="The equipment a business internet leased line service puts in a building: fibre into the premises, a managed router and firewall on the wall, LAN switching in the cabinet, access points in the ceiling, and a static IP that sits on the service rather than on any hardware." />
       ),
     },
   ],

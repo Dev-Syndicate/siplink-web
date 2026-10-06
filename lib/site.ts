@@ -1533,7 +1533,7 @@ export const nav: NavItem[] = [
     href: "/internet",
     groups: [
       {
-        heading: "Business Broadband",
+        heading: "Business Internet Leased Line",
         href: "/internet/business-broadband",
         icon: Wifi,
         description: "Shared-port connectivity for the office.",
@@ -1670,7 +1670,7 @@ export const nav: NavItem[] = [
       href: "/internet",
       image: "/nav_images/internet.png",
       imageAlt:
-        "Illustrated business district and data centre linked to a SipLink router, with broadband, dedicated internet, leased line and SD-WAN callouts",
+        "Illustrated business district and data centre linked to a SipLink router, with internet leased line, dedicated internet, leased line and SD-WAN callouts",
     },
   },
   {
