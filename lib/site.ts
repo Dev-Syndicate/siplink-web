@@ -72,7 +72,6 @@ import {
   Smartphone,
   Sparkles,
   Star,
-  Stethoscope,
   Store,
   Target,
   Ticket,
@@ -291,19 +290,9 @@ export const industries: Industry[] = [
       src: "/images/industry-medical-billing.png",
       alt: "A clinician in a white coat reviewing patient billing records on a tablet",
     },
-  },
-  {
-    title: "Medical Care & Healthcare",
-    description:
-      "Enhance patient communication, appointment coordination, and support services with reliable and secure telephony solutions.",
-    icon: Stethoscope,
-    href: "/industries/healthcare",
-    image: {
-      src: "/images/industry-healthcare.png",
-      alt: "A modern hospital building entrance",
-    },
     badge: "HIPAA compliant",
   },
+
   {
     title: "Staffing & Recruitment",
     description:
