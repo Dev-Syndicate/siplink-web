@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Check } from "lucide-react";
 
+import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { BranchAdminScene } from "@/components/site/branch-admin-scene";
 import { BranchIdentityScene } from "@/components/site/branch-identity-scene";
 import { BusinessNumbersScene } from "@/components/site/business-numbers-scene";
@@ -128,15 +129,14 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
 
           <div className="mt-8 grid items-center gap-12 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-14">
             <div>
-              <h1
+              <BicolorHeading
+                text={title}
                 className={cn(
                   "max-w-[15ch] text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl",
                   longWord ? "lg:text-[2.625rem]" : "lg:text-6xl",
                 )}
-              >
-                {title}
-              </h1>
-              <p className="mt-5 max-w-[40ch] text-lg text-pretty text-primary sm:text-xl">
+              />
+              <p className="mt-5 max-w-[40ch] text-lg text-pretty text-muted-foreground sm:text-xl">
                 {tagline}
               </p>
               <p className="mt-5 max-w-[52ch] text-pretty text-muted-foreground">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
+import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { BusinessSizeSolution } from "@/components/site/business-size-solution";
 import { EnterpriseSolution } from "@/components/site/enterprise-solution";
 import { MidMarketSolution } from "@/components/site/mid-market-solution";
@@ -132,10 +133,11 @@ export default async function SolutionDetailPage({
               <span className="flex size-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <Icon className="size-7" aria-hidden />
               </span>
-              <h1 className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-                {title}
-              </h1>
-              <p className="mt-4 text-lg text-primary lg:text-xl">{tagline}</p>
+              <BicolorHeading
+                text={title}
+                className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
+              />
+              <p className="mt-4 text-lg text-muted-foreground lg:text-xl">{tagline}</p>
               <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
                 {intro}
               </p>

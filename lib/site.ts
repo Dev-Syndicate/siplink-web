@@ -72,7 +72,6 @@ import {
   Smartphone,
   Sparkles,
   Star,
-  Stethoscope,
   Store,
   Target,
   Ticket,
@@ -159,9 +158,9 @@ export const trustPoints: Trust[] = [
     icon: Headphones,
   },
   {
-    title: "DoT certified",
+    title: "DoT-licensed",
     description:
-      "Department of Telecommunications certified, with quality of service guaranteed across our network.",
+      "Licensed by the Department of Telecommunications as a Category A ISP.",
     icon: Lock,
   },
 ];
@@ -172,7 +171,7 @@ export const trustPoints: Trust[] = [
  */
 export const certifications = [
   "HIPAA COMPLIANT",
-  "DoT CERTIFIED",
+  "DoT-LICENSED",
   "D-U-N-S REGISTERED",
 ] as const;
 
@@ -187,7 +186,7 @@ export const announcement = {
     "Voice AI Assistant and WhatsApp Business v2 API endpoints are now live.",
   href: "/products",
   linkLabel: "Explore documentation",
-  status: ["HIPAA compliant", "DoT certified"],
+  status: ["HIPAA compliant", "DoT-licensed"],
 } as const;
 
 export type Segment = {
@@ -234,7 +233,7 @@ export const segments: Segment[] = [
   {
     title: "Government",
     description:
-      "DoT-certified telephony for public sector departments and agencies.",
+      "Public sector communications backed by our DoT-licensed ISP network.",
     icon: Landmark,
     href: "/industries/government",
   },
@@ -291,19 +290,9 @@ export const industries: Industry[] = [
       src: "/images/industry-medical-billing.png",
       alt: "A clinician in a white coat reviewing patient billing records on a tablet",
     },
-  },
-  {
-    title: "Medical Care & Healthcare",
-    description:
-      "Enhance patient communication, appointment coordination, and support services with reliable and secure telephony solutions.",
-    icon: Stethoscope,
-    href: "/industries/healthcare",
-    image: {
-      src: "/images/industry-healthcare.png",
-      alt: "A modern hospital building entrance",
-    },
     badge: "HIPAA compliant",
   },
+
   {
     title: "Staffing & Recruitment",
     description:
@@ -1533,7 +1522,7 @@ export const nav: NavItem[] = [
     href: "/internet",
     groups: [
       {
-        heading: "Business Broadband",
+        heading: "Business Internet Leased Line",
         href: "/internet/business-broadband",
         icon: Wifi,
         description: "Shared-port connectivity for the office.",
@@ -1670,7 +1659,7 @@ export const nav: NavItem[] = [
       href: "/internet",
       image: "/nav_images/internet.png",
       imageAlt:
-        "Illustrated business district and data centre linked to a SipLink router, with broadband, dedicated internet, leased line and SD-WAN callouts",
+        "Illustrated business district and data centre linked to a SipLink router, with internet leased line, dedicated internet, leased line and SD-WAN callouts",
     },
   },
   {
@@ -1755,7 +1744,6 @@ export const nav: NavItem[] = [
           { label: "Certifications", href: "/company/certifications", icon: BadgeCheck },
           { label: "Careers", href: "/company/careers", icon: Briefcase },
           { label: "News", href: "/company/news", icon: Newspaper },
-          { label: "Contact Us", href: "/contact", icon: Mail },
         ],
       },
     ],
@@ -2150,7 +2138,7 @@ export const heroHighlights: {
 
 export const heroProof: { value: string; label: string }[] = [
   { value: "HIPAA", label: "Compliant cloud phone system" },
-  { value: "DoT", label: "Certified carrier network" },
+  { value: "DoT", label: "Category A ISP license" },
   { value: "4.5", label: "Average rating on Google" },
   { value: "24/7", label: "Support, by people who answer" },
 ];
@@ -2186,7 +2174,7 @@ export const whyPoints: Simple[] = [
   {
     title: "Security",
     description:
-      "HIPAA compliant and DoT certified, on a dedicated IP network — suitable for healthcare and other regulated work.",
+      "HIPAA compliant, with connectivity on our DoT-licensed ISP network — suitable for healthcare and other regulated work.",
     icon: ShieldCheck,
   },
   {

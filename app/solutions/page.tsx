@@ -54,12 +54,11 @@ export default function SolutionsPage() {
               <span className="text-primary">◤</span> Solutions / Cloud voice
               fabric
             </p>
-            <h1 className="mt-5 text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Every call takes the{" "}
-              <span className="bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-                shortest path
-              </span>{" "}
-              to the right person.
+            <h1 className="mt-5 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              Every call takes the shortest path
+              <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
+                to the right person.
+              </span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
               Four layers of cloud voice infrastructure — trunk, switch,

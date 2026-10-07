@@ -2,6 +2,8 @@ import { ClosingCta } from "@/components/site/closing-cta";
 import { Fragment } from "react";
 import { ProductConnectionDiagram } from "@/components/site/product-connection-diagram";
 import { ProductHero } from "@/components/site/product-hero";
+import { CcaasHeroDiagram } from "@/components/site/ccaas-hero-diagram";
+import { UcaasHeroDiagram } from "@/components/site/ucaas-hero-diagram";
 import Link from "next/link";
 import { ArrowRight, Check, Cloud, Building2, Server, Phone, ShieldCheck, MapPin, ClipboardCheck, GitBranch, Headset, BarChart3, Monitor, Smartphone, Users } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -14,8 +16,8 @@ import { productDetails, type ProductDetail } from "@/lib/products";
 export const VOICE_PRODUCT_SLUGS: string[] = ["cloud-pbx", "hosted-pbx", "ip-pbx", "did-numbers", "toll-free-numbers", "virtual-numbers", "number-porting"];
 
 const stories: Record<string, { headline: string; action: string; title: string; alt: string }> = {
-  "cloud-pbx": { headline: "Every customer call. A better way forward.", action: "Design your contact centre", title: "Advanced calling, built around your agents", alt: "Pink glass cloud connecting customer calls, agents and reporting" },
-  "hosted-pbx": { headline: "One team calling experience. Wherever work happens.", action: "Plan your team communications", title: "One workspace for the whole team", alt: "White managed server sheltered by a pink glass arch and connected to branch offices" },
+  "cloud-pbx": { headline: "Every customer call. A better way forward.", action: "Design your contact centre", title: "Advanced calling, built around your agents", alt: "Illustrative agent workspace connected to an incoming queue and supervisor view" },
+  "hosted-pbx": { headline: "One team calling experience. Wherever work happens.", action: "Plan your team communications", title: "One workspace for the whole team", alt: "Illustrative hosted phone system connecting main office, branch and remote teams" },
   "ip-pbx": { headline: "Call control stays inside your network.", action: "Design your on-site system", title: "Your premises at the centre", alt: "White telephone server inside a pink glass network perimeter" },
   "did-numbers": { headline: "A direct line to the right person.", action: "Find your direct numbers", title: "Give each destination its own front door", alt: "Individual white telephone tiles leading to separate department doorways on pink glass paths" },
   "toll-free-numbers": { headline: "Make it easier for customers to call.", action: "Discuss a toll-free number", title: "One entry point. The right team behind it.", alt: "White telephone receiver in an open pink glass gateway with customer paths" },
@@ -353,10 +355,10 @@ export function VoiceProductPage({ product }: { product: ProductDetail }) {
     "number-porting": ["process", "problem", "migration", "capabilities", "specs", "audiences"],
   };
   return <>
-    <ProductHero product={product} headline={story.headline} action={story.action} secondaryLabel="How it works" imageAlt={story.alt} />
+    <ProductHero product={product} headline={story.headline} action={story.action} secondaryLabel="How it works" imageAlt={story.alt} scene={product.slug === "cloud-pbx" ? <CcaasHeroDiagram /> : product.slug === "hosted-pbx" ? <UcaasHeroDiagram /> : undefined} />
     {product.slug === "cloud-pbx" && <CcaasCallFlow />}
     {product.slug === "hosted-pbx" && <UcaasWorkspaces />}
-    <ProductConnectionDiagram product={product} />
+    {product.slug !== "cloud-pbx" && <ProductConnectionDiagram product={product} />}
     {sectionOrder[product.slug].map(key => <Fragment key={key}>{sections[key]}</Fragment>)}
     {product.faqs?.length && <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10"><div className="grid gap-10 lg:grid-cols-3"><div><h2 className="text-3xl font-semibold">Questions about {product.title}</h2><p className="mt-4 text-muted-foreground">Talk through your requirements with the SipLink team.</p><Button asChild variant="link" className="mt-3 px-0"><Link href="/contact">Ask us directly<ArrowRight /></Link></Button></div><Accordion type="single" collapsible className="lg:col-span-2">{product.faqs.map(faq => <AccordionItem key={faq.question} value={faq.question}><AccordionTrigger className="text-left text-base">{faq.question}</AccordionTrigger><AccordionContent className="leading-relaxed text-muted-foreground">{faq.answer}</AccordionContent></AccordionItem>)}</Accordion></div></section>}
     <ClosingCta eyebrow={product.outcome?.heading ?? "Your next step"} heading={`Build ${product.title} around your business`} body={product.outcome?.body ?? product.tagline} action={story.action} />

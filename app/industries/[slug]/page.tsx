@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { ArrowRight, Check, Phone, PhoneCall } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { IndustryIllustration } from "@/components/site/industry-illustration";
 import { getIndustryDetail, industryDetails } from "@/lib/industries-detail";
 import { site } from "@/lib/site";
@@ -70,7 +71,8 @@ function linkifyProse(
  */
 const industryRedirects: Record<string, string> = {
   "medical-billing-rcm": "/industries/healthcare",
-  staffing: "/industries/call-centers",
+  staffing: "/industries/staffing-recruitment",
+  recruitment: "/industries/staffing-recruitment",
   "it-software": "/industries/it-saas",
   "tech-saas": "/industries/it-saas",
   "marketing-sales": "/industries/retail",
@@ -155,9 +157,10 @@ export default async function IndustryDetailPage({
           <div className="mt-8 grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16">
             {/* left: the pitch */}
             <div>
-              <h1 className="text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-                {tagline}
-              </h1>
+              <BicolorHeading
+                text={tagline}
+                className="text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
+              />
               <p className="mt-5 max-w-xl text-lg text-pretty text-muted-foreground">
                 {intro}
               </p>

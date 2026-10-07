@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Check } from "lucide-react";
 
+import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { CtaPanel } from "@/components/site/cta-panel";
 import { CallPhone } from "@/components/site/call-phone";
 import { SizeQueue } from "@/components/site/size-queue";
@@ -160,10 +161,11 @@ export function BusinessSizeSolution({
             )}
           >
             <div>
-              <h1 className="text-4xl leading-[1.02] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-                {title}
-              </h1>
-              <p className="mt-4 max-w-lg text-lg text-pretty text-primary sm:text-xl">
+              <BicolorHeading
+                text={size.headline ?? title}
+                className="text-4xl leading-[1.02] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
+              />
+              <p className="mt-4 max-w-lg text-lg text-pretty text-muted-foreground sm:text-xl">
                 {tagline}
               </p>
 

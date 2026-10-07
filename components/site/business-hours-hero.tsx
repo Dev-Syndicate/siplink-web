@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { CallHunt } from "@/components/site/call-hunt";
 import { Button } from "@/components/ui/button";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -50,9 +51,10 @@ export function BusinessHoursHero({
 
         <div className="mt-10 grid items-center gap-12 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:gap-16">
           <div>
-            <h1 className="max-w-[16ch] text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              {headline}
-            </h1>
+            <BicolorHeading
+              text={headline}
+              className="max-w-[16ch] text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
+            />
 
             <p className="mt-6 max-w-[48ch] text-lg text-pretty text-muted-foreground">
               {standfirst}

@@ -170,10 +170,10 @@ export function PlansSections() {
               The honest version
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              When broadband is right, and when it is not
+              When internet leased line is right, and when it is not
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              A bigger broadband plan is not always the answer to a broadband
+              A bigger internet leased line plan is not always the answer to an internet leased line
               problem. If your situation is on the right, we would rather tell
               you now than sell you the upgrade twice.
             </p>

@@ -60,7 +60,7 @@ export function BenefitsHero() {
       <div className="relative mx-auto grid max-w-7xl gap-12 px-6 pt-10 pb-16 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:gap-16 lg:px-10 lg:pt-14 lg:pb-20">
         <ScrollReveal>
           <Badge variant="secondary" className="font-mono tracking-widest">
-            Business broadband benefits
+            Business internet leased line benefits
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
@@ -80,7 +80,7 @@ export function BenefitsHero() {
           <div className="mt-9 flex flex-wrap gap-4">
             <Button asChild size="lg">
               <Link href="/contact">
-                Get a business broadband quote
+                Get a business internet leased line quote
                 <ArrowRight className="size-4" aria-hidden />
               </Link>
             </Button>

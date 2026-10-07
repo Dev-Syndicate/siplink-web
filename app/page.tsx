@@ -106,7 +106,7 @@ export default function Home() {
             <div>
               <Badge variant="secondary" className="font-mono tracking-widest">
                 <ShieldCheck className="size-3.5" aria-hidden />
-                HIPAA COMPLIANT &middot; DoT CERTIFIED
+                HIPAA COMPLIANT &middot; DoT-LICENSED
               </Badge>
 
               {/* Fluid: tracks viewport height too, so a short laptop screen
