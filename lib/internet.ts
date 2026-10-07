@@ -249,7 +249,7 @@ export const internetHero = {
 
 export const internetIntro = [
   "SipLink provides business internet and network solutions designed to give organisations reliable connectivity, scalable bandwidth and the flexibility to support growing digital operations.",
-  "From business broadband and dedicated internet to static IP, managed network infrastructure, VPN, SD-WAN and multi-location connectivity, we can build a connectivity environment around what your business actually runs.",
+  "From business internet leased line and dedicated internet to static IP, managed network infrastructure, VPN, SD-WAN and multi-location connectivity, we can build a connectivity environment around what your business actually runs.",
 ] as const;
 
 /**
@@ -267,7 +267,7 @@ export const internetProof: { value: string; label: string }[] = [
 
 /** The twelve capabilities the brief lists as the portfolio. */
 export const internetCapabilities: { label: string; icon: LucideIcon }[] = [
-  { label: "Business Broadband", icon: Wifi },
+  { label: "Business Internet Leased Line", icon: Wifi },
   { label: "Dedicated Internet", icon: Gauge },
   { label: "Dedicated Leased Lines", icon: Cable },
   { label: "Static IP", icon: MapPin },
@@ -304,7 +304,7 @@ export const internetStack: {
     caption: "The connection itself",
     icon: Globe,
     items: [
-      { label: "Business Broadband", href: "/internet/business-broadband" },
+      { label: "Business Internet Leased Line", href: "/internet/business-broadband" },
       { label: "Dedicated Internet", href: "/internet/dedicated-internet" },
       { label: "Static IP", href: "/internet/static-ip" },
     ],
@@ -490,7 +490,7 @@ export const internetComparisonColumns: {
   href: string;
   label: string;
 }[] = [
-  { href: "/internet/business-broadband", label: "Business Broadband" },
+  { href: "/internet/business-broadband", label: "Business Internet Leased Line" },
   { href: "/internet/dedicated-internet", label: "Dedicated Internet" },
   { href: "/internet/static-ip", label: "Static IP" },
   { href: "/internet/network-solutions", label: "Managed Network" },
@@ -570,7 +570,7 @@ export const internetComparisonBestFor = [
 
 export const internetFaqs: { question: string; answer: string }[] = [
   {
-    question: "What is business broadband?",
+    question: "What is business internet leased line?",
     answer:
       "An internet service designed for business locations and everyday business applications — cloud software, email, video conferencing, VoIP and web applications. It differs from a consumer connection in how it is supported and in what can be added to it, such as static IP and a managed router.",
   },
@@ -581,9 +581,9 @@ export const internetFaqs: { question: string; answer: string }[] = [
   },
   {
     question:
-      "What is the difference between business broadband and dedicated internet?",
+      "What is the difference between business internet leased line and dedicated internet?",
     answer:
-      "Business broadband is intended for everyday business connectivity. Dedicated internet is designed for organisations with stronger requirements for dedicated bandwidth, performance, reliability and SLA-backed service. If a slow hour would cost you money, that is the line between the two.",
+      "Business internet leased line is intended for everyday business connectivity. Dedicated internet is designed for organisations with stronger requirements for dedicated bandwidth, performance, reliability and SLA-backed service. If a slow hour would cost you money, that is the line between the two.",
   },
   {
     question: "What is a static IP?",
@@ -636,11 +636,11 @@ export const internetFaqs: { question: string; answer: string }[] = [
 
 const businessBroadband: InternetService = {
   slug: "business-broadband",
-  title: "Business Broadband",
+  title: "Business Internet Leased Line",
   eyebrow: "Connectivity",
   tagline: "Fast, reliable internet for growing businesses.",
   intro:
-    "SipLink Business Broadband is for businesses that need dependable internet for everyday operations without the complexity — or the cost — of an enterprise dedicated circuit.",
+    "SipLink Business Internet Leased Line is for businesses that need dependable internet for everyday operations without the complexity — or the cost — of an enterprise dedicated circuit.",
   lede: [
     "Connect employees, cloud applications, collaboration platforms, VoIP services, CRM systems and business devices through a connection built for a workplace rather than a household.",
   ],
@@ -665,7 +665,7 @@ const businessBroadband: InternetService = {
       heading: "Sized against how you actually work",
       tagline: "There is no standard office, so there is no standard plan.",
       intro:
-        "Rather than publishing a speed tier and hoping it fits, we size a business broadband connection against what actually runs on it — how many people, which applications, and how much of the traffic travels upward.",
+        "Rather than publishing a speed tier and hoping it fits, we size a business internet leased line connection against what actually runs on it — how many people, which applications, and how much of the traffic travels upward.",
       body: [
         "Most connections that disappoint were not undersized on paper. They were sized on headcount alone, and nobody asked what those people would be doing: a twelve-person design studio pushing renders to the cloud is a heavier load than a forty-person office reading email.",
         "So the conversation starts with the work, not the number. The nine factors below are what we actually ask about.",
@@ -733,7 +733,7 @@ const businessBroadband: InternetService = {
         "A business connection is not a faster consumer one. It is judged on what keeps running during the busiest hour of the week, and on what can be added to it when the business needs something a household never would.",
       scene: "applications",
       body: [
-        "These are the applications business broadband is expected to carry — all of them at the same time, on the same line, without one of them starving the others.",
+        "These are the applications business internet leased line is expected to carry — all of them at the same time, on the same line, without one of them starving the others.",
       ],
       listCaption: "Supports",
       list: [
@@ -822,8 +822,8 @@ const businessBroadband: InternetService = {
         },
       ],
       closing: {
-        heading: "When broadband stops being enough",
-        body: "If an hour of degraded performance would cost you real money, the honest answer is dedicated internet rather than a larger broadband plan. We will say so rather than sell you the upgrade.",
+        heading: "When internet leased line stops being enough",
+        body: "If an hour of degraded performance would cost you real money, the honest answer is dedicated internet rather than a larger internet leased line plan. We will say so rather than sell you the upgrade.",
       },
     },
   ],
@@ -833,7 +833,7 @@ const businessBroadband: InternetService = {
     "business-wifi",
     "lan-switching",
   ],
-  cta: { label: "Get a business broadband quote", href: "/contact" },
+  cta: { label: "Get a business internet leased line quote", href: "/contact" },
 };
 
 const dedicatedInternet: InternetService = {
@@ -842,7 +842,7 @@ const dedicatedInternet: InternetService = {
   eyebrow: "Connectivity",
   tagline: "Dedicated connectivity for business-critical operations.",
   intro:
-    "When your business depends heavily on its connection, shared broadband may not give you the performance, consistency or assurance you need.",
+    "When your business depends heavily on its connection, shared internet leased line may not give you the performance, consistency or assurance you need.",
   lede: [
     "SipLink Dedicated Internet provides a dedicated internet port at a dedicated port speed, designed for organisations that need predictable bandwidth, reliable performance and SLA-backed service.",
   ],
@@ -918,7 +918,7 @@ const dedicatedInternet: InternetService = {
       ],
       closing: {
         heading: "The test is simple",
-        body: "If an hour of degraded throughput would cost you money, meetings or customers, the capacity should not be shared. If it would merely be irritating, business broadband is the honest answer and we will say so.",
+        body: "If an hour of degraded throughput would cost you money, meetings or customers, the capacity should not be shared. If it would merely be irritating, business internet leased line is the honest answer and we will say so.",
       },
     },
     {
@@ -1764,7 +1764,7 @@ const multiLocation: InternetService = {
       heading: "What a multi-location solution can include",
       list: [
         "Dedicated internet",
-        "Business broadband",
+        "Business internet leased line",
         "VPN",
         "SD-WAN",
         "Managed routers",
@@ -2055,7 +2055,7 @@ export const planDay: {
  */
 export const planStepUp = {
   stay: {
-    heading: "Business broadband is the right answer when",
+    heading: "Business internet leased line is the right answer when",
     points: [
       "Your applications are cloud services rather than systems you host",
       "A slow hour would be irritating rather than expensive",

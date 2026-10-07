@@ -177,7 +177,7 @@ export function BenefitsSections() {
             <p className="max-w-xl text-pretty text-muted-foreground">
               If an hour of degraded performance would cost you more than
               patience, the honest answer is dedicated internet rather than a
-              larger broadband plan.
+              larger internet leased line plan.
             </p>
             <Button asChild variant="outline" className="ml-auto">
               <Link href="/internet/dedicated-internet">

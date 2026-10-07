@@ -50,7 +50,7 @@ const TIER_ICONS: LucideIcon[] = [Globe, ShieldCheck, Network, Boxes];
 
 /** How each connectivity service is named inside internetStack's base tier. */
 const LABELS: Record<string, string> = {
-  "business-broadband": "Business Broadband",
+  "business-broadband": "Business Internet Leased Line",
   "dedicated-internet": "Dedicated Internet",
   "static-ip": "Static IP",
 };

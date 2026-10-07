@@ -376,7 +376,7 @@ function StaticIpScene({ uid }: { uid: string }) {
 /** NETWORK — the whole stack, from the circuit down to the desk. */
 function NetworkScene({ uid }: { uid: string }) {
   const tiers = [
-    { y: 34, label: "Internet", sub: "broadband · dedicated" },
+    { y: 34, label: "Internet", sub: "internet leased line · dedicated" },
     { y: 92, label: "Firewall", sub: "policy · VPN" },
     { y: 150, label: "Switching", sub: "VLAN · PoE" },
     { y: 208, label: "Wi-Fi & devices", sub: "users · phones" },
@@ -655,7 +655,7 @@ function VpnScene() {
 function SdWanScene({ uid }: { uid: string }) {
   const links = [
     { y: 66, label: "Fibre", active: true },
-    { y: 136, label: "Broadband", active: false },
+    { y: 136, label: "Internet Leased Line", active: false },
     { y: 206, label: "LTE backup", active: false },
   ];
 

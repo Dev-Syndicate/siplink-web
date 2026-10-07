@@ -18,7 +18,7 @@ import { SdWanPathScene } from "@/components/site/scene-sdwan";
  */
 const links = [
   { name: "Fibre", state: "Carrying voice", active: true },
-  { name: "Broadband", state: "Carrying bulk", active: true },
+  { name: "Internet Leased Line", state: "Carrying bulk", active: true },
   { name: "LTE", state: "Standby", active: false },
 ];
 
