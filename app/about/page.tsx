@@ -14,19 +14,16 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { AboutAssureLifecycle } from "@/components/site/about-assure-lifecycle";
+import { AboutHeroIllustration } from "@/components/site/about-hero-illustration";
+import { AboutMissionPillars } from "@/components/site/about-mission-pillars";
 import { ClosingCta } from "@/components/site/closing-cta";
+import { ModernVoiceEcosystemIllustration } from "@/components/site/modern-voice-ecosystem";
+import { OfficeNetwork } from "@/components/site/office-network";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { OfficeNetwork } from "@/components/site/office-network";
-import { companyMissionVision } from "@/lib/company";
-import { assurances, reliability, site, whyChoose } from "@/lib/site";
+import { Card } from "@/components/ui/card";
+import { reliability, site, whyChoose } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About SipLink — Powering Better Business Communication",
@@ -37,7 +34,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      {/* Hero */}
+      {/* 1. Hero Section */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-muted/20 to-background py-16 sm:py-24">
         <div
           aria-hidden
@@ -80,67 +77,38 @@ export default function AboutPage() {
               </Button>
             </div>
           </div>
+
+          {/* Hero Illustration: Visuals + Texts connecting People, Customers, Candidates & Partners */}
+          <div className="mt-14 sm:mt-16">
+            <AboutHeroIllustration />
+          </div>
         </div>
       </section>
 
-      {/* Mission & Vision Section */}
+      {/* 2. Mission, Vision & Core Pillars Section */}
       <section className="border-b border-border bg-muted/30 py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid gap-8 md:grid-cols-2">
-            <Card className="border-border/80 bg-card p-8">
-              <span className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Rocket className="size-6" />
-              </span>
-              <h2 className="mt-4 text-2xl font-semibold tracking-tight">
-                {companyMissionVision.mission.title}
-              </h2>
-              <p className="mt-3 text-base leading-relaxed text-pretty text-muted-foreground">
-                {companyMissionVision.mission.statement}
-              </p>
-            </Card>
-
-            <Card className="border-border/80 bg-card p-8">
-              <span className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Globe className="size-6" />
-              </span>
-              <h2 className="mt-4 text-2xl font-semibold tracking-tight">
-                {companyMissionVision.vision.title}
-              </h2>
-              <p className="mt-3 text-base leading-relaxed text-pretty text-muted-foreground">
-                {companyMissionVision.vision.statement}
-              </p>
-            </Card>
+          <div className="mx-auto max-w-2xl text-center mb-12 sm:mb-16">
+            <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
+              Strategic Foundation
+            </span>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Our Mission, Vision &amp; Pillars
+            </h2>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              Built on architectural principles that protect uptime, simplify scalability, and provide direct access to real telecom engineers.
+            </p>
           </div>
 
-          {/* Pillars */}
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {companyMissionVision.pillars.map((pillar) => {
-              const Icon = pillar.icon;
-              return (
-                <div
-                  key={pillar.title}
-                  className="rounded-xl border border-border/80 bg-card p-6 shadow-sm"
-                >
-                  <span className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <Icon className="size-5" />
-                  </span>
-                  <h3 className="mt-4 text-base font-semibold text-foreground">
-                    {pillar.title}
-                  </h3>
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                    {pillar.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+          <AboutMissionPillars />
         </div>
       </section>
 
-      {/* Built for the way businesses communicate today */}
+      {/* 3. Built for the way businesses communicate today */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div>
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+          {/* Narrative Column */}
+          <div className="lg:col-span-5">
             <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
               Modern Cloud Voice
             </span>
@@ -177,29 +145,34 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-1">
-            {reliability.map(({ title, description, icon: Icon }) => (
-              <div
-                key={title}
-                className="flex items-start gap-4 rounded-xl border border-border/80 bg-muted/30 p-5"
-              >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-background text-primary shadow-sm ring-1 ring-border">
+          {/* Visual Console Column */}
+          <div className="lg:col-span-7">
+            <ModernVoiceEcosystemIllustration />
+          </div>
+        </div>
+
+        {/* 3 Reliability Infrastructure Highlights below */}
+        <div className="mt-14 grid gap-5 sm:grid-cols-3">
+          {reliability.map(({ title, description, icon: Icon }) => (
+            <div
+              key={title}
+              className="flex flex-col justify-between rounded-xl border border-border/80 bg-muted/20 p-5 shadow-xs"
+            >
+              <div>
+                <span className="flex size-10 items-center justify-center rounded-lg bg-background text-primary shadow-xs ring-1 ring-border">
                   <Icon className="size-5" aria-hidden />
                 </span>
-                <div>
-                  <h3 className="font-medium text-foreground">{title}</h3>
-                  <p className="mt-1 text-sm text-pretty text-muted-foreground">
-                    {description}
-                  </p>
-                </div>
+                <h3 className="mt-3.5 font-semibold text-foreground">{title}</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-pretty text-muted-foreground">
+                  {description}
+                </p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Three staffed offices, one registered US entity — the real shape of
-          the company, not a stock map graphic. */}
+      {/* 4. Three staffed offices, one business */}
       <section className="border-t border-border py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="mx-auto max-w-2xl text-center">
@@ -222,7 +195,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Siplink Assure */}
+      {/* 5. SipLink Assure — Operational Standards */}
       <section className="border-t border-border bg-muted/30 py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="mx-auto max-w-2xl text-center">
@@ -237,25 +210,13 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {assurances.map(({ title, description, icon: Icon }) => (
-              <Card key={title} className="h-full border-border/80 bg-card">
-                <CardHeader>
-                  <span className="mb-2 flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <Icon className="size-5" aria-hidden />
-                  </span>
-                  <CardTitle className="text-lg">{title}</CardTitle>
-                  <CardDescription className="text-pretty">
-                    {description}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
+          <div className="mt-14">
+            <AboutAssureLifecycle />
           </div>
         </div>
       </section>
 
-      {/* Why choose SipLink */}
+      {/* 6. Why choose SipLink */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
         <div className="mx-auto max-w-2xl text-center">
           <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
@@ -271,13 +232,13 @@ export default function AboutPage() {
 
         <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {whyChoose.map(({ title, description, icon: Icon }) => (
-            <div key={title} className="flex gap-4">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary shadow-sm">
+            <div key={title} className="flex gap-4 rounded-xl border border-border/80 bg-card p-5 shadow-xs">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary shadow-xs">
                 <Icon className="size-5" aria-hidden />
               </span>
               <div>
-                <h3 className="font-medium text-foreground">{title}</h3>
-                <p className="mt-1.5 text-sm text-pretty text-muted-foreground">
+                <h3 className="font-semibold text-foreground">{title}</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-pretty text-muted-foreground">
                   {description}
                 </p>
               </div>
@@ -286,7 +247,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* 7. CTA */}
       <ClosingCta
         heading="Let’s talk"
         body="Discover what makes SipLink different — book a walkthrough with our engineering team."
