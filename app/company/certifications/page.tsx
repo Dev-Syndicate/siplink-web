@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { ClosingCta } from "@/components/site/closing-cta";
+import { CompliancePath } from "@/components/site/compliance-path";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -113,6 +114,31 @@ export default function CertificationsPage() {
         </div>
       </section>
 
+      {/* Every call, under five frameworks — drawn as the path it actually
+          takes rather than five unrelated badges. */}
+      <section className="border-b border-border bg-muted/20 py-16 lg:py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
+              One Call, Five Checkpoints
+            </span>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Every call answers to all five
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              DoT governs the network the call travels on; ISO 27001 and
+              SOC 2 govern how the data behind it is handled; HIPAA and GDPR
+              govern who is allowed to see it afterward. Select any mark to
+              jump to the detail.
+            </p>
+          </div>
+
+          <div className="mt-14">
+            <CompliancePath />
+          </div>
+        </div>
+      </section>
+
       {/* Verified Certifications Showcase */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
         <div className="mx-auto max-w-2xl text-center">
@@ -137,7 +163,7 @@ export default function CertificationsPage() {
               <Card
                 key={cert.id}
                 id={cert.id}
-                  className="overflow-hidden border-border/80 bg-card/60 shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-md"
+                  className="scroll-mt-28 overflow-hidden border-border/80 bg-card/60 shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-md"
                 >
                   <div
                     className={`grid items-center gap-8 p-6 sm:p-10 lg:grid-cols-12 lg:gap-12 ${

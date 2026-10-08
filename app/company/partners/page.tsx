@@ -1,19 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import {
-  ArrowRight,
-  Briefcase,
-  CheckCircle2,
-  Cpu,
-  HeartHandshake,
-  Layers,
-  Network,
-  Puzzle,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, HeartHandshake } from "lucide-react";
 
 import { ClosingCta } from "@/components/site/closing-cta";
+import { IntegrationWall } from "@/components/site/integration-wall";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { partnerCategories, partnerTracks } from "@/lib/company";
-import { integrationLogos, site } from "@/lib/site";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Partners — Stronger Together | SipLink Ecosystem",
@@ -82,72 +72,49 @@ export default function PartnersPage() {
         </div>
       </section>
 
-      {/* Technology That Works Together */}
+      {/* The wired-hub diagram used on the homepage, carrying the same
+          integrations this page already names — the real signature of a
+          partner page is seeing the wire land, not a logo tile. */}
+      <IntegrationWall
+        heading="Every integration, one connected ecosystem"
+        description="SipLink sits in the middle of the tools your team already runs — CRM, helpdesk, collaboration, and recruiting software — so calls, contacts, and records stay in one place."
+      />
+
+      {/* Integration Categories — a plain list rather than another card grid,
+          since the wall above already carries the visual weight. */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
         <div className="mx-auto max-w-2xl text-center">
           <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
-            Ecosystem Integrations
+            By Category
           </span>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Technology that works together
+            Where each integration fits
           </h2>
           <p className="mt-4 text-pretty text-muted-foreground">
-            Our integrations and platform partnerships help connect every voice
-            interaction with the tools and applications your teams already rely on.
+            Four kinds of software our customers already run the integrations
+            above into.
           </p>
         </div>
 
-        {/* Verified Integration Logo Grid */}
-        <div className="mt-14 rounded-2xl border border-border/80 bg-card p-6 shadow-sm sm:p-10">
-          <div className="text-center">
-            <h3 className="text-lg font-semibold tracking-tight">
-              Verified Integrations & Ecosystem Applications
-            </h3>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Directly integrated with leading CRMs, collaboration platforms, and staffing suites
-            </p>
-          </div>
-
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
-            {integrationLogos.map((item) => (
-              <div
-                key={item.name}
-                className="group flex flex-col items-center justify-center rounded-xl border border-border/60 bg-background/80 p-5 transition-all duration-300 hover:border-primary/40 hover:bg-muted/40 hover:shadow-sm"
-              >
-                <div className="relative flex h-12 w-28 items-center justify-center">
-                  <Image
-                    src={item.src}
-                    alt={`${item.name} logo`}
-                    width={item.w}
-                    height={item.h}
-                    className="max-h-9 max-w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0"
-                  />
-                </div>
-                <span className="mt-2 text-xs font-medium text-muted-foreground group-hover:text-foreground">
-                  {item.name}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Integration Categories Grid */}
-        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 divide-y divide-border/80 border-y border-border/80">
           {partnerCategories.map((cat) => {
             const Icon = cat.icon;
             return (
-              <Card key={cat.title} className="flex flex-col justify-between border-border/80">
-                <CardHeader>
-                  <span className="mb-2 flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <div
+                key={cat.title}
+                className="grid gap-4 py-7 sm:grid-cols-[minmax(0,16rem)_1fr] sm:items-start sm:gap-8"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <Icon className="size-5" />
                   </span>
-                  <CardTitle className="text-lg font-semibold">{cat.title}</CardTitle>
-                  <CardDescription className="text-sm leading-relaxed text-pretty">
+                  <h3 className="font-semibold text-foreground">{cat.title}</h3>
+                </div>
+                <div>
+                  <p className="text-sm leading-relaxed text-pretty text-muted-foreground">
                     {cat.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="border-t border-border/60 pt-4">
-                  <div className="flex flex-wrap gap-1.5">
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
                     {cat.examples.map((ex) => (
                       <Badge
                         key={ex}
@@ -158,8 +125,8 @@ export default function PartnersPage() {
                       </Badge>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             );
           })}
         </div>

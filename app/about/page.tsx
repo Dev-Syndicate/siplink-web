@@ -24,6 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { OfficeNetwork } from "@/components/site/office-network";
 import { companyMissionVision } from "@/lib/company";
 import { assurances, reliability, site, whyChoose } from "@/lib/site";
 
@@ -32,17 +33,6 @@ export const metadata: Metadata = {
   description:
     "SipLink Communications has been building business voice since 2012 — cloud telephony, SIP trunking, and unified communications for growing organizations worldwide.",
 };
-
-/**
- * Founding dates come from the sales brochure. Sources disagree on the ISP
- * licence year, so only the two dates the brochure states are shown here.
- * See details-content.md §20.1.
- */
-const milestones = [
-  { year: "2012", label: "SipLink started" },
-  { year: "2014", label: "Incorporated" },
-  { year: "10,000+", label: "Customers served" },
-];
 
 export default function AboutPage() {
   return (
@@ -90,17 +80,6 @@ export default function AboutPage() {
               </Button>
             </div>
           </div>
-
-          <dl className="mt-16 grid grid-cols-3 gap-6 rounded-2xl border border-border/80 bg-card/60 p-6 backdrop-blur md:p-8">
-            {milestones.map(({ year, label }) => (
-              <div key={label} className="text-center">
-                <dt className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                  {year}
-                </dt>
-                <dd className="mt-1 text-sm text-muted-foreground">{label}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
 
@@ -215,6 +194,30 @@ export default function AboutPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Three staffed offices, one registered US entity — the real shape of
+          the company, not a stock map graphic. */}
+      <section className="border-t border-border py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
+              Where We Operate
+            </span>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Three offices, one business
+            </h2>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              SipLink Communications Pvt. Ltd. runs out of Chennai, Bangalore,
+              and Hyderabad, with SipLink Communications LLC registered in
+              Sheridan, Wyoming for US customers.
+            </p>
+          </div>
+
+          <div className="mt-14">
+            <OfficeNetwork />
           </div>
         </div>
       </section>

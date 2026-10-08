@@ -5,14 +5,11 @@ import {
   CheckCircle2,
   Globe,
   Headphones,
-  Layers,
-  Network,
-  Puzzle,
-  Rocket,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
 
+import { CapabilityPath } from "@/components/site/capability-path";
 import { ClosingCta } from "@/components/site/closing-cta";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,20 +21,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { whySipLinkDifferentiators } from "@/lib/company";
-import { certifications, reliability, site } from "@/lib/site";
+import { reliability, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Why SipLink — Built for Reliable Business Communication",
   description:
     "Discover why growing businesses and enterprises choose SipLink for business voice, cloud PBX, SIP trunking, and unified communications.",
 };
-
-const proofStats = [
-  { value: "10,000+", label: "Businesses Connected", sub: "Since 2012" },
-  { value: "24/7", label: "Specialist Support", sub: "Direct Telecom Engineers" },
-  { value: "100%", label: "Carrier-Grade IP", sub: "Direct Routing & QoS" },
-  { value: "5+", label: "Compliance Benchmarks", sub: "DoT, ISO, SOC 2, HIPAA, GDPR" },
-];
 
 export default function WhySipLinkPage() {
   return (
@@ -104,20 +94,28 @@ export default function WhySipLinkPage() {
               )}
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Stats Bar */}
-          <div className="mt-16 grid grid-cols-2 gap-4 rounded-2xl border border-border/80 bg-card/60 p-6 backdrop-blur md:grid-cols-4 md:p-8">
-            {proofStats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                  {stat.value}
-                </div>
-                <div className="mt-1 text-sm font-medium text-foreground">
-                  {stat.label}
-                </div>
-                <div className="text-xs text-muted-foreground">{stat.sub}</div>
-              </div>
-            ))}
+      {/* How a call actually moves through the platform — the real order
+          from the feature catalogue, not a decorative sequence. */}
+      <section className="border-b border-border bg-muted/20 py-16 lg:py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
+              Under the Hood
+            </span>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              What happens when a call comes in
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              One connected path, not five separate products you have to wire
+              together yourself.
+            </p>
+          </div>
+
+          <div className="mt-14">
+            <CapabilityPath />
           </div>
         </div>
       </section>

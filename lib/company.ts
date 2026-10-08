@@ -327,42 +327,28 @@ export const partnerCategories: PartnerCategory[] = [
     description:
       "Connect telephony directly into sales and relationship workflows for automatic call logging, click-to-dial, and instant customer record lookup.",
     icon: Puzzle,
-    examples: ["Salesforce", "Zoho CRM", "HubSpot", "Bitrix24"],
+    examples: ["Salesforce", "Zoho", "HubSpot", "Bitrix24"],
   },
   {
     title: "Productivity & Collaboration Suites",
     description:
       "Unify office suites and corporate calendars with business voice for seamless meetings, directory dialling, and document sharing.",
     icon: MessagesSquare,
-    examples: ["Microsoft 365", "Microsoft Teams Calling", "Google Workspace"],
+    examples: ["Microsoft 365", "Google Workspace"],
   },
   {
     title: "Recruiting & Staffing Platforms",
     description:
       "High-velocity outreach, recruiter tracking, and automated candidate conversation logging built directly into recruitment software.",
     icon: Users,
-    examples: ["CEIPAL", "Staffing ATS integrations"],
+    examples: ["CEIPAL", "JobDiva"],
   },
   {
     title: "Helpdesk & Customer Support Systems",
     description:
       "Route support calls smoothly into agent ticketing queues, display ticket context on inbound rings, and attach call recordings automatically.",
     icon: Headset,
-    examples: ["Zendesk", "Customer Service Portals"],
-  },
-  {
-    title: "Enterprise ERP & Business Systems",
-    description:
-      "Synchronize communication across billing, inventory, and enterprise resource planning systems for end-to-end visibility.",
-    icon: Cpu,
-    examples: ["Odoo", "Custom REST & Webhook APIs"],
-  },
-  {
-    title: "Carrier & Network Infrastructure",
-    description:
-      "Direct carrier interconnections, Class-A ISP routing, and redundant Tier-1 IP peers delivering high-definition voice and guaranteed QoS.",
-    icon: Network,
-    examples: ["Carrier-Neutral POPs", "Tier-1 IP Interconnects"],
+    examples: ["Zendesk", "Sugar"],
   },
 ];
 
@@ -370,33 +356,33 @@ export const partnerTracks = [
   {
     title: "Technology & Software Partners (ISVs)",
     description:
-      "Embed SipLink's carrier-grade voice, business SMS, and SIP trunking into your SaaS product, CRM, or vertical application through our APIs and SDKs.",
+      "Embed SipLink's voice, business SMS, and SIP trunking into your SaaS product, CRM, or vertical application through our APIs and SDKs.",
     benefits: [
-      "Developer-friendly REST APIs, WebRTC SDKs, and webhooks",
-      "Technical sandbox environments and co-engineering guidance",
-      "Joint solution showcase and marketplace listing opportunities",
+      "Open API integration, REST APIs, and webhooks for event-driven workflows",
+      "SDK-based integration where available for your platform",
+      "Custom business workflow integration support from our team",
     ],
     icon: Cpu,
   },
   {
     title: "Solution Providers, MSPs & Resellers",
     description:
-      "Expand your technology portfolio with enterprise-ready cloud PBX, SIP trunking, and call center solutions backed by 24/7 specialist support.",
+      "Expand your technology portfolio with cloud PBX, SIP trunking, and call center solutions backed by SipLink's support team.",
     benefits: [
-      "Competitive wholesale margins and recurring revenue structures",
-      "Full onboarding assistance and dedicated partner account manager",
-      "White-glove number porting and technical cutover support for your clients",
+      "Dedicated partner point of contact for onboarding and technical questions",
+      "Multi-tenant and reseller administration options where applicable",
+      "Number porting and technical cutover support for your clients",
     ],
     icon: HeartHandshake,
   },
   {
     title: "Consultants & Telecom Advisors",
     description:
-      "Deliver trusted, compliant communication solutions to your corporate clients moving away from legacy copper or proprietary on-premise hardware.",
+      "Deliver compliant communication solutions to your corporate clients moving away from legacy copper or on-premise hardware.",
     benefits: [
-      "Tailored solution engineering for complex multi-site deployments",
-      "Transparent pricing models with zero hidden telecom surcharges",
-      "Reliable SLA assurances and regulatory compliance verification",
+      "Solution engineering support for multi-site deployments",
+      "Access to current compliance detail (DoT, ISO 27001, SOC 2, HIPAA, GDPR)",
+      "Direct line to our team for commercial and technical discussions",
     ],
     icon: Briefcase,
   },
@@ -484,103 +470,3 @@ export const careerDepartments = [
   },
 ];
 
-/* -------------------------------------------------------------------------
- * 6. News & Communication Insights (Section 5 of why_siplink.md)
- * ---------------------------------------------------------------------- */
-
-export type InsightArticle = {
-  slug: string;
-  category: "Cloud Communications" | "Business Voice & SIP" | "AI & Innovation" | "Contact Centers" | "Compliance & Security";
-  title: string;
-  summary: string;
-  readTime: string;
-  icon: LucideIcon;
-  keyPoints: string[];
-};
-
-export const verifiedInsights: InsightArticle[] = [
-  {
-    slug: "how-modern-voip-works",
-    category: "Business Voice & SIP",
-    title: "How Voice Over IP (VoIP) and SIP Trunking Work for Modern Businesses",
-    summary:
-      "A clear examination of Session Initiation Protocol (SIP), packetized voice data, codec selection, and why modern IP routing outperforms legacy circuits.",
-    readTime: "5 min read",
-    icon: PhoneCall,
-    keyPoints: [
-      "How SIP establishes, manages, and terminates voice sessions over IP networks",
-      "The role of jitter buffers, low-latency routing, and QoS in voice clarity",
-      "Eliminating traditional physical copper lines while keeping on-premise PBX equipment",
-    ],
-  },
-  {
-    slug: "cloud-telephony-vs-on-premise",
-    category: "Cloud Communications",
-    title: "Why Growing Organizations Are Migrating from Legacy PRI to Cloud PBX",
-    summary:
-      "Analyzing the operational, resilience, and financial advantages of eliminating on-premise telecom closet hardware in favor of hosted cloud telephony.",
-    readTime: "6 min read",
-    icon: Cloud,
-    keyPoints: [
-      "Zero on-site hardware maintenance and instant automatic software updates",
-      "Enabling true extension mobility across desktops, mobile apps, and remote offices",
-      "Substantial cost savings with bundled US/Canada calling and scalable per-user pricing",
-    ],
-  },
-  {
-    slug: "hipaa-compliant-healthcare-communication",
-    category: "Compliance & Security",
-    title: "Safeguarding Patient Data: Best Practices for HIPAA-Aligned Communications",
-    summary:
-      "Understanding the essential administrative, physical, and technical safeguards necessary when transmitting and recording voice data in healthcare and medical billing.",
-    readTime: "7 min read",
-    icon: HeartPulse,
-    keyPoints: [
-      "Configuring restricted access and role-based permissions for call recordings",
-      "Ensuring encryption in transit via TLS and SRTP protocols",
-      "Establishing business operational policies alongside secure communication platforms",
-    ],
-  },
-  {
-    slug: "ai-voice-assistants-in-contact-centers",
-    category: "AI & Innovation",
-    title: "The Role of AI Voice Assistants and Automation in Customer Contact Centers",
-    summary:
-      "How intelligent IVR, automated conversational assistants, and real-time speech analytics help support teams respond faster without sacrificing human touch.",
-    readTime: "5 min read",
-    icon: Bot,
-    keyPoints: [
-      "Deflecting routine repetitive inquiries with natural language voice bots",
-      "Intelligent queue prioritization and skills-based caller routing",
-      "Automatic transcription and CRM activity logging for support representatives",
-    ],
-  },
-  {
-    slug: "crm-telephony-integration-impact",
-    category: "Cloud Communications",
-    title: "Connecting Cloud Voice with Business CRMs: Salesforce, Zoho, and CEIPAL",
-    summary:
-      "Why integrating your business phone system with your customer relationship tools unlocks agent productivity and accurate conversation analytics.",
-    readTime: "6 min read",
-    icon: Puzzle,
-    keyPoints: [
-      "Click-to-call directly within contact and candidate profile pages",
-      "Instant caller identification and historical account timeline screen-pops",
-      "Automatic synchronisation of call recordings, timestamps, and duration metrics",
-    ],
-  },
-  {
-    slug: "dot-compliance-telecom-india",
-    category: "Compliance & Security",
-    title: "Telecom Compliance in India: Navigating DoT Licensing and Routing Rules",
-    summary:
-      "A practical overview of Department of Telecommunications (DoT) requirements, compliant PSTN interconnection, and the importance of certified telecom providers.",
-    readTime: "6 min read",
-    icon: Building2,
-    keyPoints: [
-      "Understanding DoT regulations regarding enterprise voice routing and toll bypass prevention",
-      "The role of Class-A ISP infrastructure and local carrier-neutral POPs",
-      "Ensuring audit-ready Call Detail Records (CDR) and customer identification protocols",
-    ],
-  },
-];
