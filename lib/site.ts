@@ -1033,10 +1033,11 @@ export const whyChoose: Simple[] = [
   },
 ];
 
-/** The company's own explainer video, from the homepage "See How" button. */
+/** The homepage film, self-hosted from `public/videos`. */
 export const explainerVideo = {
-  id: "4e6X2xEdzY4",
-  title: "SIPLINK UCPBX",
+  src: "/videos/siplink-explainer.mp4",
+  poster: "/videos/siplink-explainer-poster.jpg",
+  title: "SipLink: someone answers",
 } as const;
 
 /**
