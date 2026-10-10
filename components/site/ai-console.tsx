@@ -20,18 +20,10 @@ const DWELL = 5000;
  * The sheen is the section's AI signature — the same moving highlight appears
  * on every marker that stands for the AI and nowhere else on the site.
  */
-function AiMark({ live = false }: { live?: boolean }) {
+function AiMark() {
   return (
-    // The wrapper does not clip, so the dashed copy can rise clear of the
-    // chip. The sheen is clipped by the chip itself, one level in.
+    // The sheen is clipped by the chip itself.
     <span className="relative inline-flex size-6 shrink-0 items-center justify-center">
-      {live ? (
-        <span
-          aria-hidden
-          className="ghost-lift pointer-events-none absolute inset-0 rounded-md border border-dashed border-current"
-        />
-      ) : null}
-
       <span className="relative inline-flex size-6 items-center justify-center overflow-hidden rounded-md bg-gradient-to-br from-brand-from to-brand-to">
         <span className="font-mono text-[10px] leading-none font-semibold tracking-tight text-primary-foreground">
           AI
@@ -307,7 +299,7 @@ export function AiConsole() {
             className="overflow-hidden rounded-2xl bg-foreground text-background shadow-xl"
           >
             <div className="flex items-center gap-2.5 border-b border-background/15 px-5 py-3.5">
-              <AiMark live={running} />
+              <AiMark />
 
               <span className="text-xs font-medium">
                 {active === 2 ? "AI answering" : "AI transcribing"}
@@ -533,7 +525,7 @@ function Notes({ dim }: { dim: boolean }) {
         style={{ "--note-delay": "120ms" } as React.CSSProperties}
         className="note-attach flex items-center gap-2.5"
       >
-        <AiMark live={!dim} />
+        <AiMark />
         <span className="text-xs font-medium">AI wrote this</span>
       </div>
 
@@ -586,7 +578,7 @@ function Reply() {
         style={{ "--note-delay": "120ms" } as React.CSSProperties}
         className="note-attach flex items-center gap-2.5"
       >
-        <AiMark live />
+        <AiMark />
         <span className="text-xs font-medium">AI said this</span>
       </div>
 

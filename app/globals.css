@@ -1263,33 +1263,10 @@
     animation-delay: var(--ghost-delay, 0ms);
   }
 
-  /* The reference's other half: a dashed copy of a shape, offset from the
-     solid one it belongs to. It detaches from the AI mark and rises while
-     the console is working, so the mark reads as generating something rather
-     than merely sitting in the corner. */
-  @keyframes ghost-lift {
-    0% {
-      opacity: 0;
-      transform: translateY(0) scale(1);
-    }
-    22% {
-      opacity: 0.7;
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-0.75rem) scale(1.2);
-    }
-  }
-
-  .ghost-lift {
-    animation: ghost-lift 2.8s ease-out infinite;
-  }
-
-  /* Both are pure illustration — the rail's words carry every claim — so
-     under reduced motion they simply are not drawn. */
+  /* Pure illustration — the rail's words carry every claim — so under
+     reduced motion it simply is not drawn. */
   @media (prefers-reduced-motion: reduce) {
-    .ghost-line,
-    .ghost-lift {
+    .ghost-line {
       animation: none;
       opacity: 0;
     }
