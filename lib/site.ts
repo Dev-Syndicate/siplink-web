@@ -339,6 +339,69 @@ export const industries: Industry[] = [
   },
 ];
 
+/**
+ * Homepage FAQ, the ten questions from the redesign brief.
+ *
+ * Every answer restates something the site or the supplied documentation
+ * already says; none of them adds a claim. Where the documentation lists a
+ * fact as unconfirmed (porting timelines, HIPAA scope) the answer says the
+ * team confirms it for the customer instead of quoting a figure. The same
+ * text feeds the visible accordion and the FAQPage structured data, so the
+ * two cannot drift apart.
+ */
+export const homeFaqs: { question: string; answer: string }[] = [
+  {
+    question: "Can I keep my existing phone numbers?",
+    answer:
+      "Yes. Number porting moves your existing business numbers to SipLink, so customers keep calling the numbers they already know and you do not have to update your website, advertising or business cards.",
+  },
+  {
+    question: "How long does number porting take?",
+    answer:
+      "It depends on your current carrier and the numbers being moved, so we confirm the schedule for your numbers before anything changes. Our team coordinates the port and the switch-over to keep disruption to a minimum.",
+  },
+  {
+    question: "Do I need to replace my existing phones?",
+    answer:
+      "Not for the cloud phone system, which needs no on-site PBX. Use desk IP phones (available on lease), softphones, a browser or the SipLink mobile app. If you already run an IP-PBX, SIP trunking connects it to our network without replacing it. We check which of your current handsets can stay during planning.",
+  },
+  {
+    question: "Can SipLink integrate with Salesforce, HubSpot or Zoho?",
+    answer:
+      "Yes. SipLink works with Salesforce, HubSpot, Zoho and Bitrix24, along with Microsoft 365, Google Workspace and Odoo. Which integrations come with your plan varies, so ask us to confirm the ones you need.",
+  },
+  {
+    question: "Do you support WhatsApp Business?",
+    answer:
+      "Yes. The SipLink WhatsApp Business API lets your team talk to customers on WhatsApp, with those conversations arriving in the same centralised inbox as SMS.",
+  },
+  {
+    question: "Is call recording available?",
+    answer:
+      "Yes. Calls can be recorded automatically or on demand, and recordings can be stored and downloaded as MP3 or WAV. Role-based access controls who can listen to them.",
+  },
+  {
+    question: "Can I use SipLink on mobile?",
+    answer:
+      "Yes. The SipLink UC app for iOS and Android puts your business line on your phone, and you can also call from a browser, a desktop softphone or an IP phone.",
+  },
+  {
+    question: "Do you provide 24/7 support?",
+    answer:
+      "Yes. You can reach a named support team on WhatsApp, phone and email at any hour, and one expert owns your issue from the first message until it is closed.",
+  },
+  {
+    question: "Is SipLink suitable for healthcare organizations?",
+    answer:
+      "Healthcare teams use SipLink for communication between patients, providers and billing teams, with business calling, call recording, transcription, SMS and IVR. If you have specific HIPAA requirements, talk to us and we will confirm how SipLink supports them.",
+  },
+  {
+    question: "What is the minimum number of users or lines?",
+    answer:
+      "Our published plans are priced per user per month and require a minimum of 10 lines. SIP trunking, call center and AI voice are priced to your requirements, so contact us for a custom quote.",
+  },
+];
+
 export type Office = {
   city: string;
   entity: string;

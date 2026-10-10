@@ -6,6 +6,7 @@ import { AiConsole } from "@/components/site/ai-console";
 import { CtaPanel } from "@/components/site/cta-panel";
 import { CustomerStories } from "@/components/site/customer-stories";
 import { FeatureCards } from "@/components/site/feature-cards";
+import { FaqSection } from "@/components/site/faq-section";
 import { HowItWorks } from "@/components/site/how-it-works";
 import { IntegrationWall } from "@/components/site/integration-wall";
 import { SectorStage } from "@/components/site/sector-stage";
@@ -542,6 +543,8 @@ export default function Home() {
       <CustomerStories />
 
       <HowItWorks />
+
+      <FaqSection />
 
       {/* ---------------------------------------------------------------
           Apps. The other half of "does it fit my stack?" — the integration
