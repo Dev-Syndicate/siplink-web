@@ -6,6 +6,7 @@ import { AiConsole } from "@/components/site/ai-console";
 import { CtaPanel } from "@/components/site/cta-panel";
 import { CustomerStories } from "@/components/site/customer-stories";
 import { FeatureCards } from "@/components/site/feature-cards";
+import { HowItWorks } from "@/components/site/how-it-works";
 import { IntegrationWall } from "@/components/site/integration-wall";
 import { SectorStage } from "@/components/site/sector-stage";
 import { SwitchingStory } from "@/components/site/switching-story";
@@ -484,8 +485,8 @@ export default function Home() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Every provider sells the same features. What customers write
-              about, over and over, is that someone answers, on WhatsApp, on
-              the phone, at any hour, and the problem gets fixed.
+              about, over and over, is that someone answers, on WhatsApp, on the
+              phone, at any hour, and the problem gets fixed.
             </p>
           </div>
 
@@ -539,6 +540,8 @@ export default function Home() {
           actually went through with it. The wall of names answers that, and
           it is the last thing read before the closing ask. */}
       <CustomerStories />
+
+      <HowItWorks />
 
       {/* ---------------------------------------------------------------
           Apps. The other half of "does it fit my stack?" — the integration
