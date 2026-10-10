@@ -5,7 +5,6 @@ import {
   Check,
   PhoneCall,
   Quote,
-  ShieldCheck,
   Star,
 } from "lucide-react";
 
@@ -17,15 +16,14 @@ import { IntegrationWall } from "@/components/site/integration-wall";
 import { SectorStage } from "@/components/site/sector-stage";
 import { SwitchingStory } from "@/components/site/switching-story";
 import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
+import { TrustStrip } from "@/components/site/trust-strip";
 import { TypedQuote } from "@/components/site/typed-quote";
 import { VideoEmbed } from "@/components/site/video-embed";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   heroHighlights,
   homePillars,
   mobileApps,
-  plans,
   reviews,
   site,
   whyIncludes,
@@ -58,6 +56,14 @@ import {
  * stack of identical centred blocks.
  */
 
+/** What the hero promises beside the CTAs. */
+const heroSupportPoints = [
+  "Keep Your Existing Numbers",
+  "24/7 Expert Support",
+  "No Hardware Required",
+  "Built for Growing Businesses",
+];
+
 /** The single review we pull forward as the page's headline proof. */
 const featuredReview = reviews[0];
 
@@ -65,8 +71,13 @@ export default function Home() {
   return (
     <>
       {/* ---------------------------------------------------------------
-          Hero. One dominant focal point: the claim, the two CTAs, and
-          proof the visitor can verify. Everything below is subordinate.
+          Hero. A first-time visitor has to know what SipLink sells within
+          a few seconds, so the headline names the product and the buyer,
+          the subheadline lists what is on offer, and the two CTAs split
+          "ready to talk" from "still looking". The four supporting points
+          answer the usual objections (numbers, support, hardware, fit)
+          while the floating cards frame the photograph. Trust claims get
+          their own section below, once they can be verified.
          --------------------------------------------------------------- */}
       <section className="relative overflow-hidden border-b border-border">
         {/* The photograph is the section's backdrop, not a column item: it
@@ -96,41 +107,32 @@ export default function Home() {
 
         {/* The only section on the page that does not sit on the shared
             `max-w-7xl` grid: its inset and its height both come from
-            `.hero-frame` in globals.css, where the reasoning lives. The
-            gutter applies on both sides — the photograph bleeds past it
-            either way, but the cards floating over her are positioned off
-            this box, and a left-only rule left them eight pixels from the
-            window edge. */}
+            `.hero-frame` in globals.css, where the reasoning lives. */}
         <div className="hero-frame relative mx-auto flex w-full flex-col justify-center py-12 lg:py-16">
-          <div className="grid gap-14 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:items-center lg:gap-12 xl:gap-16">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:items-center lg:gap-12 xl:gap-16">
             <div>
-              <Badge variant="secondary" className="font-mono tracking-widest">
-                <ShieldCheck className="size-3.5" aria-hidden />
-                HIPAA COMPLIANT &middot; DoT-LICENSED
-              </Badge>
-
               {/* Fluid: tracks viewport height too, so a short laptop screen
                   gets a smaller headline rather than an overflowing one. */}
-              <h1 className="font-heading mt-5 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[clamp(2.25rem,4.2vh+1.1vw,3.5rem)]">
-                Enterprise-grade voice.{" "}
+              <h1 className="font-heading text-4xl leading-[1.08] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[clamp(2.25rem,4vh+1.1vw,3.25rem)]">
+                Business Phone Systems{" "}
                 <span className="text-primary">
-                  Answered by people who pick up.
+                  Built for How Your Team Works
                 </span>
               </h1>
 
               <p className="mt-5 max-w-xl text-base text-pretty text-muted-foreground lg:text-lg">
-                A cloud phone system for growing businesses — hosted PBX, SIP
-                trunking, call centre and unified communications on one secure
-                network. Keep your numbers. Lose the hardware.
+                Cloud PBX, SIP Trunking, Call Center, WhatsApp and AI-powered
+                communications, all managed by one reliable communications
+                partner.
               </p>
 
               <div className="mt-7 flex flex-wrap items-center gap-4">
                 <Button asChild size="lg">
-                  <Link href="/contact">Book a demo</Link>
+                  <Link href="/contact">Book a Free Consultation</Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="group">
-                  <Link href="/pricing">
-                    See pricing
+                  <Link href="/solutions">
+                    Explore Solutions
                     <ArrowRight
                       className="transition-transform group-hover:translate-x-0.5"
                       aria-hidden
@@ -139,14 +141,16 @@ export default function Home() {
                 </Button>
               </div>
 
-              <p className="mt-4 text-sm text-muted-foreground">
-                From{" "}
-                <span className="font-medium text-foreground">
-                  {plans[0].price}
-                </span>{" "}
-                per user / month &middot; unlimited US &amp; Canada calling
-                &middot; minimum 10 lines
-              </p>
+              <ul className="mt-8 grid max-w-xl gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
+                {heroSupportPoints.map((point) => (
+                  <li key={point} className="flex items-center gap-2.5">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <Check className="size-3" aria-hidden />
+                    </span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Below `lg` the backdrop is hidden, so the photo appears here
@@ -271,6 +275,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <TrustStrip />
 
       {/* ---------------------------------------------------------------
           Why SipLink. Three beats that each do a different job: the
