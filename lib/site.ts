@@ -416,7 +416,11 @@ export const planAssurances: {
   icon: LucideIcon;
 }[] = [
   { value: "Unlimited calling", label: "US & Canada", icon: MessagesSquare },
-  { value: "Free local number", label: "Included in all plans", icon: PhoneCall },
+  {
+    value: "Free local number",
+    label: "Included in all plans",
+    icon: PhoneCall,
+  },
   { value: "Minimum 10 lines", label: "Scale as you grow", icon: UsersRound },
   {
     value: "No hidden fees",
@@ -1072,16 +1076,64 @@ export const explainerVideo = {
  * fill goes.
  */
 export const integrationLogos = [
-  { name: "Salesforce", src: "/new-integrations/salesforce.png", w: 616, h: 431, fill: 79 },
-  { name: "HubSpot", src: "/new-integrations/hubspot.png", w: 704, h: 201, fill: 92 },
+  {
+    name: "Salesforce",
+    src: "/new-integrations/salesforce.png",
+    w: 616,
+    h: 431,
+    fill: 79,
+  },
+  {
+    name: "HubSpot",
+    src: "/new-integrations/hubspot.png",
+    w: 704,
+    h: 201,
+    fill: 92,
+  },
   { name: "Zoho", src: "/new-integrations/zoho.png", w: 386, h: 167, fill: 92 },
-  { name: "Bitrix24", src: "/new-integrations/bitrix.png", w: 408, h: 80, fill: 92 },
+  {
+    name: "Bitrix24",
+    src: "/new-integrations/bitrix.png",
+    w: 408,
+    h: 80,
+    fill: 92,
+  },
   { name: "Odoo", src: "/new-integrations/odoo.png", w: 451, h: 145, fill: 92 },
-  { name: "Microsoft 365", src: "/new-integrations/microsoft2.png", w: 763, h: 127, fill: 92 },
-  { name: "Google Workspace", src: "/new-integrations/google2.png", w: 481, h: 65, fill: 92 },
-  { name: "WhatsApp", src: "/new-integrations/whatsapp.png", w: 323, h: 77, fill: 92 },
-  { name: "Zendesk", src: "/new-integrations/zendesk.png", w: 748, h: 151, fill: 92 },
-  { name: "CEIPAL", src: "/new-integrations/ceipal2.png", w: 515, h: 170, fill: 92 },
+  {
+    name: "Microsoft 365",
+    src: "/new-integrations/microsoft2.png",
+    w: 763,
+    h: 127,
+    fill: 92,
+  },
+  {
+    name: "Google Workspace",
+    src: "/new-integrations/google2.png",
+    w: 481,
+    h: 65,
+    fill: 92,
+  },
+  {
+    name: "WhatsApp",
+    src: "/new-integrations/whatsapp.png",
+    w: 323,
+    h: 77,
+    fill: 92,
+  },
+  {
+    name: "Zendesk",
+    src: "/new-integrations/zendesk.png",
+    w: 748,
+    h: 151,
+    fill: 92,
+  },
+  {
+    name: "CEIPAL",
+    src: "/new-integrations/ceipal2.png",
+    w: 515,
+    h: 170,
+    fill: 92,
+  },
 ] as const;
 
 /** Just the names, for the places that list them rather than show them. */
@@ -1671,18 +1723,50 @@ export const nav: NavItem[] = [
         heading: "Industries we serve",
         icon: Building2,
         links: [
-          { label: "Call Centers", href: "/industries/call-centers", icon: Headset },
-          { label: "Healthcare", href: "/industries/healthcare", icon: HeartPulse },
-          { label: "Staffing & Recruitment", href: "/industries/staffing-recruitment", icon: UsersRound },
-          { label: "Banking & Finance", href: "/industries/banking-finance", icon: Landmark },
-          { label: "Education", href: "/industries/education", icon: GraduationCap },
+          {
+            label: "Call Centers",
+            href: "/industries/call-centers",
+            icon: Headset,
+          },
+          {
+            label: "Healthcare",
+            href: "/industries/healthcare",
+            icon: HeartPulse,
+          },
+          {
+            label: "Staffing & Recruitment",
+            href: "/industries/staffing-recruitment",
+            icon: UsersRound,
+          },
+          {
+            label: "Banking & Finance",
+            href: "/industries/banking-finance",
+            icon: Landmark,
+          },
+          {
+            label: "Education",
+            href: "/industries/education",
+            icon: GraduationCap,
+          },
           { label: "Retail", href: "/industries/retail", icon: ShoppingCart },
-          { label: "Hospitality", href: "/industries/hospitality", icon: Hotel },
+          {
+            label: "Hospitality",
+            href: "/industries/hospitality",
+            icon: Hotel,
+          },
           { label: "Logistics", href: "/industries/logistics", icon: Truck },
           { label: "IT & SaaS", href: "/industries/it-saas", icon: Cloud },
           { label: "Government", href: "/industries/government", icon: Scale },
-          { label: "Manufacturing", href: "/industries/manufacturing", icon: Factory },
-          { label: "Telecom Operators", href: "/industries/telecom-operators", icon: RadioTower },
+          {
+            label: "Manufacturing",
+            href: "/industries/manufacturing",
+            icon: Factory,
+          },
+          {
+            label: "Telecom Operators",
+            href: "/industries/telecom-operators",
+            icon: RadioTower,
+          },
         ],
       },
     ],
@@ -1707,13 +1791,33 @@ export const nav: NavItem[] = [
         heading: "Plans & pricing",
         icon: Receipt,
         links: [
-          { label: "SIP Trunk Pricing", href: "/pricing/sip-trunk", icon: Cable },
+          {
+            label: "SIP Trunk Pricing",
+            href: "/pricing/sip-trunk",
+            icon: Cable,
+          },
           { label: "CCaaS Plans", href: "/pricing/cloud-pbx", icon: Cloud },
           { label: "DID Pricing", href: "/pricing/did", icon: PhoneIncoming },
-          { label: "Toll-Free Pricing", href: "/pricing/toll-free", icon: PhoneCall },
-          { label: "Contact Center Pricing", href: "/pricing/contact-center", icon: Headset },
-          { label: "Voice API Pricing", href: "/pricing/voice-api", icon: AudioLines },
-          { label: "Enterprise Quote", href: "/pricing/enterprise-quote", icon: FileSpreadsheet },
+          {
+            label: "Toll-Free Pricing",
+            href: "/pricing/toll-free",
+            icon: PhoneCall,
+          },
+          {
+            label: "Contact Center Pricing",
+            href: "/pricing/contact-center",
+            icon: Headset,
+          },
+          {
+            label: "Voice API Pricing",
+            href: "/pricing/voice-api",
+            icon: AudioLines,
+          },
+          {
+            label: "Enterprise Quote",
+            href: "/pricing/enterprise-quote",
+            icon: FileSpreadsheet,
+          },
         ],
       },
     ],
@@ -1740,8 +1844,16 @@ export const nav: NavItem[] = [
         links: [
           { label: "About SipLink", href: "/about", icon: Building2 },
           { label: "Why SipLink", href: "/why-siplink", icon: Sparkles },
-          { label: "Partners", href: "/company/partners", icon: HeartHandshake },
-          { label: "Certifications", href: "/company/certifications", icon: BadgeCheck },
+          {
+            label: "Partners",
+            href: "/company/partners",
+            icon: HeartHandshake,
+          },
+          {
+            label: "Certifications",
+            href: "/company/certifications",
+            icon: BadgeCheck,
+          },
           { label: "Careers", href: "/company/careers", icon: Briefcase },
           { label: "News", href: "/company/news", icon: Newspaper },
         ],
@@ -2182,39 +2294,47 @@ export const whyPoints: Simple[] = [
 ];
 
 /**
- * The positioning paragraphs under the Why SipLink heading, as supplied.
+ * SipLink against a typical provider, one row per thing a buyer compares.
  *
- * Two paragraphs rather than the one that was handed over: the break falls
- * where the subject changes, from what the platform is to what it does for
- * the people running it. Sixty-five words in a single block is a wall.
- *
- * The source writes the brand "SIPLINK". It is set here the way it is set
- * everywhere else on the site, since the heading directly above it reads
- * "Why SipLink" and the two would otherwise disagree on the same screen.
+ * Supplied in the redesign brief, wording unchanged. The brief is explicit
+ * that only comparisons SipLink can substantiate belong here, so a row is
+ * dropped, not softened, if it cannot be backed up.
  */
-export const whyIntro = [
-  "Your phone system should do more than make and receive calls. SipLink delivers a complete business communications environment that can combine voice, contact center, collaboration, messaging and business applications.",
-  "We help organizations improve customer experience, empower remote teams, simplify administration and build reliable communications infrastructure.",
-];
-
-/**
- * What the environment includes. Supplied copy, wording and order unchanged.
- *
- * Deliberately framed as an inventory rather than as more reasons to buy:
- * several of these restate `whyPoints` above — scale, security, support — and
- * a list that argued the same four points a second time would read as
- * padding. Presented as "what that includes", the repetition is the point.
- */
-export const whyIncludes = [
-  "Flexible deployment options based on business requirements",
-  "Scalable from small offices to multi-site and high-volume environments",
-  "Advanced call routing and automation",
-  "Contact-center capabilities for customer-facing teams",
-  "Mobile, desktop and browser communication",
-  "CRM and business application integration",
-  "Security, redundancy and business continuity options",
-  "Monitoring, analytics and reporting",
-  "Migration, implementation, integration and ongoing support",
+export const whyComparison: {
+  point: string;
+  siplink: string;
+  typical: string;
+}[] = [
+  {
+    point: "Support",
+    siplink: "Dedicated support",
+    typical: "Ticket-based support",
+  },
+  {
+    point: "Migration",
+    siplink: "Migration assistance",
+    typical: "Self-service",
+  },
+  {
+    point: "Number porting",
+    siplink: "Number porting support",
+    typical: "Limited support",
+  },
+  {
+    point: "Products",
+    siplink: "SIP + UCaaS + Contact Center",
+    typical: "Separate products",
+  },
+  {
+    point: "Configuration",
+    siplink: "Custom configurations",
+    typical: "Standard plans",
+  },
+  {
+    point: "Help when you need it",
+    siplink: "Direct expert assistance",
+    typical: "Multiple support layers",
+  },
 ];
 
 /**
@@ -2352,18 +2472,17 @@ export const switchingStory: {
  * for rather than as product names. Hrefs point at the existing solutions.
  */
 export const homePillars: {
-  eyebrow: string;
   title: string;
+  headline: string;
   description: string;
   href: string;
   icon: LucideIcon;
-  image: { src: string; alt: string };
+  image?: { src: string; alt: string };
 }[] = [
   {
-    eyebrow: "Replace the hardware",
-    title: "UCaaS",
-    description:
-      "Your whole phone system in the cloud — extensions, IVR, voicemail and routing, with no box to maintain.",
+    title: "Cloud Phone System",
+    headline: "Replace Your Traditional PBX",
+    description: "Cloud-based business calling for modern teams.",
     href: "/products/hosted-pbx",
     icon: CloudCog,
     image: {
@@ -2372,10 +2491,10 @@ export const homePillars: {
     },
   },
   {
-    eyebrow: "Keep your equipment",
     title: "SIP Trunking",
+    headline: "Connect Your Existing PBX",
     description:
-      "Already have an IP-PBX? Connect it to our network for immediate savings and guaranteed call quality.",
+      "Modernize your existing phone infrastructure without replacing your entire system.",
     href: "/products/sip-trunking",
     icon: Router,
     image: {
@@ -2384,10 +2503,10 @@ export const homePillars: {
     },
   },
   {
-    eyebrow: "Handle the volume",
-    title: "Enhanced Call Centre",
+    title: "Call Center",
+    headline: "Manage High-Volume Customer Communication",
     description:
-      "Queues, routing, recording and live monitoring — configured around how your team actually works.",
+      "Manage IVR, queues, call routing, recordings, analytics and agent communication.",
     href: "/products/call-center",
     icon: Headset,
     image: {
@@ -2396,15 +2515,27 @@ export const homePillars: {
     },
   },
   {
-    eyebrow: "Bring it together",
     title: "Unified Communications",
+    headline: "Bring Your Team's Communication Together",
     description:
-      "Voice, video, business SMS and team messaging on one platform, so distributed teams feel co-located.",
+      "Connect voice, messaging, collaboration and business communication from one platform.",
     href: "/solutions/unified-communications",
     icon: MessagesSquare,
     image: {
       src: "/images/pillar-unified-communications.png",
       alt: "A desktop team messaging app beside a phone on an active call, ringed by video, voice, chat and team icons",
+    },
+  },
+  {
+    title: "AI Voice",
+    headline: "Automate Your Calls",
+    description:
+      "AI-powered answering, routing, transcription and customer interaction.",
+    href: "/products/ai-voice-assistant",
+    icon: Bot,
+    image: {
+      src: "/images/pillar-ai-voice.png",
+      alt: "A phone call flowing into an AI assistant, which passes the result to booking, transcript and CRM",
     },
   },
 ];
@@ -2428,13 +2559,7 @@ export const homePillars: {
  */
 export type HomeFeature = {
   /** Selects the diagram drawn in the card's panel. See FeatureCards. */
-  id:
-    | "ivr"
-    | "routing"
-    | "recording"
-    | "sms"
-    | "analytics"
-    | "numbers";
+  id: "ivr" | "routing" | "recording" | "sms" | "analytics" | "numbers";
   title: string;
   description: string;
   href: string;

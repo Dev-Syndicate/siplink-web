@@ -1,12 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Check,
-  PhoneCall,
-  Quote,
-  Star,
-} from "lucide-react";
+import { ArrowRight, Check, PhoneCall, Quote, Star } from "lucide-react";
 
 import { AiConsole } from "@/components/site/ai-console";
 import { CtaPanel } from "@/components/site/cta-panel";
@@ -21,13 +15,28 @@ import { TypedQuote } from "@/components/site/typed-quote";
 import { VideoEmbed } from "@/components/site/video-embed";
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { cn } from "@/lib/utils";
+import {
   heroHighlights,
   homePillars,
   mobileApps,
   reviews,
   site,
-  whyIncludes,
-  whyIntro,
+  whyComparison,
   whyPoints,
 } from "@/lib/site";
 
@@ -279,39 +288,109 @@ export default function Home() {
       <TrustStrip />
 
       {/* ---------------------------------------------------------------
-          Why SipLink. Three beats that each do a different job: the
-          thesis, then four reasons to believe it, then what is actually
-          in the box. Running them together would be three answers to the
-          same question.
+          What does your business need? The product chooser. Visitors who do
+          not speak telecom pick the situation closest to theirs, not a
+          product name. Five cards on a six-column grid: three on the first
+          row, two wider ones beneath, so there is never an orphan.
+         --------------------------------------------------------------- */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+          <div className="max-w-2xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              What Does Your Business Need?
+            </h2>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Pick the situation closest to yours and we will show you the right
+              solution.
+            </p>
+          </div>
 
-          Everything that would normally box this content is left off. No
-          card, no radius, no shadow, no tray behind the icons — the only
-          structure is the hairline grid, which arrives at `lg` and is
-          simply absent below it. Four boxes stacked directly above the
-          pillars' four boxes is the failure this avoids.
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
+            {homePillars.map(
+              (
+                { title, headline, description, href, icon: Icon, image },
+                index,
+              ) => (
+                <Link
+                  key={title}
+                  href={href}
+                  className={cn(
+                    "group rounded-xl focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none",
+                    index < 3 ? "lg:col-span-2" : "lg:col-span-3",
+                    index === 4 && "sm:col-span-2",
+                  )}
+                >
+                  {/* The pink blooms out of the corner the illustration sits
+                      in: these are pink drawings on transparent PNGs, and a
+                      soft pink ground is what they were made to stand on. */}
+                  <Card className="h-full bg-gradient-to-br from-brand-from/20 via-background via-45% to-background ring-primary/15 transition-shadow group-hover:shadow-md">
+                    <div className="flex h-44 items-center justify-center overflow-hidden">
+                      {image ? (
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          width={512}
+                          height={512}
+                          sizes="(min-width: 1024px) 20rem, 90vw"
+                          className="h-full w-full object-contain p-4 transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.05]"
+                        />
+                      ) : (
+                        <span
+                          aria-hidden
+                          className="flex size-24 items-center justify-center rounded-full bg-primary/10 text-primary"
+                        >
+                          <Icon className="size-10" />
+                        </span>
+                      )}
+                    </div>
+                    <CardHeader>
+                      <span className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                        <Icon className="size-4 text-primary" aria-hidden />
+                        {title}
+                      </span>
+                      <CardTitle className="text-lg text-balance">
+                        {headline}
+                      </CardTitle>
+                      <CardDescription className="mt-1 text-pretty">
+                        {description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="mt-auto">
+                      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                        Explore {title}
+                        <ArrowRight
+                          className="size-4 transition-transform group-hover:translate-x-0.5"
+                          aria-hidden
+                        />
+                      </span>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ),
+            )}
+          </div>
+        </div>
+      </section>
 
-          The heading sits in its own column rather than above the text.
-          Two words set against a paragraph is the cheapest way to give a
-          section an opening without adding an eyebrow, and this is the
-          one head on the page that does without one.
+      {/* ---------------------------------------------------------------
+          Why SipLink. Answers "why you instead of another VoIP provider?":
+          four reasons to believe it, then the same argument as a plain
+          side-by-side. Sits after the chooser, so the visitor knows what
+          is being compared before being asked to compare it.
+
+          The pillars stay as a hairline band with no boxes, so the table
+          below is the only bordered thing in the section.
          --------------------------------------------------------------- */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-16">
-            <h2 className="font-heading text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-              Why {site.name}
+          <div className="max-w-2xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Why Businesses Choose {site.name}
             </h2>
-
-            <div className="max-w-2xl space-y-4">
-              {whyIntro.map((paragraph) => (
-                <p
-                  key={paragraph.slice(0, 32)}
-                  className="text-pretty text-muted-foreground"
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Reliable technology, expert support and a team that handles the
+              migration with you.
+            </p>
           </div>
 
           {/* Below `lg` this is an ordinary spaced grid with no rules at
@@ -339,100 +418,41 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Named, because nine bare lines after four explained ones read
-              as an afterthought rather than an inventory. The heading is
-              what tells you these are contents, not more arguments. */}
-          <div className="mt-14 border-t border-border pt-10 lg:mt-16">
-            <h3 className="font-heading text-base font-semibold tracking-tight">
-              What that includes
-            </h3>
-
-            <ul className="mt-6 grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-              {whyIncludes.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span
-                    className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10"
-                    aria-hidden
-                  >
-                    <Check className="size-3 text-primary" />
-                  </span>
-                  <span className="text-sm leading-relaxed text-pretty text-muted-foreground">
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------------
-          Pillars. Four ways in, labelled by the job the customer is
-          hiring us for — not by product name alone.
-         --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="max-w-2xl">
-            <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Where you start
-            </span>
-            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Four ways onto the network
-            </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">
-              Whether you are replacing a PBX, connecting equipment you already
-              own, or running a floor of agents — the same platform underneath,
-              configured to your situation.
-            </p>
-          </div>
-
-          {/* Every card the same shape, two to a row, white with the pink
-              blooming out of the corner the illustration sits in.
-
-              The bloom is placed there on purpose rather than spread over
-              the whole card: these are pink drawings, and a soft pink ground
-              is what they were made to stand on, while the copy stays on
-              plain white where it reads hardest. Same gradient language as
-              the card on /pricing, so the two are recognisably a pair. */}
-          <div className="mt-14 grid gap-5 sm:grid-cols-2">
-            {homePillars.map(({ eyebrow, title, description, href, image }) => (
-              <Link
-                key={title}
-                href={href}
-                className="group flex flex-col overflow-hidden rounded-3xl border border-primary/12 bg-gradient-to-br from-brand-from/20 via-background via-45% to-background shadow-sm transition duration-300 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none sm:min-h-64 sm:flex-row sm:items-stretch motion-safe:hover:-translate-y-1 motion-safe:focus-visible:-translate-y-1"
-              >
-                <div className="flex h-44 shrink-0 items-center justify-center overflow-hidden sm:h-auto sm:w-[40%]">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={512}
-                    height={512}
-                    sizes="(min-width: 640px) 16rem, 90vw"
-                    className="h-full w-full object-contain p-4 transition-transform duration-500 ease-out motion-safe:group-hover:-translate-y-1.5 motion-safe:group-hover:scale-[1.06] motion-safe:group-focus-visible:-translate-y-1.5 motion-safe:group-focus-visible:scale-[1.06]"
-                  />
-                </div>
-
-                <div className="flex flex-1 flex-col justify-center p-6 lg:p-7">
-                  <span className="text-sm text-muted-foreground">
-                    {eyebrow}
-                  </span>
-
-                  <h3 className="font-heading mt-2 text-xl font-semibold tracking-tight text-balance">
-                    {title}
-                  </h3>
-
-                  <p className="mt-2.5 text-sm leading-relaxed text-pretty text-muted-foreground">
-                    {description}
-                  </p>
-
-                  {/* The rule draws in from the left on hover — the whole
-                      card is the link, so an arrow would say it twice. */}
-                  <span className="relative mt-5 inline-block self-start pt-0.5 text-sm font-medium text-primary after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100">
-                    Explore {title}
-                  </span>
-                </div>
-              </Link>
-            ))}
+          <div className="mt-14 overflow-hidden rounded-xl border border-border lg:mt-16">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="w-1/3 px-4 py-3">
+                    <span className="sr-only">Comparison</span>
+                  </TableHead>
+                  <TableHead className="px-4 py-3 font-semibold text-primary">
+                    {site.name}
+                  </TableHead>
+                  <TableHead className="px-4 py-3">Typical provider</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {whyComparison.map(({ point, siplink, typical }) => (
+                  <TableRow key={point}>
+                    <TableCell className="px-4 py-3 font-medium whitespace-normal">
+                      {point}
+                    </TableCell>
+                    <TableCell className="bg-primary/5 px-4 py-3 whitespace-normal">
+                      <span className="flex items-start gap-2 font-medium">
+                        <Check
+                          className="mt-0.5 size-4 shrink-0 text-primary"
+                          aria-hidden
+                        />
+                        {siplink}
+                      </span>
+                    </TableCell>
+                    <TableCell className="px-4 py-3 whitespace-normal text-muted-foreground">
+                      {typical}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         </div>
       </section>
