@@ -58,7 +58,7 @@ export function OneIdentity() {
 
   return (
     <svg ref={ref} viewBox={`0 0 ${W} ${H}`} className="w-full" role="img"
-      aria-label="A customer dials one business number. The call reaches whichever colleague is free, whether they are in the office, at home, at a client site or on mobile — the caller never sees which.">
+      aria-label="A customer dials one business number. The call reaches whichever colleague is free, whether they are in the office, at home, at a client site or on mobile, the caller never sees which.">
       <Defs uid="uc-rw" w={W} h={H} />
       <Field uid="uc-rw" w={W} h={H} />
 
@@ -90,7 +90,7 @@ export function OneIdentity() {
               live={live}
             >
               <Note x={376} y={38 + r.y} tone={live ? "primary" : "faint"}>
-                {live ? `answering — ${r.place}` : r.place}
+                {live ? `answering, ${r.place}` : r.place}
               </Note>
             </Box>
           </g>
@@ -122,7 +122,7 @@ export function TriagedCall() {
 
   return (
     <svg ref={ref} viewBox={`0 0 ${W} ${H}`} className="w-full" role="img"
-      aria-label="A caller passes the menu, chooses a department, waits in the queue and reaches an available agent — instead of meeting a busy tone.">
+      aria-label="A caller passes the menu, chooses a department, waits in the queue and reaches an available agent, instead of meeting a busy tone.">
       <Defs uid="uc-cs" w={W} h={H} />
       <Field uid="uc-cs" w={W} h={H} />
 

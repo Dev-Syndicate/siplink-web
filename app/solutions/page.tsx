@@ -22,7 +22,7 @@ import { solutionDetails } from "@/lib/solutions";
 export const metadata: Metadata = {
   title: "Solutions",
   description:
-    "Hosted PBX, SIP trunking, enhanced call centre and unified communications — cloud voice infrastructure for growing businesses.",
+    "Hosted PBX, SIP trunking, enhanced call centre and unified communications, cloud voice infrastructure for growing businesses.",
 };
 
 /**
@@ -61,8 +61,8 @@ export default function SolutionsPage() {
               </span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
-              Four layers of cloud voice infrastructure — trunk, switch,
-              distribute, connect — engineered to be fault tolerant, scalable,
+              Four layers of cloud voice infrastructure, trunk, switch,
+              distribute, connect, engineered to be fault tolerant, scalable,
               and native to the tools your teams already use.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
@@ -169,7 +169,7 @@ export default function SolutionsPage() {
             </div>
             <p className="max-w-sm text-sm text-pretty text-muted-foreground">
               A call enters on a trunk, switches through the PBX, is distributed
-              by the queue, and lands on any endpoint — desk, mobile or app.
+              by the queue, and lands on any endpoint, desk, mobile or app.
             </p>
           </div>
 
@@ -222,7 +222,7 @@ export default function SolutionsPage() {
             Everything your teams need, on one platform
           </h2>
           <p className="mt-3 text-pretty text-muted-foreground">
-            Call management, supervision and reporting — delivered from the
+            Call management, supervision and reporting, delivered from the
             cloud and reachable from any device.
           </p>
         </div>
@@ -328,7 +328,7 @@ export default function SolutionsPage() {
             Wherever you work, SipLink keeps you connected.
           </span>{" "}
           From remote teams and customer support to sales organisations, global
-          offices and multi-branch businesses — your people, customers and
+          offices and multi-branch businesses, your people, customers and
           locations through one communication partner.
         </p>
       </section>
@@ -374,7 +374,7 @@ export default function SolutionsPage() {
       </section>
 
       {/* CTA */}
-      <ClosingCta heading="Not sure which layer you need?" body="Tell us how your teams work today and we’ll recommend a configuration — and port your existing numbers across." secondary={{ label: "View pricing", href: "/pricing" }} eyebrow="Number porting included" />
+      <ClosingCta heading="Not sure which layer you need?" body="Tell us how your teams work today and we’ll recommend a configuration, and port your existing numbers across." secondary={{ label: "View pricing", href: "/pricing" }} eyebrow="Number porting included" />
     </>
   );
 }

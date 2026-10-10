@@ -175,7 +175,7 @@ const migrationProcess: SolutionStep[] = [
   },
   {
     title: "Design the migration",
-    body: "A plan is built around your requirements — how calls should route, which numbers port, and what the new environment needs to do on day one.",
+    body: "A plan is built around your requirements, how calls should route, which numbers port, and what the new environment needs to do on day one.",
   },
   {
     title: "Configure and test",
@@ -206,7 +206,7 @@ const useCase: SolutionDetail[] = [
     shape: "distributed",
     tagline: "Keep your team connected, wherever they work.",
     intro:
-      "Give remote and hybrid teams the same professional communication experience from the office, home or anywhere else — without losing control of your business communications.",
+      "Give remote and hybrid teams the same professional communication experience from the office, home or anywhere else, without losing control of your business communications.",
     challenge: {
       heading: "Distributed teams shouldn't sound distributed",
       body: "When employees work from everywhere, calls get missed, personal numbers creep in, and customers start to feel like they're dealing with a scattered team rather than one business.",
@@ -215,7 +215,7 @@ const useCase: SolutionDetail[] = [
       heading: "One business identity, any location",
       body: [
         "Employees stay reachable through their business numbers and connected tools whether they're at a desk, at home or on the move.",
-        "Calls route between team members, departments and locations, so the person a customer needs is always one hop away — no matter where they're sitting.",
+        "Calls route between team members, departments and locations, so the person a customer needs is always one hop away, no matter where they're sitting.",
       ],
     },
     capabilities: [
@@ -275,7 +275,7 @@ const useCase: SolutionDetail[] = [
     ],
     scenario: {
       heading: "A call to someone who isn’t at a desk",
-      lead: "The caller does one thing — dial the business number. Everything after that is the platform’s job.",
+      lead: "The caller does one thing, dial the business number. Everything after that is the platform’s job.",
       steps: [
         {
           title: "The business number rings",
@@ -283,7 +283,7 @@ const useCase: SolutionDetail[] = [
         },
         {
           title: "The extension follows the person",
-          body: "It rings wherever that employee is working today — desk phone, laptop softphone, browser or the app on their mobile.",
+          body: "It rings wherever that employee is working today, desk phone, laptop softphone, browser or the app on their mobile.",
         },
         {
           title: "They answer as the business",
@@ -379,7 +379,7 @@ const useCase: SolutionDetail[] = [
     ],
     scenario: {
       heading: "One caller, from ring to resolution",
-      lead: "The shape of a support call when the routing is set up properly — nobody hears a busy tone and nothing goes uncounted.",
+      lead: "The shape of a support call when the routing is set up properly, nobody hears a busy tone and nothing goes uncounted.",
       steps: [
         {
           title: "The menu asks once",
@@ -387,7 +387,7 @@ const useCase: SolutionDetail[] = [
         },
         {
           title: "The queue holds the place",
-          body: "If every agent in that department is on a call, the caller waits in order with a message — rather than a busy tone or an unanswered ring.",
+          body: "If every agent in that department is on a call, the caller waits in order with a message, rather than a busy tone or an unanswered ring.",
         },
         {
           title: "The first free agent picks up",
@@ -409,7 +409,7 @@ const useCase: SolutionDetail[] = [
     shape: "routed",
     tagline: "Turn more conversations into opportunities.",
     intro:
-      "Give sales a communication environment built around reaching, engaging and following up with customers efficiently — with less manual work between calls.",
+      "Give sales a communication environment built around reaching, engaging and following up with customers efficiently, with less manual work between calls.",
     challenge: {
       heading: "Reps should be selling, not dialling",
       body: "Time spent manually dialling, logging calls and hunting for context is time not spent building relationships and moving deals forward.",
@@ -490,7 +490,7 @@ const useCase: SolutionDetail[] = [
         },
         {
           title: "The conversation lands with its context",
-          body: "The customer record opens with the call, and the outcome writes back — so the follow-up is booked before the next number dials.",
+          body: "The customer record opens with the call, and the outcome writes back, so the follow-up is booked before the next number dials.",
         },
       ],
     },
@@ -517,7 +517,7 @@ const useCase: SolutionDetail[] = [
       heading: "One environment, many channels",
       body: [
         "Different channels and workflows come together into one connected experience for employees and customers.",
-        "That makes it easier for teams to communicate, collaborate and stay connected — and gives the business more control over its whole communication environment.",
+        "That makes it easier for teams to communicate, collaborate and stay connected, and gives the business more control over its whole communication environment.",
       ],
     },
     capabilities: [
@@ -581,7 +581,7 @@ const useCase: SolutionDetail[] = [
       steps: [
         {
           title: "Collaboration keeps its home",
-          body: "Teams stays where internal conversation already happens — and gains the ability to place and take external business calls from inside it.",
+          body: "Teams stays where internal conversation already happens, and gains the ability to place and take external business calls from inside it.",
         },
         {
           title: "Customer channels arrive together",
@@ -765,7 +765,7 @@ const useCase: SolutionDetail[] = [
       steps: [
         {
           title: "The branch stays itself",
-          body: "Its own number, its own greeting, its own opening hours — because a branch that closes at five should not answer like one that closes at nine.",
+          body: "Its own number, its own greeting, its own opening hours, because a branch that closes at five should not answer like one that closes at nine.",
         },
         {
           title: "Staff reach each other directly",
@@ -780,7 +780,7 @@ const useCase: SolutionDetail[] = [
     builtFrom: ["hosted-pbx", "cloud-pbx", "ivr", "call-analytics"],
     gain: {
       heading: "One business, many branches, no seams",
-      body: "Keep every location running its own way while managing communication — and seeing it — as one connected operation.",
+      body: "Keep every location running its own way while managing communication, and seeing it, as one connected operation.",
     },
   },
 ];
@@ -796,7 +796,7 @@ const businessSize: SolutionDetail[] = [
     shape: "scale",
     tagline: "Flexible, affordable communication for fast-moving teams.",
     intro:
-      "Start with a professional business phone system in the cloud — no hardware to buy, and room to add users and features as fast as you grow.",
+      "Start with a professional business phone system in the cloud, no hardware to buy, and room to add users and features as fast as you grow.",
     challenge: {
       heading: "You need to sound established on day one",
       body: "Early teams need a credible business presence and reliable calling, but can't tie up cash in phone hardware or a system they'll outgrow in a quarter.",
@@ -852,10 +852,10 @@ const businessSize: SolutionDetail[] = [
     shape: "scale",
     tagline: "Easy-to-use communication to stay connected and grow.",
     intro:
-      "A complete business phone system that's simple to run day to day — with the call handling, mobility and integrations a growing small business actually uses.",
+      "A complete business phone system that's simple to run day to day, with the call handling, mobility and integrations a growing small business actually uses.",
     challenge: {
       heading: "You don't have an IT department for the phones",
-      body: "Small teams need reliable, professional communication that just works — without a specialist on staff to keep it running.",
+      body: "Small teams need reliable, professional communication that just works, without a specialist on staff to keep it running.",
     },
     handling: {
       heading: "Everything managed from one portal",
@@ -897,7 +897,7 @@ const businessSize: SolutionDetail[] = [
     ],
     gain: {
       heading: "Professional phones, minimal overhead",
-      body: "A phone system that stays out of your way — easy to manage, reliable to run, and ready to grow when you are.",
+      body: "A phone system that stays out of your way, easy to manage, reliable to run, and ready to grow when you are.",
     },
   },
   {
@@ -964,7 +964,7 @@ const businessSize: SolutionDetail[] = [
     shape: "edge",
     tagline: "Communication built for scale, security and control.",
     intro:
-      "Large organisations run many communication systems at once — Microsoft Teams, PBX platforms, SIP trunks, CRM and contact centers across multiple locations. SipLink is the layer that brings them together.",
+      "Large organisations run many communication systems at once, Microsoft Teams, PBX platforms, SIP trunks, CRM and contact centers across multiple locations. SipLink is the layer that brings them together.",
     challenge: {
       heading: "Too many systems, not enough control",
       body: "Managing Teams, PBX platforms, SIP trunks, CRM applications and contact centers independently creates complexity and makes it hard for IT and business teams to keep visibility and control.",
@@ -973,7 +973,7 @@ const businessSize: SolutionDetail[] = [
       heading: "One connected communication layer",
       body: [
         "SipLink connects your existing telephony, cloud platforms, business applications, employees and customers into a more organised environment.",
-        "Calls route intelligently, teams connect across locations, communication integrates with business applications, and customer interactions can be monitored and analysed — so you modernise without replacing everything you already use.",
+        "Calls route intelligently, teams connect across locations, communication integrates with business applications, and customer interactions can be monitored and analysed, so you modernise without replacing everything you already use.",
       ],
     },
     capabilities: [
@@ -1021,7 +1021,7 @@ const businessSize: SolutionDetail[] = [
     ],
     gain: {
       heading: "From disconnected systems to one ecosystem",
-      body: "Connect, integrate, automate and scale — turning complex communication infrastructure into one manageable, intelligent environment you can modernise gradually.",
+      body: "Connect, integrate, automate and scale, turning complex communication infrastructure into one manageable, intelligent environment you can modernise gradually.",
     },
   },
 ];
@@ -1040,13 +1040,13 @@ const migration: SolutionDetail[] = [
       "Transition from PRI-based phone lines to SIP-based communication, so your voice moves onto a more flexible and scalable infrastructure.",
     challenge: {
       heading: "PRI is hard to scale and slow to change",
-      body: "PRI-based phone systems become difficult to scale, maintain and adapt as communication requirements grow — every change means dealing with fixed physical lines.",
+      body: "PRI-based phone systems become difficult to scale, maintain and adapt as communication requirements grow, every change means dealing with fixed physical lines.",
     },
     handling: {
       heading: "A planned transition to SIP",
       body: [
         "We assess your existing PRI setup and current number and calling requirements, then plan the move to SIP connectivity.",
-        "Once configured, business calls route through SipLink's voice infrastructure instead of PRI — giving you a foundation for cloud calling, SIP trunking, IVR and contact-center capabilities.",
+        "Once configured, business calls route through SipLink's voice infrastructure instead of PRI, giving you a foundation for cloud calling, SIP trunking, IVR and contact-center capabilities.",
       ],
     },
     capabilities: [
@@ -1092,13 +1092,13 @@ const migration: SolutionDetail[] = [
       "Move from a legacy on-premise PBX toward modern SIP and cloud communication while preserving the calling requirements your business depends on.",
     challenge: {
       heading: "On-premise PBX is a standing cost",
-      body: "Legacy PBX systems need dedicated hardware, maintenance, upgrades and physical infrastructure — and adapting them to new ways of working is slow and expensive.",
+      body: "Legacy PBX systems need dedicated hardware, maintenance, upgrades and physical infrastructure, and adapting them to new ways of working is slow and expensive.",
     },
     handling: {
       heading: "Map what matters, modernise the rest",
       body: [
         "We review your users, extensions, numbers, departments, call flows and routing, then map those requirements into the new environment so people keep communicating with minimal disruption.",
-        "The migration is also a chance to modernise — introducing cloud calling, remote connectivity, IVR, queues, recording and analytics where they add value.",
+        "The migration is also a chance to modernise, introducing cloud calling, remote connectivity, IVR, queues, recording and analytics where they add value.",
       ],
     },
     capabilities: [
@@ -1130,7 +1130,7 @@ const migration: SolutionDetail[] = [
     process: migrationProcess,
     gain: {
       heading: "A modern system, familiar workflows",
-      body: "Greater flexibility and far less dependence on ageing PBX hardware — without forcing your teams to relearn how they communicate.",
+      body: "Greater flexibility and far less dependence on ageing PBX hardware, without forcing your teams to relearn how they communicate.",
     },
   },
   {
@@ -1150,7 +1150,7 @@ const migration: SolutionDetail[] = [
       heading: "Plan, migrate, then work from anywhere",
       body: [
         "We plan the migration of users, numbers, extensions, calling workflows and services into the cloud.",
-        "Once migrated, employees reach business communication through supported devices and apps — no longer tied to a specific office or PBX location.",
+        "Once migrated, employees reach business communication through supported devices and apps, no longer tied to a specific office or PBX location.",
       ],
     },
     capabilities: [
@@ -1193,10 +1193,10 @@ const migration: SolutionDetail[] = [
     shape: "transition",
     tagline: "Keep the numbers your customers already know.",
     intro:
-      "Transfer your existing business numbers to SipLink while maintaining continuity — so you modernise without asking customers to learn a new number.",
+      "Transfer your existing business numbers to SipLink while maintaining continuity, so you modernise without asking customers to learn a new number.",
     challenge: {
       heading: "Changing numbers costs you customers",
-      body: "A new number during migration means updating websites, ads, invoices, business cards and CRM records — and customers still calling the old one.",
+      body: "A new number during migration means updating websites, ads, invoices, business cards and CRM records, and customers still calling the old one.",
     },
     handling: {
       heading: "A coordinated, low-disruption port",

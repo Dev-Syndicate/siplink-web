@@ -158,7 +158,7 @@ export function SdWanSections() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Each of these is something a person would otherwise have to
-              notice, diagnose and act on — usually after somebody complained.
+              notice, diagnose and act on, usually after somebody complained.
             </p>
           </ScrollReveal>
 

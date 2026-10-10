@@ -161,7 +161,7 @@ export default function NetworkSolutionsPage() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Six cards make them look like six decisions. They are six places
-              in the same design — the edge, the floor, the cabinet, and three
+              in the same design, the edge, the floor, the cabinet, and three
               that are not in the building at all.
             </p>
           </ScrollReveal>

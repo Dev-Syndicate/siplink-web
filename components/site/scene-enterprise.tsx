@@ -273,7 +273,7 @@ export function EnterpriseDesignScene({ label }: { label: string }) {
           subtitle={
             stage.sized > 0
               ? "Sized last, against everything above"
-              : "Not yet — nothing above it is settled"
+              : "Not yet, nothing above it is settled"
           }
           lit={stage.sized > 0}
           tone={stage.sized > 0 ? "brand" : "muted"}

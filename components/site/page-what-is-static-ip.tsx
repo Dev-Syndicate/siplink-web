@@ -64,7 +64,7 @@ export function WhatIsStaticIpHero() {
 
         {/* The forty days the config file could not show. */}
         <ScrollReveal delay={140}>
-          <StaticIpHeroScene label="An office address being reissued from a pool between day one and day forty-one while a partner's allowlist still holds the original, so the request is refused and a person is the first to find out — then the same address held static, and accepted again." />
+          <StaticIpHeroScene label="An office address being reissued from a pool between day one and day forty-one while a partner's allowlist still holds the original, so the request is refused and a person is the first to find out, then the same address held static, and accepted again." />
         </ScrollReveal>
 
       </div>
@@ -222,7 +222,7 @@ export function WhatIsStaticIpSections() {
               The one on your laptop is not the one that matters
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Almost everyone has seen a 192.168 address and assumed it was theirs on the internet. It is not — it exists only inside the building. Watch where the two part company, and what each one is actually attached to.
+              Almost everyone has seen a 192.168 address and assumed it was theirs on the internet. It is not, it exists only inside the building. Watch where the two part company, and what each one is actually attached to.
             </p>
           </ScrollReveal>
 

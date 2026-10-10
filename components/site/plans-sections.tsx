@@ -42,7 +42,7 @@ export function PlansSections() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Most businesses we quote for are a version of one of these. None
-              of them is a plan — they are the questions a plan comes out of.
+              of them is a plan, they are the questions a plan comes out of.
             </p>
           </ScrollReveal>
 
@@ -129,7 +129,7 @@ export function PlansSections() {
           </ScrollReveal>
 
           <ScrollReveal delay={120} className="mt-12 lg:mt-14">
-            <PlanLoadScene label="Six workloads — staff laptops, business voice, video meetings, card payments, cameras and cloud backup — joining one office connection until all six are live on it at the same time." />
+            <PlanLoadScene label="Six workloads, staff laptops, business voice, video meetings, card payments, cameras and cloud backup, joining one office connection until all six are live on it at the same time." />
           </ScrollReveal>
         </div>
       </section>
@@ -150,7 +150,7 @@ export function PlansSections() {
             <p className="mt-4 text-pretty text-muted-foreground">
               A connection is advertised on the direction things come in.
               Almost everything a business complains about happens in the
-              other one — the meeting, the file that will not send, the backup
+              other one, the meeting, the file that will not send, the backup
               that is still running at nine. Growth shows up there first.
             </p>
           </ScrollReveal>

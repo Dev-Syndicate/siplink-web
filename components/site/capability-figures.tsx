@@ -97,7 +97,7 @@ export function DeviceReach() {
     <Figure
       uid="cf-reach"
       svgRef={ref}
-      label="One extension rings on the desktop softphone, the mobile app and the browser — the same line, answered on whichever is nearest."
+      label="One extension rings on the desktop softphone, the mobile app and the browser, the same line, answered on whichever is nearest."
     >
       <Box x={14} y={110} w={150} h={60} label="EXTENSION" live>
         <Note x={28} y={152} tone="primary">
@@ -280,7 +280,7 @@ export function PresenceRoster() {
                 y={person.y + 40}
                 tone={live ? "primary" : "faint"}
               >
-                {live ? "picks up — laptop or mobile" : person.state}
+                {live ? "picks up, laptop or mobile" : person.state}
               </Note>
             </Box>
           </g>
@@ -386,7 +386,7 @@ export function QueueRouting() {
     <Figure
       uid="cf-queue"
       svgRef={ref}
-      label="A caller enters a queue, keeps their position while agents are busy, and is connected to the first agent who becomes free — instead of meeting a busy tone."
+      label="A caller enters a queue, keeps their position while agents are busy, and is connected to the first agent who becomes free, instead of meeting a busy tone."
     >
       <Box x={14} y={104} w={112} h={60} label="A CALLER" live>
         <Note x={28} y={146} tone="primary">
@@ -857,7 +857,7 @@ export function CrmLink() {
     <Figure
       uid="cf-crm"
       svgRef={ref}
-      label="An incoming call opens the matching customer record, and logs itself against that record when it ends — in the system the team already uses."
+      label="An incoming call opens the matching customer record, and logs itself against that record when it ends, in the system the team already uses."
     >
       <Box x={14} y={108} w={152} h={64} label="A CALL ARRIVES" live>
         <Note x={28} y={150} tone="primary">
@@ -912,7 +912,7 @@ export function ChannelsConverge() {
     <Figure
       uid="cf-channels"
       svgRef={ref}
-      label="Voice, video, messaging and SMS all arrive at one identity — the same number, the same person, the same directory."
+      label="Voice, video, messaging and SMS all arrive at one identity, the same number, the same person, the same directory."
     >
       {CHANNELS.map((channel, index) => (
         <g key={channel.label}>
@@ -1222,7 +1222,7 @@ export function PolicyEverywhere() {
               tone={phase >= index + 1 ? "primary" : "faint"}
             >
               {index === 2 && phase >= 3
-                ? "opened today — same rules"
+                ? "opened today, same rules"
                 : "the same rules"}
             </Note>
           </Box>

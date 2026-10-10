@@ -127,7 +127,7 @@ export const industryDetails: IndustryDetail[] = [
     icon: Headset,
     tagline: "Power every customer conversation.",
     intro:
-      "Give agents the tools to perform at their best and managers full visibility across every interaction — inbound and outbound — on one platform built for high call volume.",
+      "Give agents the tools to perform at their best and managers full visibility across every interaction, inbound and outbound, on one platform built for high call volume.",
     parties: ["Inbound callers", "Outbound contacts", "Agents", "Supervisors"],
     challenge: {
       heading: "Reliable calling alone doesn't run a call center",
@@ -137,7 +137,7 @@ export const industryDetails: IndustryDetail[] = [
       heading: "Route it, monitor it, learn from it",
       body: [
         "SipLink manages inbound and outbound communication with IVR, call queues and intelligent routing, so each caller reaches the right team quickly and the rest wait in an organised queue rather than a busy tone.",
-        "Supervisors can support agents live with Whisper, Barge and Spy, while call recording and analytics keep a record of every interaction. AI-powered transcription, real-time transcription and call notes turn conversations into searchable information — so managers can review, coach and improve without replaying whole recordings.",
+        "Supervisors can support agents live with Whisper, Barge and Spy, while call recording and analytics keep a record of every interaction. AI-powered transcription, real-time transcription and call notes turn conversations into searchable information, so managers can review, coach and improve without replaying whole recordings.",
       ],
       productLinks: [
         { phrase: "IVR", slug: "ivr" },
@@ -226,7 +226,7 @@ export const industryDetails: IndustryDetail[] = [
     ],
     gain: {
       heading: "Conversations become information",
-      body: "Turn every call into something you can review, measure and act on — so agents improve, managers stay informed, and the whole floor performs more consistently.",
+      body: "Turn every call into something you can review, measure and act on, so agents improve, managers stay informed, and the whole floor performs more consistently.",
     },
   },
   {
@@ -246,7 +246,7 @@ export const industryDetails: IndustryDetail[] = [
       body: [
         "SIPLINK helps staffing and recruitment teams streamline communication across the hiring lifecycle by bringing candidate calling, 10DLC business SMS, CloudPBX, and CRM integrations into one connected workspace.",
         "With cloud-based calling, recruiters maintain a professional business identity from anywhere. Supervisors gain visibility through call tracking, recording, AI audio transcription, and live call controls like Whisper and Barge.",
-        "10DLC-ready business messaging keeps candidates engaged with interview confirmations, application updates, reminders, and onboarding communication — keeping recruitment workflows moving forward fast.",
+        "10DLC-ready business messaging keeps candidates engaged with interview confirmations, application updates, reminders, and onboarding communication, keeping recruitment workflows moving forward fast.",
       ],
       productLinks: [
         { phrase: "CloudPBX", slug: "cloud-pbx" },
@@ -352,13 +352,13 @@ export const industryDetails: IndustryDetail[] = [
     parties: ["Patients", "Providers", "Insurers", "Internal teams"],
     challenge: {
       heading: "Care runs on more than phone calls",
-      body: "Healthcare and medical billing teams juggle patient calls, provider coordination, insurance follow-ups and document-based fax workflows — often in parallel, and always where accuracy and privacy matter. Managing each channel in isolation slows teams down and leaves conversations undocumented.",
+      body: "Healthcare and medical billing teams juggle patient calls, provider coordination, insurance follow-ups and document-based fax workflows, often in parallel, and always where accuracy and privacy matter. Managing each channel in isolation slows teams down and leaves conversations undocumented.",
     },
     handling: {
       heading: "Voice, fax and intelligence, together",
       body: [
         "SipLink combines business calling, fax, call recording, transcription, call analytics, SMS, IVR and contact-center capabilities into one HIPAA-compliant environment, so voice and document workflows sit side by side rather than in separate systems.",
-        "For medical billing and Revenue Cycle Management teams, reliable voice and fax support document-driven work, and supervisors can use Whisper, Barge and Spy to monitor or assist RCM agents on live calls where appropriate. AI, real-time and audio transcription with call notes let authorised users review a transcript and notes to find follow-ups and requirements — instead of listening to an entire recording.",
+        "For medical billing and Revenue Cycle Management teams, reliable voice and fax support document-driven work, and supervisors can use Whisper, Barge and Spy to monitor or assist RCM agents on live calls where appropriate. AI, real-time and audio transcription with call notes let authorised users review a transcript and notes to find follow-ups and requirements, instead of listening to an entire recording.",
       ],
       productLinks: [
         { phrase: "business calling", slug: "cloud-pbx" },
@@ -449,7 +449,7 @@ export const industryDetails: IndustryDetail[] = [
     ],
     gain: {
       heading: "A complete healthcare communication environment",
-      body: "Voice, fax, supervision, recording, transcription and analytics working together — so teams communicate securely and nothing important goes undocumented.",
+      body: "Voice, fax, supervision, recording, transcription and analytics working together, so teams communicate securely and nothing important goes undocumented.",
     },
   },
   {
@@ -467,7 +467,7 @@ export const industryDetails: IndustryDetail[] = [
     handling: {
       heading: "From handling calls to understanding them",
       body: [
-        "SipLink provides structured calling, IVR, queues, recording, analytics and communication management for sales, support, service and collections teams — so every conversation is directed, captured and measurable.",
+        "SipLink provides structured calling, IVR, queues, recording, analytics and communication management for sales, support, service and collections teams, so every conversation is directed, captured and measurable.",
         "With AI-powered and real-time transcription, authorised teams can review conversations in text rather than depending entirely on audio. Call notes help agents and managers capture key details and follow-up requirements, while analytics gives visibility into communication activity and team performance.",
       ],
       productLinks: [
@@ -553,7 +553,7 @@ export const industryDetails: IndustryDetail[] = [
     ],
     gain: {
       heading: "Know what's happening inside every call",
-      body: "Move beyond simply handling calls to understanding them — with transcripts, notes and analytics that make each conversation something the business can act on.",
+      body: "Move beyond simply handling calls to understanding them, with transcripts, notes and analytics that make each conversation something the business can act on.",
     },
   },
   {
@@ -675,7 +675,7 @@ export const industryDetails: IndustryDetail[] = [
     handling: {
       heading: "One environment, many stores",
       body: [
-        "SipLink helps retailers manage customer calls, store communication, IVR, call routing, messaging, recording and analytics from one centralised environment — so the whole operation communicates as a connected business.",
+        "SipLink helps retailers manage customer calls, store communication, IVR, call routing, messaging, recording and analytics from one centralised environment, so the whole operation communicates as a connected business.",
         "For customer-service teams, AI transcription, call notes and analytics surface customer requirements and recurring issues. SMS supports customer communication and notifications, and multiple business numbers keep separate lines for different stores, departments or functions.",
       ],
       productLinks: [
@@ -780,7 +780,7 @@ export const industryDetails: IndustryDetail[] = [
     handling: {
       heading: "Send guests to the right team, capture the request",
       body: [
-        "SipLink routes guests to the appropriate department and supports business numbers, extensions, IVR, queues, recording and analytics — so calls reach the right team and busy periods stay organised.",
+        "SipLink routes guests to the appropriate department and supports business numbers, extensions, IVR, queues, recording and analytics, so calls reach the right team and busy periods stay organised.",
         "For guest-service teams, call transcription and call notes capture important guest requirements and follow-ups. Managers can use recordings and analytics to understand service interactions and steadily improve the guest communication experience.",
       ],
       productLinks: [
@@ -867,7 +867,7 @@ export const industryDetails: IndustryDetail[] = [
     ],
     gain: {
       heading: "A better experience on every call",
-      body: "Guests reach the right team quickly, their requests are captured, and managers can see how service is delivered — so the guest experience keeps improving.",
+      body: "Guests reach the right team quickly, their requests are captured, and managers can see how service is delivered, so the guest experience keeps improving.",
     },
   },
   {
@@ -885,7 +885,7 @@ export const industryDetails: IndustryDetail[] = [
     handling: {
       heading: "Route the calls, message the updates, capture the detail",
       body: [
-        "SipLink organises these conversations through business calling, routing, IVR, SMS, call recording and analytics — so customers, drivers and operations teams stay connected across sites.",
+        "SipLink organises these conversations through business calling, routing, IVR, SMS, call recording and analytics, so customers, drivers and operations teams stay connected across sites.",
         "SMS supports operational updates and customer notifications, while call transcription and call notes capture delivery instructions, customer requests and follow-up information. Managers can use analytics to understand communication volume and identify operational bottlenecks.",
       ],
       productLinks: [
@@ -974,7 +974,7 @@ export const industryDetails: IndustryDetail[] = [
     ],
     gain: {
       heading: "Coordination without the dropped detail",
-      body: "Keep every part of the operation connected and capture the instructions and requests that keep deliveries moving — with the analytics to find bottlenecks.",
+      body: "Keep every part of the operation connected and capture the instructions and requests that keep deliveries moving, with the analytics to find bottlenecks.",
     },
   },
   {
@@ -983,7 +983,7 @@ export const industryDetails: IndustryDetail[] = [
     icon: Cloud,
     tagline: "Build communication directly into your technology.",
     intro:
-      "Embed calling and messaging into your own applications with programmable voice, SMS, WhatsApp, WebRTC and SIP — then add communication intelligence on top.",
+      "Embed calling and messaging into your own applications with programmable voice, SMS, WhatsApp, WebRTC and SIP, then add communication intelligence on top.",
     parties: ["Developers", "Applications", "End users", "Customers"],
     challenge: {
       heading: "Communication shouldn't be a system beside your product",
@@ -993,7 +993,7 @@ export const industryDetails: IndustryDetail[] = [
       heading: "Programmable comms, plus intelligence",
       body: [
         "SipLink provides Voice API, SMS API, WhatsApp Business API, WebRTC SDK, SIP API, CRM integrations and programmable communication capabilities, so technology businesses can build calling and messaging directly into their applications.",
-        "It also provides communication intelligence through AI, real-time and audio transcription, call notes and analytics — so SaaS products go beyond embedding a call to building workflows where conversations are transcribed, analysed, documented and connected to their applications. This supports CRM platforms, help-desk and staffing software, sales and healthcare applications, customer-service platforms and other products that need voice or messaging built in.",
+        "It also provides communication intelligence through AI, real-time and audio transcription, call notes and analytics, so SaaS products go beyond embedding a call to building workflows where conversations are transcribed, analysed, documented and connected to their applications. This supports CRM platforms, help-desk and staffing software, sales and healthcare applications, customer-service platforms and other products that need voice or messaging built in.",
       ],
       productLinks: [
         { phrase: "Voice API", slug: "voice-api" },
@@ -1086,7 +1086,7 @@ export const industryDetails: IndustryDetail[] = [
     ],
     gain: {
       heading: "Communication as part of your product",
-      body: "Build calling and messaging into your application, then layer on transcription, documentation and analytics — so conversations become part of the workflow, not a system beside it.",
+      body: "Build calling and messaging into your application, then layer on transcription, documentation and analytics, so conversations become part of the workflow, not a system beside it.",
     },
   },
   {
@@ -1104,7 +1104,7 @@ export const industryDetails: IndustryDetail[] = [
     handling: {
       heading: "Structure the interactions, surface the demand",
       body: [
-        "SipLink helps organise these interactions through business numbers, IVR, call queues, routing, recording, analytics and messaging — so citizen and internal communication is directed and captured.",
+        "SipLink helps organise these interactions through business numbers, IVR, call queues, routing, recording, analytics and messaging, so citizen and internal communication is directed and captured.",
         "For government support centers, transcription and call notes help authorised teams document conversations and identify follow-up requirements, while analytics provides management-level visibility into communication volumes and service demand.",
       ],
       productLinks: [
@@ -1207,13 +1207,13 @@ export const industryDetails: IndustryDetail[] = [
     parties: ["Corporate offices", "Factories", "Warehouses", "Suppliers", "Service departments"],
     challenge: {
       heading: "Communication spread across sites",
-      body: "Manufacturing communication is often spread across corporate offices, factories, warehouses, production teams, suppliers and service departments. Coordinating across all of them — and capturing the instructions and requests that pass between them — is hard when each site runs its own setup.",
+      body: "Manufacturing communication is often spread across corporate offices, factories, warehouses, production teams, suppliers and service departments. Coordinating across all of them, and capturing the instructions and requests that pass between them, is hard when each site runs its own setup.",
     },
     handling: {
       heading: "One connected communication environment",
       body: [
-        "SipLink connects these environments through business calling, SIP connectivity, extensions, routing, IVR, messaging and centralised communication management — so multi-location communication runs through one platform.",
-        "For operational and support teams, call recording, transcription, call notes and analytics capture important instructions, supplier conversations, service requests and follow-up requirements — keeping detail from slipping between sites.",
+        "SipLink connects these environments through business calling, SIP connectivity, extensions, routing, IVR, messaging and centralised communication management, so multi-location communication runs through one platform.",
+        "For operational and support teams, call recording, transcription, call notes and analytics capture important instructions, supplier conversations, service requests and follow-up requirements, keeping detail from slipping between sites.",
       ],
       productLinks: [
         { phrase: "SIP connectivity", slug: "sip-trunking" },
@@ -1307,17 +1307,17 @@ export const industryDetails: IndustryDetail[] = [
     icon: RadioTower,
     tagline: "Build communication services on scalable voice infrastructure.",
     intro:
-      "Give operators and communication service providers flexible voice infrastructure — SIP connectivity, SBC, number management and programmable services — that integrates into their own environments.",
+      "Give operators and communication service providers flexible voice infrastructure, SIP connectivity, SBC, number management and programmable services, that integrates into their own environments.",
     parties: ["Operators", "Service providers", "Customers", "SIP connections"],
     challenge: {
       heading: "Serving customers means scalable infrastructure",
-      body: "Telecom operators and communication service providers need voice infrastructure flexible enough to support large numbers of customers, SIP connections, applications and communication workflows — and to integrate with the environments they already run.",
+      body: "Telecom operators and communication service providers need voice infrastructure flexible enough to support large numbers of customers, SIP connections, applications and communication workflows, and to integrate with the environments they already run.",
     },
     handling: {
       heading: "Infrastructure to build on, intelligence to add",
       body: [
         "SipLink provides SIP connectivity, SBC capabilities, number management, voice infrastructure, APIs, routing and programmable communication services that integrate into operator environments.",
-        "It can also add communication intelligence through call recording, audio, AI and real-time transcription, analytics and call notes — so operators and their customers move beyond basic voice connectivity toward more intelligent communication services.",
+        "It can also add communication intelligence through call recording, audio, AI and real-time transcription, analytics and call notes, so operators and their customers move beyond basic voice connectivity toward more intelligent communication services.",
       ],
       productLinks: [
         { phrase: "SIP connectivity", slug: "sip-trunking" },
@@ -1404,7 +1404,7 @@ export const industryDetails: IndustryDetail[] = [
     ],
     gain: {
       heading: "Beyond basic connectivity",
-      body: "Build on scalable voice infrastructure, then add recording, transcription and analytics — so you and your customers move toward more intelligent communication services.",
+      body: "Build on scalable voice infrastructure, then add recording, transcription and analytics, so you and your customers move toward more intelligent communication services.",
     },
   },
 ];

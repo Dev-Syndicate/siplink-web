@@ -91,7 +91,7 @@ export async function generateMetadata({
   const industry = getIndustryDetail(slug);
   if (!industry) return {};
   return {
-    title: `${industry.title} — Industries`,
+    title: `${industry.title}, Industries`,
     description: industry.intro,
   };
 }
@@ -502,7 +502,7 @@ export default async function IndustryDetailPage({
 
           <p className="mt-5 max-w-xl text-pretty text-primary-foreground/85 lg:text-lg">
             Tell us how your teams communicate today and we&rsquo;ll recommend a
-            configuration — including porting the numbers you already use.
+            configuration, including porting the numbers you already use.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">

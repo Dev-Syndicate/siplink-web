@@ -273,7 +273,7 @@ export const estateLayers: EstateLayer[] = [
   {
     name: "Carriers and SIP trunks",
     detail:
-      "Existing PBX systems, trunks and carrier connections keep working — they are connected through one managed voice architecture rather than replaced.",
+      "Existing PBX systems, trunks and carrier connections keep working, they are connected through one managed voice architecture rather than replaced.",
     icon: PhoneCall,
   },
   {
@@ -392,7 +392,7 @@ export const businessSizes: SizeContent[] = [
     note: "One number. Every phone on the ring lights at once, and whoever is free answers.",
     feature: {
       lead: "Everyone answers the same number.",
-      body: "There is no receptionist to route around and no queue to sit in. A call to your business number rings every phone on the ring at once — mobile, browser and desk together — and whoever is free takes it. When you hire, the new extension joins the ring from the web portal: no hardware, no second system, and nothing to migrate later.",
+      body: "There is no receptionist to route around and no queue to sit in. A call to your business number rings every phone on the ring at once, mobile, browser and desk together, and whoever is free takes it. When you hire, the new extension joins the ring from the web portal: no hardware, no second system, and nothing to migrate later.",
     },
     faqs: [
       {
@@ -408,12 +408,12 @@ export const businessSizes: SizeContent[] = [
       {
         question: "Can we sound like a bigger company?",
         answer:
-          "Yes — an IVR menu answers and routes callers to sales or support before anyone picks up, which is the part callers read as an established business.",
+          "Yes, an IVR menu answers and routes callers to sales or support before anyone picks up, which is the part callers read as an established business.",
       },
       {
         question: "What if we outgrow this setup?",
         answer:
-          "The same platform carries the capabilities the larger sizes use — shared PBX, queues, routing and integrations. Growing into them is configuration, not a move.",
+          "The same platform carries the capabilities the larger sizes use, shared PBX, queues, routing and integrations. Growing into them is configuration, not a move.",
       },
     ],
   },
@@ -423,17 +423,17 @@ export const businessSizes: SizeContent[] = [
     short: "Small Business",
     headline: "Every call finds someone.",
     standfirst:
-      "If the desk is busy the call rings the next phone, and the next. You set that order once in a browser — there is no system to run and nobody to ring about it.",
+      "If the desk is busy the call rings the next phone, and the next. You set that order once in a browser, there is no system to run and nobody to ring about it.",
     faqs: [
       {
         question: "Who manages this if we have no IT staff?",
         answer:
-          "You do, from a web portal. Extensions, call flows, business hours and users are configured centrally and changes take effect immediately — there is no specialist step between deciding something and it being true.",
+          "You do, from a web portal. Extensions, call flows, business hours and users are configured centrally and changes take effect immediately, there is no specialist step between deciding something and it being true.",
       },
       {
         question: "What happens to calls after we close?",
         answer:
-          "Whatever you set. Calls outside business hours can go to voicemail, which arrives in the inbox as email, or forward to the mobile of whoever is on call — on the business number rather than a personal one.",
+          "Whatever you set. Calls outside business hours can go to voicemail, which arrives in the inbox as email, or forward to the mobile of whoever is on call, on the business number rather than a personal one.",
       },
       {
         question: "Can staff take the business line with them?",
@@ -453,7 +453,7 @@ export const businessSizes: SizeContent[] = [
     short: "Mid-Market",
     headline: "Know who is waiting, and why.",
     standfirst:
-      "Routing puts each caller with the team that can help them. The reports afterwards tell you where to put your people next — across every department and site, on one platform.",
+      "Routing puts each caller with the team that can help them. The reports afterwards tell you where to put your people next, across every department and site, on one platform.",
     visual: "queue",
     placement: "beside",
     includedAs: "list",
@@ -506,7 +506,7 @@ export const businessSizes: SizeContent[] = [
       {
         question: "What does the session border controller do?",
         answer:
-          "It is the controlled layer between your voice infrastructure and external SIP networks and platforms — the place where what reaches the estate is decided.",
+          "It is the controlled layer between your voice infrastructure and external SIP networks and platforms, the place where what reaches the estate is decided.",
       },
       {
         question: "Can we keep visibility across all of it?",

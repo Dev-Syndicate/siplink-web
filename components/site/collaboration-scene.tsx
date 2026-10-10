@@ -434,7 +434,7 @@ function Workspace({
                 photo={PHOTO.rahul}
                 who="Rahul Mehta"
                 time="10:15 AM"
-                text="Booked the design review for 11 — it's on everyone's calendar."
+                text="Booked the design review for 11, it's on everyone's calendar."
               />
             ) : null}
           </div>

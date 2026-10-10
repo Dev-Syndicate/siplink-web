@@ -184,7 +184,7 @@ export function VoiceVideoScene({ label }: { label: string }) {
           </span>
           {replied ? (
             <span className="mt-[0.3cqw] rounded-[0.7cqw] bg-accent px-[0.6cqw] py-[0.45cqw] text-[0.68cqw] leading-snug text-accent-foreground">
-              “In a meeting — I’ll call you back at 11.”
+              “In a meeting, I’ll call you back at 11.”
             </span>
           ) : (
             <span className="mt-[0.3cqw] flex gap-[1.2cqw]">

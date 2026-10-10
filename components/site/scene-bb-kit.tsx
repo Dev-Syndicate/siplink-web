@@ -126,7 +126,7 @@ const KIT: Kit[] = [
     icon: Globe,
     label: "Static IP",
     sub: "A fixed public address",
-    place: "Nowhere at all — it is on the service",
+    place: "Nowhere at all, it is on the service",
     note: "Issued against the connection rather than the hardware, where a VPN, a trunk or an allowlist needs one.",
     optional: true,
     frame: "top-[58%] left-[79%] w-[17%]",

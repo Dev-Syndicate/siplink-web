@@ -65,9 +65,9 @@ export function SizeRing() {
   return (
     <div
       role="img"
-      aria-label={`One business number with ${startupSeats.length} people on the ring — ${startupSeats
+      aria-label={`One business number with ${startupSeats.length} people on the ring, ${startupSeats
         .map((seat) => seat.role)
-        .join(", ")} — whose phones all ring together.`}
+        .join(", ")}, whose phones all ring together.`}
       className="relative mx-auto aspect-square w-full max-w-[34rem]"
     >
       {/* Waves leaving the number while it rings. Three on a stagger, so there

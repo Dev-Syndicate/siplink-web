@@ -62,7 +62,7 @@ export function OneNumberStory() {
       ref={ref}
       className="gap-0 p-5 sm:p-6"
       role="img"
-      aria-label="Step 1: a customer calls your business number. Step 2: it rings your whole team at once — at the office, at home, at a client site and on mobile. Step 3: the first colleague who is free picks up, and the customer is connected without knowing where they are."
+      aria-label="Step 1: a customer calls your business number. Step 2: it rings your whole team at once, at the office, at home, at a client site and on mobile. Step 3: the first colleague who is free picks up, and the customer is connected without knowing where they are."
     >
       <ol className="relative">
         {/* Step 1 */}
@@ -142,7 +142,7 @@ export function OneNumberStory() {
           n={3}
           lit={step >= 2}
           last
-          title="The first free person picks up — you're connected"
+          title="The first free person picks up, you're connected"
         >
           <div
             className={cn(

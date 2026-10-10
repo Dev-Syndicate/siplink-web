@@ -93,7 +93,7 @@ export const site = {
   legalName: "Siplink Communications",
   tagline: "Global Solutions For SME",
   description:
-    "Reliable, scalable and secure cloud communications for growing businesses — hosted PBX, SIP trunking, call centre and unified communications.",
+    "Reliable, scalable and secure cloud communications for growing businesses: hosted PBX, SIP trunking, call centre and unified communications.",
   phone: "082172 02075",
   email: "support@siplink.in",
 } as const;
@@ -111,7 +111,7 @@ export const solutions: Solution[] = [
   {
     title: "Hosted PBX",
     description:
-      "A telephone switching system accessible over a network in the cloud. More affordable and easier to run than on-premise hardware — with no box in the telecom closet to maintain.",
+      "A telephone switching system accessible over a network in the cloud. More affordable and easier to run than on-premise hardware, with no box in the telecom closet to maintain.",
     icon: CloudCog,
     cta: "Explore PBX features",
     href: "/solutions/hosted-pbx",
@@ -127,7 +127,7 @@ export const solutions: Solution[] = [
   {
     title: "Enhanced Call Centre",
     description:
-      "Improve operational costs and workforce productivity, configured around your requirements — with call recording and monitoring built in.",
+      "Improve operational costs and workforce productivity, configured around your requirements, with call recording and monitoring built in.",
     icon: Headset,
     cta: "Discover call centre",
     href: "/solutions/call-centre",
@@ -135,7 +135,7 @@ export const solutions: Solution[] = [
   {
     title: "Unified Communications",
     description:
-      "Integrate multiple communication methods within one business platform — voice, video, business SMS and team messaging that feel like being in the same office.",
+      "Integrate multiple communication methods within one business platform, voice, video, business SMS and team messaging that feel like being in the same office.",
     icon: MessagesSquare,
     cta: "Learn about UCaaS",
     href: "/solutions/unified-communications",
@@ -623,7 +623,7 @@ export const ucaasBenefits: Simple[] = [
   {
     title: "One platform, total control",
     description:
-      "All your communication — calls, video, chat and collaboration — in one powerful hub.",
+      "All your communication, calls, video, chat and collaboration, in one powerful hub.",
     icon: LayoutGrid,
   },
   {
@@ -751,7 +751,7 @@ export const supportChannels: Simple[] = [
   {
     title: "24x7 call centre",
     description:
-      "Any issue with the product, or any question about the company — we are a call away.",
+      "Any issue with the product, or any question about the company, we are a call away.",
     icon: Headset,
   },
 ];
@@ -761,7 +761,7 @@ export const reliability: Simple[] = [
   {
     title: "No single point of failure",
     description:
-      "Failover, redundancy and replication throughout the network — redundant servers, routers and switches with real-time replication to a secondary data centre.",
+      "Failover, redundancy and replication throughout the network, redundant servers, routers and switches with real-time replication to a secondary data centre.",
     icon: ServerCog,
   },
   {
@@ -786,7 +786,7 @@ export const capabilities: Simple[] = [
   {
     title: "Unified communications",
     description:
-      "Integrates multiple communication methods within a business — voice, video, messaging and presence on one system.",
+      "Integrates multiple communication methods within a business, voice, video, messaging and presence on one system.",
     icon: Boxes,
   },
   {
@@ -826,7 +826,7 @@ export const mobility: Simple[] = [
   {
     title: "Your business goes where you go",
     description:
-      "Tools that keep business communication seamless by phone, video and text from anywhere — managed entirely off-site.",
+      "Tools that keep business communication seamless by phone, video and text from anywhere, managed entirely off-site.",
     icon: Laptop,
   },
   {
@@ -890,6 +890,11 @@ export const reviewStats: {
   { value: "24/7", label: "Expert support", icon: Headphones },
   { value: "HIPAA", label: "Compliant platform", icon: ShieldCheck },
 ];
+
+/** SipLink's Google reviews, opened directly. Built from the Business Profile's
+ * Place ID; the shorter share.google link only opens the profile. */
+export const googleReviewsUrl =
+  "https://search.google.com/local/reviews?placeid=ChIJtxdj21BmUjoRNxU5yXBLj2A";
 
 export const reviews: Review[] = [
   {
@@ -1014,7 +1019,7 @@ export const whyChoose: Simple[] = [
   {
     title: "SIP trunking expertise",
     description:
-      "A properly engineered SIP solution is critical — wrong configurations cause issues and unnecessary cost. We know the real-world challenges.",
+      "A properly engineered SIP solution is critical, wrong configurations cause issues and unnecessary cost. We know the real-world challenges.",
     icon: GitBranch,
   },
   {
@@ -1432,7 +1437,7 @@ export const nav: NavItem[] = [
       eyebrow: "SIPLINK PLATFORM",
       title: "One platform for every conversation",
       description:
-        "Voice, messaging and APIs on a single network — with the reliability and support your business runs on.",
+        "Voice, messaging and APIs on a single network, with the reliability and support your business runs on.",
       cta: "Explore the platform",
       href: "/products",
       image: "/nav_images/product.jpeg",
@@ -1561,7 +1566,7 @@ export const nav: NavItem[] = [
       href: "/solutions",
       image: "/nav_images/solutions.png",
       imageAlt:
-        "SipLink solution areas — phone numbers, contact centre, enterprise communication, industries, AI, migration, APIs and internet — arranged around a globe",
+        "SipLink solution areas, phone numbers, contact centre, enterprise communication, industries, AI, migration, APIs and internet, arranged around a globe",
     },
   },
   {
@@ -1942,7 +1947,7 @@ export const productCategories: ProductCategory[] = [
       {
         title: "CCaaS",
         description:
-          "A cloud contact-centre environment for customer calls — intelligent routing, queues, agent tools, supervision and reporting in one operation.",
+          "A cloud contact-centre environment for customer calls, intelligent routing, queues, agent tools, supervision and reporting in one operation.",
         href: "/products/cloud-pbx",
         idealFor:
           "Customer service and support teams, high-volume operations, blended inbound and outbound teams",
@@ -1971,7 +1976,7 @@ export const productCategories: ProductCategory[] = [
     heading: "Business numbers built for the way you communicate",
     tagline: "Establish presence anywhere, keep the numbers you have.",
     description:
-      "Choose from local DID numbers, toll-free numbers and virtual phone numbers, or port your existing business numbers to SipLink while maintaining continuity — for one team or many locations.",
+      "Choose from local DID numbers, toll-free numbers and virtual phone numbers, or port your existing business numbers to SipLink while maintaining continuity, for one team or many locations.",
     icon: Network,
     products: [
       {
@@ -2001,7 +2006,7 @@ export const productCategories: ProductCategory[] = [
       {
         title: "Number Porting",
         description:
-          "Move your existing business numbers to SipLink and keep the numbers your customers already know — no reprinting, no updating listings, minimal disruption.",
+          "Move your existing business numbers to SipLink and keep the numbers your customers already know, no reprinting, no updating listings, minimal disruption.",
         href: "/products/number-porting",
         idealFor:
           "Businesses migrating from another provider, PRI and legacy PBX replacements",
@@ -2014,7 +2019,7 @@ export const productCategories: ProductCategory[] = [
     heading: "Connect your teams, elevate every conversation",
     tagline: "One platform for agents, queues and customer interactions.",
     description:
-      "Handle inbound and outbound calls, route customers to the right teams, manage queues, monitor agent activity, record conversations and analyse performance — with real-time visibility throughout.",
+      "Handle inbound and outbound calls, route customers to the right teams, manage queues, monitor agent activity, record conversations and analyse performance, with real-time visibility throughout.",
     icon: Headset,
     products: [
       {
@@ -2048,7 +2053,7 @@ export const productCategories: ProductCategory[] = [
       {
         title: "Call Analytics",
         description:
-          "Understand call volumes, answered and missed calls, duration, agent activity and overall trends — so you know what is happening inside your calls, not just how many there were.",
+          "Understand call volumes, answered and missed calls, duration, agent activity and overall trends, so you know what is happening inside your calls, not just how many there were.",
         href: "/products/call-analytics",
         idealFor: "Managers tracking performance and staffing decisions",
       },
@@ -2060,7 +2065,7 @@ export const productCategories: ProductCategory[] = [
     heading: "Build powerful communication experiences",
     tagline: "Voice, messaging and real-time calling in your own product.",
     description:
-      "Integrate communication directly into your applications without developing the underlying telephony infrastructure from scratch — through reliable voice, SMS, WhatsApp, WebRTC and SIP technologies.",
+      "Integrate communication directly into your applications without developing the underlying telephony infrastructure from scratch, through reliable voice, SMS, WhatsApp, WebRTC and SIP technologies.",
     icon: Code2,
     products: [
       {
@@ -2082,7 +2087,7 @@ export const productCategories: ProductCategory[] = [
       {
         title: "WhatsApp Business API",
         description:
-          "Bring business conversations to WhatsApp — updates, support, notifications and customer engagement on a platform your customers already use daily.",
+          "Bring business conversations to WhatsApp, updates, support, notifications and customer engagement on a platform your customers already use daily.",
         href: "/products/whatsapp-api",
         idealFor:
           "Customer support, order updates, appointment reminders, sales engagement",
@@ -2090,7 +2095,7 @@ export const productCategories: ProductCategory[] = [
       {
         title: "WebRTC SDK",
         description:
-          "Add real-time voice directly into web and application environments — browser calling, click-to-call and embedded softphones with nothing for customers to install.",
+          "Add real-time voice directly into web and application environments, browser calling, click-to-call and embedded softphones with nothing for customers to install.",
         href: "/products/webrtc-sdk",
         idealFor:
           "Web applications, SaaS platforms, click-to-call, support portals",
@@ -2139,7 +2144,7 @@ export const productCategories: ProductCategory[] = [
       {
         title: "CRM Integration",
         description:
-          "Bring calling closer to the customer records your teams already rely on — screen pop, click-to-dial, call logging and contact synchronisation.",
+          "Bring calling closer to the customer records your teams already rely on, screen pop, click-to-dial, call logging and contact synchronisation.",
         href: "/products/crm-integration",
         idealFor: "Sales and support teams working inside a CRM all day",
       },
@@ -2282,7 +2287,7 @@ export const whyPoints: Simple[] = [
   {
     title: "Security",
     description:
-      "HIPAA compliant, with connectivity on our DoT-licensed ISP network — suitable for healthcare and other regulated work.",
+      "HIPAA compliant, with connectivity on our DoT-licensed ISP network, suitable for healthcare and other regulated work.",
     icon: ShieldCheck,
   },
   {
@@ -2603,7 +2608,7 @@ export const homeFeatures: HomeFeature[] = [
     id: "analytics",
     title: "Analytics",
     description:
-      "Volumes, answered and missed calls, duration and agent activity — downloadable for any period as Excel or CSV.",
+      "Volumes, answered and missed calls, duration and agent activity, downloadable for any period as Excel or CSV.",
     href: "/products/call-analytics",
     icon: BarChart3,
   },

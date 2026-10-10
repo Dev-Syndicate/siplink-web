@@ -244,7 +244,7 @@ export const internetHero = {
   eyebrow: "Internet / Class A ISP",
   title: "Reliable business internet, built for the way you work.",
   description:
-    "Your business depends on a stable connection for everything — cloud applications, video meetings, VoIP, CRM, ERP, payments, remote access and the day-to-day. SipLink builds connectivity around those requirements rather than selling you a line and leaving.",
+    "Your business depends on a stable connection for everything, cloud applications, video meetings, VoIP, CRM, ERP, payments, remote access and the day-to-day. SipLink builds connectivity around those requirements rather than selling you a line and leaving.",
 } as const;
 
 export const internetIntro = [
@@ -372,7 +372,7 @@ export const internetWhy: InternetPoint[] = [
   {
     title: "Business-focused connectivity",
     description:
-      "Solutions designed around business users, applications and operational requirements — not a consumer plan sold to an office.",
+      "Solutions designed around business users, applications and operational requirements, not a consumer plan sold to an office.",
     icon: Briefcase,
   },
   {
@@ -463,7 +463,7 @@ export const internetDelivery: { title: string; body: string }[] = [
   },
   {
     title: "Order and programme manager",
-    body: "Once the order is logged, a programme manager takes it and confirms your timeline. Delivery depends on the last mile, so the date comes from your location and connectivity type — not from a standard lead time.",
+    body: "Once the order is logged, a programme manager takes it and confirms your timeline. Delivery depends on the last mile, so the date comes from your location and connectivity type, not from a standard lead time.",
   },
   {
     title: "Last-mile build",
@@ -572,7 +572,7 @@ export const internetFaqs: { question: string; answer: string }[] = [
   {
     question: "What is business internet leased line?",
     answer:
-      "An internet service designed for business locations and everyday business applications — cloud software, email, video conferencing, VoIP and web applications. It differs from a consumer connection in how it is supported and in what can be added to it, such as static IP and a managed router.",
+      "An internet service designed for business locations and everyday business applications, cloud software, email, video conferencing, VoIP and web applications. It differs from a consumer connection in how it is supported and in what can be added to it, such as static IP and a managed router.",
   },
   {
     question: "What is dedicated internet?",
@@ -640,7 +640,7 @@ const businessBroadband: InternetService = {
   eyebrow: "Connectivity",
   tagline: "Fast, reliable internet for growing businesses.",
   intro:
-    "SipLink Business Internet Leased Line is for businesses that need dependable internet for everyday operations without the complexity — or the cost — of an enterprise dedicated circuit.",
+    "SipLink Business Internet Leased Line is for businesses that need dependable internet for everyday operations without the complexity, or the cost, of an enterprise dedicated circuit.",
   lede: [
     "Connect employees, cloud applications, collaboration platforms, VoIP services, CRM systems and business devices through a connection built for a workplace rather than a household.",
   ],
@@ -665,7 +665,7 @@ const businessBroadband: InternetService = {
       heading: "Sized against how you actually work",
       tagline: "There is no standard office, so there is no standard plan.",
       intro:
-        "Rather than publishing a speed tier and hoping it fits, we size a business internet leased line connection against what actually runs on it — how many people, which applications, and how much of the traffic travels upward.",
+        "Rather than publishing a speed tier and hoping it fits, we size a business internet leased line connection against what actually runs on it, how many people, which applications, and how much of the traffic travels upward.",
       body: [
         "Most connections that disappoint were not undersized on paper. They were sized on headcount alone, and nobody asked what those people would be doing: a twelve-person design studio pushing renders to the cloud is a heavier load than a forty-person office reading email.",
         "So the conversation starts with the work, not the number. The nine factors below are what we actually ask about.",
@@ -686,7 +686,7 @@ const businessBroadband: InternetService = {
         {
           title: "Concurrency, not headcount",
           description:
-            "What matters is how many people are using the connection at once, at the busiest hour of the day — not how many desks there are.",
+            "What matters is how many people are using the connection at once, at the busiest hour of the day, not how many desks there are.",
           icon: Users,
         },
         {
@@ -733,7 +733,7 @@ const businessBroadband: InternetService = {
         "A business connection is not a faster consumer one. It is judged on what keeps running during the busiest hour of the week, and on what can be added to it when the business needs something a household never would.",
       scene: "applications",
       body: [
-        "These are the applications business internet leased line is expected to carry — all of them at the same time, on the same line, without one of them starving the others.",
+        "These are the applications business internet leased line is expected to carry, all of them at the same time, on the same line, without one of them starving the others.",
       ],
       listCaption: "Supports",
       list: [
@@ -778,7 +778,7 @@ const businessBroadband: InternetService = {
       heading: "Built for everyday business",
       tagline: "What changes when the office line is a business one.",
       intro:
-        "The difference between a business connection and a consumer one shows up in ordinary weeks rather than exceptional ones — in whether the Monday video call holds, whether the CRM is quick at four in the afternoon, and in who answers when it is not.",
+        "The difference between a business connection and a consumer one shows up in ordinary weeks rather than exceptional ones, in whether the Monday video call holds, whether the CRM is quick at four in the afternoon, and in who answers when it is not.",
       scene: "workday",
       body: [
         "None of these are dramatic on their own. Together they are the difference between connectivity you think about and connectivity you do not.",
@@ -892,7 +892,7 @@ const dedicatedInternet: InternetService = {
         {
           title: "Predictable under load",
           description:
-            "Month-end, a large migration or a full day of video calls do not change the shape of the connection — which is the entire point of buying it.",
+            "Month-end, a large migration or a full day of video calls do not change the shape of the connection, which is the entire point of buying it.",
           icon: Activity,
         },
         {
@@ -967,7 +967,7 @@ const dedicatedInternet: InternetService = {
         {
           title: "Remote access works both ways",
           description:
-            "When colleagues reach systems hosted in your office, your upload is their download — and it sets what they experience.",
+            "When colleagues reach systems hosted in your office, your upload is their download, and it sets what they experience.",
           icon: MonitorSmartphone,
         },
       ],
@@ -984,10 +984,10 @@ const dedicatedInternet: InternetService = {
       tagline:
         "Bandwidth is a number. An SLA is a promise about what happens when it stops.",
       intro:
-        "Business connectivity needs more than capacity. It needs defined commitments about response, restoration and accountability — agreed before anything goes wrong, when there is no pressure to be vague.",
+        "Business connectivity needs more than capacity. It needs defined commitments about response, restoration and accountability, agreed before anything goes wrong, when there is no pressure to be vague.",
       scene: "sla",
       body: [
-        "SipLink can provide SLA-backed connectivity options based on the service and commercial agreement selected. Our internet services include SLA arrangements covering SipLink equipment, the local access network and the IP network — the three places a fault actually occurs.",
+        "SipLink can provide SLA-backed connectivity options based on the service and commercial agreement selected. Our internet services include SLA arrangements covering SipLink equipment, the local access network and the IP network, the three places a fault actually occurs.",
         "We do not publish a headline uptime figure on this page. The commitment that applies to you depends on the service, the site and the last mile, and quoting an unrelated number here would tell you nothing useful about either.",
       ],
       listCaption: "An SLA may address",
@@ -1017,13 +1017,13 @@ const dedicatedInternet: InternetService = {
         {
           title: "A defined escalation path",
           description:
-            "Who to reach, and who they reach next, agreed in advance — rather than discovered during the incident.",
+            "Who to reach, and who they reach next, agreed in advance, rather than discovered during the incident.",
           icon: Route,
         },
         {
           title: "Written, not implied",
           description:
-            "Whatever is committed appears in your service agreement. If it is not written down, treat it as not committed — with any provider.",
+            "Whatever is committed appears in your service agreement. If it is not written down, treat it as not committed, with any provider.",
           icon: ScrollText,
         },
       ],
@@ -1037,7 +1037,7 @@ const dedicatedInternet: InternetService = {
       title: "Enterprise Connectivity",
       eyebrow: "Enterprise connectivity",
       heading: "Internet designed around your business",
-      tagline: "Not a bigger plan — a different question.",
+      tagline: "Not a bigger plan, a different question.",
       intro:
         "Enterprise connectivity is not simply a higher bandwidth tier. It is a design problem, and the answer changes with every one of the inputs below.",
       scene: "enterprise",
@@ -1189,7 +1189,7 @@ const staticIp: InternetService = {
         "A static IP is worth paying for when some other system has been configured to trust your address. These are the eight cases that come up most often in business networks.",
       scene: "allowlist",
       body: [
-        "The pattern is the same in all of them: something outside your network — a partner, a platform, a trunk provider or your own remote staff — needs to recognise traffic as yours. Recognition requires an address that does not move.",
+        "The pattern is the same in all of them: something outside your network, a partner, a platform, a trunk provider or your own remote staff, needs to recognise traffic as yours. Recognition requires an address that does not move.",
       ],
       points: [
         {
@@ -1309,7 +1309,7 @@ const managedRouterFirewall: InternetService = {
   intro:
     "Your internet connection needs the right equipment and the right policies behind it. A circuit with no considered rules in front of it is a circuit anyone can walk into.",
   lede: [
-    "SipLink can provide managed router and firewall solutions designed to help businesses control traffic, secure network access and keep connectivity reliable — without making it your team's second job.",
+    "SipLink can provide managed router and firewall solutions designed to help businesses control traffic, secure network access and keep connectivity reliable, without making it your team's second job.",
   ],
   icon: ShieldCheck,
   scene: "firewall",
@@ -1350,7 +1350,7 @@ const managedRouterFirewall: InternetService = {
       heading: "Because the person who configured it has left",
       body: [
         "Network equipment tends to be set up once, by whoever was available, and then left alone until it fails. The configuration lives in one person's memory and the firmware quietly ages.",
-        "Having equipment managed as part of a broader connectivity service means policy, monitoring and change control belong to a team whose job it is — and the rules are documented rather than remembered.",
+        "Having equipment managed as part of a broader connectivity service means policy, monitoring and change control belong to a team whose job it is, and the rules are documented rather than remembered.",
       ],
       points: [
         {
@@ -1439,7 +1439,7 @@ const businessWifi: InternetService = {
         {
           title: "Coverage planning",
           description:
-            "Access points placed against the actual layout — walls, floors, racking and glass all change where the signal goes.",
+            "Access points placed against the actual layout, walls, floors, racking and glass all change where the signal goes.",
           icon: Compass,
         },
         {
@@ -1457,7 +1457,7 @@ const businessWifi: InternetService = {
         {
           title: "Device density",
           description:
-            "Sized for how many devices are in a room, not just how large the room is — a full training suite is the hard case.",
+            "Sized for how many devices are in a room, not just how large the room is, a full training suite is the hard case.",
           icon: Users,
         },
       ],
@@ -1624,7 +1624,7 @@ const sdWan: InternetService = {
   intro:
     "As organisations expand across branches, offices, cloud environments and remote locations, managing multiple network connections one at a time becomes the bottleneck.",
   lede: [
-    "SD-WAN provides a software-defined approach to managing WAN connectivity, routing and application traffic across multiple links — combining centralised management with routing, firewall, load balancing, WAN optimisation and traffic policy.",
+    "SD-WAN provides a software-defined approach to managing WAN connectivity, routing and application traffic across multiple links, combining centralised management with routing, firewall, load balancing, WAN optimisation and traffic policy.",
   ],
   icon: Waypoints,
   scene: "sdwan",
@@ -1713,7 +1713,7 @@ const multiLocation: InternetService = {
   intro:
     "Connecting a single office is straightforward. Connecting 5, 20, 50 or 100 locations is a structural problem, and it does not get solved by ordering more of the same circuit.",
   lede: [
-    "SipLink can design connectivity for organisations operating across multiple offices, branches, stores, warehouses, campuses and operational locations — as one network with one design behind it.",
+    "SipLink can design connectivity for organisations operating across multiple offices, branches, stores, warehouses, campuses and operational locations, as one network with one design behind it.",
   ],
   icon: MapPinned,
   scene: "multisite",
@@ -1967,7 +1967,7 @@ export const planProfiles: {
     situation:
       "Everything is in the cloud, nothing is hosted on site, and the connection is only noticed when a call breaks up.",
     drives:
-      "How many people are actually using it at the same time, at the busiest hour — rarely the same as the headcount.",
+      "How many people are actually using it at the same time, at the busiest hour, rarely the same as the headcount.",
     usually: ["Managed router", "Static IP, if there is a VPN"],
     icon: Users,
   },
@@ -1997,7 +1997,7 @@ export const planProfiles: {
     situation:
       "Staff, customers, payment terminals and cameras all share one connection, and the guests are the ones on the phone about it.",
     drives:
-      "Device density and separation — how many things connect, and which of them must never see each other.",
+      "Device density and separation, how many things connect, and which of them must never see each other.",
     usually: ["Business Wi-Fi with guest separation", "LAN and VLANs"],
     icon: ShoppingCart,
   },
@@ -2070,7 +2070,7 @@ export const planStepUp = {
       "An hour of degraded throughput costs you money, meetings or customers",
       "You need restoration targets and escalation in writing, not best effort",
       "The upload matters as much as the download",
-      "Voice is the business — a contact centre, not a few calls a day",
+      "Voice is the business, a contact centre, not a few calls a day",
       "Several sites move real traffic between each other",
       "Systems you host are reached from outside the building",
     ],
@@ -2128,7 +2128,7 @@ export const broadbandFeatureCards: {
     diagram: "onehand",
     title: "One team for the line and the kit",
     description:
-      "A managed router, business Wi-Fi and the LAN behind it can be delivered and supported alongside the circuit — so a fault is diagnosed once rather than argued between suppliers.",
+      "A managed router, business Wi-Fi and the LAN behind it can be delivered and supported alongside the circuit, so a fault is diagnosed once rather than argued between suppliers.",
     detail: [
       "Router, Wi-Fi and switching supported with the connection",
       "Monitored 24/7 from our Global NOC in Chennai",
@@ -2168,7 +2168,7 @@ export const benefitScenarios: {
   {
     benefit: "Better cloud access",
     when: "Tuesday, 14:20",
-    body: "Your team is in the CRM and the finance system all afternoon, and neither is on a server in the building. When the connection is sized for that, nobody mentions it — which is the entire benefit.",
+    body: "Your team is in the CRM and the finance system all afternoon, and neither is on a server in the building. When the connection is sized for that, nobody mentions it, which is the entire benefit.",
   },
   {
     benefit: "Support for VoIP",
@@ -2178,7 +2178,7 @@ export const benefitScenarios: {
   {
     benefit: "Work from anywhere",
     when: "Thursday, 07:40",
-    body: "Someone starts early from home and needs the same systems they would have at a desk. With remote access — and a static IP where the VPN requires one — that is an ordinary morning rather than a support ticket.",
+    body: "Someone starts early from home and needs the same systems they would have at a desk. With remote access, and a static IP where the VPN requires one, that is an ordinary morning rather than a support ticket.",
   },
   {
     benefit: "Easy to scale",
@@ -2314,7 +2314,7 @@ export const slaLifecycle: { title: string; body: string }[] = [
   },
   {
     title: "Reviewed",
-    body: "What happened, why, and what changes — recorded against the service rather than left as an apology on a call.",
+    body: "What happened, why, and what changes, recorded against the service rather than left as an apology on a call.",
   },
 ];
 
@@ -2385,17 +2385,17 @@ export const addressAnatomy: {
 }[] = [
   {
     title: "Public, not the one on your laptop",
-    body: "The 192.168.x.x address your laptop shows is private — it exists only inside your building. A public address is the one the rest of the internet sees, and it belongs to the connection rather than to any device on it.",
+    body: "The 192.168.x.x address your laptop shows is private, it exists only inside your building. A public address is the one the rest of the internet sees, and it belongs to the connection rather than to any device on it.",
     icon: Globe,
   },
   {
     title: "One address, or a small block",
-    body: "A single address covers most needs, because one public address can front several services. A routed block is for when systems genuinely need to be reachable separately — which is a design decision, not an upgrade.",
+    body: "A single address covers most needs, because one public address can front several services. A routed block is for when systems genuinely need to be reachable separately, which is a design decision, not an upgrade.",
     icon: Boxes,
   },
   {
     title: "Tied to the service, not the hardware",
-    body: "The address is issued against your internet service. Replacing a router keeps it; changing provider does not — which is why it is worth raising early in a migration rather than on cutover day.",
+    body: "The address is issued against your internet service. Replacing a router keeps it; changing provider does not, which is why it is worth raising early in a migration rather than on cutover day.",
     icon: Link2,
   },
 ];
@@ -2429,7 +2429,7 @@ export const dynamicBreakage: {
   {
     time: "Day 41",
     title: "The lease renews",
-    body: "The network hands your connection a different public address. This is normal behaviour for a dynamic service, not a fault — there is no notice, no error and nothing in a log to read.",
+    body: "The network hands your connection a different public address. This is normal behaviour for a dynamic service, not a fault, there is no notice, no error and nothing in a log to read.",
     address: "203.0.113.88",
     state: "changed",
   },
@@ -2483,7 +2483,7 @@ export const staticIpSituations: {
     id: "cctv",
     label: "Cameras and monitoring",
     job: "Check site cameras from outside the building",
-    why: "Monitoring platforms and remote viewers need a consistent address to reach — and a firewall in front of it, which is not optional.",
+    why: "Monitoring platforms and remote viewers need a consistent address to reach, and a firewall in front of it, which is not optional.",
     alongside: ["Managed firewall"],
     icon: Eye,
   },
@@ -2513,12 +2513,12 @@ export const staticIpLimits: {
 }[] = [
   {
     title: "It is not a security control",
-    body: "A fixed address makes access rules possible; it does not make them safe. Anything reachable from the internet still needs a firewall policy in front of it — the address is what the policy refers to, not the policy.",
+    body: "A fixed address makes access rules possible; it does not make them safe. Anything reachable from the internet still needs a firewall policy in front of it, the address is what the policy refers to, not the policy.",
     icon: ShieldCheck,
   },
   {
     title: "It will not make anything faster",
-    body: "Addressing and bandwidth are unrelated. A static IP changes how you are found, never how much you can carry — if the connection is slow, this is not the thing that fixes it.",
+    body: "Addressing and bandwidth are unrelated. A static IP changes how you are found, never how much you can carry, if the connection is slow, this is not the thing that fixes it.",
     icon: Gauge,
   },
   {
@@ -2593,7 +2593,7 @@ export const staticIpFaqs: { question: string; answer: string }[] = [
   {
     question: "Can I keep my address if I move office?",
     answer:
-      "Not usually. The address is issued against the service at a location, so a move generally means a new address — worth planning for alongside the physical move rather than after it.",
+      "Not usually. The address is issued against the service at a location, so a move generally means a new address, worth planning for alongside the physical move rather than after it.",
   },
   {
     question: "How many addresses should I ask for?",
@@ -2608,7 +2608,7 @@ export const staticIpFaqs: { question: string; answer: string }[] = [
   {
     question: "Does a static IP expose my network?",
     answer:
-      "Not by itself — an address is only reachable on the ports a firewall permits. What matters is the policy in front of it, which is what a managed router and firewall service is for.",
+      "Not by itself, an address is only reachable on the ports a firewall permits. What matters is the policy in front of it, which is what a managed router and firewall service is for.",
   },
 ];
 
@@ -2642,7 +2642,7 @@ export const firewallLayers: {
   {
     layer: "02",
     title: "Segmentation",
-    body: "Which parts of your own network can see each other. Guests reaching a file server is rarely a decision anyone made — it is usually a decision nobody made.",
+    body: "Which parts of your own network can see each other. Guests reaching a file server is rarely a decision anyone made, it is usually a decision nobody made.",
     icon: Split,
   },
   {
@@ -2690,7 +2690,7 @@ export const firewallManagedVsNot: {
 export const wifiProcess: { title: string; body: string }[] = [
   {
     title: "Walk the floor",
-    body: "Coverage is decided by walls, glass, racking and floors — none of which appear on a plan drawing. A site assessment comes before any design.",
+    body: "Coverage is decided by walls, glass, racking and floors, none of which appear on a plan drawing. A site assessment comes before any design.",
   },
   {
     title: "Count the devices",
@@ -2804,7 +2804,7 @@ export const vpnShapes: {
     points: [
       "Always on, between fixed locations",
       "Configured once, on equipment at each end",
-      "Staff notice nothing — the other office is simply reachable",
+      "Staff notice nothing, the other office is simply reachable",
       "Usually configured against a fixed public address",
     ],
     icon: Link2,
@@ -2834,7 +2834,7 @@ export const vpnLimits: { title: string; body: string }[] = [
   },
   {
     title: "It is only as current as its access list",
-    body: "The value is in revoking access as reliably as granting it. That is a process, not a product — which is why it is worth managing rather than owning.",
+    body: "The value is in revoking access as reliably as granting it. That is a process, not a product, which is why it is worth managing rather than owning.",
   },
 ];
 
@@ -2901,7 +2901,7 @@ export const siteTiers: {
     tier: "Head office",
     profile: "The centre of gravity",
     typical:
-      "The largest user population, the core systems and usually the heaviest link — plus whatever every other site needs to reach.",
+      "The largest user population, the core systems and usually the heaviest link, plus whatever every other site needs to reach.",
     icon: Building2,
   },
   {

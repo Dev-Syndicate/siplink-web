@@ -71,7 +71,7 @@ export function FeaturesHero() {
 
           <p className="mt-7 text-lg text-pretty text-muted-foreground">
             A business connection is not a faster consumer one. It is judged on
-            what keeps working during the busiest hour of the week — and on
+            what keeps working during the busiest hour of the week, and on
             what can be added to it when a household never would.
           </p>
 

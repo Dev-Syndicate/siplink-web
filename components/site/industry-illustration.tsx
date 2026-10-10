@@ -459,7 +459,7 @@ function Retail({ uid }: { uid: string }) {
             </span>
             <span className="flex max-w-[95%] flex-col self-start">
               <span className="rounded-lg rounded-bl-sm bg-primary px-1.5 py-1 text-[7px] leading-snug text-primary-foreground shadow-sm">
-                Out for delivery — arriving 2pm
+                Out for delivery, arriving 2pm
               </span>
               <span className="mt-0.5 flex items-center gap-1 pl-1">
                 <span className="font-mono text-[5px] text-muted-foreground tabular-nums">13:15</span>
@@ -786,11 +786,11 @@ function StaffingRecruitment({ uid }: { uid: string }) {
   const callWave = [35, 75, 45, 90, 60, 85, 40];
 
   const queue = [
-    { label: "Candidate — Call", type: "call" },
-    { label: "Candidate — SMS", type: "sms" },
-    { label: "Candidate — Follow-up", type: "call" },
-    { label: "Client — Call", type: "call" },
-    { label: "Hiring Manager — SMS", type: "sms" },
+    { label: "Candidate, Call", type: "call" },
+    { label: "Candidate, SMS", type: "sms" },
+    { label: "Candidate, Follow-up", type: "call" },
+    { label: "Client, Call", type: "call" },
+    { label: "Hiring Manager, SMS", type: "sms" },
   ];
 
   const recruiters = [

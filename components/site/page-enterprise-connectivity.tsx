@@ -134,7 +134,7 @@ export function EnterpriseConnectivitySections() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               None of them is about speed. Answer these and the port size falls
-              out of the conversation — which is the right way round.
+              out of the conversation, which is the right way round.
             </p>
           </ScrollReveal>
 

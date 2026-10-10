@@ -110,7 +110,7 @@ const ARRIVALS: Arrival[] = [
     door: "The same door",
     asks: "Do we know this one?",
     outcome:
-      "Refused, correctly. Recognition only means something when it can also say no — which is the half a moving address quietly takes away.",
+      "Refused, correctly. Recognition only means something when it can also say no, which is the half a moving address quietly takes away.",
   },
 ];
 

@@ -68,7 +68,7 @@ const BEATS: Beat[] = [
     shape: 0,
     up: true,
     headline: "Always on, between fixed locations",
-    note: "Configured once on equipment at each end, usually against a fixed public address. Staff notice nothing — the other office is simply reachable.",
+    note: "Configured once on equipment at each end, usually against a fixed public address. Staff notice nothing, the other office is simply reachable.",
   },
   {
     id: "remote",
@@ -95,7 +95,7 @@ const BEATS: Beat[] = [
     shape: 0,
     up: true,
     headline: "A VPN decides who gets in",
-    note: "What they can reach once inside is a firewall and segmentation question — and it is the one more often left unanswered.",
+    note: "What they can reach once inside is a firewall and segmentation question, and it is the one more often left unanswered.",
   },
 ];
 

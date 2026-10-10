@@ -484,7 +484,7 @@ export default function Home() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Every provider sells the same features. What customers write
-              about, over and over, is that someone answers — on WhatsApp, on
+              about, over and over, is that someone answers, on WhatsApp, on
               the phone, at any hour, and the problem gets fixed.
             </p>
           </div>
@@ -557,7 +557,7 @@ export default function Home() {
               </h2>
               <p className="mt-4 text-pretty text-muted-foreground">
                 The SipLink UC app puts your business line on your phone and
-                desktop — calls, video, messaging and voicemail, wherever you
+                desktop, calls, video, messaging and voicemail, wherever you
                 are.
               </p>
             </div>

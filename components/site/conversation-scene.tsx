@@ -62,7 +62,7 @@ const THREAD: { at: number; message: Message }[] = [
     at: 2,
     message: {
       kind: "out",
-      text: "Sure — I'll share the updated deck with the revised timelines.",
+      text: "Sure, I'll share the updated deck with the revised timelines.",
       time: "10:04 AM",
     },
   },

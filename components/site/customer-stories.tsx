@@ -1,10 +1,14 @@
-import Link from "next/link";
 import { Star } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { reviewStats, reviews, type Review } from "@/lib/site";
+import {
+  googleReviewsUrl,
+  reviewStats,
+  reviews,
+  type Review,
+} from "@/lib/site";
 
 /**
  * How many reviews the row carries.
@@ -51,7 +55,10 @@ function initials(name: string) {
 
 function Stars({ rating }: { rating: number }) {
   return (
-    <span className="flex shrink-0 items-center gap-0.5 text-primary" aria-hidden>
+    <span
+      className="flex shrink-0 items-center gap-0.5 text-primary"
+      aria-hidden
+    >
       {Array.from({ length: rating }).map((_, index) => (
         <Star key={index} className="size-3.5 fill-current" />
       ))}
@@ -149,7 +156,10 @@ export function CustomerStories() {
               stars beside that number would be claiming half a point we do
               not have — the cards carry their own real ratings. */}
           <p className="mt-7 inline-flex items-center gap-2.5 rounded-full border border-border bg-background px-4 py-2">
-            <Star className="size-4 shrink-0 fill-current text-primary" aria-hidden />
+            <Star
+              className="size-4 shrink-0 fill-current text-primary"
+              aria-hidden
+            />
             <span className="font-heading text-sm font-semibold">
               {rating.value}
             </span>
@@ -199,7 +209,13 @@ export function CustomerStories() {
 
         <div className="mt-14 flex justify-center px-6 lg:mt-16 lg:px-10">
           <Button asChild size="lg" variant="outline">
-            <Link href="/about">See customer stories</Link>
+            <a
+              href={googleReviewsUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              See customer stories
+            </a>
           </Button>
         </div>
       </div>

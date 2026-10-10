@@ -425,7 +425,7 @@ export function BusinessSizeSolution({
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Where supported, calls connect to the CRM and business
-              applications your teams use — so a conversation is logged against
+              applications your teams use, so a conversation is logged against
               the customer rather than remembered separately.
             </p>
           </div>
@@ -517,7 +517,7 @@ export function BusinessSizeSolution({
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
             Tell us how your teams communicate today and we&rsquo;ll recommend a
-            configuration — including porting your existing numbers.
+            configuration, including porting your existing numbers.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">

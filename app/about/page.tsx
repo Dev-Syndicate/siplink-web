@@ -12,7 +12,7 @@ import { assurances, reliability, site, whyChoose } from "@/lib/site";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "SipLink Communications has been building business voice since 2012 — cloud telephony, SIP trunking and unified communications for growing organisations.",
+    "SipLink Communications has been building business voice since 2012, cloud telephony, SIP trunking and unified communications for growing organisations.",
 };
 
 /**
@@ -70,8 +70,8 @@ export default function AboutPage() {
             </h2>
             <div className="mt-6 space-y-4 text-pretty text-muted-foreground">
               <p>
-                We build on the efficiency of our direct IP routes — chosen for
-                their stability, rate and voice quality — and extend them with
+                We build on the efficiency of our direct IP routes, chosen for
+                their stability, rate and voice quality, and extend them with
                 selected providers to widen coverage and improve reliability.
               </p>
               <p>
@@ -165,7 +165,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <ClosingCta heading="Let’s talk" body="Discover what makes SipLink different — book a walkthrough with our team." secondary={{ label: "Browse solutions", href: "/solutions" }} />
+      <ClosingCta heading="Let’s talk" body="Discover what makes SipLink different, book a walkthrough with our team." secondary={{ label: "Browse solutions", href: "/solutions" }} />
     </>
   );
 }

@@ -38,7 +38,7 @@ export function BusinessWifiHero() {
 
           <p className="mt-7 max-w-lg text-lg text-pretty text-muted-foreground">
             However fast the line behind it is. Coverage is decided by walls,
-            glass, racking and how many devices are in a room at once — none of
+            glass, racking and how many devices are in a room at once, none of
             which appear on a floor plan.
           </p>
 
@@ -131,7 +131,7 @@ export function BusinessWifiSections() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               If one of these sounds like your office, the cause is almost
-              always design rather than equipment — which is the good news.
+              always design rather than equipment, which is the good news.
             </p>
           </ScrollReveal>
 
@@ -188,7 +188,7 @@ export function BusinessWifiSections() {
               Coverage is a question about a building, not a box
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Every failure above happens somewhere specific — the far room, the room that fills up, the corridor between two access points. Here is the same floor as a plan, with a call that survives the walk across it.
+              Every failure above happens somewhere specific, the far room, the room that fills up, the corridor between two access points. Here is the same floor as a plan, with a call that survives the walk across it.
             </p>
           </ScrollReveal>
 

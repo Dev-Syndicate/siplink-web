@@ -50,7 +50,7 @@ const SEATS = ["Ravi", "Priya", "Arun"];
 const MESSAGES = [
   "Your verification code is 4821",
   "Reminder: appointment tomorrow, 10:00",
-  "Payment received — thank you",
+  "Payment received, thank you",
 ];
 
 const NUMBERS = [

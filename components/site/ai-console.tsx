@@ -184,8 +184,8 @@ export function AiConsole() {
           </h2>
 
           <p className="mt-4 text-pretty text-muted-foreground">
-            AI turns speech into text, text into a summary, and — where you
-            enable it — answers the call itself. Nobody has to replay a
+            AI turns speech into text, text into a summary, and, where you
+            enable it, answers the call itself. Nobody has to replay a
             recording to find out what was agreed.
           </p>
         </div>

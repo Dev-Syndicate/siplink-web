@@ -70,7 +70,7 @@ export function SlaHero() {
 
           <p className="mt-7 max-w-lg text-lg text-pretty text-muted-foreground">
             Specifically, a promise about what happens when the number stops
-            being true — agreed in advance, when there is no pressure on anyone
+            being true, agreed in advance, when there is no pressure on anyone
             to be vague about it.
           </p>
 
@@ -83,7 +83,7 @@ export function SlaHero() {
             <p className="text-sm text-pretty text-muted-foreground">
               You will not find a headline uptime figure on this page. The
               commitment that applies to you depends on the service, the site
-              and the last mile — so we would rather put a real one in your
+              and the last mile, so we would rather put a real one in your
               agreement than an impressive one here.
             </p>
           </div>
@@ -130,7 +130,7 @@ export function SlaHero() {
             ))}
           </div>
           <p className="mt-5 text-sm text-muted-foreground">
-            Three places a fault happens — and none of them a gap between
+            Three places a fault happens, and none of them a gap between
             suppliers.
           </p>
         </ScrollReveal>
@@ -233,7 +233,7 @@ export function SlaSections() {
               What actually happens between a fault and a fix
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Not a promise — a procedure. The circuit is watched, the fault becomes a ticket with a reference, the escalation path was agreed before anything went wrong, and the whole thing is written up afterwards.
+              Not a promise, a procedure. The circuit is watched, the fault becomes a ticket with a reference, the escalation path was agreed before anything went wrong, and the whole thing is written up afterwards.
             </p>
           </ScrollReveal>
 

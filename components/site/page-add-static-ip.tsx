@@ -50,7 +50,7 @@ export function AddStaticIpHero() {
 
           <p className="mt-7 max-w-lg text-lg text-pretty text-muted-foreground">
             Static IP can be added to an eligible SipLink internet service.
-            Your existing connection normally keeps running throughout — tell
+            Your existing connection normally keeps running throughout, tell
             us what needs to reach what, and we will confirm whether your
             service supports it.
           </p>
@@ -249,12 +249,12 @@ export function AddStaticIpSections() {
               Five answers, then an address
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              People expect to ask for an address and be handed one. What actually decides it is what needs it, who configures it and which service it is for — so the request completes in that order, and the address arrives at the end of it.
+              People expect to ask for an address and be handed one. What actually decides it is what needs it, who configures it and which service it is for, so the request completes in that order, and the address arrives at the end of it.
             </p>
           </ScrollReveal>
 
           <ScrollReveal delay={120} className="mt-12 lg:mt-14">
-            <StaticProvisionScene label="A static IP request completing one answer at a time — what needs it, who configures it, the service, what already points at you and the deadline — followed by the address being issued and configured on the router." />
+            <StaticProvisionScene label="A static IP request completing one answer at a time, what needs it, who configures it, the service, what already points at you and the deadline, followed by the address being issued and configured on the router." />
           </ScrollReveal>
         </div>
       </section>

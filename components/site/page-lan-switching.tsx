@@ -94,7 +94,7 @@ export function LanSwitchingSections() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               VLANs keep voice, data, wireless and devices apart, so one noisy
-              system cannot degrade the others — and so the camera on the wall
+              system cannot degrade the others, and so the camera on the wall
               cannot see the file server.
             </p>
           </ScrollReveal>
@@ -198,7 +198,7 @@ export function LanSwitchingSections() {
           </ScrollReveal>
 
           <ScrollReveal delay={120} className="mt-12 lg:mt-14">
-            <LanSegmentsScene label="A switch port map coloured by segment — voice, data, Wi-Fi and devices — with each segment lit in turn beside the equipment patched into it and the reason it is kept separate." />
+            <LanSegmentsScene label="A switch port map coloured by segment, voice, data, Wi-Fi and devices, with each segment lit in turn beside the equipment patched into it and the reason it is kept separate." />
           </ScrollReveal>
         </div>
       </section>

@@ -61,7 +61,7 @@ const WALK: Stop[] = [
   { id: "a", x: 18, y: 68, ap: 0, note: "Reception. The call starts here." },
   { id: "b", x: 42, y: 40, ap: 0, note: "Crossing the open floor, still on the first access point." },
   { id: "c", x: 62, y: 52, ap: 1, note: "Handed over mid-sentence. Nobody on the call hears it happen." },
-  { id: "d", x: 84, y: 30, ap: 2, note: "The far meeting room — the one that is always blamed on the router." },
+  { id: "d", x: 84, y: 30, ap: 2, note: "The far meeting room, the one that is always blamed on the router." },
 ];
 
 /** Access points, placed for the layout rather than the nearest cable run. */

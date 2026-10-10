@@ -235,7 +235,7 @@ export function SmallBusinessSolution({
             </h2>
             <p className="mt-4 max-w-[52ch] text-pretty text-muted-foreground">
               Where supported, calls connect to the CRM and business
-              applications your teams already use — so a conversation is logged
+              applications your teams already use, so a conversation is logged
               against the customer rather than remembered separately.
             </p>
           </div>

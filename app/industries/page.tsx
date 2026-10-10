@@ -11,7 +11,7 @@ import { industryDetails } from "@/lib/industries-detail";
 export const metadata: Metadata = {
   title: "Industries",
   description:
-    "Cloud communication solutions tuned to how each sector works — call centers, healthcare, banking, retail, logistics, government and more.",
+    "Cloud communication solutions tuned to how each sector works, call centers, healthcare, banking, retail, logistics, government and more.",
 };
 
 export default function IndustriesPage() {
@@ -38,8 +38,7 @@ export default function IndustriesPage() {
               </span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
-              The same platform, configured for the demands of each industry —
-              from HIPAA-compliant patient lines to high-volume recruiting desks.
+              The same platform, configured for the demands of each industry, from HIPAA-compliant patient lines to high-volume recruiting desks.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Button asChild size="lg">

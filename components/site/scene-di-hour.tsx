@@ -82,7 +82,7 @@ const HOUR: Beat[] = [
     waiting: 6,
     dropped: 1,
     state: "slipping",
-    note: "Something upstream is contended. Nothing has failed — it has just got slower, which is harder to report.",
+    note: "Something upstream is contended. Nothing has failed, it has just got slower, which is harder to report.",
   },
   {
     id: "bad",
@@ -170,7 +170,7 @@ export function DedicatedHourScene({ label }: { label: string }) {
           <PlaceFrame
             src={PLACES.office}
             ratio="aspect-[16/9]"
-            caption="14:00 — 15:00"
+            caption="14:00, 15:00"
           />
 
           <span className="flex flex-col gap-[0.3cqw]">

@@ -70,7 +70,7 @@ const JOURNEY = [
   },
   {
     status: "On hold",
-    caption: "“All agents are busy — you're next in line.”",
+    caption: "“All agents are busy, you're next in line.”",
   },
   { status: "Connected", caption: "“Hi, this is Support. How can I help?”" },
 ] as const;
@@ -213,7 +213,7 @@ export function CallerJourney() {
               Without one
             </p>
             <p className="mt-1.5 text-xs text-pretty text-muted-foreground">
-              A busy tone. The caller hangs up — and may call someone else.
+              A busy tone. The caller hangs up, and may call someone else.
             </p>
           </div>
         </div>
@@ -353,7 +353,7 @@ const APPS = [
 ];
 
 const FEED = [
-  { icon: Phone, tab: "Calls", text: "Missed call from a customer — call back" },
+  { icon: Phone, tab: "Calls", text: "Missed call from a customer, call back" },
   { icon: MessageSquare, tab: "Messages", text: "Customer replied to your text" },
   { icon: MessagesSquare, tab: "Chat", text: "Team: “I’ll take this one”" },
   { icon: AppWindow, tab: "Apps", text: "Customer record opened from the call" },
@@ -423,7 +423,7 @@ export function AppsMerge() {
               ))}
             </div>
             <p className="mt-4 text-center text-xs text-muted-foreground">
-              Staff keep switching between them — and things slip through.
+              Staff keep switching between them, and things slip through.
             </p>
           </div>
         ) : (
@@ -458,7 +458,7 @@ export function AppsMerge() {
               </ul>
             </div>
             <p className="mt-4 text-center text-xs text-muted-foreground">
-              One login, one list — nothing to switch between.
+              One login, one list, nothing to switch between.
             </p>
           </div>
         )}
@@ -556,7 +556,7 @@ export function LocalNumbersHub() {
         <Globe className="mx-auto size-5 text-primary" aria-hidden />
         <p className="mt-2 text-sm font-medium">One system for every country</p>
         <p className="mt-1 text-xs text-pretty text-muted-foreground">
-          Same menus, routing and reporting everywhere — managed by your team
+          Same menus, routing and reporting everywhere, managed by your team
           from one place.
         </p>
       </div>
@@ -600,7 +600,7 @@ export function BranchDashboard() {
       ref={ref}
       className="gap-0 overflow-hidden p-0"
       role="img"
-      aria-label="The head office view lists every branch — Downtown, Airport and Riverside — each with its own opening hours and greeting, and shows what each one is doing right now, such as taking a call or sending callers to voicemail after hours."
+      aria-label="The head office view lists every branch, Downtown, Airport and Riverside, each with its own opening hours and greeting, and shows what each one is doing right now, such as taking a call or sending callers to voicemail after hours."
     >
       {/* Window chrome */}
       <div className="flex items-center gap-2 border-b border-border bg-muted/50 px-4 py-2.5">

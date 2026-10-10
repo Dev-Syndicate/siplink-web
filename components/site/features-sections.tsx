@@ -133,7 +133,7 @@ function Diagram({ kind }: { kind: (typeof broadbandFeatureCards)[number]["diagr
         <div className="flex w-full max-w-[24rem] flex-col justify-center gap-5">
           <div>
             <p className="mb-2 font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
-              Backup — fills what is left
+              Backup, fills what is left
             </p>
             <span className="flex h-3 w-full overflow-hidden rounded-full bg-primary/15">
               <span className="scene-jitter h-full w-full origin-left rounded-full bg-primary/40" />
@@ -142,7 +142,7 @@ function Diagram({ kind }: { kind: (typeof broadbandFeatureCards)[number]["diagr
 
           <div>
             <p className="mb-2 font-mono text-[10px] tracking-[0.16em] text-primary uppercase">
-              Voice — keeps its lane
+              Voice, keeps its lane
             </p>
             <span className="flex h-12 items-center gap-[3px]">
               {wave.map((height, index) => (
@@ -337,7 +337,7 @@ export function FeaturesSections() {
             <p className="mt-4 text-pretty text-muted-foreground">
               This is the second of the four above, happening. The backup
               starts, takes everything the line has left, and finishes. Watch
-              the lane underneath the conversation — and the timer on it,
+              the lane underneath the conversation, and the timer on it,
               which never restarts.
             </p>
           </ScrollReveal>

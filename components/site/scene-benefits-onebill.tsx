@@ -76,7 +76,7 @@ const BEATS: Beat[] = [
     icon: Receipt,
     split: true,
     headline: "Three suppliers, three cycles, three formats",
-    note: "Voice from one, connectivity from another, the kit from a third — and a month spent deciding which of them the fault belonged to.",
+    note: "Voice from one, connectivity from another, the kit from a third, and a month spent deciding which of them the fault belonged to.",
   },
   {
     id: "one",
