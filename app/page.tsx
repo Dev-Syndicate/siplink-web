@@ -595,19 +595,19 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------------------------
-          Closing CTA, with the compliance credentials folded in — the
-          last reassurance sits next to the last ask.
+          Closing CTA. Outcome-first: what changes for the business, one
+          ask, and the three things that remove the risk of making it.
          --------------------------------------------------------------- */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        {/* This panel is now a component, because every solution page closes
+        {/* This panel is a component, because every solution page closes
             with the same one. Keeping a copy here would have meant the home
             CTA and the seven others drifting apart the first time either was
             touched. See components/site/cta-panel. */}
         <CtaPanel
-          eyebrow="Zero risk &middot; Instant onboarding"
-          heading="Ready to modernize your enterprise telephony?"
-          body="Activate your elastic SIP trunk in minutes with complimentary test credits, or schedule a private architecture review with a certified carrier engineer."
-          contactLabel="Speak to an architect"
+          heading="Ready to Upgrade Your Business Communications?"
+          body="Replace outdated PBX systems, improve call handling and give your team one reliable communications platform."
+          action={{ label: "Book a Free Consultation", href: "/contact" }}
+          note="No obligation &middot; Free consultation &middot; Migration guidance included"
         />
       </section>
     </>
