@@ -42,3 +42,5 @@ next-env.d.ts
 
 # brag skill output
 /brag-output/
+/.claude/
+/skills-lock.json
