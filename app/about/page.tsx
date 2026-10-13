@@ -24,11 +24,12 @@ import {
 } from "lucide-react";
 
 import { ClosingCta } from "@/components/site/closing-cta";
+import { WhyChooseSection } from "@/components/site/why-choose-section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { companyMissionVision } from "@/lib/company";
-import { reliability, site, whyChoose } from "@/lib/site";
+import { reliability, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About SipLink — Powering Better Business Communication",
@@ -139,85 +140,131 @@ const assureCommitments = [
 export default function AboutPage() {
   return (
     <>
-      {/* 1. Hero Section */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-muted/20 to-background py-16 sm:py-24">
+      {/* 1. Hero Section — Full-height blended image backdrop matching homepage hero */}
+      <section className="relative overflow-hidden border-b border-border">
+        {/* The photograph is the section's backdrop on the right half, blending into background via scrim */}
+        <div className="absolute inset-y-0 right-0 hidden w-[64%] lg:block">
+          <Image
+            src="/images/about/about-hero.jpg"
+            alt="SipLink enterprise communications team in modern tech headquarters"
+            fill
+            priority
+            sizes="64vw"
+            className="object-cover object-[70%_center]"
+          />
+          {/* Scrim covers the overlap with the text column so copy stays 100% crisp and readable */}
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-r from-background from-5% via-background/70 via-22% to-transparent to-45%"
+          />
+          {/* Bottom subtle edge fade */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent"
+          />
+        </div>
+
+        {/* Ambient top-right brand glow */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-40 -right-32 size-[520px] rounded-full bg-brand-to/10 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-24 left-1/4 size-[400px] rounded-full bg-brand-from/10 blur-3xl"
+          className="pointer-events-none absolute -top-48 -right-32 size-[680px] rounded-full bg-brand-to/10 blur-3xl"
         />
 
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge
-              variant="secondary"
-              className="mb-4 gap-1.5 px-3 py-1 font-mono text-xs tracking-wider uppercase"
-            >
-              <Sparkles className="size-3.5 text-primary" />
-              About SipLink
-            </Badge>
+        {/* Hero content container with responsive frame */}
+        <div className="hero-frame relative mx-auto flex w-full flex-col justify-center py-14 sm:py-16 lg:py-20">
+          <div className="grid gap-14 lg:grid-cols-[minmax(0,35rem)_minmax(0,1fr)] lg:items-center">
+            {/* Left Column: Text Content */}
+            <div className="max-w-2xl">
+              <Badge
+                variant="secondary"
+                className="mb-5 gap-1.5 px-3 py-1 font-mono text-xs tracking-wider uppercase"
+              >
+                <Sparkles className="size-3.5 text-primary" />
+                About SipLink
+              </Badge>
 
-            <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Powering Better Business Communication
-            </h1>
+              <h1 className="font-heading text-4xl leading-[1.08] font-bold tracking-tight text-foreground sm:text-5xl lg:text-[clamp(2.5rem,4.5vh+1.2vw,3.75rem)] text-balance">
+                Powering Better{" "}
+                <span className="bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
+                  Business Communication
+                </span>
+              </h1>
 
-            <p className="mt-6 text-lg text-pretty text-muted-foreground sm:text-xl">
-              {site.legalName} is a business communications and cloud voice
-              technology company helping organizations connect their people,
-              customers, candidates, and partners more effectively.
-            </p>
+              <p className="mt-6 text-base sm:text-lg text-pretty text-muted-foreground leading-relaxed">
+                {site.legalName} is a business communications and cloud voice
+                technology company helping organizations connect their people,
+                customers, candidates, and partners more effectively.
+              </p>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <Button asChild size="lg" className="rounded-full shadow-md shadow-primary/20">
-                <Link href="/why-siplink">
-                  Why Choose SipLink
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full">
-                <Link href="/company/certifications">Verified Certifications</Link>
-              </Button>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Button asChild size="lg" className="rounded-full shadow-md shadow-primary/20">
+                  <Link href="/why-siplink">
+                    Why Choose SipLink
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="rounded-full">
+                  <Link href="/company/certifications">Verified Certifications</Link>
+                </Button>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-border/60 pt-6 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="font-medium text-foreground">99.99% Availability</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-primary" />
+                  <span className="font-medium text-foreground">Carrier-Grade Peering</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-brand-from" />
+                  <span className="font-medium text-foreground">DoT Category-A ISP</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Image 1: Hero Business Communications Image */}
-          <div className="relative mt-12 sm:mt-16 overflow-hidden rounded-2xl border border-border/80 bg-card shadow-2xl">
-            <div className="relative aspect-[16/9] w-full overflow-hidden">
+          {/* Floating live network status card over the photograph */}
+          <div className="absolute bottom-10 right-12 hidden xl:flex items-center gap-3.5 rounded-2xl border border-border/60 bg-background/90 p-4 shadow-xl backdrop-blur-md">
+            <span className="flex size-2.5 relative shrink-0">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500/60" />
+              <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500" />
+            </span>
+            <div>
+              <p className="text-xs font-semibold text-foreground">
+                Global Enterprise Voice Network
+              </p>
+              <p className="text-[11px] text-muted-foreground">
+                Carrier-grade peering &middot; 99.99% availability
+              </p>
+            </div>
+            <Badge variant="secondary" className="font-mono text-[10px] ml-2">
+              Live Operations
+            </Badge>
+          </div>
+
+          {/* Mobile / Tablet visual display */}
+          <div className="relative mt-10 overflow-hidden rounded-2xl border border-border/80 lg:hidden">
+            <div className="relative aspect-[16/10] w-full">
               <Image
                 src="/images/about/about-hero.jpg"
                 alt="SipLink enterprise communications team in modern tech headquarters"
                 fill
                 priority
-                sizes="(max-width: 1280px) 100vw, 1280px"
-                className="object-cover"
+                sizes="100vw"
+                className="object-cover object-[70%_center]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent pointer-events-none" />
-              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-background/90 p-3 sm:p-4 backdrop-blur-md">
-                <div className="flex items-center gap-3">
-                  <span className="flex size-2.5 relative">
-                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500/60" />
-                    <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500" />
-                  </span>
-                  <div>
-                    <p className="text-xs font-semibold sm:text-sm text-foreground">
-                      Global Enterprise Voice Network
-                    </p>
-                    <p className="text-[11px] text-muted-foreground">
-                      Connecting Teams, Customers, Candidates &amp; Partners Worldwide
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-[11px] font-mono">
-                    99.99% Availability
-                  </Badge>
-                  <Badge variant="secondary" className="text-[11px] font-mono">
-                    Carrier-Grade Peering
-                  </Badge>
-                </div>
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent"
+              />
+              <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between rounded-lg border border-border/60 bg-background/90 p-2.5 backdrop-blur-md">
+                <p className="text-xs font-semibold text-foreground">Global Voice Network</p>
+                <Badge variant="outline" className="font-mono text-[10px]">
+                  99.99% Availability
+                </Badge>
               </div>
             </div>
           </div>
@@ -364,18 +411,22 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Image 3: Telecom Engineers Configuring Cloud Voice */}
-          <div className="lg:col-span-7">
-            <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-card shadow-2xl">
-              <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden">
-                <Image
-                  src="/images/about/about-unified-voice.png"
-                  alt="SipLink telecom engineers configuring cloud PBX and voice infrastructure"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 58vw"
-                  className="object-cover"
-                />
-              </div>
+          {/* Modern Cloud Voice Visual — Seamlessly blended into background */}
+          <div className="relative lg:col-span-7 flex items-center justify-center">
+            {/* Ambient soft brand glow */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-4 rounded-full bg-primary/10 blur-3xl"
+            />
+            <div className="relative aspect-[16/11] sm:aspect-[16/10] w-full max-w-[680px]">
+              <Image
+                src="/images/about/about-modern-cloud-voice.png"
+                alt="Modern business team collaborating with SipLink cloud voice and unified communications"
+                fill
+                sizes="(max-width: 1024px) 100vw, 58vw"
+                className="object-contain object-center drop-shadow-xl"
+                priority={false}
+              />
             </div>
           </div>
         </div>
@@ -533,35 +584,7 @@ export default function AboutPage() {
       </section>
 
       {/* 6. Why choose SipLink */}
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
-            Value Proposition
-          </span>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Why choose SipLink
-          </h2>
-          <p className="mt-3 text-pretty text-muted-foreground">
-            What we bring to every deployment, beyond the platform itself.
-          </p>
-        </div>
-
-        <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {whyChoose.map(({ title, description, icon: Icon }) => (
-            <div key={title} className="flex gap-4 rounded-xl border border-border/80 bg-card p-5 shadow-xs">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary shadow-xs">
-                <Icon className="size-5" aria-hidden />
-              </span>
-              <div>
-                <h3 className="font-semibold text-foreground">{title}</h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-pretty text-muted-foreground">
-                  {description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <WhyChooseSection />
 
       {/* 7. CTA */}
       <ClosingCta
