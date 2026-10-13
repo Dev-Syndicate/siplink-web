@@ -10,6 +10,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { RevealGroup } from "@/components/site/reveal-group";
 import { companyMissionVision } from "@/lib/company";
 
 interface PillarItem {
@@ -53,6 +54,34 @@ export function AboutMissionPillars() {
             TIER 1: Strategic Foundation & Mission / Vision with Boardroom Image
            ========================================================================= */}
         <div className="relative lg:min-h-[520px]">
+          {/* Ambient brand-coloured blobs, drifting forever behind the
+              banner — the same `.glass-orb` the frosted hero panels use, so
+              the section never sits perfectly still even at rest. Two
+              rather than one, on different periods, so neither the drift
+              nor its reversal ever lines up with the other. */}
+          <div
+            aria-hidden
+            className="glass-orb -top-24 left-10 size-80 bg-brand-to/30"
+            style={
+              {
+                "--orb-duration": "9s",
+                "--orb-x": "110px",
+                "--orb-y": "70px",
+              } as React.CSSProperties
+            }
+          />
+          <div
+            aria-hidden
+            className="glass-orb bottom-0 left-1/3 size-64 bg-brand-from/25"
+            style={
+              {
+                "--orb-duration": "12s",
+                "--orb-x": "-90px",
+                "--orb-y": "-60px",
+              } as React.CSSProperties
+            }
+          />
+
           {/* The photograph is the banner's backdrop, not a column item —
               exactly the pattern the homepage hero uses: it sits behind the
               copy at full height and is masked by a scrim, rather than
@@ -95,7 +124,7 @@ export function AboutMissionPillars() {
               Vision <span className="text-primary font-extrabold">&</span> Pillars
             </h2>
 
-            <p className="mt-4 max-w-sm text-sm sm:text-base text-muted-foreground leading-relaxed lg:max-w-xs xl:max-w-sm">
+            <p className="mt-4 max-w-sm text-sm sm:text-base text-foreground/80 leading-relaxed lg:max-w-xs xl:max-w-sm">
               Built on architectural principles that protect uptime, simplify scalability, and provide direct access to real telecom engineers.
             </p>
           </div>
@@ -114,20 +143,37 @@ export function AboutMissionPillars() {
           </div>
 
           {/* Mission & Vision Cards: a row, overlapping the photo's left
-              edge the way the reference does — capped narrow enough that
-              neither card crosses into the photo's fully-opaque zone. */}
-          <div className="relative mt-8 grid grid-cols-1 gap-5 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:max-w-3xl">
+              edge the way the reference does. Each connects in rather than
+              merely fading — a trace races in along the top edge, then the
+              status dot flicks from a hollow ring to lit the moment the
+              card lands, the same "ring, then answer" beat the rest of the
+              site uses for a call connecting. Once live, a slow light runs
+              the border forever: the line is open and stays open. */}
+          <RevealGroup className="relative mt-8 grid grid-cols-1 gap-5 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:max-w-3xl">
             {/* Card 1: Our Mission */}
-            <div className="rounded-2xl bg-card/95 p-6 shadow-lg shadow-foreground/10 backdrop-blur-sm flex flex-col justify-between sm:p-7">
+            <div
+              className="connect-in relative overflow-hidden rounded-2xl border border-border/80 bg-card/95 p-6 shadow-lg shadow-foreground/10 backdrop-blur-sm transition-shadow duration-300 flex flex-col justify-between hover:shadow-2xl sm:p-7"
+              style={{ "--reveal-index": 0 } as React.CSSProperties}
+            >
+              <span
+                aria-hidden
+                className="connect-in-trace absolute inset-x-0 top-0 h-[2px] origin-left bg-primary"
+              />
               <div>
                 <div className="flex items-center gap-3.5">
                   <span className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
                     <Rocket className="size-5" />
                   </span>
-                  <div>
-                    <span className="font-mono text-[11px] font-bold tracking-widest text-primary uppercase">
-                      Purpose
-                    </span>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[11px] font-bold tracking-widest text-primary uppercase">
+                        Purpose
+                      </span>
+                      <span
+                        aria-hidden
+                        className="connect-in-dot size-1.5 rounded-full"
+                      />
+                    </div>
                     <h3 className="text-lg font-bold text-foreground">
                       {companyMissionVision.mission.title}
                     </h3>
@@ -144,17 +190,31 @@ export function AboutMissionPillars() {
               </div>
             </div>
 
-            {/* Card 2: Our Vision */}
-            <div className="rounded-2xl bg-card/95 p-6 shadow-lg shadow-foreground/10 backdrop-blur-sm flex flex-col justify-between sm:p-7">
+            {/* Card 2: Our Vision — same beat, a step behind so the two
+                connect in sequence rather than together. */}
+            <div
+              className="connect-in relative overflow-hidden rounded-2xl border border-border/80 bg-card/95 p-6 shadow-lg shadow-foreground/10 backdrop-blur-sm transition-shadow duration-300 flex flex-col justify-between hover:shadow-2xl sm:p-7"
+              style={{ "--reveal-index": 1 } as React.CSSProperties}
+            >
+              <span
+                aria-hidden
+                className="connect-in-trace absolute inset-x-0 top-0 h-[2px] origin-left bg-primary"
+              />
               <div>
                 <div className="flex items-center gap-3.5">
                   <span className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
                     <Globe className="size-5" />
                   </span>
-                  <div>
-                    <span className="font-mono text-[11px] font-bold tracking-widest text-primary uppercase">
-                      Destination
-                    </span>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[11px] font-bold tracking-widest text-primary uppercase">
+                        Destination
+                      </span>
+                      <span
+                        aria-hidden
+                        className="connect-in-dot size-1.5 rounded-full"
+                      />
+                    </div>
                     <h3 className="text-lg font-bold text-foreground">
                       {companyMissionVision.vision.title}
                     </h3>
@@ -170,7 +230,7 @@ export function AboutMissionPillars() {
                 <ArrowRight className="size-4 text-primary" />
               </div>
             </div>
-          </div>
+          </RevealGroup>
         </div>
 
         {/* =========================================================================
@@ -199,29 +259,46 @@ export function AboutMissionPillars() {
           </div>
 
           {/* 4 Foundation Pillars Grid, matching the reference: a flat pink
-              icon chip, title, description. */}
-          <div className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {pillars.map(({ title, description, icon: Icon }) => (
+              icon chip, title, description. Each rises in on its own beat
+              as the grid scrolls into view, then idles with a slow,
+              independent float — the outer box carries the reveal and the
+              hover lift, an inner wrapper carries the continuous bob, on
+              periods spaced so the four never move together. */}
+          <RevealGroup className="motion-bold mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {pillars.map(({ title, description, icon: Icon }, index) => (
               <div
                 key={title}
-                className="group relative flex flex-col justify-between rounded-2xl bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-md sm:p-7"
+                className="reveal-item transition-transform duration-300 motion-safe:hover:-translate-y-2 motion-safe:hover:scale-[1.03]"
+                style={{ "--reveal-index": index } as React.CSSProperties}
               >
-                <div>
-                  <span className="mb-6 flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                    <Icon className="size-6" />
-                  </span>
+                <div
+                  className="card-float-bold group relative flex flex-col justify-between rounded-2xl bg-card p-6 shadow-sm transition-shadow duration-300 hover:shadow-2xl sm:p-7"
+                  style={
+                    {
+                      "--float-duration": `${3.2 + index * 0.4}s`,
+                      "--float-distance": `${-12 - index}px`,
+                      "--float-tilt": `${index % 2 === 0 ? -1 : 1}deg`,
+                      "--float-delay": `${index * -0.9}s`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <div>
+                    <span className="mb-6 flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6 group-hover:bg-primary group-hover:text-primary-foreground">
+                      <Icon className="size-6" />
+                    </span>
 
-                  <h4 className="text-lg font-bold text-foreground">
-                    {title}
-                  </h4>
+                    <h4 className="text-lg font-bold text-foreground">
+                      {title}
+                    </h4>
 
-                  <p className="mt-2.5 text-xs sm:text-[13px] leading-relaxed text-muted-foreground">
-                    {description}
-                  </p>
+                    <p className="mt-2.5 text-xs sm:text-[13px] leading-relaxed text-muted-foreground">
+                      {description}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
-          </div>
+          </RevealGroup>
         </div>
       </div>
     </section>

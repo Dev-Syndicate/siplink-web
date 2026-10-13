@@ -25,6 +25,7 @@ import {
 
 import { AboutMissionPillars } from "@/components/site/about-mission-pillars";
 import { ClosingCta } from "@/components/site/closing-cta";
+import { RevealGroup } from "@/components/site/reveal-group";
 import { WhyChooseSection } from "@/components/site/why-choose-section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -173,9 +174,12 @@ export default function AboutPage() {
 
         {/* Hero content container with responsive frame */}
         <div className="hero-frame relative mx-auto flex w-full flex-col justify-center py-14 sm:py-16 lg:py-20">
-          <div className="grid gap-14 lg:grid-cols-[minmax(0,35rem)_minmax(0,1fr)] lg:items-center">
+          <RevealGroup className="grid gap-14 lg:grid-cols-[minmax(0,35rem)_minmax(0,1fr)] lg:items-center">
             {/* Left Column: Text Content */}
-            <div className="max-w-2xl">
+            <div
+              className="reveal-item max-w-2xl"
+              style={{ "--reveal-index": 0 } as React.CSSProperties}
+            >
               <Badge
                 variant="secondary"
                 className="mb-5 gap-1.5 px-3 py-1 font-mono text-xs tracking-wider uppercase"
@@ -198,13 +202,13 @@ export default function AboutPage() {
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Button asChild size="lg" className="rounded-full shadow-md shadow-primary/20">
+                <Button asChild size="lg" className="rounded-full shadow-md shadow-primary/20 transition-transform duration-200 motion-safe:hover:-translate-y-0.5">
                   <Link href="/why-siplink">
                     Why Choose SipLink
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="rounded-full">
+                <Button asChild variant="outline" size="lg" className="rounded-full transition-transform duration-200 motion-safe:hover:-translate-y-0.5">
                   <Link href="/company/certifications">Verified Certifications</Link>
                 </Button>
               </div>
@@ -225,10 +229,15 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </RevealGroup>
 
-          {/* Floating live network status card over the photograph */}
-          <div className="absolute bottom-10 right-12 hidden xl:flex items-center gap-3.5 rounded-2xl border border-border/60 bg-background/90 p-4 shadow-xl backdrop-blur-md">
+          {/* Floating live network status card over the photograph — bobs
+              continuously like the homepage hero's own floating chips, so
+              the hero never sits perfectly still even at rest. */}
+          <div
+            className="card-float absolute bottom-10 right-12 hidden xl:flex items-center gap-3.5 rounded-2xl border border-border/60 bg-background/90 p-4 shadow-xl backdrop-blur-md"
+            style={{ "--float-duration": "6s" } as React.CSSProperties}
+          >
             <span className="flex size-2.5 relative shrink-0">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500/60" />
               <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500" />
@@ -277,9 +286,12 @@ export default function AboutPage() {
 
       {/* 3. Built for the way businesses communicate today */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-        <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+        <RevealGroup className="grid gap-12 lg:grid-cols-12 lg:items-center">
           {/* Narrative Column */}
-          <div className="lg:col-span-5">
+          <div
+            className="reveal-item lg:col-span-5"
+            style={{ "--reveal-index": 0 } as React.CSSProperties}
+          >
             <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
               Modern Cloud Voice
             </span>
@@ -307,7 +319,7 @@ export default function AboutPage() {
             </div>
 
             <div className="mt-8 flex flex-wrap gap-4">
-              <Button asChild variant="outline">
+              <Button asChild variant="outline" className="transition-transform duration-200 motion-safe:hover:-translate-y-0.5">
                 <Link href="/company/partners">
                   Explore Partner Integrations
                   <ArrowRight className="size-4" />
@@ -316,14 +328,28 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Modern Cloud Voice Visual — Seamlessly blended into background */}
-          <div className="relative lg:col-span-7 flex items-center justify-center">
-            {/* Ambient soft brand glow */}
+          {/* Modern Cloud Voice Visual — Seamlessly blended into background,
+              bobbing gently so the illustration never goes fully still. */}
+          <div
+            className="reveal-item relative lg:col-span-7 flex items-center justify-center"
+            style={{ "--reveal-index": 1 } as React.CSSProperties}
+          >
+            {/* Ambient soft brand glow, drifting like the mission section's orbs */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -inset-4 rounded-full bg-primary/10 blur-3xl"
+              className="glass-orb -inset-4 bg-primary/10"
+              style={
+                {
+                  "--orb-duration": "14s",
+                  "--orb-x": "35px",
+                  "--orb-y": "-20px",
+                } as React.CSSProperties
+              }
             />
-            <div className="relative aspect-[16/11] sm:aspect-[16/10] w-full max-w-[680px]">
+            <div
+              className="card-float relative aspect-[16/11] sm:aspect-[16/10] w-full max-w-[680px]"
+              style={{ "--float-duration": "7.5s", "--float-delay": "-1.8s" } as React.CSSProperties}
+            >
               <Image
                 src="/images/about/about-modern-cloud-voice.png"
                 alt="Modern business team collaborating with SipLink cloud voice and unified communications"
@@ -334,14 +360,15 @@ export default function AboutPage() {
               />
             </div>
           </div>
-        </div>
+        </RevealGroup>
 
         {/* 3 Reliability Infrastructure Highlights below */}
-        <div className="mt-14 grid gap-5 sm:grid-cols-3">
-          {reliability.map(({ title, description, icon: Icon }) => (
+        <RevealGroup className="mt-14 grid gap-5 sm:grid-cols-3">
+          {reliability.map(({ title, description, icon: Icon }, index) => (
             <div
               key={title}
-              className="flex flex-col justify-between rounded-xl border border-border/80 bg-muted/20 p-5 shadow-xs"
+              className="reveal-item flex flex-col justify-between rounded-xl border border-border/80 bg-muted/20 p-5 shadow-xs transition-all duration-300 hover:border-primary/30 hover:shadow-md motion-safe:hover:-translate-y-1"
+              style={{ "--reveal-index": index } as React.CSSProperties}
             >
               <div>
                 <span className="flex size-10 items-center justify-center rounded-lg bg-background text-primary shadow-xs ring-1 ring-border">
@@ -354,7 +381,7 @@ export default function AboutPage() {
               </div>
             </div>
           ))}
-        </div>
+        </RevealGroup>
       </section>
 
       {/* 4. Three staffed offices, one business */}
@@ -375,9 +402,12 @@ export default function AboutPage() {
           </div>
 
           {/* Image 4 + Office Cards Grid */}
-          <div className="mt-12 grid gap-8 lg:grid-cols-12 lg:items-stretch">
+          <RevealGroup className="mt-12 grid gap-8 lg:grid-cols-12 lg:items-stretch">
             {/* Image 4: SipLink Corporate Headquarters */}
-            <div className="lg:col-span-5 flex flex-col">
+            <div
+              className="reveal-item lg:col-span-5 flex flex-col"
+              style={{ "--reveal-index": 0 } as React.CSSProperties}
+            >
               <div className="relative flex-1 overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl min-h-[340px]">
                 <Image
                   src="/images/about/about-global-network.png"
@@ -399,34 +429,40 @@ export default function AboutPage() {
 
             {/* Office Directory Cards 2x2 Grid */}
             <div className="lg:col-span-7 grid gap-4 sm:grid-cols-2">
-              {offices.map((office) => (
-                <Card key={office.city} className="flex flex-col justify-between border-border/80 bg-card shadow-sm">
-                  <CardContent className="p-5 flex flex-col justify-between h-full">
-                    <div>
-                      <Badge variant="outline" className="mb-2.5 text-[10px] font-mono">
-                        {office.badge}
-                      </Badge>
-                      <div className="flex items-center gap-2">
-                        <MapPin className="size-4 text-primary shrink-0" />
-                        <h3 className="font-semibold text-foreground text-sm">
-                          {office.city}
-                        </h3>
+              {offices.map((office, index) => (
+                <div
+                  key={office.city}
+                  className="reveal-item"
+                  style={{ "--reveal-index": index + 1 } as React.CSSProperties}
+                >
+                  <Card className="flex h-full flex-col justify-between border-border/80 bg-card shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg motion-safe:hover:-translate-y-1">
+                    <CardContent className="p-5 flex flex-col justify-between h-full">
+                      <div>
+                        <Badge variant="outline" className="mb-2.5 text-[10px] font-mono">
+                          {office.badge}
+                        </Badge>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="size-4 text-primary shrink-0" />
+                          <h3 className="font-semibold text-foreground text-sm">
+                            {office.city}
+                          </h3>
+                        </div>
+                        <div className="mt-2.5 space-y-0.5 text-xs text-muted-foreground leading-relaxed">
+                          {office.address.map((line) => (
+                            <p key={line}>{line}</p>
+                          ))}
+                        </div>
                       </div>
-                      <div className="mt-2.5 space-y-0.5 text-xs text-muted-foreground leading-relaxed">
-                        {office.address.map((line) => (
-                          <p key={line}>{line}</p>
-                        ))}
+                      <div className="mt-4 pt-3 border-t border-border/60 flex items-center gap-2 text-xs font-mono text-foreground">
+                        <Phone className="size-3.5 text-primary shrink-0" />
+                        <span>{office.phone}</span>
                       </div>
-                    </div>
-                    <div className="mt-4 pt-3 border-t border-border/60 flex items-center gap-2 text-xs font-mono text-foreground">
-                      <Phone className="size-3.5 text-primary shrink-0" />
-                      <span>{office.phone}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
               ))}
             </div>
-          </div>
+          </RevealGroup>
         </div>
       </section>
 
