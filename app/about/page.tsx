@@ -23,6 +23,7 @@ import {
   Users,
 } from "lucide-react";
 
+import { AboutMissionPillars } from "@/components/site/about-mission-pillars";
 import { ClosingCta } from "@/components/site/closing-cta";
 import { WhyChooseSection } from "@/components/site/why-choose-section";
 import { Badge } from "@/components/ui/badge";
@@ -34,7 +35,7 @@ import { reliability, site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "About SipLink — Powering Better Business Communication",
   description:
-    "SipLink Communications has been building business voice since 2012 — cloud telephony, SIP trunking, and unified communications for growing organizations worldwide.",
+    "SipLink Communications builds business voice — cloud telephony, SIP trunking, and unified communications for growing organizations.",
 };
 
 const offices = [
@@ -106,7 +107,7 @@ const assureCommitments = [
     description:
       "Dedicated customer support staff are always available to help. Reach telecom engineers via phone, email, and live messaging around the clock.",
     icon: Clock,
-    guarantee: "<15s average engineer response",
+    guarantee: "Always-on engineer access",
   },
   {
     step: "04",
@@ -124,7 +125,7 @@ const assureCommitments = [
     description:
       "Comprehensive coverage for equipment, access network, and IP transport with guaranteed availability and low-latency performance parameters.",
     icon: ShieldCheck,
-    guarantee: "99.99% availability commitment",
+    guarantee: "Contractually backed availability",
   },
   {
     step: "06",
@@ -212,15 +213,15 @@ export default function AboutPage() {
               <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-border/60 pt-6 text-xs text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="font-medium text-foreground">99.99% Availability</span>
+                  <span className="font-medium text-foreground">24/7 Support</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="size-2 rounded-full bg-primary" />
-                  <span className="font-medium text-foreground">Carrier-Grade Peering</span>
+                  <span className="font-medium text-foreground">DoT Licensed</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="size-2 rounded-full bg-brand-from" />
-                  <span className="font-medium text-foreground">DoT Category-A ISP</span>
+                  <span className="font-medium text-foreground">ISO 27001 &middot; SOC 2 &middot; HIPAA &middot; GDPR</span>
                 </div>
               </div>
             </div>
@@ -234,10 +235,10 @@ export default function AboutPage() {
             </span>
             <div>
               <p className="text-xs font-semibold text-foreground">
-                Global Enterprise Voice Network
+                Three offices, one business
               </p>
               <p className="text-[11px] text-muted-foreground">
-                Carrier-grade peering &middot; 99.99% availability
+                DoT licensed &middot; 24/7 support
               </p>
             </div>
             <Badge variant="secondary" className="font-mono text-[10px] ml-2">
@@ -261,9 +262,9 @@ export default function AboutPage() {
                 className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent"
               />
               <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between rounded-lg border border-border/60 bg-background/90 p-2.5 backdrop-blur-md">
-                <p className="text-xs font-semibold text-foreground">Global Voice Network</p>
+                <p className="text-xs font-semibold text-foreground">Three Offices, One Business</p>
                 <Badge variant="outline" className="font-mono text-[10px]">
-                  99.99% Availability
+                  24/7 Support
                 </Badge>
               </div>
             </div>
@@ -272,103 +273,7 @@ export default function AboutPage() {
       </section>
 
       {/* 2. Mission, Vision & Core Pillars Section */}
-      <section className="border-b border-border bg-muted/30 py-16 lg:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="mx-auto max-w-2xl text-center mb-12 sm:mb-16">
-            <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
-              Strategic Foundation
-            </span>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Our Mission, Vision &amp; Pillars
-            </h2>
-            <p className="mt-3 text-pretty text-muted-foreground">
-              Built on architectural principles that protect uptime, simplify scalability, and provide direct access to real telecom engineers.
-            </p>
-          </div>
-
-          {/* Image 2 + Mission & Vision Grid */}
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-stretch">
-            {/* Image 2: Strategic Leadership & Global Network Screen */}
-            <div className="lg:col-span-7 flex flex-col">
-              <div className="relative flex-1 overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl min-h-[320px] lg:min-h-[420px]">
-                <Image
-                  src="/images/about/about-mission.jpg"
-                  alt="SipLink technology leadership team in boardroom reviewing global telecom network infrastructure"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 58vw"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-4 left-4 right-4 rounded-lg border border-border/60 bg-background/90 p-3 backdrop-blur-md">
-                  <p className="text-xs font-semibold text-foreground">Global Network Architecture</p>
-                  <p className="text-[11px] text-muted-foreground">Direct IP routes, carrier-neutral facilities, and proactive traffic management</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Mission & Vision Cards */}
-            <div className="lg:col-span-5 flex flex-col justify-between gap-6">
-              <Card className="border-border/80 bg-card shadow-sm flex-1">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3">
-                    <span className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <Rocket className="size-5" />
-                    </span>
-                    <div>
-                      <span className="font-mono text-[11px] tracking-wider text-primary uppercase">Purpose</span>
-                      <h3 className="text-lg font-semibold text-foreground">
-                        {companyMissionVision.mission.title}
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                    {companyMissionVision.mission.statement}
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border/80 bg-card shadow-sm flex-1">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3">
-                    <span className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <Globe className="size-5" />
-                    </span>
-                    <div>
-                      <span className="font-mono text-[11px] tracking-wider text-primary uppercase">Destination</span>
-                      <h3 className="text-lg font-semibold text-foreground">
-                        {companyMissionVision.vision.title}
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                    {companyMissionVision.vision.statement}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* 4 Foundation Pillars Grid */}
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {companyMissionVision.pillars.map(({ title, description, icon: Icon }) => (
-              <div
-                key={title}
-                className="flex flex-col justify-between rounded-xl border border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
-              >
-                <div>
-                  <span className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <Icon className="size-5" />
-                  </span>
-                  <h4 className="mt-4 font-semibold text-foreground">{title}</h4>
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                    {description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <AboutMissionPillars />
 
       {/* 3. Built for the way businesses communicate today */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
@@ -476,7 +381,7 @@ export default function AboutPage() {
               <div className="relative flex-1 overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl min-h-[340px]">
                 <Image
                   src="/images/about/about-global-network.png"
-                  alt="SipLink corporate headquarters building with illuminated SipLink logo and architectural crimson lighting"
+                  alt="SipLink brand illustration representing people, technology, and global connection"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
                   className="object-cover"
@@ -484,10 +389,10 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent pointer-events-none" />
                 <div className="absolute bottom-4 left-4 right-4 rounded-lg border border-border/60 bg-background/90 p-3 backdrop-blur-md">
                   <Badge variant="secondary" className="mb-1 font-mono text-[10px]">
-                    SipLink Headquarters
+                    SipLink Communications
                   </Badge>
-                  <p className="text-xs font-semibold text-foreground">Global Physical Operations</p>
-                  <p className="text-[11px] text-muted-foreground">Staffed technical facilities across India and the United States</p>
+                  <p className="text-xs font-semibold text-foreground">Three Offices, One Business</p>
+                  <p className="text-[11px] text-muted-foreground">Staffed offices in Chennai, Bangalore, and Hyderabad</p>
                 </div>
               </div>
             </div>
