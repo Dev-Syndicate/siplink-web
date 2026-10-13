@@ -2,16 +2,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
 
-import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
 import { Separator } from "@/components/ui/separator";
-import { footerNav, mobileApps, site, social } from "@/lib/site";
+import { footerNav, site, social } from "@/lib/site";
+import dotLogo from "@/public/trust/dot-full.webp";
+import gdprLogo from "@/public/trust/gdpr.webp";
+import hipaaLogo from "@/public/trust/hipaa.webp";
+import isoLogo from "@/public/trust/iso.webp";
+
+const complianceBadges = [
+  { src: dotLogo, alt: "Department of Telecommunications, India Telecom" },
+  { src: isoLogo, alt: "ISO/IEC 27001:2022" },
+  { src: hipaaLogo, alt: "HIPAA compliant" },
+  { src: gdprLogo, alt: "EU GDPR compliant" },
+];
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-muted/40">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
-          <div className="col-span-2 md:col-span-1">
+        <div className="grid gap-12 lg:grid-cols-[16rem_1fr]">
+          <div>
             <Image
               src="/siplink-logo.webp"
               alt={site.legalName}
@@ -38,49 +48,40 @@ export function SiteFooter() {
                 {site.email}
               </a>
             </div>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href={mobileApps.ios}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
-              >
-                <AppleLogo className="size-4" />
-                SipLink UC for iOS
-              </a>
-              <a
-                href={mobileApps.android}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
-              >
-                <PlayStoreLogo className="size-4" />
-                SipLink UC for Android
-              </a>
-            </div>
           </div>
 
-          {footerNav.map((group) => (
-            <div key={group.heading}>
-              <h3 className="text-sm font-semibold">{group.heading}</h3>
-              <ul className="mt-4 space-y-3">
-                {group.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Columns, not a grid: the groups run from 3 links to 12, and
+              columns pack them without the gaps a row-aligned grid leaves. */}
+          <div className="columns-2 gap-8 sm:columns-3 xl:columns-4">
+            {footerNav.map((group) => (
+              <div key={group.heading} className="mb-8 break-inside-avoid">
+                <h3 className="text-sm font-semibold">{group.heading}</h3>
+                <ul className="mt-3 space-y-2">
+                  {group.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
         <Separator className="my-10" />
+
+        <ul className="mb-6 flex flex-wrap items-center gap-6">
+          {complianceBadges.map((badge) => (
+            <li key={badge.alt}>
+              <Image src={badge.src} alt={badge.alt} className="h-12 w-auto" sizes="96px" />
+            </li>
+          ))}
+        </ul>
 
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-muted-foreground">

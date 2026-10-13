@@ -94,7 +94,7 @@ export const site = {
   tagline: "Global Solutions For SME",
   description:
     "Reliable, scalable and secure cloud communications for growing businesses: hosted PBX, SIP trunking, call centre and unified communications.",
-  phone: "082172 02075",
+  phone: "+91 82172 02075",
   email: "support@siplink.in",
 } as const;
 
@@ -2250,38 +2250,41 @@ export const productPlatformPillars = [
   },
 ] as const;
 
-export const footerNav = [
+/**
+ * Footer columns, built from `nav` so the footer lists every page the menu
+ * does and cannot drift from it. Products and Solutions keep their menu
+ * groups; Internet lists its four service pages; Industries is one column.
+ *
+ * Company is the exception: Why SipLink, Partners, Certifications, Careers
+ * and News are in the menu but not built yet, so the footer names only the
+ * pages that exist. Add them here as their routes land.
+ */
+const navGroups = (label: string) =>
+  nav.find((item) => item.label === label)?.groups ?? [];
+
+export const footerNav: { heading: string; links: NavLeaf[] }[] = [
+  ...["Products", "Solutions"].flatMap((label) =>
+    navGroups(label).map(({ heading, links }) => ({ heading, links })),
+  ),
   {
-    heading: "Products",
-    links: [
-      { label: "Call Centre Solutions", href: "/solutions/call-centre" },
-      { label: "Small & Medium Business", href: "/solutions/smb" },
-      { label: "Enterprise Business", href: "/solutions/enterprise" },
-      { label: "Internet Services", href: "/internet" },
-    ],
+    heading: "Internet",
+    links: navGroups("Internet").flatMap((group) =>
+      group.href ? [{ label: group.heading, href: group.href }] : [],
+    ),
   },
   {
     heading: "Industries",
-    links: [
-      {
-        label: "Medical Billing & RCM",
-        href: "/industries/medical-billing-rcm",
-      },
-      { label: "Medical Care & Healthcare", href: "/industries/healthcare" },
-      { label: "Staffing & Recruitment", href: "/industries/staffing" },
-      { label: "IT & Software", href: "/industries/it-software" },
-    ],
+    links: navGroups("Industries").flatMap((group) => group.links),
   },
   {
     heading: "Company",
     links: [
-      { label: "Why SipLink", href: "/why-siplink" },
-      { label: "About Us", href: "/about" },
-      { label: "Contact Us", href: "/contact" },
-      { label: "Privacy Policy", href: "/privacy" },
+      { label: "About SipLink", href: "/about" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Contact", href: "/contact" },
     ],
   },
-] as const;
+];
 
 /* -------------------------------------------------------------------------
  * Homepage content model
