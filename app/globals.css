@@ -2860,3 +2860,215 @@
     }
   }
 }
+
+@layer components {
+  /* ---------------------------------------------------------- trust strip
+
+     Each mark acts out its own claim, only while its item is hovered, so the
+     row reads as one quiet statement until someone points at part of it.
+     Opt-in: nothing runs on touch screens or with reduced motion. */
+
+  /* HIPAA: a scan of light crosses the badge. The band is masked by the
+     logo image itself (`--logo`, set inline), so it lights the caduceus and
+     lettering and never the empty box around them. */
+  .trust-shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(
+        110deg,
+        transparent 40%,
+        color-mix(in oklab, var(--background) 85%, transparent) 50%,
+        transparent 60%
+      )
+      100% 0 / 250% 100% no-repeat;
+    mask: var(--logo) center / 100% 100% no-repeat;
+  }
+
+  @keyframes trust-shine {
+    from {
+      opacity: 1;
+      background-position: 100% 0;
+    }
+    to {
+      opacity: 1;
+      background-position: 0 0;
+    }
+  }
+
+  /* DoT: each arc is born at the source and travels outward, the way a
+     signal leaves a tower. The origin is the tip of the logo's triangle. */
+  @keyframes trust-broadcast {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    25%,
+    65% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.06);
+    }
+  }
+
+  /* Network: the connection is established. The top node lights, the trunk
+     draws down from it, the branch grows out both ways from the junction,
+     then the two end nodes light. Lengths are the Lucide path lengths in
+     its 24-unit box: the trunk is 4, the branch 21.14. */
+  @keyframes trust-node-on {
+    from {
+      fill-opacity: 0;
+      transform: scale(0.85);
+    }
+    to {
+      fill-opacity: 0.35;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes trust-trunk {
+    from {
+      stroke-dashoffset: -4;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes trust-branch {
+    from {
+      stroke-dasharray: 0 10.57 0 30;
+    }
+    to {
+      stroke-dasharray: 0 0 21.14 30;
+    }
+  }
+
+  /* Support: an incoming call. The headset rings twice and the badge sends
+     out a ripple with each ring. */
+  @keyframes trust-ring-buzz {
+    0%,
+    60%,
+    100% {
+      transform: rotate(0);
+    }
+    10% {
+      transform: rotate(-12deg);
+    }
+    20% {
+      transform: rotate(10deg);
+    }
+    30% {
+      transform: rotate(-10deg);
+    }
+    40% {
+      transform: rotate(8deg);
+    }
+    50% {
+      transform: rotate(-4deg);
+    }
+  }
+
+  @keyframes trust-ring-ripple {
+    from {
+      box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 35%, transparent);
+    }
+    to {
+      box-shadow: 0 0 0 12px color-mix(in oklab, var(--primary) 0%, transparent);
+    }
+  }
+
+  /* Number porting: the number leaves one side and arrives on the other.
+     Each arrow exits past the icon's edge and re-enters from the far side. */
+  @keyframes trust-port-out {
+    0%,
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    45% {
+      opacity: 0;
+      transform: translateX(16px);
+    }
+    46% {
+      opacity: 0;
+      transform: translateX(-16px);
+    }
+  }
+
+  @keyframes trust-port-in {
+    0%,
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    45% {
+      opacity: 0;
+      transform: translateX(-16px);
+    }
+    46% {
+      opacity: 0;
+      transform: translateX(16px);
+    }
+  }
+
+  .trust-broadcast .trust-wave {
+    transform-origin: 45% 53%;
+  }
+
+  .trust-connect rect {
+    fill: currentColor;
+    fill-opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .group:hover .trust-shine::after {
+      animation: trust-shine 0.9s ease-out;
+    }
+
+    .group:hover .trust-broadcast .trust-wave {
+      animation: trust-broadcast 1.5s ease-out infinite backwards;
+      animation-delay: var(--wave-delay, 0s);
+    }
+
+    .group:hover .trust-connect rect {
+      animation: trust-node-on 0.25s ease-out both;
+    }
+
+    .group:hover .trust-connect rect:nth-child(-n + 2) {
+      animation-delay: 0.7s;
+    }
+
+    .group:hover .trust-connect path:nth-child(5) {
+      stroke-dasharray: 4 4;
+      animation: trust-trunk 0.25s 0.15s ease-in both;
+    }
+
+    .group:hover .trust-connect path:nth-child(4) {
+      animation: trust-branch 0.3s 0.4s ease-out both;
+    }
+
+    .group:hover .trust-ring {
+      animation: trust-ring-ripple 1s ease-out 2;
+    }
+
+    .group:hover .trust-ring svg {
+      animation: trust-ring-buzz 1s ease-in-out 2;
+    }
+
+    .group:hover .trust-port path:nth-child(-n + 2) {
+      animation: trust-port-out 0.7s ease-in-out;
+    }
+
+    .group:hover .trust-port path:nth-child(n + 3) {
+      animation: trust-port-in 0.7s ease-in-out;
+    }
+  }
+}
