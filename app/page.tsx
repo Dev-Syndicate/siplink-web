@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Check, PhoneCall, Quote, Star } from "lucide-react";
 
 import { AiConsole } from "@/components/site/ai-console";
+import { AppsShowcase } from "@/components/site/apps-showcase";
 import { AiMark } from "@/components/site/ai-mark";
 import { AdvantageTable } from "@/components/site/advantage-table";
 import { CtaPanel } from "@/components/site/cta-panel";
@@ -13,7 +14,6 @@ import { HowItWorks } from "@/components/site/how-it-works";
 import { IntegrationWall } from "@/components/site/integration-wall";
 import { SectorStage } from "@/components/site/sector-stage";
 import { SwitchingStory } from "@/components/site/switching-story";
-import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
 import { TrustStrip } from "@/components/site/trust-strip";
 import { TypedQuote } from "@/components/site/typed-quote";
 import { VideoEmbed } from "@/components/site/video-embed";
@@ -21,16 +21,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
+  aiStages,
   heroHighlights,
   homePillars,
-  mobileApps,
   reviews,
   site,
   whyPoints,
@@ -71,6 +69,46 @@ const heroSupportPoints = [
   "No Hardware Required",
   "AI Transcripts and Summaries",
 ];
+
+/**
+ * The product chooser as a bento, by position in `homePillars`:
+ *
+ *   Cloud Phone (wide)        | SIP     | AI Voice
+ *   Call Center | Unified Comms (wide)  | (tall)
+ *
+ * AI Voice takes the tall cell because it is the differentiator; the two
+ * broad platforms take the wide ones, text beside their drawing. On a tablet
+ * the wide and tall cards take a full row each and SIP pairs with Call
+ * Center; on a phone everything stacks.
+ */
+const pillarLayout: { cell: string; kind: "wide" | "small" | "tall" }[] = [
+  { cell: "sm:col-span-2 lg:col-start-1 lg:row-start-1", kind: "wide" },
+  { cell: "lg:col-start-3 lg:row-start-1", kind: "small" },
+  { cell: "lg:col-start-1 lg:row-start-2", kind: "small" },
+  { cell: "sm:col-span-2 lg:col-start-2 lg:row-start-2", kind: "wide" },
+  {
+    cell: "sm:col-span-2 lg:col-span-1 lg:col-start-4 lg:row-span-2 lg:row-start-1",
+    kind: "tall",
+  },
+];
+
+/**
+ * The AI capabilities named on the featured pillar card: only the ones
+ * `aiStages` lists without a "where enabled" qualifier, so nothing on the
+ * card is promised to every customer that depends on their plan.
+ */
+const aiHighlights = aiStages
+  .flatMap(({ items }) => items)
+  .filter(({ conditional }) => !conditional)
+  .map(({ label }) => label)
+  .filter((label) =>
+    [
+      "Call transcription",
+      "Call summaries",
+      "Conversation intelligence",
+      "Intelligent workflow automation",
+    ].includes(label),
+  );
 
 /** The single review we pull forward as the page's headline proof. */
 const featuredReview = reviews[0];
@@ -322,13 +360,19 @@ export default function Home() {
       {/* ---------------------------------------------------------------
           What does your business need? The product chooser. Visitors who do
           not speak telecom pick the situation closest to theirs, not a
-          product name. Five cards on a six-column grid: three on the first
-          row, two wider ones beneath, so there is never an orphan.
+          product name. Laid out as a bento — see `pillarLayout`.
          --------------------------------------------------------------- */}
-      <section className="border-b border-border">
+      {/* Styled to match the feature bento below it (FeatureCards): no
+          outlines, a soft pink shadow on a pale pink ground, and the same
+          icon-chip header — so the two "what does it provide?" sections read
+          as one. */}
+      <section className="border-b border-border bg-gradient-to-b from-primary/5 via-primary/[0.03] to-background">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
           <div className="max-w-2xl">
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Solutions
+            </span>
+            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
               What Does Your Business Need?
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
@@ -337,77 +381,188 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
+          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             {homePillars.map(
               (
                 { title, headline, description, href, icon: Icon, image, ai },
                 index,
-              ) => (
-                <Link
-                  key={title}
-                  href={href}
-                  className={cn(
-                    "group rounded-xl focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none",
-                    index < 3 ? "lg:col-span-2" : "lg:col-span-3",
-                    index === 4 && "sm:col-span-2",
-                  )}
-                >
-                  {/* The pink blooms out of the corner the illustration sits
-                      in: these are pink drawings on transparent PNGs, and a
-                      soft pink ground is what they were made to stand on. */}
-                  <Card className="h-full bg-gradient-to-br from-brand-from/20 via-background via-45% to-background ring-primary/15 transition-shadow group-hover:shadow-md">
-                    <div className="flex h-44 items-center justify-center overflow-hidden">
-                      {image ? (
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          width={512}
-                          height={512}
-                          sizes="(min-width: 1024px) 20rem, 90vw"
-                          className="h-full w-full object-contain p-4 transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.05]"
-                        />
-                      ) : (
+              ) => {
+                const { cell, kind } = pillarLayout[index] ?? {
+                  cell: "",
+                  kind: "small",
+                };
+
+                // The featured cell: the one card on the brand gradient, so AI
+                // is the first thing the eye lands on in the section.
+                if (kind === "tall") {
+                  return (
+                    <Link
+                      key={title}
+                      href={href}
+                      className={cn(
+                        "group rounded-2xl transition-transform duration-300 ease-out focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none motion-safe:hover:-translate-y-1",
+                        cell,
+                      )}
+                    >
+                      <Card className="relative h-full gap-0 overflow-hidden rounded-2xl bg-gradient-to-b from-brand-from to-brand-to p-5 text-primary-foreground shadow-xl ring-0 shadow-primary/25 transition-shadow duration-300 group-hover:shadow-2xl group-hover:shadow-primary/40">
+                        {/* A soft light in the top corner, so the gradient
+                            has depth rather than reading as a flat fill. */}
                         <span
                           aria-hidden
-                          className="flex size-24 items-center justify-center rounded-full bg-primary/10 text-primary"
-                        >
-                          <Icon className="size-10" />
-                        </span>
-                      )}
-                    </div>
-                    <CardHeader>
-                      <span className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                        {ai ? (
-                          <AiMark />
-                        ) : (
-                          <Icon className="size-4 text-primary" aria-hidden />
-                        )}
-                        {title}
-                        {ai ? (
-                          <Badge variant="secondary" className="ml-auto">
+                          className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full bg-background/20 blur-2xl"
+                        />
+
+                        <div className="relative flex items-center gap-2">
+                          <span className="rounded-lg bg-background/95 p-1">
+                            <AiMark />
+                          </span>
+                          <span className="text-sm font-semibold">{title}</span>
+                          <Badge className="ml-auto h-5 bg-background px-1.5 text-[10px] text-primary">
                             New
                           </Badge>
-                        ) : null}
-                      </span>
-                      <CardTitle className="text-lg text-balance">
-                        {headline}
-                      </CardTitle>
-                      <CardDescription className="mt-1 text-pretty">
-                        {description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="mt-auto">
-                      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary">
-                        Explore {title}
-                        <ArrowRight
-                          className="size-4 transition-transform group-hover:translate-x-0.5"
-                          aria-hidden
-                        />
-                      </span>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ),
+                        </div>
+
+                        <CardTitle className="relative mt-4 text-2xl font-semibold tracking-tight text-balance">
+                          {headline}
+                        </CardTitle>
+                        <CardDescription className="relative mt-1.5 text-pretty text-primary-foreground/80">
+                          {description}
+                        </CardDescription>
+
+                        {/* White, like the illustration's own ground, so the
+                            two read as one panel. */}
+                        <div className="relative mt-5 flex min-h-56 flex-1 items-center justify-center overflow-hidden rounded-xl bg-background shadow-lg shadow-black/10">
+                          {image ? (
+                            <Image
+                              src={image.src}
+                              alt={image.alt}
+                              width={720}
+                              height={841}
+                              sizes="(min-width: 1024px) 18rem, 90vw"
+                              className="h-full max-h-96 w-full object-contain p-2 transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.04]"
+                            />
+                          ) : null}
+                        </div>
+
+                        <ul className="relative mt-4 flex flex-wrap gap-1.5">
+                          {aiHighlights.map((label) => (
+                            <li
+                              key={label}
+                              className="flex items-center gap-1 rounded-full bg-background/15 px-2.5 py-1 text-xs font-medium ring-1 ring-background/25"
+                            >
+                              <Check className="size-3" aria-hidden />
+                              {label}
+                            </li>
+                          ))}
+                        </ul>
+
+                        <span className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">
+                          Explore {title}
+                          <ArrowRight
+                            className="size-4 transition-transform group-hover:translate-x-0.5"
+                            aria-hidden
+                          />
+                        </span>
+                      </Card>
+                    </Link>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={title}
+                    href={href}
+                    className={cn(
+                      "group rounded-2xl transition-transform duration-300 ease-out focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none motion-safe:hover:-translate-y-1",
+                      cell,
+                    )}
+                  >
+                    <Card
+                      className={cn(
+                        "h-full gap-4 rounded-2xl p-5 shadow-xl ring-0 shadow-primary/5 transition-shadow duration-300 group-hover:shadow-2xl group-hover:shadow-primary/15",
+                        "bg-gradient-to-br from-background via-background to-primary/10",
+                        kind === "wide" &&
+                          "md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:items-stretch md:gap-5",
+                      )}
+                    >
+                      {/* The drawings are pink on transparent PNGs, so they
+                          get a soft pink inset panel to stand on. */}
+                      <div
+                        className={cn(
+                          "flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent",
+                          kind === "small" && "h-40",
+                          kind === "wide" && "h-44 md:order-2 md:h-auto md:min-h-52",
+                        )}
+                      >
+                        {image ? (
+                          <Image
+                            src={image.src}
+                            alt={image.alt}
+                            width={512}
+                            height={512}
+                            sizes="(min-width: 1024px) 20rem, 90vw"
+                            className="h-full w-full object-contain p-4 transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.05]"
+                          />
+                        ) : (
+                          <span
+                            aria-hidden
+                            className="flex size-24 items-center justify-center rounded-full bg-primary/10 text-primary"
+                          >
+                            <Icon className="size-10" />
+                          </span>
+                        )}
+                      </div>
+
+                      <div
+                        className={cn(
+                          "flex flex-col px-1",
+                          kind === "wide" ? "md:justify-center md:py-2" : "flex-1",
+                        )}
+                      >
+                        <div className="flex items-center gap-2">
+                          {ai ? (
+                            <AiMark />
+                          ) : (
+                            <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                              <Icon className="size-4" aria-hidden />
+                            </span>
+                          )}
+                          <span className="text-sm font-semibold">{title}</span>
+                          {ai ? (
+                            <Badge className="h-5 bg-primary/10 px-1.5 text-[10px] text-primary">
+                              New
+                            </Badge>
+                          ) : null}
+                        </div>
+
+                        <CardTitle
+                          className={cn(
+                            "mt-3 font-semibold tracking-tight text-balance",
+                            kind === "small" ? "text-lg" : "text-xl lg:text-2xl",
+                          )}
+                        >
+                          {headline}
+                        </CardTitle>
+                        <CardDescription className="mt-1.5 text-pretty">
+                          {description}
+                        </CardDescription>
+                        <span
+                          className={cn(
+                            "inline-flex items-center gap-1.5 pt-4 text-sm font-medium text-primary",
+                            kind !== "wide" && "mt-auto",
+                          )}
+                        >
+                          Explore {title}
+                          <ArrowRight
+                            className="size-4 transition-transform group-hover:translate-x-0.5"
+                            aria-hidden
+                          />
+                        </span>
+                      </div>
+                    </Card>
+                  </Link>
+                );
+              },
             )}
           </div>
         </div>
@@ -552,55 +707,9 @@ export default function Home() {
 
       <HowItWorks />
 
+      <AppsShowcase />
+
       <FaqSection />
-
-      {/* ---------------------------------------------------------------
-          Apps. The other half of "does it fit my stack?" — the integration
-          diagram above makes the same argument at full width, so this
-          stands on its own.
-         --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:items-center lg:gap-16">
-            <div>
-              <span className="font-mono text-xs tracking-widest text-primary uppercase">
-                Mobile &amp; desktop
-              </span>
-              <h2 className="font-heading mt-4 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-                Take your extension anywhere
-              </h2>
-              <p className="mt-4 text-pretty text-muted-foreground">
-                The SipLink UC app puts your business line on your phone and
-                desktop, calls, video, messaging and voicemail, wherever you
-                are.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-4 lg:justify-end">
-              <Button asChild variant="outline" size="lg">
-                <a
-                  href={mobileApps.ios}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <AppleLogo className="size-5" />
-                  Download for iOS
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <a
-                  href={mobileApps.android}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <PlayStoreLogo className="size-5" />
-                  Download for Android
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ---------------------------------------------------------------
           Closing CTA. Outcome-first: what changes for the business, one

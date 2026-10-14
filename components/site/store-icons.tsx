@@ -2,7 +2,8 @@
  * App Store, Play Store and Google marks as inline SVG.
  *
  * lucide's `Apple` icon is a piece of fruit with a stem, not the Apple logo,
- * and it has no Android or Play mark at all — so these are drawn here.
+ * and it has no Android or Play mark at all — so these are drawn here. Apple
+ * follows `currentColor`; Play and Google keep their brand colours.
  * Decorative: each button already says which platform it is.
  */
 
@@ -22,33 +23,17 @@ export function AppleLogo({ className }: IconProps) {
   );
 }
 
+/**
+ * Google Play's triangle in its own four colours. Like the Google "G" below,
+ * these are the brand's colours, not ours, so they have no theme token.
+ */
 export function PlayStoreLogo({ className }: IconProps) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      className={className}
-      aria-hidden
-      focusable="false"
-    >
-      <path
-        d="M3.6 2.3a1 1 0 0 0-.35.76v17.88a1 1 0 0 0 .35.76l.1.05L13.5 12v-.1L3.7 2.25l-.1.05z"
-        fill="currentColor"
-        opacity="0.85"
-      />
-      <path
-        d="M16.8 15.3 13.5 12v-.1l3.3-3.3.08.05 3.9 2.22c1.11.63 1.11 1.66 0 2.3l-3.9 2.21-.08.05z"
-        fill="currentColor"
-      />
-      <path
-        d="M16.88 15.25 13.5 11.95 3.6 21.7a1.3 1.3 0 0 0 1.66.05l11.62-6.6z"
-        fill="currentColor"
-        opacity="0.7"
-      />
-      <path
-        d="M16.88 8.65 5.26 2.05A1.3 1.3 0 0 0 3.6 2.1l9.9 9.85 3.38-3.3z"
-        fill="currentColor"
-        opacity="0.55"
-      />
+    <svg viewBox="0 0 24 24" className={className} aria-hidden focusable="false">
+      <path fill="#00D7FE" d="M3.6 2.3a1 1 0 0 0-.35.76v17.88a1 1 0 0 0 .35.76l.1.05L13.5 12v-.1L3.7 2.25l-.1.05z" />
+      <path fill="#FFCE00" d="M16.8 15.3 13.5 12v-.1l3.3-3.3.08.05 3.9 2.22c1.11.63 1.11 1.66 0 2.3l-3.9 2.21-.08.05z" />
+      <path fill="#FF3A44" d="M16.88 15.25 13.5 11.95 3.6 21.7a1.3 1.3 0 0 0 1.66.05l11.62-6.6z" />
+      <path fill="#00F076" d="M16.88 8.65 5.26 2.05A1.3 1.3 0 0 0 3.6 2.1l9.9 9.85 3.38-3.3z" />
     </svg>
   );
 }

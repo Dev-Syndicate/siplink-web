@@ -2636,8 +2636,8 @@ export const homePillars: {
     icon: Bot,
     ai: true,
     image: {
-      src: "/images/pillar-ai-voice.png",
-      alt: "A phone call flowing into an AI assistant, which passes the result to booking, transcript and CRM",
+      src: "/images/ai-voice-robot.webp",
+      alt: "A friendly AI assistant robot in a headset taking a phone call, passing the result to call booking, transcripts and a CRM update",
     },
   },
 ];
