@@ -39,12 +39,10 @@ import { cn } from "@/lib/utils";
  */
 
 /**
- * A white panel floating on the card's pink ground. No drawn outline: it is
- * lifted by a soft pink shadow, and a white rim catches the light, the way
- * frosted glass would.
+ * A white panel floating on the card's pink ground. No outline at all: it is
+ * lifted off the card by a soft pink shadow alone.
  */
-const PANEL =
-  "rounded-xl bg-background shadow-lg shadow-primary/10 ring-1 ring-background";
+const PANEL = "rounded-xl bg-background shadow-lg shadow-primary/10";
 
 /** A solid pink node where a dashed connector meets a panel. */
 const NODE =
@@ -149,7 +147,7 @@ function RoutingVisual() {
             {/* Whoever is taking the call lights up in turn. */}
             {free ? (
               <span
-                className="feature-glide absolute inset-0 rounded-xl bg-primary/5 ring-1 ring-primary/40 ring-inset"
+                className="feature-glide absolute inset-0 rounded-xl bg-primary/10"
                 style={turnStyle(index === 0 ? 0 : 1, 2)}
               />
             ) : null}
@@ -278,15 +276,13 @@ const MENU = [
 function IvrVisual() {
   return (
     <div className="flex items-center">
-      <div className={cn(PANEL, "relative w-[7.75rem] shrink-0 p-2.5")}>
+      <div className={cn(PANEL, "relative w-[7.75rem] shrink-0 p-2")}>
         <span className={cn(NODE, "-right-1")} />
-        <div className="rounded-lg bg-primary/5 px-1.5 py-1.5 text-center">
+        <div className="rounded-lg bg-primary/5 px-1.5 py-1 text-center">
           <p className="text-[9px] font-semibold text-primary">
             Welcome to {site.name}
           </p>
-          <p className="text-[8px] text-muted-foreground">
-            Press a number to continue
-          </p>
+          <p className="text-[8px] text-muted-foreground">Press a number</p>
         </div>
         <div className="mt-1.5 grid grid-cols-3 gap-1">
           {KEYS.map((key, index) => (
@@ -307,13 +303,13 @@ function IvrVisual() {
         </div>
       </div>
 
-      <Fan count={4} className="h-28 w-6 sm:w-8" />
+      <Fan count={4} className="h-24 w-6 sm:w-8" />
 
-      <div className="flex h-28 min-w-0 flex-1 flex-col justify-around">
+      <div className="flex h-24 min-w-0 flex-1 flex-col justify-around">
         {MENU.map(({ label, icon: Icon }) => (
           <span
             key={label}
-            className={cn(PANEL, "relative flex h-6 items-center gap-1.5 rounded-lg px-1.5 text-[9px] font-medium")}
+            className={cn(PANEL, "relative flex h-5 items-center gap-1.5 rounded-lg px-1.5 text-[9px] font-medium")}
           >
             <span className={cn(NODE, "-left-1 size-1.5")} />
             <span className="flex size-4 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
@@ -330,16 +326,16 @@ function IvrVisual() {
 /** A phone receiving a reminder, and the reply coming back. */
 function SmsVisual() {
   return (
-    <div className="relative h-36 overflow-hidden">
+    <div className="relative h-28 overflow-hidden">
       {/* Cropped by the card at the bottom, like a phone rising into view. */}
-      <div className="mx-auto h-56 w-[11.5rem] rounded-[1.75rem] border-4 border-muted bg-background px-3 pt-2 shadow-lg shadow-primary/15 ring-1 ring-background">
+      <div className="mx-auto h-56 w-[11.5rem] rounded-[1.75rem] border-4 border-muted bg-background px-3 pt-2 shadow-lg shadow-primary/15">
         <div className="flex items-center justify-between text-[8px] font-semibold">
           <span>9:41</span>
           <span className="h-3 w-12 rounded-full bg-foreground" />
           <span className="tracking-tighter text-muted-foreground">•••</span>
         </div>
 
-        <div className="mt-3 flex flex-col gap-1">
+        <div className="mt-2.5 flex flex-col gap-1">
           <span
             className="feature-arrive max-w-[85%] self-start rounded-2xl rounded-bl-sm bg-muted px-2.5 py-1.5 text-[9px] leading-snug"
             style={{ "--arrive-delay": "0s" } as React.CSSProperties}
@@ -360,7 +356,7 @@ function SmsVisual() {
         </div>
       </div>
 
-      <span className={cn(PANEL, "absolute top-10 left-0 flex size-9 items-center justify-center text-primary")}>
+      <span className={cn(PANEL, "absolute top-7 left-0 flex size-9 items-center justify-center text-primary")}>
         <MessageSquareText className="size-4" />
       </span>
     </div>
@@ -383,14 +379,14 @@ function AnalyticsVisual() {
     <div className={cn(PANEL, "p-3")}>
       <div className="flex items-center justify-between">
         <span className="text-[11px] font-semibold">Call volume</span>
-        <span className="flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[9px] text-muted-foreground ring-1 ring-primary/10">
+        <span className="flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[9px] text-muted-foreground bg-muted/60">
           Last 7 days
           <ChevronDown className="size-2.5" />
         </span>
       </div>
 
-      <div className="mt-3 flex gap-2">
-        <div className="flex h-20 flex-col justify-between text-right font-mono text-[8px] text-muted-foreground">
+      <div className="mt-2 flex gap-2">
+        <div className="flex h-16 flex-col justify-between text-right font-mono text-[8px] text-muted-foreground">
           {[300, 200, 100, 0].map((value) => (
             <span key={value} className="leading-none">
               {value}
@@ -398,7 +394,7 @@ function AnalyticsVisual() {
           ))}
         </div>
         <div className="flex-1">
-          <div className="flex h-20 items-end gap-1.5 border-b border-border">
+          <div className="flex h-16 items-end gap-1.5 border-b border-border">
             {WEEK.map(({ day, height, tone }, index) => (
               <span
                 key={day}
@@ -556,7 +552,7 @@ export function FeatureCards() {
                 >
                   <Card
                     className={cn(
-                      "h-full gap-5 rounded-2xl bg-gradient-to-br from-background via-background to-primary/10 p-5 shadow-xl shadow-primary/5 ring-2 ring-background transition-shadow duration-300 group-hover:shadow-2xl group-hover:shadow-primary/15 lg:p-6",
+                      "h-full gap-4 rounded-2xl bg-gradient-to-br from-background via-background to-primary/10 p-5 shadow-xl shadow-primary/5 ring-0 transition-shadow duration-300 group-hover:shadow-2xl group-hover:shadow-primary/15",
                       // The drawing side gets the larger share: it carries more detail
                         // than the four lines of copy beside it.
                         large &&
@@ -574,16 +570,16 @@ export function FeatureCards() {
 
                       <CardTitle
                         className={cn(
-                          "mt-4 font-semibold tracking-tight text-balance",
+                          "mt-3 font-semibold tracking-tight text-balance",
                           large ? "text-2xl" : "text-lg",
                         )}
                       >
                         {outcome}
                       </CardTitle>
-                      <CardDescription className="mt-2 text-pretty">
+                      <CardDescription className="mt-1.5 text-pretty">
                         {description}
                       </CardDescription>
-                      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                      <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
                         {title}
                         <ArrowRight
                           className="size-4 transition-transform group-hover:translate-x-0.5"
