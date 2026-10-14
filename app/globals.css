@@ -41,6 +41,10 @@
   --color-brand-from: var(--brand-from);
   --color-brand-to: var(--brand-to);
   --color-ink: var(--ink);
+  /* Status hues for tags (e.g. number types): the palette is otherwise all
+     brand pink and neutrals, which cannot tell three states apart. */
+  --color-info: var(--info);
+  --color-success: var(--success);
   --font-heading: var(--font-geist-sans);
   --font-accent: var(--font-script);
   --font-sans: var(--font-geist-sans);
@@ -116,6 +120,8 @@
   --chart-3: oklch(0.78 0.12 15);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
+  --info: oklch(0.55 0.16 255);
+  --success: oklch(0.56 0.13 155);
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -154,6 +160,8 @@
   --chart-3: oklch(0.8 0.11 15);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
+  --info: oklch(0.72 0.13 255);
+  --success: oklch(0.74 0.14 155);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -3128,6 +3136,77 @@
 
     .trust-port path:nth-child(n + 3) {
       animation-name: trust-port-in;
+    }
+  }
+}
+
+@layer components {
+  /* The SipLink advantage comparison (AdvantageTable). Inside a
+     <RevealGroup>, after the whole comparison rises in (`.reveal-item`):
+     the checks pop in one row (`--row`) after another, and the SipLink
+     card glows once and settles back to its resting shadow — once, not on
+     a loop, so it reads as emphasis rather than as an alarm. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-group .adv-check {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+
+    .reveal-group[data-revealed] .adv-check {
+      animation: adv-check 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      animation-delay: calc(var(--row, 0) * 90ms + 450ms);
+    }
+
+    .reveal-group[data-revealed] .adv-glow {
+      animation: adv-glow 1.8s ease-out 0.5s both;
+    }
+  }
+
+  @keyframes adv-check {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes adv-glow {
+    45% {
+      box-shadow:
+        0 0 0 1px color-mix(in oklab, var(--primary) 35%, transparent),
+        0 18px 60px -8px color-mix(in oklab, var(--primary) 45%, transparent);
+    }
+  }
+}
+
+@layer components {
+  /* A softer `feature-turn` for the homepage feature cards: long eased fades
+     that overlap, so a highlight glides from one item to the next instead of
+     blinking on and off. Kept separate because `feature-turn` also runs on
+     the features pages, which were tuned to its sharper rhythm. */
+  @keyframes feature-glide {
+    0% {
+      opacity: 0;
+    }
+    14%,
+    40% {
+      opacity: 1;
+    }
+    58%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .feature-glide {
+    opacity: 0;
+    animation: feature-glide var(--turn-duration, 5.4s) cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    animation-delay: var(--turn-delay, 0s);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feature-glide {
+      animation: none;
+      opacity: 0;
     }
   }
 }

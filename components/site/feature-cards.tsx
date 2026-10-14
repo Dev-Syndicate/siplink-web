@@ -1,33 +1,177 @@
+import Image from "next/image";
 import Link from "next/link";
-import type { LucideIcon } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCheck,
+  ChevronDown,
+  EllipsisVertical,
+  Headphones,
+  MessageSquareText,
+  Pause,
+  PhoneIncoming,
+  Receipt,
+  ShoppingBag,
+  UserRound,
+} from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
+import { homeFeatures, site, type HomeFeature } from "@/lib/site";
 import { cn } from "@/lib/utils";
-import { homeFeatures, type HomeFeature } from "@/lib/site";
 
 /**
- * The schematic drawn beside each feature.
+ * The miniature product screens drawn in each card.
  *
- * Line diagrams in the brand crimson, sitting straight on the white card with
- * no panel of their own — so the card is the only surface in the section, and
- * the drawing reads as part of it rather than a screenshot pasted onto it.
+ * Small working interfaces rather than line diagrams: a buyer recognises a
+ * call card, a keypad, a phone and a chart faster than a schematic of one.
+ * They are built from the same tokens as the rest of the page — white panels
+ * on the card's pink ground — so they read as the product, not as stock art.
  *
- * Drawing rather than depicting UI is also what lets these join the vocabulary
- * the site already has: product-illustration, solution-illustration and the
- * integration wall are all crimson schematics. A seventh visual language on
- * one homepage would be one too many.
- *
- * The six are deliberately different shapes. A branching tree and a queue
- * feeding a hub would otherwise read as the same picture twice, which is the
- * trap with a set this size — so the routing diagram carries the calls that
- * are waiting, which the IVR tree has no equivalent of.
- *
- * All of it is hidden from assistive tech: the heading and sentence beside
- * each diagram already say what it draws.
- *
- * Nothing here is a claim. Numbers are masked, the chart carries no values,
- * and the names are wireframe filler.
+ * Nothing here is a claim. The people are initials, the phone numbers are
+ * masked or in the reserved 555 range, and the chart is a sample week. All of
+ * it is hidden from assistive tech: the heading and sentence beside each one
+ * already say what it shows.
  */
+
+/**
+ * A white panel floating on the card's pink ground. No drawn outline: it is
+ * lifted by a soft pink shadow, and a white rim catches the light, the way
+ * frosted glass would.
+ */
+const PANEL =
+  "rounded-xl bg-background shadow-lg shadow-primary/10 ring-1 ring-background";
+
+/** A solid pink node where a dashed connector meets a panel. */
+const NODE =
+  "absolute top-1/2 size-2 -translate-y-1/2 rounded-full bg-primary ring-2 ring-background";
+
+/** Seconds between one item taking its turn and the next. Unhurried, so
+ * the highlight crossfades from item to item rather than ticking. */
+const STEP = 1.6;
+
+function turnStyle(index: number, count = 3) {
+  return {
+    "--turn-delay": `${index * STEP}s`,
+    "--turn-duration": `${STEP * count}s`,
+  } as React.CSSProperties;
+}
+
+/**
+ * A small round profile photo: portraits supplied for the redesign, cropped
+ * to 96px in public/images/avatars with their transparent backgrounds kept,
+ * so `bg-muted` shows through in either theme. They are not SipLink staff,
+ * so they only ever appear inside these mock screens.
+ */
+function Avatar({ src, className }: { src: string; className?: string }) {
+  return (
+    <Image
+      src={src}
+      alt=""
+      width={96}
+      height={96}
+      sizes="28px"
+      className={cn(
+        "size-7 shrink-0 rounded-full bg-muted object-cover ring-2 ring-background",
+        className,
+      )}
+    />
+  );
+}
+
+/**
+ * Dashed curves fanning out from one point to `count` evenly spaced ones.
+ * Stretched to whatever box it sits in; the stroke stays 1px regardless.
+ */
+function Fan({ count, className }: { count: number; className?: string }) {
+  const ends = Array.from(
+    { length: count },
+    (_, index) => ((index + 0.5) / count) * 100,
+  );
+
+  return (
+    <svg
+      viewBox="0 0 40 100"
+      preserveAspectRatio="none"
+      className={cn("shrink-0 overflow-visible", className)}
+    >
+      {ends.map((y) => (
+        <path
+          key={y}
+          d={`M 0 50 C 22 50 18 ${y} 40 ${y}`}
+          fill="none"
+          strokeWidth="1.25"
+          strokeDasharray="3 3"
+          vectorEffect="non-scaling-stroke"
+          className="stroke-primary/50"
+        />
+      ))}
+    </svg>
+  );
+}
+
+const AGENTS = [
+  { photo: "/images/avatars/avatar-ryan.webp", name: "Ryan", status: "Available", free: true },
+  { photo: "/images/avatars/avatar-emma.webp", name: "Emma", status: "On a call", free: false },
+  { photo: "/images/avatars/avatar-marcus.webp", name: "Marcus", status: "Available", free: true },
+];
+
+/** A call arriving, handed to whoever is free. */
+function RoutingVisual() {
+  return (
+    <div className="flex items-center">
+      <div className={cn(PANEL, "relative flex w-[9.25rem] shrink-0 items-center gap-2 p-2.5")}>
+        <span className={cn(NODE, "-right-1")} />
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+          <PhoneIncoming className="size-3.5" />
+        </span>
+        <span className="min-w-0">
+          <span className="block text-[11px] font-semibold">Incoming call</span>
+          <span className="block truncate font-mono text-[9px] text-muted-foreground">
+            +1 212 555 0187
+          </span>
+        </span>
+      </div>
+
+      <Fan count={3} className="h-36 w-6 sm:w-8" />
+
+      <div className="flex h-36 min-w-0 flex-1 flex-col justify-around">
+        {AGENTS.map(({ photo, name, status, free }, index) => (
+          <div
+            key={name}
+            className={cn(PANEL, "relative flex items-center gap-2 p-2")}
+          >
+            <span className={cn(NODE, "-left-1 z-10")} />
+            {/* Whoever is taking the call lights up in turn. */}
+            {free ? (
+              <span
+                className="feature-glide absolute inset-0 rounded-xl bg-primary/5 ring-1 ring-primary/40 ring-inset"
+                style={turnStyle(index === 0 ? 0 : 1, 2)}
+              />
+            ) : null}
+            <span className="relative">
+              <Avatar src={photo} />
+              <span
+                className={cn(
+                  "absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full ring-2 ring-background",
+                  free ? "bg-primary" : "bg-muted-foreground/40",
+                )}
+              />
+            </span>
+            <span className="relative min-w-0">
+              <span className="block text-[11px] font-semibold">{name}</span>
+              <span className="block text-[9px] whitespace-nowrap text-muted-foreground">{status}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 /** Waveform bar heights, as a percentage of the strip. */
 const WAVE = [
@@ -36,246 +180,229 @@ const WAVE = [
   56, 74, 30, 64, 90, 46, 34, 70, 50, 82,
 ];
 
-/** Twelve columns of call volume. A shape, not data — no values are shown. */
-const CHART = [38, 56, 44, 70, 52, 84, 62, 48, 76, 58, 92, 66];
-
-const MENU = [
-  { key: "1", label: "Sales" },
-  { key: "2", label: "Support" },
-  { key: "3", label: "Billing" },
+const TRANSCRIPT = [
+  {
+    time: "00:09",
+    who: "Agent",
+    photo: "/images/avatars/avatar-sofia.webp",
+    text: `Thank you for calling ${site.name}…`,
+  },
+  {
+    time: "00:12",
+    who: "Customer",
+    photo: "/images/avatars/avatar-daniel.webp",
+    text: "I wanted to know about…",
+  },
+  {
+    time: "00:28",
+    who: "Agent",
+    photo: "/images/avatars/avatar-sofia.webp",
+    text: "Sure, I can help you with that.",
+  },
 ];
 
-const SEATS = ["Ravi", "Priya", "Arun"];
-
-const MESSAGES = [
-  "Your verification code is 4821",
-  "Reminder: appointment tomorrow, 10:00",
-  "Payment received, thank you",
-];
-
-const NUMBERS = [
-  { value: "+1 212 ••• ••••", label: "Direct dial" },
-  { value: "+1 800 ••• ••••", label: "Toll-free" },
-  { value: "+1 307 ••• ••••", label: "Ported in" },
-];
-
-/** Seconds between one item taking its turn and the next. */
-const STEP = 1.2;
-
-/** One full pass over three items. */
-const CYCLE = `${STEP * 3}s`;
-
-/** Shared frame, so all six diagrams sit on the same optical centre. */
-function Frame({ children }: { children: React.ReactNode }) {
+/** A recording mid-playback, with its transcript beneath. */
+function RecordingVisual() {
   return (
-    <svg
-      viewBox="0 0 360 180"
-      role="presentation"
-      className="h-full w-full max-w-[24rem]"
-    >
-      {children}
-    </svg>
-  );
-}
+    <div className="space-y-2.5">
+      <div className={cn(PANEL, "p-3")}>
+        <div className="flex items-center justify-between text-[10px]">
+          <span className="flex items-center gap-1.5 font-medium text-primary">
+            <span className="size-1.5 rounded-full bg-primary" />
+            Recording
+          </span>
+          <span className="font-mono text-muted-foreground">00:42 / 03:15</span>
+        </div>
 
-function turnStyle(index: number) {
-  return {
-    "--turn-delay": `${index * STEP}s`,
-    "--turn-duration": CYCLE,
-  } as React.CSSProperties;
-}
-
-/** One branch of a fan: its resting line, and the pulse that runs it. */
-function Branch({ d, index }: { d: string; index: number }) {
-  return (
-    <>
-      <path d={d} className="stroke-primary/25" strokeWidth="1.5" fill="none" />
-      <path
-        d={d}
-        pathLength="100"
-        className="trace-pulse stroke-primary"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-        style={
-          {
-            "--trace-delay": `${index * STEP}s`,
-            "--trace-duration": CYCLE,
-          } as React.CSSProperties
-        }
-      />
-    </>
-  );
-}
-
-function Diagram({
-  id,
-  icon: Icon,
-}: {
-  id: HomeFeature["id"];
-  icon: LucideIcon;
-}) {
-  switch (id) {
-    // A caller choosing. The digits are the keypad keys they press, which is
-    // why this diagram is labelled with numbers and none of the others are.
-    case "ivr":
-      return (
-        <Frame>
-          <path
-            d="M 18 90 H 96"
-            className="stroke-primary/30"
-            strokeWidth="1.5"
-            fill="none"
-          />
-          <circle cx="18" cy="90" r="5" className="fill-primary" />
-
-          {MENU.map(({ key, label }, index) => {
-            const y = 34 + index * 56;
-
-            return (
-              <g key={key}>
-                <Branch d={`M 96 90 C 126 90 126 ${y} 156 ${y}`} index={index} />
-                <circle cx="156" cy={y} r="5" className="fill-primary/20" />
-                <circle
-                  cx="156"
-                  cy={y}
-                  r="5"
-                  className="feature-turn fill-primary"
-                  style={turnStyle(index)}
-                />
-                <text
-                  x="174"
-                  y={y + 4}
-                  className="fill-primary font-mono text-[11px] font-medium"
-                >
-                  {key}
-                </text>
-                <text x="192" y={y + 4} className="fill-foreground text-[12px]">
-                  {label}
-                </text>
-              </g>
-            );
-          })}
-        </Frame>
-      );
-
-    // Calls holding, then a hub handing each one to whoever is free. The
-    // stack on the left is what keeps this from being the IVR tree again.
-    case "routing":
-      return (
-        <Frame>
-          {[0, 1, 2].map((index) => (
-            <circle
+        <div className="relative mt-2 flex h-12 items-center justify-center gap-[2px] overflow-hidden">
+          {WAVE.map((height, index) => (
+            <span
               key={index}
-              cx={18 + index * 18}
-              cy="90"
-              r="5"
-              className="fill-primary/25"
+              className={cn(
+                "wave-bar w-0.5 shrink-0 rounded-full",
+                // Played back so far, then still to come.
+                index < WAVE.length * 0.45 ? "bg-primary" : "bg-primary/30",
+              )}
+              style={
+                {
+                  height: `${height}%`,
+                  "--bar-delay": `${index * 0.04}s`,
+                } as React.CSSProperties
+              }
             />
           ))}
-
-          <path
-            d="M 62 90 H 102"
-            className="stroke-primary/30"
-            strokeWidth="1.5"
-            fill="none"
-          />
-
-          <circle cx="120" cy="90" r="16" className="fill-primary/10" />
-          <circle cx="120" cy="90" r="6" className="fill-primary" />
-
-          {SEATS.map((name, index) => {
-            const y = 34 + index * 56;
-
-            return (
-              <g key={name}>
-                <Branch
-                  d={`M 136 90 C 166 90 166 ${y} 196 ${y}`}
-                  index={index}
-                />
-                {/* An open seat is a ring; the seat taking the call fills. */}
-                <circle
-                  cx="196"
-                  cy={y}
-                  r="6"
-                  className="fill-none stroke-primary/40"
-                  strokeWidth="1.5"
-                />
-                <circle
-                  cx="196"
-                  cy={y}
-                  r="6"
-                  className="feature-turn fill-primary"
-                  style={turnStyle(index)}
-                />
-                <text x="214" y={y + 4} className="fill-foreground text-[12px]">
-                  {name}
-                </text>
-              </g>
-            );
-          })}
-        </Frame>
-      );
-
-    case "recording":
-      return (
-        <div className="flex w-full max-w-[24rem] flex-col justify-center gap-4">
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-2 text-xs font-medium text-primary">
-              <Icon className="size-4" />
-              Recording
-            </span>
-            <span className="font-mono text-xs text-muted-foreground">
-              00:42
-            </span>
-          </div>
-
-          {/* Fixed-width bars with real gaps between them, and the hero's own
-              waveform class, so the two read as the same instrument. */}
-          <span className="flex h-20 items-center gap-[3px]">
-            {WAVE.map((height, index) => (
-              <span
-                key={index}
-                className="wave-bar w-0.5 shrink-0 rounded-full bg-primary"
-                style={
-                  {
-                    height: `${height}%`,
-                    "--bar-delay": `${index * 0.04}s`,
-                  } as React.CSSProperties
-                }
-              />
-            ))}
+          <span className="absolute flex size-8 items-center justify-center rounded-full bg-background shadow-lg shadow-primary/20">
+            <Pause className="size-3.5 fill-primary text-primary" />
           </span>
-
-          <span className="h-px w-full bg-primary/15" />
         </div>
-      );
 
-    case "sms":
-      return (
-        <div className="flex w-full max-w-[22rem] flex-col gap-2.5">
-          {MESSAGES.map((message, index) => (
+        <div className="relative mt-2.5 h-1 rounded-full bg-primary/15">
+          <span className="absolute inset-y-0 left-0 w-[45%] rounded-full bg-primary" />
+          <span className="absolute top-1/2 left-[45%] size-2.5 -translate-1/2 rounded-full bg-primary ring-2 ring-background" />
+        </div>
+      </div>
+
+      <div className={cn(PANEL, "divide-y divide-primary/5")}>
+        {TRANSCRIPT.map(({ time, who, photo, text }) => (
+          <div key={time} className="flex items-center gap-2 px-2.5 py-1.5 text-[10px]">
+            <Avatar src={photo} className="size-5 ring-1" />
+            <span className="font-mono text-muted-foreground">{time}</span>
             <span
-              key={message}
-              className="feature-arrive self-start rounded-2xl rounded-bl-sm bg-primary px-4 py-2.5 text-xs leading-snug text-primary-foreground"
-              style={
-                { "--arrive-delay": `${index * 0.9}s` } as React.CSSProperties
-              }
+              className={cn(
+                "rounded px-1.5 py-0.5 text-[9px] font-medium",
+                who === "Agent"
+                  ? "bg-primary/10 text-primary"
+                  : "bg-muted text-muted-foreground",
+              )}
             >
-              {message}
+              {who}
+            </span>
+            <span className="min-w-0 truncate text-muted-foreground">{text}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#"];
+
+const MENU = [
+  { label: "Sales", icon: ShoppingBag },
+  { label: "Support", icon: Headphones },
+  { label: "Billing", icon: Receipt },
+  { label: "Operator", icon: UserRound },
+];
+
+/** The caller's keypad, and where each key sends them. */
+function IvrVisual() {
+  return (
+    <div className="flex items-center">
+      <div className={cn(PANEL, "relative w-[7.75rem] shrink-0 p-2.5")}>
+        <span className={cn(NODE, "-right-1")} />
+        <div className="rounded-lg bg-primary/5 px-1.5 py-1.5 text-center">
+          <p className="text-[9px] font-semibold text-primary">
+            Welcome to {site.name}
+          </p>
+          <p className="text-[8px] text-muted-foreground">
+            Press a number to continue
+          </p>
+        </div>
+        <div className="mt-1.5 grid grid-cols-3 gap-1">
+          {KEYS.map((key, index) => (
+            <span
+              key={key}
+              className="relative flex h-4 items-center justify-center overflow-hidden rounded-md bg-muted/70 text-[9px] font-medium"
+            >
+              {/* 1 to 4 are the menu; each lights as its branch is taken. */}
+              {index < 4 ? (
+                <span
+                  className="feature-glide absolute inset-0 bg-primary/20"
+                  style={turnStyle(index, 4)}
+                />
+              ) : null}
+              <span className="relative">{key}</span>
             </span>
           ))}
         </div>
-      );
+      </div>
 
-    case "analytics":
-      return (
-        <div className="flex w-full max-w-[24rem] flex-col justify-center gap-3">
-          <span className="flex h-24 items-end gap-1.5">
-            {CHART.map((height, index) => (
+      <Fan count={4} className="h-28 w-6 sm:w-8" />
+
+      <div className="flex h-28 min-w-0 flex-1 flex-col justify-around">
+        {MENU.map(({ label, icon: Icon }) => (
+          <span
+            key={label}
+            className={cn(PANEL, "relative flex h-6 items-center gap-1.5 rounded-lg px-1.5 text-[9px] font-medium")}
+          >
+            <span className={cn(NODE, "-left-1 size-1.5")} />
+            <span className="flex size-4 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
+              <Icon className="size-2.5" />
+            </span>
+            {label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** A phone receiving a reminder, and the reply coming back. */
+function SmsVisual() {
+  return (
+    <div className="relative h-36 overflow-hidden">
+      {/* Cropped by the card at the bottom, like a phone rising into view. */}
+      <div className="mx-auto h-56 w-[11.5rem] rounded-[1.75rem] border-4 border-muted bg-background px-3 pt-2 shadow-lg shadow-primary/15 ring-1 ring-background">
+        <div className="flex items-center justify-between text-[8px] font-semibold">
+          <span>9:41</span>
+          <span className="h-3 w-12 rounded-full bg-foreground" />
+          <span className="tracking-tighter text-muted-foreground">•••</span>
+        </div>
+
+        <div className="mt-3 flex flex-col gap-1">
+          <span
+            className="feature-arrive max-w-[85%] self-start rounded-2xl rounded-bl-sm bg-muted px-2.5 py-1.5 text-[9px] leading-snug"
+            style={{ "--arrive-delay": "0s" } as React.CSSProperties}
+          >
+            Hi John, your appointment is tomorrow at 10:00 AM.
+          </span>
+          <span className="text-[7px] text-muted-foreground">10:02 AM</span>
+
+          <span
+            className="feature-arrive mt-1 max-w-[85%] self-end rounded-2xl rounded-br-sm bg-primary px-2.5 py-1.5 text-[9px] leading-snug text-primary-foreground"
+            style={{ "--arrive-delay": "0.9s" } as React.CSSProperties}
+          >
+            Payment received, thank you!
+          </span>
+          <span className="flex items-center gap-0.5 self-end text-[7px] text-muted-foreground">
+            10:03 AM <CheckCheck className="size-2.5 text-primary" />
+          </span>
+        </div>
+      </div>
+
+      <span className={cn(PANEL, "absolute top-10 left-0 flex size-9 items-center justify-center text-primary")}>
+        <MessageSquareText className="size-4" />
+      </span>
+    </div>
+  );
+}
+
+/** A sample week; the climb is the shape, not a figure anyone reported. */
+const WEEK = [
+  { day: "Mon", height: 18, tone: "bg-primary/30" },
+  { day: "Tue", height: 24, tone: "bg-primary/40" },
+  { day: "Wed", height: 31, tone: "bg-primary/50" },
+  { day: "Thu", height: 42, tone: "bg-primary/60" },
+  { day: "Fri", height: 47, tone: "bg-primary/70" },
+  { day: "Sat", height: 66, tone: "bg-primary/85" },
+  { day: "Sun", height: 90, tone: "bg-primary" },
+];
+
+function AnalyticsVisual() {
+  return (
+    <div className={cn(PANEL, "p-3")}>
+      <div className="flex items-center justify-between">
+        <span className="text-[11px] font-semibold">Call volume</span>
+        <span className="flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[9px] text-muted-foreground ring-1 ring-primary/10">
+          Last 7 days
+          <ChevronDown className="size-2.5" />
+        </span>
+      </div>
+
+      <div className="mt-3 flex gap-2">
+        <div className="flex h-20 flex-col justify-between text-right font-mono text-[8px] text-muted-foreground">
+          {[300, 200, 100, 0].map((value) => (
+            <span key={value} className="leading-none">
+              {value}
+            </span>
+          ))}
+        </div>
+        <div className="flex-1">
+          <div className="flex h-20 items-end gap-1.5 border-b border-border">
+            {WEEK.map(({ day, height, tone }, index) => (
               <span
-                key={index}
-                className="feature-rise flex-1 rounded-t-sm bg-primary"
+                key={day}
+                className={cn("feature-rise flex-1 rounded-t-sm", tone)}
                 style={
                   {
                     height: `${height}%`,
@@ -284,61 +411,109 @@ function Diagram({
                 }
               />
             ))}
-          </span>
-
-          <span className="h-px w-full bg-primary/25" />
-
-          <div className="flex justify-between font-mono text-[10px] text-muted-foreground">
-            <span>Mon</span>
-            <span>Sun</span>
+          </div>
+          <div className="mt-1 flex gap-1.5">
+            {WEEK.map(({ day }) => (
+              <span
+                key={day}
+                className="flex-1 text-center text-[8px] text-muted-foreground"
+              >
+                {day}
+              </span>
+            ))}
           </div>
         </div>
-      );
-
-    case "numbers":
-      return (
-        <div className="flex w-full max-w-[22rem] flex-col gap-2.5">
-          {NUMBERS.map(({ value, label }, index) => (
-            <span
-              key={label}
-              className="relative flex items-center gap-3 overflow-hidden rounded-full border border-primary/25 px-4 py-2.5"
-            >
-              <span
-                className="feature-turn absolute inset-0 bg-primary/10"
-                style={turnStyle(index)}
-              />
-              <span className="relative flex size-2 shrink-0">
-                <span className="absolute inset-0 rounded-full bg-primary/25" />
-                <span
-                  className="feature-turn absolute inset-0 rounded-full bg-primary"
-                  style={turnStyle(index)}
-                />
-              </span>
-              <span className="relative font-mono text-xs">{value}</span>
-              <span className="relative ml-auto text-[11px] text-muted-foreground">
-                {label}
-              </span>
-            </span>
-          ))}
-        </div>
-      );
-  }
+      </div>
+    </div>
+  );
 }
 
 /**
- * Capabilities.
+ * Masked, like a number picker before you choose: the shape of each number
+ * type without printing anything someone could dial.
+ */
+const NUMBERS = [
+  {
+    country: "US",
+    value: "+1 212 ••• ••••",
+    label: "Direct dial",
+    tone: "bg-primary/10 text-primary",
+  },
+  {
+    country: "US",
+    value: "+1 800 ••• ••••",
+    label: "Toll free",
+    tone: "bg-info/10 text-info",
+  },
+  {
+    country: "IN",
+    value: "+91 44 •••• ••••",
+    label: "Ported in",
+    tone: "bg-success/10 text-success",
+  },
+];
+
+function NumbersVisual() {
+  return (
+    <div className="space-y-1.5">
+      {NUMBERS.map(({ country, value, label, tone }, index) => (
+        <div
+          key={label}
+          className={cn(
+            PANEL,
+            "relative flex items-center gap-2 overflow-hidden rounded-lg px-2.5 py-1.5",
+          )}
+        >
+          <span
+            className="feature-glide absolute inset-0 bg-primary/5"
+            style={turnStyle(index)}
+          />
+          <span className="relative flex size-5 shrink-0 items-center justify-center rounded-full bg-muted text-[8px] font-semibold">
+            {country}
+          </span>
+          <span className="relative font-mono text-[11px] font-medium whitespace-nowrap">
+            {value}
+          </span>
+          <span
+            className={cn(
+              "relative ml-auto rounded-md px-1.5 py-0.5 text-[9px] font-medium whitespace-nowrap",
+              tone,
+            )}
+          >
+            {label}
+          </span>
+          <EllipsisVertical className="relative size-3 shrink-0 text-muted-foreground" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const VISUALS: Record<HomeFeature["id"], () => React.JSX.Element> = {
+  routing: RoutingVisual,
+  recording: RecordingVisual,
+  ivr: IvrVisual,
+  sms: SmsVisual,
+  analytics: AnalyticsVisual,
+  numbers: NumbersVisual,
+};
+
+/**
+ * Capabilities, as a bento: routing and recording wide across the top with
+ * their text beside the drawing, IVR, SMS, analytics and numbers narrow
+ * beneath with the drawing under the text (see `homeFeatures` for why).
  *
- * Six cards stacked, the diagram changing sides on each one. The alternation
- * earns its place: at this width, six rows built the same way would let the
- * eye run straight down the text column and skip every drawing.
+ * Each card opens on its product — icon, name and a small tag — then leads
+ * with what the buyer gets, in their words, and links to the product page.
+ * On a tablet the wide cards take a full row each and the narrow ones pair
+ * up; on a phone everything stacks.
  *
- * Below `lg` the split collapses and the diagram always leads, because a
- * single narrow column that alternated would read as a mistake rather than a
- * rhythm.
+ * The section's main action is the consultation, not "see all products":
+ * a visitor who has just read what it does is ready to ask, not to browse.
  */
 export function FeatureCards() {
   return (
-    <section className="border-b border-border bg-muted/30">
+    <section className="border-b border-border bg-gradient-to-b from-primary/5 via-primary/[0.03] to-background">
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
@@ -350,52 +525,83 @@ export function FeatureCards() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               A phone system is really the sum of what happens to a call once
-              it arrives. Each of these opens onto its own page, with the full
-              detail.
+              it arrives. Here is what {site.name} does with each one.
             </p>
           </div>
 
-          <Button asChild variant="outline" size="lg">
-            <Link href="/products">See all products</Link>
-          </Button>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Button asChild size="lg">
+              <Link href="/contact">Book a Free Consultation</Link>
+            </Button>
+            {/* No side padding, so it lines up with the copy once it wraps. */}
+            <Button asChild variant="link" size="lg" className="px-0">
+              <Link href="/products">See all products</Link>
+            </Button>
+          </div>
         </div>
 
-        <div className="mt-12 space-y-5">
+        <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
           {homeFeatures.map(
-            ({ id, title, description, href, icon: Icon }, index) => {
-              const flipped = index % 2 === 1;
+            ({ id, title, tag, outcome, description, href, icon: Icon, large }) => {
+              const Visual = VISUALS[id];
 
               return (
                 <Link
                   key={id}
                   href={href}
-                  className="group grid items-center gap-8 rounded-2xl border border-border bg-card p-8 transition-colors duration-300 hover:border-primary/40 focus-visible:outline-2 focus-visible:-outline-offset-4 lg:grid-cols-2 lg:gap-16 lg:p-12"
+                  className={cn(
+                    "group rounded-2xl transition-transform duration-300 ease-out focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none motion-safe:hover:-translate-y-1",
+                    large && "sm:col-span-2",
+                  )}
                 >
-                  <div
-                    aria-hidden
+                  <Card
                     className={cn(
-                      "flex h-44 items-center justify-center lg:h-48",
-                      flipped && "lg:order-2",
+                      "h-full gap-5 rounded-2xl bg-gradient-to-br from-background via-background to-primary/10 p-5 shadow-xl shadow-primary/5 ring-2 ring-background transition-shadow duration-300 group-hover:shadow-2xl group-hover:shadow-primary/15 lg:p-6",
+                      // The drawing side gets the larger share: it carries more detail
+                        // than the four lines of copy beside it.
+                        large &&
+                          "md:grid md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:items-center md:gap-6",
                     )}
                   >
-                    <Diagram id={id} icon={Icon} />
-                  </div>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                          <Icon className="size-4" aria-hidden />
+                        </span>
+                        <span className="text-sm font-semibold">{title}</span>
+                        <Badge className="h-5 bg-primary/10 px-1.5 text-[10px] text-primary">{tag}</Badge>
+                      </div>
 
-                  <div className={cn(flipped && "lg:order-1")}>
-                    <h3 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">
-                      {title}
-                    </h3>
+                      <CardTitle
+                        className={cn(
+                          "mt-4 font-semibold tracking-tight text-balance",
+                          large ? "text-2xl" : "text-lg",
+                        )}
+                      >
+                        {outcome}
+                      </CardTitle>
+                      <CardDescription className="mt-2 text-pretty">
+                        {description}
+                      </CardDescription>
+                      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                        {title}
+                        <ArrowRight
+                          className="size-4 transition-transform group-hover:translate-x-0.5"
+                          aria-hidden
+                        />
+                      </span>
+                    </div>
 
-                    <p className="mt-3 max-w-md text-pretty text-muted-foreground">
-                      {description}
-                    </p>
-
-                    {/* The rule draws in from the left on hover. The whole card
-                        is the link, so an arrow would be saying it twice. */}
-                    <span className="relative mt-6 inline-block text-sm font-medium text-primary after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100">
-                      Explore {title}
-                    </span>
-                  </div>
+                    <div
+                      aria-hidden
+                      className={cn(
+                        "transition-transform duration-500 ease-out motion-safe:group-hover:scale-102",
+                        !large && "mt-auto",
+                      )}
+                    >
+                      <Visual />
+                    </div>
+                  </Card>
                 </Link>
               );
             },

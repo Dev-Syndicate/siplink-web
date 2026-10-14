@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowRight, Check, PhoneCall, Quote, Star } from "lucide-react";
 
 import { AiConsole } from "@/components/site/ai-console";
+import { AiMark } from "@/components/site/ai-mark";
+import { AdvantageTable } from "@/components/site/advantage-table";
 import { CtaPanel } from "@/components/site/cta-panel";
 import { CustomerStories } from "@/components/site/customer-stories";
 import { FeatureCards } from "@/components/site/feature-cards";
@@ -15,6 +17,7 @@ import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
 import { TrustStrip } from "@/components/site/trust-strip";
 import { TypedQuote } from "@/components/site/typed-quote";
 import { VideoEmbed } from "@/components/site/video-embed";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,14 +26,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import {
   heroHighlights,
@@ -38,26 +33,28 @@ import {
   mobileApps,
   reviews,
   site,
-  whyComparison,
   whyPoints,
 } from "@/lib/site";
 
 /**
  * Homepage.
  *
- * The argument, in order: enterprise-grade voice (hero) → the four questions
- * that answer holds up to (why) → which product is
- * yours (pillars) → what makes us different, the AI layer over every call
- * (AI) → what actually changes when you switch (migration) → what it does
- * once it is in (capabilities) → the support claim, evidenced once
- * (film and one review) → which sector you are in (industries) → does it fit
- * your stack (integrations, apps) → who else went through with it (customer
- * stories) → talk to us (CTA).
+ * The page answers five questions, in the order a buyer asks them:
  *
- * AI leads the differentiator run, above migration and the capabilities grid:
- * it is the thing competitors selling the same four products do not have, so
- * it is met while attention is still high rather than in the reassurance zone
- * further down.
+ * 1. What is it? — business voice with AI on every call (hero, trust strip).
+ * 2. What does it provide? — the AI layer over every call (AI), which
+ *    product is yours (pillars), then what it does once it is in
+ *    (capabilities).
+ * 3. Who is it for? — which sector you are in (industries).
+ * 4. Why choose it? — the four reasons and the side-by-side (why), what
+ *    actually changes when you switch (migration), the support claim
+ *    evidenced once (film and one review), does it fit your stack
+ *    (integrations), who else went through with it (customer stories).
+ * 5. What next? — how it works, FAQ, apps, talk to us (CTA).
+ *
+ * AI is the client's lead differentiator, so it is named in the hero and
+ * demonstrated straight after it. The AI lettermark (`AiMark`) marks every
+ * place AI appears and nowhere else — follow it down the page.
  *
  * Price is not argued here any more, only quoted once in the hero. The plan
  * cards live on /pricing, which the hero and the nav both link to.
@@ -72,7 +69,7 @@ const heroSupportPoints = [
   "Keep Your Existing Numbers",
   "24/7 Expert Support",
   "No Hardware Required",
-  "Built for Growing Businesses",
+  "AI Transcripts and Summaries",
 ];
 
 /** The single review we pull forward as the page's headline proof. */
@@ -122,6 +119,24 @@ export default function Home() {
         <div className="hero-frame relative mx-auto flex w-full flex-col justify-center py-12 lg:py-16">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:items-center lg:gap-12 xl:gap-16">
             <div>
+              {/* AI named in the first thing read, not left to the subcopy.
+                  Jumps to the demo rather than the product page: seeing a
+                  call handled sells it better than a feature list. */}
+              <Link
+                href="#ai"
+                className="group mb-6 inline-flex items-center gap-2.5 rounded-full border border-primary/20 bg-background/80 py-1 pr-3.5 pl-1 text-sm shadow-xs backdrop-blur-md transition-colors hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              >
+                <AiMark />
+                <span className="font-medium">New: AI Voice Assistant</span>
+                <span className="hidden text-muted-foreground sm:inline">
+                  See it handle a call
+                </span>
+                <ArrowRight
+                  className="size-3.5 text-primary transition-transform group-hover:translate-x-0.5"
+                  aria-hidden
+                />
+              </Link>
+
               {/* Fluid: tracks viewport height too, so a short laptop screen
                   gets a smaller headline rather than an overflowing one. */}
               <h1 className="font-heading text-4xl leading-[1.08] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[clamp(2.25rem,4vh+1.1vw,3.25rem)]">
@@ -132,9 +147,9 @@ export default function Home() {
               </h1>
 
               <p className="mt-5 max-w-xl text-base text-pretty text-muted-foreground lg:text-lg">
-                Cloud PBX, SIP Trunking, Call Center, WhatsApp and AI-powered
-                communications, all managed by one reliable communications
-                partner.
+                Cloud PBX, SIP trunking, call center and WhatsApp, with AI that
+                transcribes and summarises your calls and, where you enable
+                it, answers them for you. All from one reliable partner.
               </p>
 
               <div className="mt-7 flex flex-wrap items-center gap-4">
@@ -247,10 +262,20 @@ export default function Home() {
                     ))}
                   </span>
                 </span>
-                <p className="text-xs leading-snug text-pretty">
-                  &ldquo;Hi, thanks for calling SipLink. How can I help you
-                  today?&rdquo;
-                </p>
+                <div>
+                  {/* Says who is speaking: the greeting is the AI
+                      receptionist, which is the point of the card. */}
+                  <p className="mb-1 flex items-center gap-1.5 text-[11px] font-medium text-primary">
+                    <span className="inline-flex scale-75">
+                      <AiMark />
+                    </span>
+                    AI receptionist
+                  </p>
+                  <p className="text-xs leading-snug text-pretty">
+                    &ldquo;Hi, thanks for calling SipLink. How can I help you
+                    today?&rdquo;
+                  </p>
+                </div>
               </div>
 
               {/* Capability stack, pinned to the bottom edge and kept small
@@ -289,6 +314,11 @@ export default function Home() {
 
       <TrustStrip />
 
+      {/* AI straight after the trust strip, the way Quo, Aircall and
+          Nextiva lead with theirs: it is what competitors selling the same
+          products do not have, and the hero's "New" pill lands here. */}
+      <AiConsole />
+
       {/* ---------------------------------------------------------------
           What does your business need? The product chooser. Visitors who do
           not speak telecom pick the situation closest to theirs, not a
@@ -310,7 +340,7 @@ export default function Home() {
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
             {homePillars.map(
               (
-                { title, headline, description, href, icon: Icon, image },
+                { title, headline, description, href, icon: Icon, image, ai },
                 index,
               ) => (
                 <Link
@@ -347,8 +377,17 @@ export default function Home() {
                     </div>
                     <CardHeader>
                       <span className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                        <Icon className="size-4 text-primary" aria-hidden />
+                        {ai ? (
+                          <AiMark />
+                        ) : (
+                          <Icon className="size-4 text-primary" aria-hidden />
+                        )}
                         {title}
+                        {ai ? (
+                          <Badge variant="secondary" className="ml-auto">
+                            New
+                          </Badge>
+                        ) : null}
                       </span>
                       <CardTitle className="text-lg text-balance">
                         {headline}
@@ -374,32 +413,43 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------------------
-          Why SipLink. Answers "why you instead of another VoIP provider?":
-          four reasons to believe it, then the same argument as a plain
-          side-by-side. Sits after the chooser, so the visitor knows what
-          is being compared before being asked to compare it.
+      {/* What the products do, straight after which product — so "what does
+          it provide?" is answered in one place before anything else. */}
+      <FeatureCards />
 
-          The pillars stay as a hairline band with no boxes, so the table
-          below is the only bordered thing in the section.
+      {/* Who it is for, while the visitor is still deciding whether to read
+          on. Buried lower, most visitors never learn it fits them. */}
+      <SectorStage />
+
+      {/* ---------------------------------------------------------------
+          The SipLink advantage. Answers "why you instead of another VoIP
+          provider?": the side-by-side first, with SipLink raised in the
+          middle, then the four reasons to believe it as a hairline band.
+          Sits after the chooser, so the visitor knows what is being
+          compared before being asked to compare it.
          --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
-          <div className="max-w-2xl">
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Why Businesses Choose {site.name}
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-background to-background">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              The {site.name} advantage
+            </span>
+            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-5xl">
+              More than just a <span className="text-primary">provider.</span>
             </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">
-              Reliable technology, expert support and a team that handles the
-              migration with you.
+            <p className="mt-5 text-pretty text-muted-foreground">
+              Get dedicated support, seamless migration, and a complete
+              communication stack built for your business growth.
             </p>
           </div>
+
+          <AdvantageTable />
 
           {/* Below `lg` this is an ordinary spaced grid with no rules at
               all; at `lg` the left borders turn it into the band. Doing it
               with per-cell borders rather than `divide-x` is what keeps the
               2-up tablet layout from growing stray verticals. */}
-          <div className="mt-10 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-x-0">
+          <div className="mt-20 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:mt-24 lg:grid-cols-4 lg:gap-x-0">
             {whyPoints.map(({ title, description, icon: Icon }) => (
               <div
                 key={title}
@@ -420,50 +470,10 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mt-14 overflow-hidden rounded-xl border border-border lg:mt-16">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/50 hover:bg-muted/50">
-                  <TableHead className="w-1/3 px-4 py-3">
-                    <span className="sr-only">Comparison</span>
-                  </TableHead>
-                  <TableHead className="px-4 py-3 font-semibold text-primary">
-                    {site.name}
-                  </TableHead>
-                  <TableHead className="px-4 py-3">Typical provider</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {whyComparison.map(({ point, siplink, typical }) => (
-                  <TableRow key={point}>
-                    <TableCell className="px-4 py-3 font-medium whitespace-normal">
-                      {point}
-                    </TableCell>
-                    <TableCell className="bg-primary/5 px-4 py-3 whitespace-normal">
-                      <span className="flex items-start gap-2 font-medium">
-                        <Check
-                          className="mt-0.5 size-4 shrink-0 text-primary"
-                          aria-hidden
-                        />
-                        {siplink}
-                      </span>
-                    </TableCell>
-                    <TableCell className="px-4 py-3 whitespace-normal text-muted-foreground">
-                      {typical}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
         </div>
       </section>
 
-      <AiConsole />
-
       <SwitchingStory />
-
-      <FeatureCards />
 
       {/* ---------------------------------------------------------------
           The support claim, evidenced. The hero promises people who pick
@@ -531,12 +541,10 @@ export default function Home() {
         </div>
       </section>
 
-      <SectorStage />
-
       <IntegrationWall />
 
       {/* The reviews land here rather than up beside the film: by this point
-          the visitor has seen the products, the migration, their own sector
+          the visitor has seen the products, their own sector, the migration
           and their own tools, so the objection left is whether anyone else
           actually went through with it. The wall of names answers that, and
           it is the last thing read before the closing ask. */}

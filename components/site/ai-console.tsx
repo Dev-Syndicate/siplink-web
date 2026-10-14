@@ -3,36 +3,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
+import { AiMark } from "@/components/site/ai-mark";
 import { aiDemo, aiStages } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /** How long a stage holds before the console moves on. */
 const DWELL = 5000;
-
-/**
- * The AI lettermark.
- *
- * A lettermark rather than the usual sparkle: the brief is that AI should be
- * named, not hinted at, and two letters on the brand gradient say it plainly
- * where a wand or a star asks the reader to infer it. It also survives being
- * shrunk into the console's header row, which an icon at this size does not.
- *
- * The sheen is the section's AI signature — the same moving highlight appears
- * on every marker that stands for the AI and nowhere else on the site.
- */
-function AiMark() {
-  return (
-    // The sheen is clipped by the chip itself.
-    <span className="relative inline-flex size-6 shrink-0 items-center justify-center">
-      <span className="relative inline-flex size-6 items-center justify-center overflow-hidden rounded-md bg-gradient-to-br from-brand-from to-brand-to">
-        <span className="font-mono text-[10px] leading-none font-semibold tracking-tight text-primary-foreground">
-          AI
-        </span>
-        <span aria-hidden className="ai-sheen absolute inset-0" />
-      </span>
-    </span>
-  );
-}
 
 /** Per-word stagger for the streaming transcript. */
 const WORD_STEP = 52;
@@ -163,7 +139,9 @@ export function AiConsole() {
   return (
     <section
       ref={section}
-      className="border-b border-border"
+      // The hero's "New" pill jumps here; the margin clears the sticky header.
+      id="ai"
+      className="scroll-mt-24 border-b border-border"
       onFocusCapture={() => setHeld(true)}
       onBlurCapture={() => setHeld(false)}
     >

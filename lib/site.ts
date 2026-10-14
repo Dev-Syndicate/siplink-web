@@ -50,6 +50,7 @@ import {
   Mic,
   Network,
   Newspaper,
+  Package,
   PhoneCall,
   PhoneForwarded,
   PhoneIncoming,
@@ -85,6 +86,7 @@ import {
   Waypoints,
   Wifi,
   Workflow,
+  Settings2,
   type LucideIcon,
 } from "lucide-react";
 
@@ -2374,37 +2376,52 @@ export const whyPoints: Simple[] = [
 export const whyComparison: {
   point: string;
   siplink: string;
+  /** One line under the SipLink answer, from the redesign mockup. */
+  detail: string;
   typical: string;
+  icon: LucideIcon;
 }[] = [
   {
     point: "Support",
     siplink: "Dedicated support",
+    detail: "Talk to experts who understand your business.",
     typical: "Ticket-based support",
+    icon: Headphones,
   },
   {
     point: "Migration",
     siplink: "Migration assistance",
+    detail: "Smooth, hassle-free migration.",
     typical: "Self-service",
+    icon: ArrowLeftRight,
   },
   {
     point: "Number porting",
     siplink: "Number porting support",
+    detail: "End-to-end porting assistance.",
     typical: "Limited support",
+    icon: PhoneCall,
   },
   {
     point: "Products",
     siplink: "SIP + UCaaS + Contact Center",
+    detail: "All your communication needs in one place.",
     typical: "Separate products",
+    icon: Package,
   },
   {
     point: "Configuration",
     siplink: "Custom configurations",
+    detail: "Tailored to your business workflows.",
     typical: "Standard plans",
+    icon: Settings2,
   },
   {
     point: "Help when you need it",
     siplink: "Direct expert assistance",
+    detail: "Get help from real experts, quickly.",
     typical: "Multiple support layers",
+    icon: Users,
   },
 ];
 
@@ -2549,6 +2566,8 @@ export const homePillars: {
   href: string;
   icon: LucideIcon;
   image?: { src: string; alt: string };
+  /** Marks the card with the AI lettermark and a "New" badge. */
+  ai?: boolean;
 }[] = [
   {
     title: "Cloud Phone System",
@@ -2604,6 +2623,7 @@ export const homePillars: {
       "AI-powered answering, routing, transcription and customer interaction.",
     href: "/products/ai-voice-assistant",
     icon: Bot,
+    ai: true,
     image: {
       src: "/images/pillar-ai-voice.png",
       alt: "A phone call flowing into an AI assistant, which passes the result to booking, transcript and CRM",
@@ -2614,11 +2634,15 @@ export const homePillars: {
 /**
  * The capability grid on the homepage.
  *
- * Ordered, not ranked: the first three are what happens to a call on the way
- * in — a menu answers it, routing places it, recording keeps it. The last
- * three are what you get back out — messages, numbers, and the record of what
- * happened. That sequence is why the grid needs no sub-headings to explain
- * itself.
+ * A bento: the two wide cards on top, four narrow ones beneath.
+ *
+ *   Routing (wide)        | Recording (wide)
+ *   IVR | SMS | Analytics | Numbers
+ *
+ * Routing and recording are the wide ones because their drawings — a call
+ * handed to whoever is free, a recording with its transcript — need the room.
+ * The array is in that reading order, so the DOM, the tab order and the
+ * layout agree at every width.
  *
  * Every `href` is a product page that exists. Do not add an entry here until
  * its page does; a capability that 404s is worse than one left off the list.
@@ -2631,40 +2655,57 @@ export const homePillars: {
 export type HomeFeature = {
   /** Selects the diagram drawn in the card's panel. See FeatureCards. */
   id: "ivr" | "routing" | "recording" | "sms" | "analytics" | "numbers";
+  /** The product name, shown small. Buyers who do not speak telecom read `outcome`. */
   title: string;
+  /** What the buyer gets, in their words. Leads the card. */
+  outcome: string;
   description: string;
   href: string;
   icon: LucideIcon;
+  /** The small label beside the product name. */
+  tag: string;
+  /** Takes a double-width bento cell, text beside the drawing. */
+  large?: boolean;
 };
 
 export const homeFeatures: HomeFeature[] = [
   {
+    id: "routing",
+    title: "Call routing",
+    tag: "Smart routing",
+    outcome: "No caller hears a busy signal",
+    description:
+      "Queues and ring groups that spread calls across whoever is free, instead of returning a busy signal.",
+    href: "/products/call-queue",
+    icon: PhoneForwarded,
+    large: true,
+  },
+  {
+    id: "recording",
+    title: "Call recording",
+    tag: "On-demand",
+    outcome: "Replay any call when it matters",
+    description:
+      "Automatic and on-demand recording, with role-based access deciding who can replay a given call.",
+    href: "/products/call-recording",
+    icon: AudioLines,
+    large: true,
+  },
+  {
     id: "ivr",
     title: "IVR",
+    tag: "Customizable",
+    outcome: "Every caller reaches the right team",
     description:
       "A multi-level menu that sends callers to sales, support or billing, with separate flows for holidays and after hours.",
     href: "/products/ivr",
     icon: GitBranch,
   },
   {
-    id: "routing",
-    title: "Call routing",
-    description:
-      "Queues and ring groups that spread calls across whoever is free, instead of returning a busy signal.",
-    href: "/products/call-queue",
-    icon: PhoneForwarded,
-  },
-  {
-    id: "recording",
-    title: "Call recording",
-    description:
-      "Automatic and on-demand recording, with role-based access deciding who can replay a given call.",
-    href: "/products/call-recording",
-    icon: AudioLines,
-  },
-  {
     id: "sms",
     title: "Business SMS",
+    tag: "Automations",
+    outcome: "Text customers the moment something happens",
     description:
       "Notifications, reminders and verification messages, sent from your own systems as events happen.",
     href: "/products/sms-api",
@@ -2673,6 +2714,8 @@ export const homeFeatures: HomeFeature[] = [
   {
     id: "analytics",
     title: "Analytics",
+    tag: "Insights",
+    outcome: "See which calls you are missing",
     description:
       "Volumes, answered and missed calls, duration and agent activity, downloadable for any period as Excel or CSV.",
     href: "/products/call-analytics",
@@ -2681,6 +2724,8 @@ export const homeFeatures: HomeFeature[] = [
   {
     id: "numbers",
     title: "Number management",
+    tag: "Porting",
+    outcome: "Keep the numbers customers already know",
     description:
       "Direct dial numbers for people and departments, toll-free lines, and porting the numbers you already advertise.",
     href: "/products/did-numbers",
