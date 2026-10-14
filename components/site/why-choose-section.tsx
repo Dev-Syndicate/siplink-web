@@ -149,12 +149,18 @@ export function WhyChooseSection() {
                   className="pointer-events-none absolute -inset-4 rounded-full bg-rose-200/20 dark:bg-primary/5 blur-2xl"
                 />
                 <div className="relative aspect-[16/9] w-full max-w-[720px] min-h-[260px] sm:min-h-[300px] lg:min-h-[340px]">
+                  {/* The source render has its own flat pink-white backdrop
+                      baked into the pixels, which meets the card's own
+                      background as a visible square — `edge-fade` masks
+                      that backdrop out radially so only the isometric scene
+                      itself survives, and it dissolves into the card
+                      instead of sitting in a box. */}
                   <Image
                     src="/images/about/why-choose-voip-network-hd.png"
                     alt="SipLink 3D isometric VoIP communications network showing connected cloud, IP desk phone, mobile, laptop and server infrastructure"
                     fill
                     sizes="(max-width: 1024px) 100vw, 60vw"
-                    className="object-contain object-center transition-transform duration-500 group-hover:scale-[1.02]"
+                    className="edge-fade object-contain object-center transition-transform duration-500 group-hover:scale-[1.02]"
                     priority={false}
                   />
                 </div>

@@ -54,7 +54,7 @@ export default function WhySipLinkPage() {
             </Badge>
 
             <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Communication that works for your business — without the complexity.
+              Communication that works for your business  without the complexity.
             </h1>
 
             <p className="mt-6 text-lg text-pretty text-muted-foreground sm:text-xl">

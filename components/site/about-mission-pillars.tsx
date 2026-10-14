@@ -90,8 +90,8 @@ export function AboutMissionPillars() {
               the reference does, instead of two boxes sitting side by side. */}
           <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] overflow-hidden rounded-3xl lg:block">
             <Image
-              src="/images/about/about-mission-boardroom.png"
-              alt="SipLink global technology leadership team in boardroom reviewing network infrastructure"
+              src="/images/about/about-mission-vision.png"
+              alt="SipLink leadership team in a boardroom reviewing a global connectivity map at dusk"
               fill
               sizes="62vw"
               className="object-cover object-right-top"
@@ -99,8 +99,8 @@ export function AboutMissionPillars() {
             />
             {/* Scrim covers only the zone the text and cards occupy, and
                 clears by 42% — the same graduated fade the homepage hero
-                uses, which is also what hides the photo's own baked-in
-                text in its lower-left corner. */}
+                uses. The photo's own quiet left third (window, skyline) is
+                what it fades over. */}
             <div
               aria-hidden
               className="absolute inset-0 bg-gradient-to-r from-muted/85 from-0% via-muted/40 via-22% to-transparent to-42%"
@@ -134,8 +134,8 @@ export function AboutMissionPillars() {
               `lg` the photo returns as an ordinary framed image instead. */}
           <div className="relative mt-8 overflow-hidden rounded-2xl border border-border/70 lg:hidden aspect-[16/10] w-full">
             <Image
-              src="/images/about/about-mission-boardroom.png"
-              alt="SipLink technology leadership team in boardroom reviewing global telecom network infrastructure"
+              src="/images/about/about-mission-vision.png"
+              alt="SipLink leadership team in a boardroom reviewing a global connectivity map at dusk"
               fill
               sizes="100vw"
               className="object-cover object-center"
