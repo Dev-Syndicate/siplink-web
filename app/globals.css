@@ -2864,13 +2864,16 @@
 @layer components {
   /* ---------------------------------------------------------- trust strip
 
-     Each mark acts out its own claim, only while its item is hovered, so the
-     row reads as one quiet statement until someone points at part of it.
-     Opt-in: nothing runs on touch screens or with reduced motion. */
+     Each mark acts out its own claim, as a relay: one 10s loop shared by all
+     five, with each item playing in its own 2s slot (`--slot`, set per item
+     inline). One thing moves at a time, so the row stays calm. Every
+     keyframe below fits its action into the first ~20% of the loop and
+     rests for the remainder, which is what makes the slots line up.
+     Nothing runs with reduced motion. */
 
-  /* HIPAA: a scan of light crosses the badge. The band is masked by the
-     logo image itself (`--logo`, set inline), so it lights the caduceus and
-     lettering and never the empty box around them. */
+  /* HIPAA and DoT: a scan of light crosses the badge. The band is masked by
+     the logo image itself (`--logo`, set inline), so it lights the logo's
+     own pixels and never the empty box around them. */
   .trust-shine::after {
     content: "";
     position: absolute;
@@ -2888,63 +2891,91 @@
   }
 
   @keyframes trust-shine {
-    from {
+    0% {
       opacity: 1;
       background-position: 100% 0;
     }
-    to {
+    9% {
       opacity: 1;
+      background-position: 0 0;
+    }
+    9.1%,
+    100% {
+      opacity: 0;
       background-position: 0 0;
     }
   }
 
-  /* DoT: each arc is born at the source and travels outward, the way a
-     signal leaves a tower. The origin is the tip of the logo's triangle. */
+  /* DoT: twice, each arc is born at the source and travels outward, the way
+     a signal leaves a tower. The origin is the tip of the logo's triangle;
+     the per-arc stagger is `--wave-delay`. */
   @keyframes trust-broadcast {
-    0% {
-      opacity: 0;
-      transform: scale(0.7);
-    }
-    25%,
-    65% {
+    0%,
+    100% {
       opacity: 1;
       transform: scale(1);
     }
-    100% {
+    1.5%,
+    8.5% {
       opacity: 0;
-      transform: scale(1.06);
+      transform: scale(0.7);
+    }
+    5%,
+    7%,
+    12% {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 
   /* Network: the connection is established. The top node lights, the trunk
      draws down from it, the branch grows out both ways from the junction,
-     then the two end nodes light. Lengths are the Lucide path lengths in
-     its 24-unit box: the trunk is 4, the branch 21.14. */
-  @keyframes trust-node-on {
-    from {
+     then the two end nodes light; all hold, then let go. Lengths are the
+     Lucide path lengths in its 24-unit box: the trunk is 4, the branch
+     21.14. */
+  @keyframes trust-node-top {
+    0%,
+    20%,
+    100% {
       fill-opacity: 0;
-      transform: scale(0.85);
     }
-    to {
+    2.5%,
+    17% {
       fill-opacity: 0.35;
-      transform: scale(1);
+    }
+  }
+
+  @keyframes trust-node-end {
+    0%,
+    7%,
+    20%,
+    100% {
+      fill-opacity: 0;
+    }
+    9.5%,
+    17% {
+      fill-opacity: 0.35;
     }
   }
 
   @keyframes trust-trunk {
-    from {
+    0%,
+    1.5% {
       stroke-dashoffset: -4;
     }
-    to {
+    4%,
+    100% {
       stroke-dashoffset: 0;
     }
   }
 
   @keyframes trust-branch {
-    from {
+    0%,
+    4% {
       stroke-dasharray: 0 10.57 0 30;
     }
-    to {
+    7%,
+    100% {
       stroke-dasharray: 0 0 21.14 30;
     }
   }
@@ -2953,32 +2984,42 @@
      out a ripple with each ring. */
   @keyframes trust-ring-buzz {
     0%,
-    60%,
+    6%,
+    10%,
+    16%,
     100% {
       transform: rotate(0);
     }
-    10% {
+    1%,
+    11% {
       transform: rotate(-12deg);
     }
-    20% {
+    2%,
+    12% {
       transform: rotate(10deg);
     }
-    30% {
+    3%,
+    13% {
       transform: rotate(-10deg);
     }
-    40% {
+    4%,
+    14% {
       transform: rotate(8deg);
     }
-    50% {
+    5%,
+    15% {
       transform: rotate(-4deg);
     }
   }
 
   @keyframes trust-ring-ripple {
-    from {
+    0%,
+    10.01% {
       box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 35%, transparent);
     }
-    to {
+    10%,
+    20%,
+    100% {
       box-shadow: 0 0 0 12px color-mix(in oklab, var(--primary) 0%, transparent);
     }
   }
@@ -2987,15 +3028,16 @@
      Each arrow exits past the icon's edge and re-enters from the far side. */
   @keyframes trust-port-out {
     0%,
+    7%,
     100% {
       opacity: 1;
       transform: translateX(0);
     }
-    45% {
+    3.15% {
       opacity: 0;
       transform: translateX(16px);
     }
-    46% {
+    3.2% {
       opacity: 0;
       transform: translateX(-16px);
     }
@@ -3003,15 +3045,16 @@
 
   @keyframes trust-port-in {
     0%,
+    7%,
     100% {
       opacity: 1;
       transform: translateX(0);
     }
-    45% {
+    3.15% {
       opacity: 0;
       transform: translateX(-16px);
     }
-    46% {
+    3.2% {
       opacity: 0;
       transform: translateX(16px);
     }
@@ -3024,51 +3067,67 @@
   .trust-connect rect {
     fill: currentColor;
     fill-opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
   }
 
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .group:hover .trust-shine::after {
-      animation: trust-shine 0.9s ease-out;
+  .trust-connect path:nth-child(5) {
+    stroke-dasharray: 4 4;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .trust-shine::after,
+    .trust-broadcast .trust-wave,
+    .trust-connect rect,
+    .trust-connect path,
+    .trust-ring,
+    .trust-ring svg,
+    .trust-port path {
+      animation-duration: 10s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-delay: var(--slot, 0s);
     }
 
-    .group:hover .trust-broadcast .trust-wave {
-      animation: trust-broadcast 1.5s ease-out infinite backwards;
-      animation-delay: var(--wave-delay, 0s);
+    .trust-shine::after {
+      animation-name: trust-shine;
+      animation-timing-function: ease-out;
     }
 
-    .group:hover .trust-connect rect {
-      animation: trust-node-on 0.25s ease-out both;
+    .trust-broadcast .trust-wave {
+      animation-name: trust-broadcast;
+      animation-delay: calc(var(--slot, 0s) + var(--wave-delay, 0s));
     }
 
-    .group:hover .trust-connect rect:nth-child(-n + 2) {
-      animation-delay: 0.7s;
+    .trust-connect rect {
+      animation-name: trust-node-end;
     }
 
-    .group:hover .trust-connect path:nth-child(5) {
-      stroke-dasharray: 4 4;
-      animation: trust-trunk 0.25s 0.15s ease-in both;
+    .trust-connect rect:nth-child(3) {
+      animation-name: trust-node-top;
     }
 
-    .group:hover .trust-connect path:nth-child(4) {
-      animation: trust-branch 0.3s 0.4s ease-out both;
+    .trust-connect path:nth-child(4) {
+      animation-name: trust-branch;
     }
 
-    .group:hover .trust-ring {
-      animation: trust-ring-ripple 1s ease-out 2;
+    .trust-connect path:nth-child(5) {
+      animation-name: trust-trunk;
     }
 
-    .group:hover .trust-ring svg {
-      animation: trust-ring-buzz 1s ease-in-out 2;
+    .trust-ring {
+      animation-name: trust-ring-ripple;
+      animation-timing-function: ease-out;
     }
 
-    .group:hover .trust-port path:nth-child(-n + 2) {
-      animation: trust-port-out 0.7s ease-in-out;
+    .trust-ring svg {
+      animation-name: trust-ring-buzz;
     }
 
-    .group:hover .trust-port path:nth-child(n + 3) {
-      animation: trust-port-in 0.7s ease-in-out;
+    .trust-port path:nth-child(-n + 2) {
+      animation-name: trust-port-out;
+    }
+
+    .trust-port path:nth-child(n + 3) {
+      animation-name: trust-port-in;
     }
   }
 }

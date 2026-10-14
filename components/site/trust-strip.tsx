@@ -24,8 +24,9 @@ import { cn } from "@/lib/utils";
  * No cards: a hairline grid keeps five short claims reading as one
  * statement instead of five competing boxes.
  *
- * Each mark moves the way its claim works, only while it is hovered; the
- * `motion` class names the effect in globals.css.
+ * Each mark acts out its claim in turn, a relay that loops on its own; the
+ * `motion` class names the effect in globals.css and `--slot` is the item's
+ * turn.
  */
 type TrustPoint = { label: string; motion: string } & (
   | { icon: LucideIcon }
@@ -67,9 +68,10 @@ export function TrustStrip() {
         </h2>
 
         <ul className="mt-8 grid grid-cols-2 gap-y-6 sm:grid-cols-3 lg:grid-cols-5 lg:gap-y-0 lg:divide-x lg:divide-border">
-          {trustPoints.map((point) => (
+          {trustPoints.map((point, i) => (
             <li
               key={point.label}
+              style={{ "--slot": `${i * 2}s` } as React.CSSProperties}
               className="group flex flex-col items-center gap-2.5 px-4 text-center last:col-span-2 sm:last:col-span-1"
             >
               {/* Fixed-height slot keeps labels aligned across logos and icons. */}
