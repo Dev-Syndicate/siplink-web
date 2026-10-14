@@ -15,7 +15,7 @@ export function AiMark() {
     // The sheen is clipped by the chip itself. Hidden from assistive tech:
     // it always sits beside text that already says "AI".
     <span aria-hidden className="relative inline-flex size-6 shrink-0 items-center justify-center">
-      <span className="relative inline-flex size-6 items-center justify-center overflow-hidden rounded-md bg-gradient-to-br from-brand-from to-brand-to">
+      <span className="relative inline-flex size-6 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-brand-from to-brand-to">
         <span className="font-mono text-[10px] leading-none font-semibold tracking-tight text-primary-foreground">
           AI
         </span>

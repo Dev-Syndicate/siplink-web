@@ -413,7 +413,7 @@ export default function Home() {
                         />
 
                         <div className="relative flex items-center gap-2">
-                          <span className="rounded-lg bg-background/95 p-1">
+                          <span className="rounded-full bg-background/95 p-1">
                             <AiMark />
                           </span>
                           <span className="text-sm font-semibold">{title}</span>
