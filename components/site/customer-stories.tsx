@@ -1,122 +1,104 @@
-import { Star } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import Image from "next/image";
 import {
-  googleReviewsUrl,
-  reviewStats,
-  reviews,
-  type Review,
-} from "@/lib/site";
+  ArrowRight,
+  BarChart3,
+  Headphones,
+  MessageSquareMore,
+  Phone,
+  Star,
+  type LucideIcon,
+} from "lucide-react";
+
+import { ReviewCarousel } from "@/components/site/review-carousel";
+import { GoogleLogo } from "@/components/site/store-icons";
+import { Button } from "@/components/ui/button";
+import { googleReviewsUrl, reviewStats, reviews } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 /**
- * How many reviews the row carries.
- *
- * The list in lib/site.ts runs longest and most specific first, and tails off
- * into short ratings — "Giving best VOIP services with best price." At this
- * card size those read as padding rather than proof: a card most of a screen
- * wide holding one line of text argues against itself. Five is where the
- * substance stops.
- *
- * It is also comfortably enough for the loop. The track only has to be wider
- * than the viewport for the seam to stay off screen, and five cards at this
- * width clears 3,900px — past a 4K display.
+ * How many reviews the carousel carries: three pages of three on desktop.
+ * The list in lib/site.ts runs longest and most specific first and tails off
+ * into one-line ratings, which read as padding on a card this size.
  */
-const SHOWN = 5;
+const SHOWN = 9;
 
 /**
- * How many times the row is repeated in the track.
- *
- * Two is the minimum that can loop, and two is enough only while a single
- * copy is wider than the screen. At three and a half cards a screen a copy
- * comes to about 3,000px, so a 4K or ultrawide display would run out of row
- * part-way through the drift and show the join. Three clears any screen
- * being sold.
+ * The faces framing the heading. Decorative: they stand for the people on
+ * the other end of a call, not for any reviewer, which is why no review card
+ * ever borrows one — a real person's endorsement only ever carries their own
+ * photo or their initials.
  */
-const COPIES = 3;
+const PEOPLE: {
+  src: string;
+  className: string;
+  tilt: string;
+  icon: LucideIcon;
+  iconClassName: string;
+  float: string;
+}[] = [
+  {
+    src: "/images/people/person-daniel.webp",
+    className: "top-20 left-[11%]",
+    tilt: "-rotate-6",
+    icon: Phone,
+    iconClassName: "-top-3 -left-10",
+    float: "6s",
+  },
+  {
+    src: "/images/people/person-emma.webp",
+    className: "top-64 left-[1%]",
+    tilt: "rotate-6",
+    icon: MessageSquareMore,
+    iconClassName: "-right-6 bottom-6",
+    float: "7s",
+  },
+  {
+    src: "/images/people/person-sofia.webp",
+    className: "top-24 right-[10%]",
+    tilt: "rotate-6",
+    icon: Headphones,
+    iconClassName: "-top-2 -right-12",
+    float: "6.5s",
+  },
+  {
+    src: "/images/people/person-marcus.webp",
+    className: "top-[17rem] right-[1%]",
+    tilt: "-rotate-3",
+    icon: BarChart3,
+    iconClassName: "-right-5 bottom-4",
+    float: "7.5s",
+  },
+];
 
-/**
- * Initials, because there are no reviewer photographs.
- *
- * Every one of these is a named real person or business, so a stock face or a
- * generated avatar would be attaching an invented likeness to a real
- * endorsement. Two letters in the brand tint says the same thing honestly.
- */
-function initials(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
-}
-
-function Stars({ rating }: { rating: number }) {
+/** Stars filled to the exact rating, so 4.5 shows four and a half. */
+function RatingStars({ value }: { value: number }) {
   return (
-    <span
-      className="flex shrink-0 items-center gap-0.5 text-primary"
-      aria-hidden
-    >
-      {Array.from({ length: rating }).map((_, index) => (
-        <Star key={index} className="size-3.5 fill-current" />
-      ))}
-    </span>
-  );
-}
+    <span className="flex items-center gap-0.5" aria-hidden>
+      {Array.from({ length: 5 }, (_, index) => {
+        const fill = Math.min(Math.max(value - index, 0), 1);
 
-/**
- * One review.
- *
- * Attribution sits at the top rather than under the quote. In a row that is
- * drifting past, knowing who is speaking before you start reading is what
- * makes a half-visible card worth starting — and it is why there is no
- * quotation glyph here any more. The name is the mark of a quote; a second
- * one was decoration.
- */
-function ReviewCard({ review }: { review: Review }) {
-  return (
-    <Card className="h-full bg-card">
-      <CardContent className="flex h-full flex-col gap-4 p-6 lg:gap-5 lg:p-7">
-        <header className="flex items-center justify-between gap-4">
-          <div className="flex min-w-0 items-center gap-3">
+        return (
+          <span key={index} className="relative size-5">
+            <Star className="absolute inset-0 size-5 fill-current text-primary/20" />
             <span
-              className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary"
-              aria-hidden
+              className="absolute inset-0 overflow-hidden"
+              style={{ width: `${fill * 100}%` }}
             >
-              {initials(review.name)}
+              <Star className="size-5 fill-current text-primary" />
             </span>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-medium">{review.name}</p>
-              <p className="truncate text-xs text-muted-foreground">
-                {review.role ?? "Verified Google review"}
-              </p>
-            </div>
-          </div>
-
-          <Stars rating={review.rating} />
-        </header>
-
-        <blockquote className="flex-1 text-sm leading-relaxed text-pretty lg:text-base">
-          {review.quote}
-        </blockquote>
-      </CardContent>
-    </Card>
+          </span>
+        );
+      })}
+    </span>
   );
 }
 
 /**
  * Customer stories.
  *
- * One row of reviews drifting the full width of the page, three and a half on
- * screen at a time, so it reads as a wall of them rather than a slideshow of
- * one.
- *
- * The row is rendered COPIES times over. Everything after the first set is
- * there only to make the loop seamless, so it is hidden from assistive tech:
- * a screen reader working through the same five reviews three times would be
- * narrating a rendering trick.
+ * A centred heading framed by faces, the Google average, then the reviews as
+ * a carousel with the middle card raised, and the way out to every review on
+ * Google. The quotes are verbatim from the Google Business Profile.
  */
 export function CustomerStories() {
   // Renders nothing until real reviews exist. See lib/site.ts.
@@ -128,93 +110,92 @@ export function CustomerStories() {
   const row = pool.slice(0, SHOWN);
 
   const rating = reviewStats[0];
-
-  // 26.5vw is what puts three and a half cards on screen: a card plus its gap
-  // has to come to roughly two sevenths of the viewport, and the gap itself
-  // eats about 2% of that. The 36rem cap stops the quote stretching past a
-  // readable line length on a very wide monitor, at the cost of a fourth card
-  // creeping in beyond about 2,700px. On a phone one card leads with the next
-  // just showing — three and a half of these would be unreadable.
-  const cardWidth = "w-[88vw] shrink-0 sm:w-[clamp(17rem,26.5vw,36rem)]";
+  const average = Number.parseFloat(rating.value);
 
   return (
-    <section className="border-t border-border bg-muted/30">
-      <div className="py-20 lg:py-28">
-        <div className="mx-auto max-w-2xl px-6 text-center lg:px-10">
+    <section className="relative overflow-hidden border-t border-border bg-gradient-to-b from-background via-primary/5 to-primary/10">
+      {/* The broad arc the cards sit on. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-[58%] left-1/2 h-[120%] w-[160%] -translate-x-1/2 rounded-[100%] bg-gradient-to-b from-primary/10 to-transparent"
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:pt-32 lg:pb-28">
+        {/* Only where there is room beside the heading for them. */}
+        <div aria-hidden className="pointer-events-none hidden xl:block">
+          {PEOPLE.map(
+            ({ src, className, tilt, icon: Icon, iconClassName, float }) => (
+              <div
+                key={src}
+                className={cn("card-float absolute", className)}
+                style={{ "--float-duration": float } as React.CSSProperties}
+              >
+                <div
+                  className={cn(
+                    "relative rounded-3xl bg-gradient-to-br from-primary/25 to-primary/5 shadow-xl shadow-primary/15",
+                    tilt,
+                  )}
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    width={224}
+                    height={224}
+                    sizes="112px"
+                    className="size-28 rounded-3xl object-cover"
+                  />
+                  <span
+                    className={cn(
+                      "absolute flex size-10 items-center justify-center rounded-full bg-background text-primary shadow-lg shadow-primary/15",
+                      iconClassName,
+                    )}
+                  >
+                    <Icon className="size-4" />
+                  </span>
+                </div>
+              </div>
+            ),
+          )}
+        </div>
+
+        <div className="relative mx-auto max-w-2xl text-center">
           <span className="font-mono text-xs tracking-widest text-primary uppercase">
             Customer stories
           </span>
-          <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Trusted by businesses that keep conversations moving
+          <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-5xl">
+            Trusted by businesses that keep conversations moving.
           </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            Each of these is published on our Google Business Profile, with the
-            wording unchanged.
+          <p className="mx-auto mt-5 max-w-xl text-pretty text-muted-foreground">
+            Real businesses. Real conversations. Here&rsquo;s what our
+            customers say about their experience with SipLink.
           </p>
 
-          {/* One star, not five. The average is 4.5, and a row of five filled
-              stars beside that number would be claiming half a point we do
-              not have — the cards carry their own real ratings. */}
-          <p className="mt-7 inline-flex items-center gap-2.5 rounded-full border border-border bg-background px-4 py-2">
-            <Star
-              className="size-4 shrink-0 fill-current text-primary"
-              aria-hidden
-            />
-            <span className="font-heading text-sm font-semibold">
+          <p className="mt-8 inline-flex items-center gap-4 rounded-2xl bg-background px-5 py-3 shadow-lg shadow-primary/10">
+            <GoogleLogo className="size-7" />
+            <span aria-hidden className="h-8 w-px bg-border" />
+            <span className="font-heading text-2xl font-semibold">
               {rating.value}
             </span>
-            <span className="text-sm text-muted-foreground">
+            <RatingStars value={average} />
+            <span className="sr-only">out of 5,</span>
+            <span className="max-w-[6.5rem] text-left text-xs leading-tight text-muted-foreground">
               {rating.label}
             </span>
           </p>
         </div>
 
-        {/* Full bleed, and focusable: the tabindex is what gives a keyboard
-            user the same way to stop the row that hovering gives a mouse.
-
-            `py-2` is load-bearing, not spacing. Card draws its outline with
-            `ring-1`, which is an *outset* box-shadow — it sits a pixel outside
-            the card's box and takes no layout space. The track is exactly as
-            tall as the cards, so without this padding the clip region ends on
-            the card edge and shaves the top and bottom of every ring off,
-            leaving cards with visible sides and no lid. */}
-        <div
-          role="region"
-          aria-label="Reviews from our Google Business Profile"
-          tabIndex={0}
-          className="review-viewport mt-14 py-2 [mask-image:linear-gradient(to_right,transparent,black_2rem,black_calc(100%-2rem),transparent)] focus-visible:outline-2 focus-visible:outline-offset-2 lg:mt-16 lg:[mask-image:linear-gradient(to_right,transparent,black_5rem,black_calc(100%-5rem),transparent)]"
-        >
-          <ul
-            className="review-track"
-            style={
-              {
-                "--review-duration": "64s",
-                "--review-copies": COPIES,
-              } as React.CSSProperties
-            }
-          >
-            {Array.from({ length: COPIES }, (_, copy) =>
-              row.map((review) => (
-                <li
-                  key={`${review.name}-${copy}`}
-                  className={cn(copy > 0 && "review-clone", cardWidth)}
-                  aria-hidden={copy > 0 || undefined}
-                >
-                  <ReviewCard review={review} />
-                </li>
-              )),
-            )}
-          </ul>
+        <div className="relative mt-10 lg:mt-12">
+          <ReviewCarousel reviews={row} />
         </div>
 
-        <div className="mt-14 flex justify-center px-6 lg:mt-16 lg:px-10">
-          <Button asChild size="lg" variant="outline">
-            <a
-              href={googleReviewsUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              See customer stories
+        <div className="relative mt-10 flex justify-center">
+          <Button asChild size="lg" className="group">
+            <a href={googleReviewsUrl} target="_blank" rel="noreferrer noopener">
+              See all customer stories
+              <ArrowRight
+                className="transition-transform group-hover:translate-x-0.5"
+                aria-hidden
+              />
             </a>
           </Button>
         </div>

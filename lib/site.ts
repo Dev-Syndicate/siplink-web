@@ -98,6 +98,10 @@ export const site = {
     "Reliable, scalable and secure cloud communications for growing businesses: hosted PBX, SIP trunking, call centre and unified communications.",
   phone: "+91 82172 02075",
   email: "support@siplink.in",
+  /** Head office, as the client gave it for the footer. The non-breaking
+   * space keeps "T. Nagar" on one line. */
+  address:
+    "3rd Floor, Anmol Palani Complex, No.88, Gopathy Narayana Rd, T. Nagar, Chennai, Tamil Nadu 600017",
 } as const;
 
 export type Solution = {
@@ -923,6 +927,13 @@ export type Review = {
   rating: number;
   /** Review text, verbatim. */
   quote: string;
+  /**
+   * The reviewer's own Google profile photo, saved under
+   * public/images/reviews. Only ever their real photo — never a stock or
+   * generated face on a real person's endorsement. Without one, the card
+   * shows their initials.
+   */
+  photo?: string;
 };
 
 /**
