@@ -6,14 +6,14 @@ import {
   Building2,
   Cloud,
   Headset,
-  Newspaper,
   PhoneCall,
   Radio,
 } from "lucide-react";
 
 import { ClosingCta } from "@/components/site/closing-cta";
+import { NewsHero } from "@/components/site/news-hero";
+import { VoiceAiScene, WhatsAppApiScene } from "@/components/site/news-scenes";
 import { TopicRouter, type RouterTopic } from "@/components/site/topic-router";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { announcement, site } from "@/lib/site";
 
@@ -67,54 +67,7 @@ const topics: RouterTopic[] = [
 export default function NewsPage() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-muted/20 to-background py-16 sm:py-24">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-40 right-1/4 size-[500px] rounded-full bg-brand-to/10 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-24 left-1/4 size-[400px] rounded-full bg-brand-from/10 blur-3xl"
-        />
-
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge
-              variant="secondary"
-              className="mb-4 gap-1.5 px-3 py-1 font-mono text-xs tracking-wider uppercase"
-            >
-              <Newspaper className="size-3.5 text-primary" />
-              SipLink News & Insights
-            </Badge>
-
-            <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              What&apos;s Happening at SipLink
-            </h1>
-
-            <p className="mt-6 text-lg text-pretty text-muted-foreground sm:text-xl">
-              Stay up to date with {site.name}, cloud telephony trends, telecom
-              compliance insights, and practical strategies designed to help your
-              organization communicate smarter and scale without limits.
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Badge variant="outline" className="border-border bg-card">
-                Cloud Telephony
-              </Badge>
-              <Badge variant="outline" className="border-border bg-card">
-                SIP Trunking
-              </Badge>
-              <Badge variant="outline" className="border-border bg-card">
-                AI Voice Automation
-              </Badge>
-              <Badge variant="outline" className="border-border bg-card">
-                Compliance & Security
-              </Badge>
-            </div>
-          </div>
-        </div>
-      </section>
+      <NewsHero name={site.name} />
 
       {/* Featured Company Announcement */}
       <section className="border-b border-border bg-muted/40 py-8">
@@ -142,6 +95,10 @@ export default function NewsPage() {
           </div>
         </div>
       </section>
+
+      {/* The live announcement, shown working */}
+      <VoiceAiScene />
+      <WhatsAppApiScene />
 
       {/* One hub, four spokes: every topic above resolves to a real page,
           drawn as the route it actually takes rather than claimed as a
