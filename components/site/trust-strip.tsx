@@ -1,17 +1,12 @@
 import Image, { type StaticImageData } from "next/image";
-import {
-  ArrowRightLeft,
-  Headset,
-  Network,
-  type LucideIcon,
-} from "lucide-react";
-
 import dotWave1 from "@/public/trust/dot-wave-1.webp";
 import dotWave2 from "@/public/trust/dot-wave-2.webp";
 import dotWave3 from "@/public/trust/dot-wave-3.webp";
 import dotFull from "@/public/trust/dot-full.webp";
 import dotLogo from "@/public/trust/dot.webp";
 import hipaaLogo from "@/public/trust/hipaa.webp";
+import soc2Logo from "@/public/trust/soc2.webp";
+import traiLogo from "@/public/trust/trai.webp";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,23 +16,21 @@ import { cn } from "@/lib/utils";
  * customer counts and certifications are deliberately absent until the
  * client can substantiate them; add them as a new entry, not as copy.
  *
- * No cards: a hairline grid keeps five short claims reading as one
- * statement instead of five competing boxes.
+ * No cards: a hairline grid keeps four short claims reading as one
+ * statement instead of four competing boxes.
  *
- * Each mark acts out its claim in turn, a relay that loops on its own; the
- * `motion` class names the effect in globals.css and `--slot` is the item's
- * turn.
+ * Each mark plays its effect when hovered; the
+ * `motion` class names the effect in globals.css.
  */
-type TrustPoint = { label: string; motion: string } & (
-  | { icon: LucideIcon }
+type TrustPoint = {
+  label: string;
+  motion: string;
+  logo: StaticImageData;
   // `waves` are cut-out layers of the logo, stacked on it so they can pulse;
   // `silhouette` is the uncut logo, so the shine still crosses the cut-outs.
-  | {
-      logo: StaticImageData;
-      waves?: StaticImageData[];
-      silhouette?: StaticImageData;
-    }
-);
+  waves?: StaticImageData[];
+  silhouette?: StaticImageData;
+};
 
 const trustPoints: TrustPoint[] = [
   { label: "HIPAA-Aligned", logo: hipaaLogo, motion: "trust-shine" },
@@ -48,9 +41,8 @@ const trustPoints: TrustPoint[] = [
     silhouette: dotFull,
     motion: "trust-shine trust-broadcast",
   },
-  { label: "Reliable Network", icon: Network, motion: "trust-connect" },
-  { label: "24/7 Support", icon: Headset, motion: "trust-ring" },
-  { label: "Number Porting", icon: ArrowRightLeft, motion: "trust-port" },
+  { label: "TRAI Regulated", logo: traiLogo, motion: "trust-shine" },
+  { label: "SOC 2 Type 2", logo: soc2Logo, motion: "trust-shine" },
 ];
 
 export function TrustStrip() {
@@ -67,51 +59,39 @@ export function TrustStrip() {
           Trusted Communication Infrastructure for Growing Businesses
         </h2>
 
-        <ul className="mt-8 grid grid-cols-2 gap-y-6 sm:grid-cols-3 lg:grid-cols-5 lg:gap-y-0 lg:divide-x lg:divide-border">
-          {trustPoints.map((point, i) => (
+        <ul className="mt-8 grid grid-cols-2 gap-y-6 sm:grid-cols-4 sm:gap-y-0 sm:divide-x sm:divide-border">
+          {trustPoints.map((point) => (
             <li
               key={point.label}
-              style={{ "--slot": `${i * 2}s` } as React.CSSProperties}
-              className="group flex flex-col items-center gap-2.5 px-4 text-center last:col-span-2 sm:last:col-span-1"
+              className="group flex flex-col items-center gap-2.5 px-4 text-center"
             >
-              {/* Fixed-height slot keeps labels aligned across logos and icons. */}
+              {/* Fixed-height slot keeps labels aligned across logos. */}
               <span className="flex h-12 items-center">
-                {"logo" in point ? (
-                  <span
-                    className={cn(
-                      "relative block transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none",
-                      point.motion,
-                    )}
-                    // The shine is masked to the logo's own pixels.
-                    style={{ "--logo": `url(${(point.silhouette ?? point.logo).src})` } as React.CSSProperties}
-                  >
+                <span
+                  className={cn(
+                    "relative block transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none",
+                    point.motion,
+                  )}
+                  // The shine is masked to the logo's own pixels.
+                  style={{ "--logo": `url(${(point.silhouette ?? point.logo).src})` } as React.CSSProperties}
+                >
+                  <Image
+                    src={point.logo}
+                    alt=""
+                    className="h-12 w-auto"
+                    sizes="160px"
+                  />
+                  {point.waves?.map((wave, i) => (
                     <Image
-                      src={point.logo}
+                      key={wave.src}
+                      src={wave}
                       alt=""
-                      className="h-12 w-auto"
+                      className="trust-wave absolute inset-0 size-full"
+                      style={{ "--wave-delay": `${i * 0.25}s` } as React.CSSProperties}
                       sizes="96px"
                     />
-                    {point.waves?.map((wave, i) => (
-                      <Image
-                        key={wave.src}
-                        src={wave}
-                        alt=""
-                        className="trust-wave absolute inset-0 size-full"
-                        style={{ "--wave-delay": `${i * 0.25}s` } as React.CSSProperties}
-                        sizes="96px"
-                      />
-                    ))}
-                  </span>
-                ) : (
-                  <span
-                    className={cn(
-                      "flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary/15",
-                      point.motion,
-                    )}
-                  >
-                    <point.icon className="size-5" aria-hidden />
-                  </span>
-                )}
+                  ))}
+                </span>
               </span>
               <span className="text-sm font-medium">{point.label}</span>
             </li>

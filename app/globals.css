@@ -2783,12 +2783,8 @@
 @layer components {
   /* ---------------------------------------------------------- trust strip
 
-     Each mark acts out its own claim, as a relay: one 10s loop shared by all
-     five, with each item playing in its own 2s slot (`--slot`, set per item
-     inline). One thing moves at a time, so the row stays calm. Every
-     keyframe below fits its action into the first ~20% of the loop and
-     rests for the remainder, which is what makes the slots line up.
-     Nothing runs with reduced motion. */
+     Each mark plays its effect once when its item (`.group`) is hovered, so
+     the row stays still until touched. Nothing runs with reduced motion. */
 
   /* HIPAA and DoT: a scan of light crosses the badge. The band is masked by
      the logo image itself (`--logo`, set inline), so it lights the logo's
@@ -2810,22 +2806,17 @@
   }
 
   @keyframes trust-shine {
-    0% {
+    from {
       opacity: 1;
       background-position: 100% 0;
     }
-    9% {
+    to {
       opacity: 1;
-      background-position: 0 0;
-    }
-    9.1%,
-    100% {
-      opacity: 0;
       background-position: 0 0;
     }
   }
 
-  /* DoT: twice, each arc is born at the source and travels outward, the way
+  /* DoT: each arc is born at the source and travels outward, the way
      a signal leaves a tower. The origin is the tip of the logo's triangle;
      the per-arc stagger is `--wave-delay`. */
   @keyframes trust-broadcast {
@@ -2834,148 +2825,13 @@
       opacity: 1;
       transform: scale(1);
     }
-    1.5%,
-    8.5% {
+    15% {
       opacity: 0;
       transform: scale(0.7);
     }
-    5%,
-    7%,
-    12% {
+    60% {
       opacity: 1;
       transform: scale(1);
-    }
-  }
-
-  /* Network: the connection is established. The top node lights, the trunk
-     draws down from it, the branch grows out both ways from the junction,
-     then the two end nodes light; all hold, then let go. Lengths are the
-     Lucide path lengths in its 24-unit box: the trunk is 4, the branch
-     21.14. */
-  @keyframes trust-node-top {
-    0%,
-    20%,
-    100% {
-      fill-opacity: 0;
-    }
-    2.5%,
-    17% {
-      fill-opacity: 0.35;
-    }
-  }
-
-  @keyframes trust-node-end {
-    0%,
-    7%,
-    20%,
-    100% {
-      fill-opacity: 0;
-    }
-    9.5%,
-    17% {
-      fill-opacity: 0.35;
-    }
-  }
-
-  @keyframes trust-trunk {
-    0%,
-    1.5% {
-      stroke-dashoffset: -4;
-    }
-    4%,
-    100% {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  @keyframes trust-branch {
-    0%,
-    4% {
-      stroke-dasharray: 0 10.57 0 30;
-    }
-    7%,
-    100% {
-      stroke-dasharray: 0 0 21.14 30;
-    }
-  }
-
-  /* Support: an incoming call. The headset rings twice and the badge sends
-     out a ripple with each ring. */
-  @keyframes trust-ring-buzz {
-    0%,
-    6%,
-    10%,
-    16%,
-    100% {
-      transform: rotate(0);
-    }
-    1%,
-    11% {
-      transform: rotate(-12deg);
-    }
-    2%,
-    12% {
-      transform: rotate(10deg);
-    }
-    3%,
-    13% {
-      transform: rotate(-10deg);
-    }
-    4%,
-    14% {
-      transform: rotate(8deg);
-    }
-    5%,
-    15% {
-      transform: rotate(-4deg);
-    }
-  }
-
-  @keyframes trust-ring-ripple {
-    0%,
-    10.01% {
-      box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 35%, transparent);
-    }
-    10%,
-    20%,
-    100% {
-      box-shadow: 0 0 0 12px color-mix(in oklab, var(--primary) 0%, transparent);
-    }
-  }
-
-  /* Number porting: the number leaves one side and arrives on the other.
-     Each arrow exits past the icon's edge and re-enters from the far side. */
-  @keyframes trust-port-out {
-    0%,
-    7%,
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    3.15% {
-      opacity: 0;
-      transform: translateX(16px);
-    }
-    3.2% {
-      opacity: 0;
-      transform: translateX(-16px);
-    }
-  }
-
-  @keyframes trust-port-in {
-    0%,
-    7%,
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    3.15% {
-      opacity: 0;
-      transform: translateX(-16px);
-    }
-    3.2% {
-      opacity: 0;
-      transform: translateX(16px);
     }
   }
 
@@ -2983,70 +2839,14 @@
     transform-origin: 45% 53%;
   }
 
-  .trust-connect rect {
-    fill: currentColor;
-    fill-opacity: 0;
-  }
-
-  .trust-connect path:nth-child(5) {
-    stroke-dasharray: 4 4;
-  }
-
   @media (prefers-reduced-motion: no-preference) {
-    .trust-shine::after,
-    .trust-broadcast .trust-wave,
-    .trust-connect rect,
-    .trust-connect path,
-    .trust-ring,
-    .trust-ring svg,
-    .trust-port path {
-      animation-duration: 10s;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
-      animation-delay: var(--slot, 0s);
+    .group:hover .trust-shine::after {
+      animation: trust-shine 1.6s ease-out;
     }
 
-    .trust-shine::after {
-      animation-name: trust-shine;
-      animation-timing-function: ease-out;
-    }
-
-    .trust-broadcast .trust-wave {
-      animation-name: trust-broadcast;
-      animation-delay: calc(var(--slot, 0s) + var(--wave-delay, 0s));
-    }
-
-    .trust-connect rect {
-      animation-name: trust-node-end;
-    }
-
-    .trust-connect rect:nth-child(3) {
-      animation-name: trust-node-top;
-    }
-
-    .trust-connect path:nth-child(4) {
-      animation-name: trust-branch;
-    }
-
-    .trust-connect path:nth-child(5) {
-      animation-name: trust-trunk;
-    }
-
-    .trust-ring {
-      animation-name: trust-ring-ripple;
-      animation-timing-function: ease-out;
-    }
-
-    .trust-ring svg {
-      animation-name: trust-ring-buzz;
-    }
-
-    .trust-port path:nth-child(-n + 2) {
-      animation-name: trust-port-out;
-    }
-
-    .trust-port path:nth-child(n + 3) {
-      animation-name: trust-port-in;
+    .group:hover .trust-broadcast .trust-wave {
+      animation: trust-broadcast 1.6s ease-in-out;
+      animation-delay: var(--wave-delay, 0s);
     }
   }
 }
