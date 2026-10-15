@@ -5,31 +5,23 @@ import {
   ArrowRight,
   BadgeCheck,
   Building2,
-  CheckCircle2,
-  Clock,
   Globe,
   Headset,
   HeartHandshake,
   Layers,
-  LifeBuoy,
-  MapPin,
   Network,
-  Phone,
   Rocket,
-  ScrollText,
-  ShieldAlert,
-  ShieldCheck,
   Sparkles,
-  Users,
 } from "lucide-react";
 
+import { AboutAssureScene } from "@/components/site/about-assure-scene";
 import { AboutMissionPillars } from "@/components/site/about-mission-pillars";
+import { AboutOffices } from "@/components/site/about-offices";
 import { ClosingCta } from "@/components/site/closing-cta";
 import { RevealGroup } from "@/components/site/reveal-group";
 import { WhyChooseSection } from "@/components/site/why-choose-section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { companyMissionVision } from "@/lib/company";
 import { reliability, site } from "@/lib/site";
 
@@ -79,63 +71,6 @@ const offices = [
       "Sheridan, WY 82801, United States",
     ],
     phone: "+1 916 226 6066",
-  },
-];
-
-const assureCommitments = [
-  {
-    step: "01",
-    title: "Dedicated Project Managers",
-    phase: "Design & Onboarding",
-    description:
-      "Experts oversee the design and delivery of your solution from concept through to installation. We audit your existing PBX, bandwidth, and call flows before you commit.",
-    icon: Users,
-    guarantee: "Architectural alignment before cutover",
-  },
-  {
-    step: "02",
-    title: "Resolution Expertise",
-    phase: "Single-Point Ownership",
-    description:
-      "An expert manages your issue from beginning to end, keeping you informed until it is resolved. No passing between departments or re-explaining your setup.",
-    icon: LifeBuoy,
-    guarantee: "Direct engineer accountability",
-  },
-  {
-    step: "03",
-    title: "24x7 Customer Support",
-    phase: "Day-to-Day Operations",
-    description:
-      "Dedicated customer support staff are always available to help. Reach telecom engineers via phone, email, and live messaging around the clock.",
-    icon: Clock,
-    guarantee: "Always-on engineer access",
-  },
-  {
-    step: "04",
-    title: "Online Account Management",
-    phase: "Administrative Control",
-    description:
-      "A web portal that makes it easy to administer your account and support. Manage extensions, review CDRs, update routing rules, and monitor spend in real time.",
-    icon: ScrollText,
-    guarantee: "Instant self-service web portal",
-  },
-  {
-    step: "05",
-    title: "Service Level Agreement",
-    phase: "Contractual Commitment",
-    description:
-      "Comprehensive coverage for equipment, access network, and IP transport with guaranteed availability and low-latency performance parameters.",
-    icon: ShieldCheck,
-    guarantee: "Contractually backed availability",
-  },
-  {
-    step: "06",
-    title: "Service Interruption Credits",
-    phase: "Financial Accountability",
-    description:
-      "Our goal is to resolve any service interruption immediately. If a reported fault resides with us, you automatically receive a service credit.",
-    icon: ShieldAlert,
-    guarantee: "Automatic credit on eligible faults",
   },
 ];
 
@@ -385,142 +320,29 @@ export default function AboutPage() {
       </section>
 
       {/* 4. Three staffed offices, one business */}
-      <section className="border-t border-border py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
-              Where We Operate
-            </span>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Three offices, one business
-            </h2>
-            <p className="mt-3 text-pretty text-muted-foreground">
-              SipLink Communications Pvt. Ltd. runs out of Chennai, Bangalore,
-              and Hyderabad, with SipLink Communications LLC registered in
-              Sheridan, Wyoming for US customers.
-            </p>
-          </div>
-
-          {/* Image 4 + Office Cards Grid */}
-          <RevealGroup className="mt-12 grid gap-8 lg:grid-cols-12 lg:items-stretch">
-            {/* Image 4: SipLink Corporate Headquarters */}
-            <div
-              className="reveal-item lg:col-span-5 flex flex-col"
-              style={{ "--reveal-index": 0 } as React.CSSProperties}
-            >
-              <div className="relative flex-1 overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl min-h-[340px]">
-                <Image
-                  src="/images/about/about-global-network.png"
-                  alt="SipLink brand illustration representing people, technology, and global connection"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 42vw"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-4 left-4 right-4 rounded-lg border border-border/60 bg-background/90 p-3 backdrop-blur-md">
-                  <Badge variant="secondary" className="mb-1 font-mono text-[10px]">
-                    SipLink Communications
-                  </Badge>
-                  <p className="text-xs font-semibold text-foreground">Three Offices, One Business</p>
-                  <p className="text-[11px] text-muted-foreground">Staffed offices in Chennai, Bangalore, and Hyderabad</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Office Directory Cards 2x2 Grid */}
-            <div className="lg:col-span-7 grid gap-4 sm:grid-cols-2">
-              {offices.map((office, index) => (
-                <div
-                  key={office.city}
-                  className="reveal-item"
-                  style={{ "--reveal-index": index + 1 } as React.CSSProperties}
-                >
-                  <Card className="flex h-full flex-col justify-between border-border/80 bg-card shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg motion-safe:hover:-translate-y-1">
-                    <CardContent className="p-5 flex flex-col justify-between h-full">
-                      <div>
-                        <Badge variant="outline" className="mb-2.5 text-[10px] font-mono">
-                          {office.badge}
-                        </Badge>
-                        <div className="flex items-center gap-2">
-                          <MapPin className="size-4 text-primary shrink-0" />
-                          <h3 className="font-semibold text-foreground text-sm">
-                            {office.city}
-                          </h3>
-                        </div>
-                        <div className="mt-2.5 space-y-0.5 text-xs text-muted-foreground leading-relaxed">
-                          {office.address.map((line) => (
-                            <p key={line}>{line}</p>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="mt-4 pt-3 border-t border-border/60 flex items-center gap-2 text-xs font-mono text-foreground">
-                        <Phone className="size-3.5 text-primary shrink-0" />
-                        <span>{office.phone}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </div>
-          </RevealGroup>
-        </div>
-      </section>
+      <AboutOffices offices={offices} />
 
       {/* 5. SipLink Assure — Operational Standards */}
-      <section className="border-t border-border bg-muted/30 py-20 lg:py-24">
+      <section className="relative overflow-hidden border-t border-border bg-muted/30 py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="mx-auto max-w-2xl text-center mb-12 sm:mb-16">
-            <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
-              Operational Standards
-            </span>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              SipLink Assure
-            </h2>
-            <p className="mt-3 text-pretty text-muted-foreground">
+          <div className="mb-14 grid gap-6 lg:mb-16 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-7">
+              <div className="flex items-center gap-2.5">
+                <span className="font-mono text-xs font-bold tracking-widest text-primary uppercase">
+                  Operational Standards
+                </span>
+                <span className="inline-block h-px w-10 bg-primary/60 sm:w-14" />
+              </div>
+              <h2 className="mt-3 text-4xl leading-[1.1] font-extrabold tracking-tight text-foreground sm:text-5xl">
+                SipLink <span className="text-primary">Assure</span>
+              </h2>
+            </div>
+            <p className="text-pretty text-muted-foreground lg:col-span-5 lg:text-right">
               What every customer gets, from initial design through to day-to-day operation.
             </p>
           </div>
 
-          {/* 6 Core Commitments Cards Grid */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {assureCommitments.map((stage) => {
-              const Icon = stage.icon;
-              return (
-                <Card
-                  key={stage.step}
-                  className="flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
-                >
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                        <Icon className="size-5" />
-                      </span>
-                      <span className="font-mono text-xs font-semibold text-muted-foreground">
-                        {stage.step}
-                      </span>
-                    </div>
-
-                    <div className="mt-4">
-                      <span className="font-mono text-[11px] uppercase tracking-wider text-primary">
-                        {stage.phase}
-                      </span>
-                      <h3 className="mt-1 text-base font-semibold text-foreground">
-                        {stage.title}
-                      </h3>
-                      <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                        {stage.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-border/60 flex items-center gap-2 text-xs font-medium text-foreground">
-                    <CheckCircle2 className="size-3.5 text-emerald-500 shrink-0" />
-                    <span>{stage.guarantee}</span>
-                  </div>
-                </Card>
-              );
-            })}
-          </div>
+          <AboutAssureScene />
         </div>
       </section>
 
