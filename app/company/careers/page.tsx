@@ -1,23 +1,14 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import {
   ArrowRight,
-  Briefcase,
   CheckCircle2,
   Clock,
-  Cpu,
-  GraduationCap,
-  Headset,
-  HeartHandshake,
   Mail,
   MapPin,
-  Network,
-  Rocket,
-  Sparkles,
-  TrendingUp,
-  Users,
 } from "lucide-react";
 
+import { CareersHero } from "@/components/site/careers-hero";
+import { GrowthScene, TeamworkScene } from "@/components/site/careers-scenes";
 import { ClosingCta } from "@/components/site/closing-cta";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -42,52 +33,7 @@ export default function CareersPage() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-muted/20 to-background py-16 sm:py-24">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-40 right-1/4 size-[500px] rounded-full bg-brand-to/10 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-24 left-1/4 size-[400px] rounded-full bg-brand-from/10 blur-3xl"
-        />
-
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge
-              variant="secondary"
-              className="mb-4 gap-1.5 px-3 py-1 font-mono text-xs tracking-wider uppercase"
-            >
-              <Briefcase className="size-3.5 text-primary" />
-              Careers at SipLink
-            </Badge>
-
-            <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Build the Future of Business Communication
-            </h1>
-
-            <p className="mt-6 text-lg text-pretty text-muted-foreground sm:text-xl">
-              At {site.name}, we are engineering technology that helps businesses
-              connect faster and communicate better every day. We are looking for
-              curious, driven, and collaborative people who want to solve real-world
-              telecom challenges and help shape modern cloud voice.
-            </p>
-
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Button asChild size="lg" className="rounded-full shadow-md shadow-primary/20">
-                <Link href="#functional-areas">
-                  Explore Functional Areas
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full">
-                <Link href="/about">Learn About Our Culture</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CareersHero name={site.name} />
 
       {/* Why Work With SipLink */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
@@ -125,6 +71,9 @@ export default function CareersPage() {
           })}
         </div>
       </section>
+
+      {/* Keep learning, grow with us — shown working */}
+      <GrowthScene />
 
       {/* Life at SipLink */}
       <section className="border-t border-border bg-muted/30 py-20 lg:py-24">
@@ -206,6 +155,9 @@ export default function CareersPage() {
           </div>
         </div>
       </section>
+
+      {/* One issue, three teams — shown working */}
+      <TeamworkScene />
 
       {/* Functional Areas / What We Build */}
       <section
