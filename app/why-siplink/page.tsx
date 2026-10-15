@@ -6,11 +6,11 @@ import {
   Globe,
   Headphones,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 
 import { CapabilityPath } from "@/components/site/capability-path";
 import { ClosingCta } from "@/components/site/closing-cta";
+import { WhySipLinkHero } from "@/components/site/why-siplink-hero";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,70 +32,7 @@ export const metadata: Metadata = {
 export default function WhySipLinkPage() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-muted/20 to-background py-16 sm:py-24">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-40 right-1/4 size-[500px] rounded-full bg-brand-to/10 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-24 left-1/4 size-[400px] rounded-full bg-brand-from/10 blur-3xl"
-        />
-
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge
-              variant="secondary"
-              className="mb-4 gap-1.5 px-3 py-1 font-mono text-xs tracking-wider uppercase"
-            >
-              <Sparkles className="size-3.5 text-primary" />
-              Why Choose SipLink
-            </Badge>
-
-            <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Communication that works for your business  without the complexity.
-            </h1>
-
-            <p className="mt-6 text-lg text-pretty text-muted-foreground sm:text-xl">
-              Your communication infrastructure should propel your growth, not
-              become another administrative hurdle. {site.name} combines proven
-              cloud voice engineering with proactive 24/7 support to keep your
-              people connected everywhere.
-            </p>
-
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Button asChild size="lg" className="rounded-full shadow-md shadow-primary/20">
-                <Link href="/contact">
-                  See how SipLink can work for you
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full">
-                <Link href="/solutions">Explore Solutions</Link>
-              </Button>
-            </div>
-
-            {/* Compliance Pills */}
-            <div className="mt-12 flex flex-wrap items-center justify-center gap-2 pt-4">
-              <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                Verified Standards:
-              </span>
-              {["DoT Certified", "ISO/IEC 27001", "SOC 2 Type 2", "HIPAA Compliant", "GDPR Aligned"].map(
-                (item) => (
-                  <Badge
-                    key={item}
-                    variant="outline"
-                    className="border-border/80 bg-background/60 font-mono text-[11px] font-medium"
-                  >
-                    {item}
-                  </Badge>
-                ),
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+      <WhySipLinkHero name={site.name} />
 
       {/* How a call actually moves through the platform — the real order
           from the feature catalogue, not a decorative sequence. */}
