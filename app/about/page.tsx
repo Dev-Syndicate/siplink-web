@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import { AboutAssureScene } from "@/components/site/about-assure-scene";
+import { AboutCloudVoice } from "@/components/site/about-cloud-voice";
 import { AboutMissionPillars } from "@/components/site/about-mission-pillars";
 import { AboutOffices } from "@/components/site/about-offices";
 import { ClosingCta } from "@/components/site/closing-cta";
@@ -220,104 +221,9 @@ export default function AboutPage() {
       <AboutMissionPillars />
 
       {/* 3. Built for the way businesses communicate today */}
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-        <RevealGroup className="grid gap-12 lg:grid-cols-12 lg:items-center">
-          {/* Narrative Column */}
-          <div
-            className="reveal-item lg:col-span-5"
-            style={{ "--reveal-index": 0 } as React.CSSProperties}
-          >
-            <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
-              Modern Cloud Voice
-            </span>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Built for the way businesses communicate today
-            </h2>
-            <div className="mt-6 space-y-4 text-pretty text-muted-foreground">
-              <p>
-                Communication is no longer limited to a desk phone in a single
-                office. Teams work remotely, customers expect instant responses,
-                and businesses need every conversation seamlessly integrated with
-                their CRM workflows.
-              </p>
-              <p>
-                SipLink brings voice, messaging, collaboration, and business
-                applications together into one connected ecosystem so your teams
-                can communicate from anywhere while keeping every interaction
-                organized, measured, and manageable.
-              </p>
-              <p>
-                From growing businesses to global enterprises, SipLink simplifies
-                telephony, improves team productivity, and delivers superior customer
-                experiences—without the complexity of traditional hardware.
-              </p>
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Button asChild variant="outline" className="transition-transform duration-200 motion-safe:hover:-translate-y-0.5">
-                <Link href="/company/partners">
-                  Explore Partner Integrations
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          {/* Modern Cloud Voice Visual — Seamlessly blended into background,
-              bobbing gently so the illustration never goes fully still. */}
-          <div
-            className="reveal-item relative lg:col-span-7 flex items-center justify-center"
-            style={{ "--reveal-index": 1 } as React.CSSProperties}
-          >
-            {/* Ambient soft brand glow, drifting like the mission section's orbs */}
-            <div
-              aria-hidden="true"
-              className="glass-orb -inset-4 bg-primary/10"
-              style={
-                {
-                  "--orb-duration": "14s",
-                  "--orb-x": "35px",
-                  "--orb-y": "-20px",
-                } as React.CSSProperties
-              }
-            />
-            <div
-              className="card-float relative aspect-[16/11] sm:aspect-[16/10] w-full max-w-[680px]"
-              style={{ "--float-duration": "7.5s", "--float-delay": "-1.8s" } as React.CSSProperties}
-            >
-              <Image
-                src="/images/about/about-modern-cloud-voice.png"
-                alt="Modern business team collaborating with SipLink cloud voice and unified communications"
-                fill
-                sizes="(max-width: 1024px) 100vw, 58vw"
-                className="object-contain object-center drop-shadow-xl"
-                priority={false}
-              />
-            </div>
-          </div>
-        </RevealGroup>
-
-        {/* 3 Reliability Infrastructure Highlights below */}
-        <RevealGroup className="mt-14 grid gap-5 sm:grid-cols-3">
-          {reliability.map(({ title, description, icon: Icon }, index) => (
-            <div
-              key={title}
-              className="reveal-item flex flex-col justify-between rounded-xl border border-border/80 bg-muted/20 p-5 shadow-xs transition-all duration-300 hover:border-primary/30 hover:shadow-md motion-safe:hover:-translate-y-1"
-              style={{ "--reveal-index": index } as React.CSSProperties}
-            >
-              <div>
-                <span className="flex size-10 items-center justify-center rounded-lg bg-background text-primary shadow-xs ring-1 ring-border">
-                  <Icon className="size-5" aria-hidden />
-                </span>
-                <h3 className="mt-3.5 font-semibold text-foreground">{title}</h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-pretty text-muted-foreground">
-                  {description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </RevealGroup>
-      </section>
+      <AboutCloudVoice
+        reliability={reliability.map(({ title, description }) => ({ title, description }))}
+      />
 
       {/* 4. Three staffed offices, one business */}
       <AboutOffices offices={offices} />
