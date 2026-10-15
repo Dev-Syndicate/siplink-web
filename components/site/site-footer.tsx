@@ -12,6 +12,7 @@ import {
   Headphones,
   Layers,
   Phone,
+  ShieldCheck,
   Smartphone,
   Sparkles,
   Users,
@@ -20,7 +21,6 @@ import {
 
 import { RevealGroup } from "@/components/site/reveal-group";
 import { hasSocialIcon, SocialIcon } from "@/components/site/social-icons";
-import { Button } from "@/components/ui/button";
 import { footerNav, site, social } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import dotLogo from "@/public/trust/dot-full.webp";
@@ -221,8 +221,6 @@ function SignalRings({ className }: { className?: string }) {
 }
 
 export function SiteFooter() {
-  const telHref = `tel:${site.phone.replace(/\s/g, "")}`;
-
   return (
     <footer className="relative isolate overflow-hidden border-t border-border bg-gradient-to-b from-background to-accent/70 text-foreground">
       {/* A single soft pink glow low in the band, behind the wordmark. */}
@@ -231,85 +229,10 @@ export function SiteFooter() {
         className="pointer-events-none absolute -bottom-40 left-1/2 -z-10 h-96 w-[70%] -translate-x-1/2 rounded-full bg-primary/15 blur-3xl"
       />
 
-      <div className="w-full px-6 pt-20 lg:px-10 lg:pt-28 2xl:px-16">
-        {/* Opening: the statement and the ways to reach a person. */}
-        <RevealGroup className="grid gap-12 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-20">
-          <div>
-            <p
-              className="reveal-item flex items-center gap-2.5 font-mono text-xs tracking-[0.16em] text-primary uppercase"
-              style={{ "--reveal-index": 0 } as CSSProperties}
-            >
-              <span className="size-1.5 rounded-full bg-primary" aria-hidden />
-              {site.tagline}
-            </p>
-            <h2
-              className="reveal-item mt-6 max-w-3xl text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
-              style={{ "--reveal-index": 1 } as CSSProperties}
-            >
-              Let&apos;s get your business <span className="text-primary">talking.</span>
-            </h2>
-            <p
-              className="reveal-item mt-6 max-w-xl text-base leading-relaxed text-muted-foreground"
-              style={{ "--reveal-index": 2 } as CSSProperties}
-            >
-              {site.description}
-            </p>
-            <div
-              className="reveal-item mt-9 flex flex-wrap items-center gap-x-6 gap-y-4"
-              style={{ "--reveal-index": 3 } as CSSProperties}
-            >
-              <Button asChild size="lg" className="group rounded-full">
-                <Link href="/contact">
-                  Book a demo
-                  <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
-                </Link>
-              </Button>
-              <a
-                href={telHref}
-                className="footer-link pb-0.5 font-mono text-sm text-foreground/75 outline-none hover:text-primary focus-visible:text-primary"
-              >
-                or call {site.phone}
-              </a>
-            </div>
-          </div>
-
-          <dl className="grid content-start gap-8 sm:grid-cols-2 lg:grid-cols-1 lg:border-l lg:border-border lg:pl-12">
-            {[
-              { term: "Call us", value: site.phone, href: telHref },
-              { term: "Write to us", value: site.email, href: `mailto:${site.email}` },
-              { term: "Visit us", value: site.address, href: "/contact" },
-            ].map((item, i) => (
-              <div
-                key={item.term}
-                className="reveal-item"
-                style={{ "--reveal-index": i + 2 } as CSSProperties}
-              >
-                <dt className="font-mono text-[11px] tracking-[0.14em] text-muted-foreground uppercase">{item.term}</dt>
-                <dd className="mt-2">
-                  {item.href.startsWith("/") ? (
-                    <Link
-                      href={item.href}
-                      className="footer-link pb-0.5 text-sm leading-relaxed text-foreground/80 outline-none hover:text-primary focus-visible:text-primary"
-                    >
-                      <address className="inline not-italic">{item.value}</address>
-                    </Link>
-                  ) : (
-                    <a
-                      href={item.href}
-                      className="footer-link pb-0.5 text-lg font-medium text-foreground outline-none hover:text-primary focus-visible:text-primary"
-                    >
-                      {item.value}
-                    </a>
-                  )}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </RevealGroup>
-
+      <div className="w-full px-6 pt-16 lg:px-10 lg:pt-20 2xl:px-16">
         {/* The links: two groups per column on desktop; below that the
             columns simply flow two or three across, each keeping its pair. */}
-        <RevealGroup className="mt-20 grid grid-cols-2 gap-x-6 gap-y-12 border-t border-border pt-14 sm:grid-cols-3 lg:grid-cols-6 lg:gap-x-8">
+        <RevealGroup className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 lg:grid-cols-6 lg:gap-x-8">
           {COLUMNS.map((pair, col) => (
             <div key={pair[0]} className="space-y-10">
               {pair.map((heading, row) => (
@@ -319,22 +242,37 @@ export function SiteFooter() {
           ))}
         </RevealGroup>
 
-        {/* Credentials, quietly, on light chips so the marks keep their colours. */}
-        <ul className="mt-16 flex flex-wrap items-center gap-3">
-          {complianceBadges.map((badge) => (
-            <li
-              key={badge.alt}
-              className="rounded-xl border border-border bg-card p-2 transition-transform duration-300 hover:-translate-y-1"
-            >
-              <Image src={badge.src} alt={badge.alt} className="h-10 w-auto" sizes="120px" />
-            </li>
-          ))}
-        </ul>
+        {/* Credentials: a band of their own between the links and the
+            wordmark, the marks on white tiles so they keep their colours. */}
+        <div className="mt-16 flex flex-col gap-8 border-y border-border py-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+          <div className="max-w-xs">
+            <p className="flex items-center gap-2.5 text-sm font-semibold tracking-tight text-foreground">
+              <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                <ShieldCheck className="size-3.5" aria-hidden />
+              </span>
+              Certified &amp; compliant
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              DoT licensed, ISO/IEC 27001, HIPAA, GDPR and SOC 2 Type 2.
+            </p>
+          </div>
+
+          <ul className="grid grid-cols-6 gap-3 md:flex md:flex-wrap md:items-stretch lg:justify-end lg:gap-4">
+            {complianceBadges.map((badge) => (
+              <li
+                key={badge.alt}
+                className="col-span-2 grid h-20 place-items-center rounded-2xl border border-border bg-card px-3 shadow-sm nth-[n+4]:col-span-3 sm:h-24 sm:px-5 shadow-primary/5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 md:h-28 md:px-6"
+              >
+                <Image src={badge.src} alt={badge.alt} className="h-auto max-h-12 w-auto max-w-full sm:max-h-16 md:max-h-20" sizes="240px" />
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       {/* Closing: the oversized wordmark, the signal rings overlapping it. */}
       <RevealGroup className="relative mt-6 px-2">
-        <SignalRings className="absolute -top-10 right-[3%] hidden size-[min(22vw,20rem)] md:block" />
+        <SignalRings className="absolute top-6 right-[3%] hidden size-[min(18vw,17rem)] md:block" />
         <p
           aria-hidden
           className="relative flex justify-center overflow-hidden pb-[0.12em] text-[26vw] md:text-[17vw] leading-[0.85] font-semibold tracking-[-0.06em] select-none [mask-image:linear-gradient(to_bottom,black_40%,transparent_92%)]"
