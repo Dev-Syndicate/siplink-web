@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowRight, CheckCircle2, HeartHandshake } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import { ClosingCta } from "@/components/site/closing-cta";
 import { IntegrationWall } from "@/components/site/integration-wall";
+import { PartnersHero } from "@/components/site/partners-hero";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,60 +26,17 @@ export const metadata: Metadata = {
 export default function PartnersPage() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-muted/20 to-background py-16 sm:py-24">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-40 right-1/4 size-[520px] rounded-full bg-brand-to/10 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-24 left-1/4 size-[400px] rounded-full bg-brand-from/10 blur-3xl"
-        />
-
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge
-              variant="secondary"
-              className="mb-4 gap-1.5 px-3 py-1 font-mono text-xs tracking-wider uppercase"
-            >
-              <HeartHandshake className="size-3.5 text-primary" />
-              SipLink Partner Ecosystem
-            </Badge>
-
-            <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Stronger Together: Connected Communication Ecosystems
-            </h1>
-
-            <p className="mt-6 text-lg text-pretty text-muted-foreground sm:text-xl">
-              The best communication solutions do not operate in isolation.
-              {site.name} collaborates with software providers, platforms,
-              carriers, and system integrators to build connected, cohesive
-              communication workflows for our mutual customers.
-            </p>
-
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Button asChild size="lg" className="rounded-full shadow-md shadow-primary/20">
-                <Link href="/contact">
-                  Become a SipLink Partner
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full">
-                <Link href="#partner-tracks">Explore Partnership Tracks</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PartnersHero name={site.name} />
 
       {/* The wired-hub diagram used on the homepage, carrying the same
           integrations this page already names — the real signature of a
           partner page is seeing the wire land, not a logo tile. */}
-      <IntegrationWall
-        heading="Every integration, one connected ecosystem"
-        description="SipLink sits in the middle of the tools your team already runs — CRM, helpdesk, collaboration, and recruiting software — so calls, contacts, and records stay in one place."
-      />
+      <div id="integrations" className="scroll-mt-24">
+        <IntegrationWall
+          heading="Every integration, one connected ecosystem"
+          description="SipLink sits in the middle of the tools your team already runs — CRM, helpdesk, collaboration, and recruiting software — so calls, contacts, and records stay in one place."
+        />
+      </div>
 
       {/* Integration Categories — a plain list rather than another card grid,
           since the wall above already carries the visual weight. */}
