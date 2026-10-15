@@ -90,21 +90,30 @@ export function VoiceAiScene() {
             {/* Caller */}
             <motion.div
               className="absolute z-10 overflow-hidden rounded-[1.4cqw] border-[0.3cqw] border-card bg-card shadow-xl shadow-primary/20"
-              style={at(4, 14, 34)}
+              style={at(4, 16, 34)}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
             >
-              <div className="relative aspect-[4/3]">
-                <Image src="/images/people/person-sofia.webp" alt="" fill sizes="320px" className="object-cover object-top" />
-                <span className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
-                <span className="absolute top-[0.8cqw] left-[0.8cqw] flex items-center gap-[0.4cqw] rounded-full bg-card/85 px-[0.7cqw] py-[0.25cqw] text-[0.7cqw] font-semibold text-foreground">
+              <div className="relative flex flex-col items-center gap-[1cqw] bg-gradient-to-b from-primary/10 to-transparent px-[0.9cqw] pt-[0.9cqw] pb-[1.2cqw]">
+                <span className="flex items-center gap-[0.4cqw] self-start rounded-full bg-card px-[0.7cqw] py-[0.25cqw] text-[0.7cqw] font-semibold text-foreground shadow-sm">
                   <span className={cn("size-[0.6cqw] rounded-full", ringing ? "animate-pulse bg-primary" : "bg-primary")} />
                   {ringing ? "Calling…" : handedOff ? "With billing" : "Connected"}
                 </span>
+                <span className="relative grid place-items-center">
+                  {ringing && !still && (
+                    <>
+                      <span className="absolute inset-0 animate-ping rounded-full bg-primary/20" />
+                      <span className="absolute -inset-[0.8cqw] rounded-full border border-primary/20" />
+                    </>
+                  )}
+                  <span className="relative size-[7cqw] overflow-hidden rounded-full ring-[0.3cqw] ring-card shadow-lg shadow-primary/25">
+                    <Image src="/images/people/person-sofia.webp" alt="" fill sizes="112px" className="object-cover" />
+                  </span>
+                </span>
               </div>
-              <div className="flex items-center gap-[0.7cqw] p-[0.9cqw]">
+              <div className="flex items-center gap-[0.7cqw] border-t border-border p-[0.9cqw]">
                 <motion.span
                   className="flex size-[2.4cqw] items-center justify-center rounded-full bg-primary text-primary-foreground"
                   animate={ringing && !still ? { rotate: [0, -14, 14, -10, 10, 0] } : { rotate: 0 }}

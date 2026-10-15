@@ -314,20 +314,45 @@ export function GrowthScene() {
             {/* The person */}
             <motion.div
               className="absolute z-10 overflow-hidden rounded-[1.4cqw] border-[0.3cqw] border-card bg-card shadow-xl shadow-primary/20"
-              style={at(4, 13, 34)}
+              style={at(4, 25, 34)}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
             >
-              <div className="relative aspect-[4/3]">
-                <Image src="/images/people/person-emma.webp" alt="" fill sizes="320px" className="object-cover object-top" />
-                <span className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
-                <span className="absolute bottom-[0.7cqw] left-[0.9cqw] leading-tight text-card">
-                  <span className="block text-[1cqw] font-semibold">Emma</span>
-                  <span className="text-[0.7cqw] text-card/80">Implementation & onboarding</span>
+              <div className="flex items-center gap-[0.9cqw] bg-gradient-to-br from-primary/10 to-transparent p-[0.9cqw]">
+                <span className="relative size-[4.2cqw] shrink-0 overflow-hidden rounded-full ring-[0.25cqw] ring-card shadow-md shadow-primary/20">
+                  <Image src="/images/avatars/avatar-emma.webp" alt="" fill sizes="64px" className="object-cover" />
+                </span>
+                <span className="min-w-0 leading-tight">
+                  <span className="block text-[1.05cqw] font-semibold text-foreground">Emma</span>
+                  <span className="block text-[0.72cqw] text-muted-foreground">Implementation & onboarding</span>
                 </span>
               </div>
+              <ul className="grid grid-cols-2 gap-x-[0.8cqw] gap-y-[0.45cqw] border-y border-border px-[0.9cqw] py-[0.8cqw]">
+                {TOPICS.map(({ label, icon: Icon }, i) => {
+                  const lit = topicLit(i);
+                  return (
+                    <li
+                      key={label}
+                      className={cn(
+                        "flex items-center gap-[0.4cqw] text-[0.68cqw] transition-colors duration-500",
+                        lit ? "text-foreground" : "text-muted-foreground/60",
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "grid size-[1.3cqw] shrink-0 place-items-center rounded-full transition-colors duration-500",
+                          lit ? "bg-primary text-primary-foreground" : "bg-muted",
+                        )}
+                      >
+                        {lit ? <Check className="size-[0.75cqw]" /> : <Icon className="size-[0.7cqw]" />}
+                      </span>
+                      <span className="truncate">{label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
               <div className="flex flex-col gap-[0.5cqw] p-[0.9cqw]">
                 <div className="flex items-center justify-between text-[0.72cqw]">
                   <span className="font-medium text-foreground">Areas explored</span>

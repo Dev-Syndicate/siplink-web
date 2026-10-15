@@ -419,16 +419,41 @@ export function RetentionScene() {
 
             {/* The person it's about */}
             <motion.div
-              className="absolute z-10 overflow-hidden rounded-[1.3cqw] border-[0.3cqw] border-card shadow-xl shadow-primary/20"
-              style={{ ...at(116, 12, 20), aspectRatio: "4 / 5" }}
+              className="absolute z-10 overflow-hidden rounded-[1.3cqw] border border-border bg-card shadow-xl shadow-primary/15"
+              style={at(112, 14, 32)}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
             >
-              <Image src="/images/people/person-sofia.webp" alt="" fill sizes="240px" className="object-cover" />
-              <span className="absolute inset-0 bg-gradient-to-t from-foreground/65 to-transparent" />
-              <span className="absolute bottom-[0.6cqw] left-[0.8cqw] text-[0.75cqw] font-semibold text-card">The caller, in the EU</span>
+              <div className="flex items-center gap-[0.8cqw] bg-gradient-to-br from-primary/10 to-transparent p-[0.9cqw]">
+                <span className="relative size-[3.8cqw] shrink-0 overflow-hidden rounded-full ring-[0.25cqw] ring-card shadow-md shadow-primary/20">
+                  <Image src="/images/people/person-sofia.webp" alt="" fill sizes="80px" className="object-cover" />
+                </span>
+                <span className="min-w-0 leading-tight">
+                  <span className="block text-[1cqw] font-semibold text-foreground">The caller</span>
+                  <span className="block text-[0.72cqw] text-muted-foreground">Data subject, in the EU</span>
+                </span>
+              </div>
+              <div className="flex flex-col gap-[0.4cqw] border-t border-border p-[0.9cqw]">
+                {[
+                  { label: "Lawful basis", value: "Consent", done: false },
+                  { label: "Right to erasure", value: deleted ? "Honoured" : "Pending", done: deleted },
+                ].map((r) => (
+                  <div key={r.label} className="flex items-center justify-between rounded-[0.7cqw] bg-muted/40 px-[0.7cqw] py-[0.5cqw]">
+                    <span className="text-[0.7cqw] text-muted-foreground">{r.label}</span>
+                    <span
+                      className={cn(
+                        "flex items-center gap-[0.3cqw] text-[0.75cqw] font-semibold transition-colors duration-500",
+                        r.done ? "text-primary" : "text-foreground",
+                      )}
+                    >
+                      {r.done && <Check className="size-[0.85cqw]" />}
+                      {r.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </motion.div>
 
             {/* Receipt */}
