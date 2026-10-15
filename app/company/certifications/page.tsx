@@ -3,7 +3,6 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import {
   ArrowRight,
-  BadgeCheck,
   CheckCircle2,
   FileCheck,
   HeartPulse,
@@ -11,13 +10,17 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
+import { CertificationsHero } from "@/components/site/certifications-hero";
+import {
+  ReplayAccessScene,
+  RetentionScene,
+} from "@/components/site/certifications-scenes";
 import { ClosingCta } from "@/components/site/closing-cta";
 import { CompliancePath } from "@/components/site/compliance-path";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -61,58 +64,7 @@ const securityPrinciples = [
 export default function CertificationsPage() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-muted/20 to-background py-16 sm:py-24">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-40 right-1/3 size-[540px] rounded-full bg-brand-to/10 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-20 left-1/4 size-[400px] rounded-full bg-brand-from/10 blur-3xl"
-        />
-
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge
-              variant="secondary"
-              className="mb-4 gap-1.5 px-3 py-1 font-mono text-xs tracking-wider uppercase"
-            >
-              <BadgeCheck className="size-3.5 text-primary" />
-              Verified Trust & Governance
-            </Badge>
-
-            <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Built on Trust. Designed for Business.
-            </h1>
-
-            <p className="mt-6 text-lg text-pretty text-muted-foreground sm:text-xl">
-              Business communication requires more than reliable technology — it
-              demands complete trust. {site.name} is dedicated to maintaining
-              uncompromising standards across security, infrastructure, privacy,
-              reliability, and regulatory practices.
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Badge variant="outline" className="border-border bg-card px-3 py-1 text-xs">
-                DoT Licensing
-              </Badge>
-              <Badge variant="outline" className="border-border bg-card px-3 py-1 text-xs">
-                ISO/IEC 27001:2022 ISMS
-              </Badge>
-              <Badge variant="outline" className="border-border bg-card px-3 py-1 text-xs">
-                SOC 2 Type 2 AICPA
-              </Badge>
-              <Badge variant="outline" className="border-border bg-card px-3 py-1 text-xs">
-                HIPAA Aligned
-              </Badge>
-              <Badge variant="outline" className="border-border bg-card px-3 py-1 text-xs">
-                GDPR Aligned
-              </Badge>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CertificationsHero name={site.name} />
 
       {/* Every call, under five frameworks — drawn as the path it actually
           takes rather than five unrelated badges. */}
@@ -138,6 +90,10 @@ export default function CertificationsPage() {
           </div>
         </div>
       </section>
+
+      {/* Two of the frameworks, shown working */}
+      <ReplayAccessScene />
+      <RetentionScene />
 
       {/* Verified Certifications Showcase */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
