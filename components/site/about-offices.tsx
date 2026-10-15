@@ -325,7 +325,7 @@ function NetworkMap({ active, animate }: { active: string | null; animate: boole
           >
             <motion.g
               animate={animate ? { y: [0, -4, 0] } : undefined}
-              transition={{ duration: 3.6 + i * 0.4, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 3.5 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
             >
               {animate && (
                 <motion.circle

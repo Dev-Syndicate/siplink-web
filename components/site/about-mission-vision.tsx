@@ -44,10 +44,10 @@ const HEADLINE: { word: string; accent?: boolean; br?: boolean }[] = [
 
 /* Where each pillar chip floats over the photograph. */
 const CHIP_SPOTS = [
-  "top-[9%] left-[7%]",
-  "top-[16%] right-[6%]",
-  "top-[44%] right-[10%]",
-  "top-[38%] left-[14%]",
+  "top-[24%] left-[6%]",
+  "top-[9%] right-[7%]",
+  "top-[36%] right-[16%]",
+  "top-[44%] left-[22%]",
 ];
 
 const words: Variants = {
@@ -146,12 +146,20 @@ export function AboutMissionVision() {
           </motion.div>
 
           {/* Photograph: curtains open, drifts on scroll, pillars float over it */}
+          {/* The trigger sits on an unclipped wrapper: a box that starts
+              fully clipped can read as never in view. */}
           <motion.div
-            className="relative min-h-[320px] overflow-hidden rounded-3xl shadow-2xl shadow-primary/15 sm:min-h-[420px] lg:col-span-7 lg:min-h-[480px]"
-            initial={{ clipPath: "inset(0 0 0 100% round 24px)" }}
-            whileInView={{ clipPath: "inset(0 0 0 0% round 24px)" }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 1.2, ease: EASE }}
+            className="relative lg:col-span-7"
+            initial="hidden"
+            whileInView="shown"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+          <motion.div
+            className="relative h-full min-h-[320px] overflow-hidden rounded-3xl shadow-2xl shadow-primary/15 sm:min-h-[420px] lg:min-h-[560px]"
+            variants={{
+              hidden: { clipPath: "inset(0% 0% 0% 100% round 24px)" },
+              shown: { clipPath: "inset(0% 0% 0% 0% round 24px)", transition: { duration: 1.2, ease: EASE } },
+            }}
           >
             <motion.div
               className="absolute -inset-y-[10%] inset-x-0"
@@ -177,8 +185,39 @@ export function AboutMissionVision() {
             <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-foreground/55 via-foreground/5 to-transparent" />
             <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-primary/15 to-transparent mix-blend-multiply" />
 
+            {/* Live badge: the room's network, ticking */}
+            <motion.div
+              className="absolute top-5 left-5 z-10 flex items-center gap-3 rounded-2xl border border-card/30 bg-foreground/35 py-2 pr-4 pl-3 text-card shadow-xl backdrop-blur-md"
+              variants={{
+                hidden: { opacity: 0, y: -12 },
+                shown: { opacity: 1, y: 0, transition: { delay: 0.9, duration: 0.6 } },
+              }}
+            >
+              <span className="flex h-5 items-end gap-[3px]" aria-hidden>
+                {[0, 1, 2, 3].map((bar) => (
+                  <motion.span
+                    key={bar}
+                    className="w-[3px] rounded-full bg-primary"
+                    initial={{ height: "40%" }}
+                    animate={reduce ? undefined : { height: ["35%", "100%", "55%", "85%", "35%"] }}
+                    transition={{ duration: 1.6, repeat: Infinity, delay: bar * 0.18, ease: "easeInOut" }}
+                  />
+                ))}
+              </span>
+              <span className="flex flex-col leading-tight">
+                <span className="text-xs font-semibold">Global network</span>
+                <span className="flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-card/80 uppercase">
+                  <span className="relative flex size-1.5">
+                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary" />
+                    <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
+                  </span>
+                  Live
+                </span>
+              </span>
+            </motion.div>
+
             {/* The four pillars, floating over the room */}
-            <div className="absolute inset-0 hidden sm:block">
+            <div className="absolute inset-0 z-10 hidden sm:block">
               {companyMissionVision.pillars.map((pillar, i) => (
                 <PillarChip
                   key={pillar.title}
@@ -190,6 +229,7 @@ export function AboutMissionVision() {
                 />
               ))}
             </div>
+          </motion.div>
           </motion.div>
         </div>
 
@@ -222,7 +262,7 @@ function PillarChip({
     >
       <motion.div
         animate={still ? undefined : { y: [0, -8, 0] }}
-        transition={{ duration: 3.4 + index * 0.6, repeat: Infinity, ease: "easeInOut", delay: index * 0.4 }}
+        transition={{ duration: 3.5 + index * 0.5, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
         className="flex items-center gap-2 rounded-full border border-card/40 bg-card/20 py-1.5 pr-3.5 pl-1.5 text-xs font-semibold text-card shadow-lg shadow-foreground/20 backdrop-blur-md"
       >
         <span className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md shadow-primary/40">
@@ -279,7 +319,7 @@ function Trajectory({ still }: { still: boolean }) {
       whileInView="shown"
       viewport={{ once: true, amount: 0.3 }}
       variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.2 } } }}
-      className="relative mt-8 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:-mt-28 lg:mr-10 lg:ml-[8%]"
+      className="relative mt-8 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:-mt-24 lg:mr-10 lg:ml-[8%]"
     >
       {arc && (
         <svg aria-hidden className="pointer-events-none absolute inset-0 z-20 size-full overflow-visible" fill="none">
