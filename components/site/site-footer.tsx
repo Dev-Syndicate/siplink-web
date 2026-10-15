@@ -12,6 +12,7 @@ import {
   MapPin,
   Phone,
   Smartphone,
+  Sparkles,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -22,12 +23,14 @@ import dotLogo from "@/public/trust/dot-full.webp";
 import gdprLogo from "@/public/trust/gdpr.webp";
 import hipaaLogo from "@/public/trust/hipaa.webp";
 import isoLogo from "@/public/trust/iso.webp";
+import soc2Logo from "@/public/trust/soc2.webp";
 
 const complianceBadges = [
   { src: dotLogo, alt: "Department of Telecommunications, India Telecom" },
   { src: isoLogo, alt: "ISO/IEC 27001:2022" },
   { src: hipaaLogo, alt: "HIPAA compliant" },
   { src: gdprLogo, alt: "EU GDPR compliant" },
+  { src: soc2Logo, alt: "SOC 2 Type 2" },
 ];
 
 /**
@@ -44,6 +47,20 @@ const COLUMNS: string[][] = [
   ["By Use Case", "Migration"],
   ["Industries", "Company"],
 ];
+
+/** Links flagged with a small star, as the design marks them. */
+const STARRED = new Set([
+  "SIP Trunking",
+  "DID Numbers",
+  "Predictive Dialer",
+  "PBX Migration",
+  "Healthcare",
+  "Staffing & Recruitment",
+  "Education",
+  "IT & SaaS",
+  "Telecom Operators",
+  "About SipLink",
+]);
 
 /** One icon per group heading. */
 const ICONS: Record<string, LucideIcon> = {
@@ -87,6 +104,12 @@ function Group({ heading }: { heading: string }) {
               className="text-[13px] leading-snug text-muted-foreground transition-colors hover:text-primary"
             >
               {link.label}
+              {STARRED.has(link.label) ? (
+                <Sparkles
+                  className="ml-2 inline size-3 -translate-y-0.5 fill-amber-400 text-amber-500"
+                  aria-hidden
+                />
+              ) : null}
             </Link>
           </li>
         ))}
@@ -157,7 +180,7 @@ export function SiteFooter() {
             {COLUMNS.map((pair) => (
               <div
                 key={pair[0]}
-                className="space-y-8 lg:border-l lg:border-border lg:px-5 lg:last:pr-0"
+                className="space-y-8 lg:px-5 lg:last:pr-0"
               >
                 {pair.map((heading) => (
                   <Group key={heading} heading={heading} />
@@ -174,8 +197,8 @@ export function SiteFooter() {
                 <Image
                   src={badge.src}
                   alt={badge.alt}
-                  className="h-10 w-auto"
-                  sizes="96px"
+                  className="h-14 w-auto"
+                  sizes="160px"
                 />
               </li>
             ))}
@@ -183,7 +206,7 @@ export function SiteFooter() {
 
           <span
             aria-hidden
-            className="hidden h-10 w-px bg-border lg:mx-4 lg:block"
+            className="hidden h-14 w-px bg-border lg:mx-4 lg:block"
           />
 
           <p className="text-sm text-muted-foreground">
