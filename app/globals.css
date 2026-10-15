@@ -389,6 +389,96 @@
     background-size: 100% 1px;
   }
 
+  /* Footer nav links. On hover a soft pill comes up behind the link, an
+     arrow slides in ahead of it, and the label rolls up to a pink copy of
+     itself; the rest of that group dims back so the one in hand leads. */
+  .footer-nav-link {
+    display: inline-flex;
+    align-items: center;
+    margin-inline: -0.5rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: var(--radius-md);
+    line-height: 1.35;
+    transition:
+      background-color 0.3s ease,
+      opacity 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .footer-nav-link:hover,
+  .footer-nav-link:focus-visible {
+    background-color: var(--accent);
+    color: var(--primary);
+  }
+
+  .footer-group:hover .footer-nav-link:not(:hover, :focus-visible) {
+    opacity: 0.45;
+  }
+
+  .footer-nav-arrow {
+    width: 0;
+    height: 0.875rem;
+    flex-shrink: 0;
+    opacity: 0;
+  }
+
+  .footer-nav-link:hover .footer-nav-arrow,
+  .footer-nav-link:focus-visible .footer-nav-arrow {
+    width: 0.875rem;
+    margin-right: 0.375rem;
+    opacity: 1;
+  }
+
+  .footer-roll {
+    display: inline-grid;
+    overflow: hidden;
+  }
+
+  .footer-roll > * {
+    grid-area: 1 / 1;
+  }
+
+  /* Without motion the pink copy stays out of the way and the colour change
+     on the link carries the hover alone. */
+  .footer-roll > :last-child {
+    visibility: hidden;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .footer-nav-arrow {
+      transform: translateX(-6px);
+      transition:
+        width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        margin 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.3s ease,
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .footer-nav-link:hover .footer-nav-arrow,
+    .footer-nav-link:focus-visible .footer-nav-arrow {
+      transform: none;
+    }
+
+    .footer-roll > * {
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .footer-roll > :last-child {
+      visibility: visible;
+      transform: translateY(110%);
+    }
+
+    .footer-nav-link:hover .footer-roll > :first-child,
+    .footer-nav-link:focus-visible .footer-roll > :first-child {
+      transform: translateY(-110%);
+    }
+
+    .footer-nav-link:hover .footer-roll > :last-child,
+    .footer-nav-link:focus-visible .footer-roll > :last-child {
+      transform: none;
+    }
+  }
+
   /* The oversized footer wordmark: each letter rises out of a mask, in
      turn, when the footer is scrolled to. */
   @media (prefers-reduced-motion: no-preference) {

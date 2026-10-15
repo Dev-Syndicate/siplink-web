@@ -112,22 +112,42 @@ function Group({ heading, index }: { heading: string; index: number }) {
   const Icon = ICONS[heading];
 
   return (
-    <div className="reveal-item" style={{ "--reveal-index": index } as CSSProperties}>
-      <h3 className="flex items-center gap-2 font-mono text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase lg:whitespace-nowrap">
-        {Icon ? <Icon className="size-3.5 text-primary" aria-hidden /> : null}
-        {group.heading}
+    <div
+      className="reveal-item footer-group group/col"
+      style={{ "--reveal-index": index } as CSSProperties}
+    >
+      <h3 className="flex items-center gap-2.5 text-sm font-semibold tracking-tight text-foreground">
+        {Icon ? (
+          <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover/col:-rotate-6 group-hover/col:bg-primary group-hover/col:text-primary-foreground group-hover/col:shadow-md group-hover/col:shadow-primary/30">
+            <Icon className="size-3.5" aria-hidden />
+          </span>
+        ) : null}
+        <span className="lg:whitespace-nowrap">{group.heading}</span>
+        <span className="ml-auto font-mono text-[10px] font-normal text-muted-foreground tabular-nums">
+          {String(group.links.length).padStart(2, "0")}
+        </span>
       </h3>
-      <ul className="mt-4 space-y-2">
+      {/* A hairline under the heading that draws in, pink, on hover. */}
+      <span aria-hidden className="relative mt-3 block h-px overflow-hidden bg-border">
+        <span className="absolute inset-0 origin-left scale-x-0 bg-gradient-to-r from-brand-to to-brand-from transition-transform duration-500 ease-out group-hover/col:scale-x-100" />
+      </span>
+      <ul className="mt-3 space-y-0.5">
         {group.links.map((link) => (
           <li key={link.href}>
             <Link
               href={link.href}
-              className="footer-link rounded-sm pb-0.5 text-[13px] leading-snug text-foreground/75 outline-none hover:text-primary focus-visible:text-primary focus-visible:ring-2 focus-visible:ring-primary"
+              className="footer-nav-link text-sm text-foreground/75 outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
-              {link.label}
+              <ArrowRight className="footer-nav-arrow text-primary" aria-hidden />
+              <span className="footer-roll">
+                <span>{link.label}</span>
+                <span aria-hidden className="text-primary">
+                  {link.label}
+                </span>
+              </span>
               {STARRED.has(link.label) ? (
                 <Sparkles
-                  className="ml-1.5 inline size-3 -translate-y-0.5 fill-amber-400 text-amber-400"
+                  className="ml-1.5 size-3 shrink-0 fill-amber-400 text-amber-400 transition-transform duration-500 group-hover/col:rotate-12"
                   aria-hidden
                 />
               ) : null}
