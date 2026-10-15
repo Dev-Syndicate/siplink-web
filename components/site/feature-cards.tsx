@@ -442,8 +442,8 @@ const NUMBERS = [
     tone: "bg-info/10 text-info",
   },
   {
-    country: "IN",
-    value: "+91 44 •••• ••••",
+    country: "US",
+    value: "+1 307 ••• ••••",
     label: "Ported in",
     tone: "bg-success/10 text-success",
   },
