@@ -425,11 +425,12 @@ function SupportCard({ still }: { still: boolean }) {
   return (
     <div className="relative aspect-[3/4] bg-gradient-to-br from-brand-from to-brand-to">
       <Image
-        src="/images/hero-agent-headset.png"
+        src="/images/about/support-agent.webp"
         alt="A SipLink support engineer on a headset call"
         fill
-        sizes="240px"
-        className="object-cover object-[58%_center]"
+        sizes="(min-width: 1024px) 320px, 60vw"
+        quality={90}
+        className="object-cover"
         priority
       />
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
