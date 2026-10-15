@@ -25,13 +25,16 @@ export function CtaPanel({
   eyebrow,
   heading,
   body,
+  note,
   action = { label: "Book a demo", href: "/contact" },
   contactLabel = "Speak to our team",
 }: {
-  /** Two short phrases joined by a middle dot. */
-  eyebrow: string;
+  /** Two short phrases joined by a middle dot. Omit for a panel without one. */
+  eyebrow?: string;
   heading: string;
   body: string;
+  /** Reassurance set under the buttons, such as "No obligation". */
+  note?: string;
   /** The primary ask. Defaults to the same one the header carries. */
   action?: { label: string; href: string };
   /**
@@ -50,12 +53,14 @@ export function CtaPanel({
         className="pointer-events-none absolute -top-32 -right-24 -z-10 size-[520px] rounded-full bg-white/10 blur-3xl"
       />
 
-      <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 font-mono text-[11px] font-semibold tracking-widest uppercase">
-        <span className="size-1.5 rounded-full bg-current" aria-hidden />
-        {eyebrow}
-      </span>
+      {eyebrow ? (
+        <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 font-mono text-[11px] font-semibold tracking-widest uppercase">
+          <span className="size-1.5 rounded-full bg-current" aria-hidden />
+          {eyebrow}
+        </span>
+      ) : null}
 
-      <h2 className="font-heading mt-6 max-w-xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+      <h2 className="font-heading block max-w-xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
         {heading}
       </h2>
 
@@ -85,6 +90,10 @@ export function CtaPanel({
           </a>
         </Button>
       </div>
+
+      {note ? (
+        <p className="mt-6 text-sm text-primary-foreground/80">{note}</p>
+      ) : null}
     </div>
   );
 }

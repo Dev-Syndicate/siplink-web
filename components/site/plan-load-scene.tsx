@@ -267,7 +267,7 @@ export function PlanLoadScene({ label }: { label: string }) {
             <Activity className="size-1/2" />
           </span>
           <span className="text-[0.92cqw] leading-tight">
-            A plan is sized for this hour — not for the average of the day.
+            A plan is sized for this hour, not for the average of the day.
           </span>
         </div>
       </div>

@@ -239,7 +239,7 @@ export function PriScene({ label }: { label: string }) {
               {refused ? (
                 <>
                   <X className="size-[1.9cqw]" />
-                  Engaged — no channel free
+                  Engaged, no channel free
                 </>
               ) : extraOn ? (
                 <>

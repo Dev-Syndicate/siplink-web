@@ -18,7 +18,7 @@ import {
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Follow a customer conversation from the number they dial to the insight it becomes — voice, contact centre, APIs and AI on one network.",
+    "Follow a customer conversation from the number they dial to the insight it becomes, voice, contact centre, APIs and AI on one network.",
 };
 
 export default function ProductsPage() {
@@ -44,7 +44,7 @@ export default function ProductsPage() {
 
               <p className="mt-8 max-w-2xl text-lg text-pretty text-muted-foreground lg:text-xl">
                 A call reaches you, gets routed, is handled, and becomes something
-                you can act on. SipLink is the platform underneath all four — voice,
+                you can act on. SipLink is the platform underneath all four, voice,
                 contact centre, messaging and APIs on one network, in 150+
                 countries.
               </p>
@@ -289,7 +289,7 @@ export default function ProductsPage() {
       </section>
 
       {/* Close */}
-      <ClosingCta heading="Tell us how your customers reach you today" body="We will map it to a configuration, plan the migration and port your existing numbers — before you commit to anything." secondary={{ label: "View pricing", href: "/pricing" }}>
+      <ClosingCta heading="Tell us how your customers reach you today" body="We will map it to a configuration, plan the migration and port your existing numbers, before you commit to anything." secondary={{ label: "View pricing", href: "/pricing" }}>
         <ul className="flex flex-wrap gap-x-6 gap-y-3">{["No obligation", "Talk to an engineer", "Migration planned with you"].map(item => <li key={item} className="flex items-center gap-2 text-sm text-primary-foreground/85"><Check className="size-4 shrink-0" aria-hidden />{item}</li>)}</ul>
         <p className="max-w-2xl text-xs leading-relaxed text-primary-foreground/75">* Port availability figure as stated in current service documentation. Certifications and availability commitments are subject to scope and confirmation.</p>
       </ClosingCta>

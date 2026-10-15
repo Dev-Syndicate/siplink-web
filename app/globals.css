@@ -41,6 +41,10 @@
   --color-brand-from: var(--brand-from);
   --color-brand-to: var(--brand-to);
   --color-ink: var(--ink);
+  /* Status hues for tags (e.g. number types): the palette is otherwise all
+     brand pink and neutrals, which cannot tell three states apart. */
+  --color-info: var(--info);
+  --color-success: var(--success);
   --font-heading: var(--font-geist-sans);
   --font-accent: var(--font-script);
   --font-sans: var(--font-geist-sans);
@@ -116,6 +120,8 @@
   --chart-3: oklch(0.78 0.12 15);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
+  --info: oklch(0.55 0.16 255);
+  --success: oklch(0.56 0.13 155);
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -154,6 +160,8 @@
   --chart-3: oklch(0.8 0.11 15);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
+  --info: oklch(0.72 0.13 255);
+  --success: oklch(0.74 0.14 155);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -836,95 +844,6 @@
 }
 
 @layer components {
-  /* The review track.
-   *
-   * Two copies of the same row sit in one flex line, and the line slides left
-   * by exactly the width of one copy. At the moment it lands, the second copy
-   * is sitting precisely where the first began, so the reset is invisible and
-   * the row reads as endless.
-   *
-   * The distance is `-50% minus half a gap`, not a plain `-50%`. The track
-   * carries a gap between every card, including the seam between the two
-   * copies, so that one extra gap is shared between the halves — take the
-   * whole 50% and the row slips a little further left on every lap until the
-   * seam is visible. */
-  .review-track {
-    --review-gap: 1.5rem;
-    /* How many times the row is repeated in the track. Two is the minimum
-       that can loop, but two only works while a single copy is wider than
-       the screen — narrow the cards enough and a 4K display runs out of row
-       mid-drift and shows the seam. The markup sets this; the keyframe below
-       divides by it. */
-    --review-copies: 2;
-    display: flex;
-    width: max-content;
-    gap: var(--review-gap);
-    animation: review-drift var(--review-duration, 80s) linear infinite;
-  }
-
-  /* The cards are close to half the screen by this width, and a 24px channel
-     between two of them reads as a mistake rather than a gap. The keyframe
-     reads the same variable, so the loop stays seamless as it changes. */
-  @media (min-width: 1024px) {
-    .review-track {
-      --review-gap: 2rem;
-    }
-  }
-
-  /* Shift by exactly one copy of the row.
-   *
-   * For N copies of n cards the track is N·n·c + (N·n − 1)·g wide, and one
-   * copy advances n·c + n·g — which works out to (100% + one gap) / N. The
-   * extra gap is the seam between copies: it belongs to the distance, and
-   * dropping it is what makes a long marquee creep a little further left on
-   * every lap until the join walks into view.
-   *
-   * At N = 2 this is the familiar `-50% - gap/2`. */
-  @keyframes review-drift {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(
-        calc((-100% - var(--review-gap)) / var(--review-copies))
-      );
-    }
-  }
-
-  /* `overflow` belongs here rather than on a utility class: the reduced-motion
-     rule below has to be able to override it, and a Tailwind utility would sit
-     in a later layer and win. */
-  .review-viewport {
-    overflow: hidden;
-  }
-
-  /* Hover and keyboard focus both hold the rows still. The viewport takes a
-     tabindex, so someone reading by keyboard has the same way to stop a line
-     from sliding out from under them that someone with a mouse does — which
-     is what is owed for anything that starts moving on its own. */
-  .review-viewport:hover .review-track,
-  .review-viewport:focus-within .review-track {
-    animation-play-state: paused;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .review-track {
-      animation: none;
-    }
-
-    /* Nothing is sliding, so the second copy is just the same reviews again a
-       little further along. Drop it, and let the row be scrolled by hand. */
-    .review-clone {
-      display: none;
-    }
-
-    .review-viewport {
-      overflow-x: auto;
-    }
-  }
-}
-
-@layer components {
   /* Softens the outer edge of a cut-out photograph so it dissolves into the
      ground instead of stopping on a line. These are cut-outs, but the content
      inside them — a desk, a floor — still runs to the frame in places, and on
@@ -1397,33 +1316,10 @@
     animation-delay: var(--ghost-delay, 0ms);
   }
 
-  /* The reference's other half: a dashed copy of a shape, offset from the
-     solid one it belongs to. It detaches from the AI mark and rises while
-     the console is working, so the mark reads as generating something rather
-     than merely sitting in the corner. */
-  @keyframes ghost-lift {
-    0% {
-      opacity: 0;
-      transform: translateY(0) scale(1);
-    }
-    22% {
-      opacity: 0.7;
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-0.75rem) scale(1.2);
-    }
-  }
-
-  .ghost-lift {
-    animation: ghost-lift 2.8s ease-out infinite;
-  }
-
-  /* Both are pure illustration — the rail's words carry every claim — so
-     under reduced motion they simply are not drawn. */
+  /* Pure illustration — the rail's words carry every claim — so under
+     reduced motion it simply is not drawn. */
   @media (prefers-reduced-motion: reduce) {
-    .ghost-line,
-    .ghost-lift {
+    .ghost-line {
       animation: none;
       opacity: 0;
     }
@@ -3014,6 +2910,348 @@
   @media (prefers-reduced-motion: reduce) {
     .lane-run {
       animation: none;
+    }
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------- trust strip
+
+     Each mark acts out its own claim, as a relay: one 10s loop shared by all
+     five, with each item playing in its own 2s slot (`--slot`, set per item
+     inline). One thing moves at a time, so the row stays calm. Every
+     keyframe below fits its action into the first ~20% of the loop and
+     rests for the remainder, which is what makes the slots line up.
+     Nothing runs with reduced motion. */
+
+  /* HIPAA and DoT: a scan of light crosses the badge. The band is masked by
+     the logo image itself (`--logo`, set inline), so it lights the logo's
+     own pixels and never the empty box around them. */
+  .trust-shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(
+        110deg,
+        transparent 40%,
+        color-mix(in oklab, var(--background) 85%, transparent) 50%,
+        transparent 60%
+      )
+      100% 0 / 250% 100% no-repeat;
+    mask: var(--logo) center / 100% 100% no-repeat;
+  }
+
+  @keyframes trust-shine {
+    0% {
+      opacity: 1;
+      background-position: 100% 0;
+    }
+    9% {
+      opacity: 1;
+      background-position: 0 0;
+    }
+    9.1%,
+    100% {
+      opacity: 0;
+      background-position: 0 0;
+    }
+  }
+
+  /* DoT: twice, each arc is born at the source and travels outward, the way
+     a signal leaves a tower. The origin is the tip of the logo's triangle;
+     the per-arc stagger is `--wave-delay`. */
+  @keyframes trust-broadcast {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    1.5%,
+    8.5% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    5%,
+    7%,
+    12% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Network: the connection is established. The top node lights, the trunk
+     draws down from it, the branch grows out both ways from the junction,
+     then the two end nodes light; all hold, then let go. Lengths are the
+     Lucide path lengths in its 24-unit box: the trunk is 4, the branch
+     21.14. */
+  @keyframes trust-node-top {
+    0%,
+    20%,
+    100% {
+      fill-opacity: 0;
+    }
+    2.5%,
+    17% {
+      fill-opacity: 0.35;
+    }
+  }
+
+  @keyframes trust-node-end {
+    0%,
+    7%,
+    20%,
+    100% {
+      fill-opacity: 0;
+    }
+    9.5%,
+    17% {
+      fill-opacity: 0.35;
+    }
+  }
+
+  @keyframes trust-trunk {
+    0%,
+    1.5% {
+      stroke-dashoffset: -4;
+    }
+    4%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes trust-branch {
+    0%,
+    4% {
+      stroke-dasharray: 0 10.57 0 30;
+    }
+    7%,
+    100% {
+      stroke-dasharray: 0 0 21.14 30;
+    }
+  }
+
+  /* Support: an incoming call. The headset rings twice and the badge sends
+     out a ripple with each ring. */
+  @keyframes trust-ring-buzz {
+    0%,
+    6%,
+    10%,
+    16%,
+    100% {
+      transform: rotate(0);
+    }
+    1%,
+    11% {
+      transform: rotate(-12deg);
+    }
+    2%,
+    12% {
+      transform: rotate(10deg);
+    }
+    3%,
+    13% {
+      transform: rotate(-10deg);
+    }
+    4%,
+    14% {
+      transform: rotate(8deg);
+    }
+    5%,
+    15% {
+      transform: rotate(-4deg);
+    }
+  }
+
+  @keyframes trust-ring-ripple {
+    0%,
+    10.01% {
+      box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 35%, transparent);
+    }
+    10%,
+    20%,
+    100% {
+      box-shadow: 0 0 0 12px color-mix(in oklab, var(--primary) 0%, transparent);
+    }
+  }
+
+  /* Number porting: the number leaves one side and arrives on the other.
+     Each arrow exits past the icon's edge and re-enters from the far side. */
+  @keyframes trust-port-out {
+    0%,
+    7%,
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    3.15% {
+      opacity: 0;
+      transform: translateX(16px);
+    }
+    3.2% {
+      opacity: 0;
+      transform: translateX(-16px);
+    }
+  }
+
+  @keyframes trust-port-in {
+    0%,
+    7%,
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    3.15% {
+      opacity: 0;
+      transform: translateX(-16px);
+    }
+    3.2% {
+      opacity: 0;
+      transform: translateX(16px);
+    }
+  }
+
+  .trust-broadcast .trust-wave {
+    transform-origin: 45% 53%;
+  }
+
+  .trust-connect rect {
+    fill: currentColor;
+    fill-opacity: 0;
+  }
+
+  .trust-connect path:nth-child(5) {
+    stroke-dasharray: 4 4;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .trust-shine::after,
+    .trust-broadcast .trust-wave,
+    .trust-connect rect,
+    .trust-connect path,
+    .trust-ring,
+    .trust-ring svg,
+    .trust-port path {
+      animation-duration: 10s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-delay: var(--slot, 0s);
+    }
+
+    .trust-shine::after {
+      animation-name: trust-shine;
+      animation-timing-function: ease-out;
+    }
+
+    .trust-broadcast .trust-wave {
+      animation-name: trust-broadcast;
+      animation-delay: calc(var(--slot, 0s) + var(--wave-delay, 0s));
+    }
+
+    .trust-connect rect {
+      animation-name: trust-node-end;
+    }
+
+    .trust-connect rect:nth-child(3) {
+      animation-name: trust-node-top;
+    }
+
+    .trust-connect path:nth-child(4) {
+      animation-name: trust-branch;
+    }
+
+    .trust-connect path:nth-child(5) {
+      animation-name: trust-trunk;
+    }
+
+    .trust-ring {
+      animation-name: trust-ring-ripple;
+      animation-timing-function: ease-out;
+    }
+
+    .trust-ring svg {
+      animation-name: trust-ring-buzz;
+    }
+
+    .trust-port path:nth-child(-n + 2) {
+      animation-name: trust-port-out;
+    }
+
+    .trust-port path:nth-child(n + 3) {
+      animation-name: trust-port-in;
+    }
+  }
+}
+
+@layer components {
+  /* The SipLink advantage comparison (AdvantageTable). Inside a
+     <RevealGroup>, after the whole comparison rises in (`.reveal-item`):
+     the checks pop in one row (`--row`) after another, and the SipLink
+     card glows once and settles back to its resting shadow — once, not on
+     a loop, so it reads as emphasis rather than as an alarm. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-group .adv-check {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+
+    .reveal-group[data-revealed] .adv-check {
+      animation: adv-check 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      animation-delay: calc(var(--row, 0) * 90ms + 450ms);
+    }
+
+    .reveal-group[data-revealed] .adv-glow {
+      animation: adv-glow 1.8s ease-out 0.5s both;
+    }
+  }
+
+  @keyframes adv-check {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes adv-glow {
+    45% {
+      box-shadow:
+        0 0 0 1px color-mix(in oklab, var(--primary) 35%, transparent),
+        0 18px 60px -8px color-mix(in oklab, var(--primary) 45%, transparent);
+    }
+  }
+}
+
+@layer components {
+  /* A softer `feature-turn` for the homepage feature cards: long eased fades
+     that overlap, so a highlight glides from one item to the next instead of
+     blinking on and off. Kept separate because `feature-turn` also runs on
+     the features pages, which were tuned to its sharper rhythm. */
+  @keyframes feature-glide {
+    0% {
+      opacity: 0;
+    }
+    14%,
+    40% {
+      opacity: 1;
+    }
+    58%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .feature-glide {
+    opacity: 0;
+    animation: feature-glide var(--turn-duration, 5.4s) cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    animation-delay: var(--turn-delay, 0s);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feature-glide {
+      animation: none;
+      opacity: 0;
     }
   }
 }

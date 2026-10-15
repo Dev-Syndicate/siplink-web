@@ -34,7 +34,7 @@ import { DeliveryScene } from "@/components/site/scene-delivery";
 export const metadata: Metadata = {
   title: "Internet",
   description:
-    "Business internet leased line, dedicated internet leased lines, static IP and managed network solutions — fibre connectivity from a Class A ISP, monitored 24/7.",
+    "Business internet leased line, dedicated internet leased lines, static IP and managed network solutions, fibre connectivity from a Class A ISP, monitored 24/7.",
 };
 
 /**
@@ -265,7 +265,7 @@ export default function InternetPage() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               We can combine connectivity, security and network infrastructure
-              into one design — the layer your business applications actually
+              into one design, the layer your business applications actually
               run on, rather than a line into the building and good luck.
             </p>
           </ScrollReveal>
@@ -464,7 +464,7 @@ export default function InternetPage() {
                 Business internet questions
               </h2>
               <p className="mt-4 text-pretty text-muted-foreground">
-                Still not covered? Ask us directly — connectivity questions get
+                Still not covered? Ask us directly, connectivity questions get
                 an engineer, not a form response.
               </p>
               <Button asChild variant="outline" className="mt-6">

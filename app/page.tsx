@@ -1,54 +1,58 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Check,
-  PhoneCall,
-  Quote,
-  ShieldCheck,
-  Star,
-} from "lucide-react";
+import { ArrowRight, Check, PhoneCall, Quote, Star } from "lucide-react";
 
 import { AiConsole } from "@/components/site/ai-console";
+import { AppsShowcase } from "@/components/site/apps-showcase";
+import { AiMark } from "@/components/site/ai-mark";
+import { AdvantageTable } from "@/components/site/advantage-table";
 import { CtaPanel } from "@/components/site/cta-panel";
 import { CustomerStories } from "@/components/site/customer-stories";
 import { FeatureCards } from "@/components/site/feature-cards";
+import { FaqSection } from "@/components/site/faq-section";
+import { HowItWorks } from "@/components/site/how-it-works";
 import { IntegrationWall } from "@/components/site/integration-wall";
 import { SectorStage } from "@/components/site/sector-stage";
 import { SwitchingStory } from "@/components/site/switching-story";
-import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
+import { TrustStrip } from "@/components/site/trust-strip";
 import { TypedQuote } from "@/components/site/typed-quote";
 import { VideoEmbed } from "@/components/site/video-embed";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import {
+  aiStages,
   heroHighlights,
   homePillars,
-  mobileApps,
-  plans,
   reviews,
   site,
-  whyIncludes,
-  whyIntro,
   whyPoints,
 } from "@/lib/site";
 
 /**
  * Homepage.
  *
- * The argument, in order: enterprise-grade voice (hero) → the four questions
- * that answer holds up to (why) → which product is
- * yours (pillars) → what makes us different, the AI layer over every call
- * (AI) → what actually changes when you switch (migration) → what it does
- * once it is in (capabilities) → the support claim, evidenced once
- * (film and one review) → which sector you are in (industries) → does it fit
- * your stack (integrations, apps) → who else went through with it (customer
- * stories) → talk to us (CTA).
+ * The page answers five questions, in the order a buyer asks them:
  *
- * AI leads the differentiator run, above migration and the capabilities grid:
- * it is the thing competitors selling the same four products do not have, so
- * it is met while attention is still high rather than in the reassurance zone
- * further down.
+ * 1. What is it? — business voice with AI on every call (hero, trust strip).
+ * 2. What does it provide? — the AI layer over every call (AI), which
+ *    product is yours (pillars), then what it does once it is in
+ *    (capabilities).
+ * 3. Who is it for? — which sector you are in (industries).
+ * 4. Why choose it? — the four reasons and the side-by-side (why), what
+ *    actually changes when you switch (migration), the support claim
+ *    evidenced once (film and one review), does it fit your stack
+ *    (integrations), who else went through with it (customer stories).
+ * 5. What next? — how it works, FAQ, apps, talk to us (CTA).
+ *
+ * AI is the client's lead differentiator, so it is named in the hero and
+ * demonstrated straight after it. The AI lettermark (`AiMark`) marks every
+ * place AI appears and nowhere else — follow it down the page.
  *
  * Price is not argued here any more, only quoted once in the hero. The plan
  * cards live on /pricing, which the hero and the nav both link to.
@@ -58,6 +62,54 @@ import {
  * stack of identical centred blocks.
  */
 
+/** What the hero promises beside the CTAs. */
+const heroSupportPoints = [
+  "Keep Your Existing Numbers",
+  "24/7 Expert Support",
+  "No Hardware Required",
+  "AI Transcripts and Summaries",
+];
+
+/**
+ * The product chooser as a bento, by position in `homePillars`:
+ *
+ *   Cloud Phone (wide)        | SIP     | AI Voice
+ *   Call Center | Unified Comms (wide)  | (tall)
+ *
+ * AI Voice takes the tall cell because it is the differentiator; the two
+ * broad platforms take the wide ones, text beside their drawing. On a tablet
+ * the wide and tall cards take a full row each and SIP pairs with Call
+ * Center; on a phone everything stacks.
+ */
+const pillarLayout: { cell: string; kind: "wide" | "small" | "tall" }[] = [
+  { cell: "sm:col-span-2 lg:col-start-1 lg:row-start-1", kind: "wide" },
+  { cell: "lg:col-start-3 lg:row-start-1", kind: "small" },
+  { cell: "lg:col-start-1 lg:row-start-2", kind: "small" },
+  { cell: "sm:col-span-2 lg:col-start-2 lg:row-start-2", kind: "wide" },
+  {
+    cell: "sm:col-span-2 lg:col-span-1 lg:col-start-4 lg:row-span-2 lg:row-start-1",
+    kind: "tall",
+  },
+];
+
+/**
+ * The AI capabilities named on the featured pillar card: only the ones
+ * `aiStages` lists without a "where enabled" qualifier, so nothing on the
+ * card is promised to every customer that depends on their plan.
+ */
+const aiHighlights = aiStages
+  .flatMap(({ items }) => items)
+  .filter(({ conditional }) => !conditional)
+  .map(({ label }) => label)
+  .filter((label) =>
+    [
+      "Call transcription",
+      "Call summaries",
+      "Conversation intelligence",
+      "Intelligent workflow automation",
+    ].includes(label),
+  );
+
 /** The single review we pull forward as the page's headline proof. */
 const featuredReview = reviews[0];
 
@@ -65,8 +117,13 @@ export default function Home() {
   return (
     <>
       {/* ---------------------------------------------------------------
-          Hero. One dominant focal point: the claim, the two CTAs, and
-          proof the visitor can verify. Everything below is subordinate.
+          Hero. A first-time visitor has to know what SipLink sells within
+          a few seconds, so the headline names the product and the buyer,
+          the subheadline lists what is on offer, and the two CTAs split
+          "ready to talk" from "still looking". The four supporting points
+          answer the usual objections (numbers, support, hardware, fit)
+          while the floating cards frame the photograph. Trust claims get
+          their own section below, once they can be verified.
          --------------------------------------------------------------- */}
       <section className="relative overflow-hidden border-b border-border">
         {/* The photograph is the section's backdrop, not a column item: it
@@ -96,41 +153,50 @@ export default function Home() {
 
         {/* The only section on the page that does not sit on the shared
             `max-w-7xl` grid: its inset and its height both come from
-            `.hero-frame` in globals.css, where the reasoning lives. The
-            gutter applies on both sides — the photograph bleeds past it
-            either way, but the cards floating over her are positioned off
-            this box, and a left-only rule left them eight pixels from the
-            window edge. */}
+            `.hero-frame` in globals.css, where the reasoning lives. */}
         <div className="hero-frame relative mx-auto flex w-full flex-col justify-center py-12 lg:py-16">
-          <div className="grid gap-14 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:items-center lg:gap-12 xl:gap-16">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:items-center lg:gap-12 xl:gap-16">
             <div>
-              <Badge variant="secondary" className="font-mono tracking-widest">
-                <ShieldCheck className="size-3.5" aria-hidden />
-                HIPAA COMPLIANT &middot; DoT-LICENSED
-              </Badge>
+              {/* AI named in the first thing read, not left to the subcopy.
+                  Jumps to the demo rather than the product page: seeing a
+                  call handled sells it better than a feature list. */}
+              <Link
+                href="#ai"
+                className="group mb-6 inline-flex items-center gap-2.5 rounded-full border border-primary/20 bg-background/80 py-1 pr-3.5 pl-1 text-sm shadow-xs backdrop-blur-md transition-colors hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              >
+                <AiMark />
+                <span className="font-medium">New: AI Voice Assistant</span>
+                <span className="hidden text-muted-foreground sm:inline">
+                  See it handle a call
+                </span>
+                <ArrowRight
+                  className="size-3.5 text-primary transition-transform group-hover:translate-x-0.5"
+                  aria-hidden
+                />
+              </Link>
 
               {/* Fluid: tracks viewport height too, so a short laptop screen
                   gets a smaller headline rather than an overflowing one. */}
-              <h1 className="font-heading mt-5 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[clamp(2.25rem,4.2vh+1.1vw,3.5rem)]">
-                Enterprise-grade voice.{" "}
+              <h1 className="font-heading text-4xl leading-[1.08] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[clamp(2.25rem,4vh+1.1vw,3.25rem)]">
+                Business Phone Systems{" "}
                 <span className="text-primary">
-                  Answered by people who pick up.
+                  Built for How Your Team Works
                 </span>
               </h1>
 
               <p className="mt-5 max-w-xl text-base text-pretty text-muted-foreground lg:text-lg">
-                A cloud phone system for growing businesses — hosted PBX, SIP
-                trunking, call centre and unified communications on one secure
-                network. Keep your numbers. Lose the hardware.
+                Cloud PBX, SIP trunking, call center and WhatsApp, with AI that
+                transcribes and summarises your calls and, where you enable
+                it, answers them for you. All from one reliable partner.
               </p>
 
               <div className="mt-7 flex flex-wrap items-center gap-4">
                 <Button asChild size="lg">
-                  <Link href="/contact">Book a demo</Link>
+                  <Link href="/contact">Book a Free Consultation</Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="group">
-                  <Link href="/pricing">
-                    See pricing
+                  <Link href="/solutions">
+                    Explore Solutions
                     <ArrowRight
                       className="transition-transform group-hover:translate-x-0.5"
                       aria-hidden
@@ -139,14 +205,16 @@ export default function Home() {
                 </Button>
               </div>
 
-              <p className="mt-4 text-sm text-muted-foreground">
-                From{" "}
-                <span className="font-medium text-foreground">
-                  {plans[0].price}
-                </span>{" "}
-                per user / month &middot; unlimited US &amp; Canada calling
-                &middot; minimum 10 lines
-              </p>
+              <ul className="mt-8 grid max-w-xl gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
+                {heroSupportPoints.map((point) => (
+                  <li key={point} className="flex items-center gap-2.5">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <Check className="size-3" aria-hidden />
+                    </span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Below `lg` the backdrop is hidden, so the photo appears here
@@ -232,10 +300,20 @@ export default function Home() {
                     ))}
                   </span>
                 </span>
-                <p className="text-xs leading-snug text-pretty">
-                  &ldquo;Hi, thanks for calling SipLink. How can I help you
-                  today?&rdquo;
-                </p>
+                <div>
+                  {/* Says who is speaking: the greeting is the AI
+                      receptionist, which is the point of the card. */}
+                  <p className="mb-1 flex items-center gap-1.5 text-[11px] font-medium text-primary">
+                    <span className="inline-flex scale-75">
+                      <AiMark />
+                    </span>
+                    AI receptionist
+                  </p>
+                  <p className="text-xs leading-snug text-pretty">
+                    &ldquo;Hi, thanks for calling SipLink. How can I help you
+                    today?&rdquo;
+                  </p>
+                </div>
               </div>
 
               {/* Capability stack, pinned to the bottom edge and kept small
@@ -272,47 +350,261 @@ export default function Home() {
         </div>
       </section>
 
+      <TrustStrip />
+
+      {/* AI straight after the trust strip, the way Quo, Aircall and
+          Nextiva lead with theirs: it is what competitors selling the same
+          products do not have, and the hero's "New" pill lands here. */}
+      <AiConsole />
+
       {/* ---------------------------------------------------------------
-          Why SipLink. Three beats that each do a different job: the
-          thesis, then four reasons to believe it, then what is actually
-          in the box. Running them together would be three answers to the
-          same question.
-
-          Everything that would normally box this content is left off. No
-          card, no radius, no shadow, no tray behind the icons — the only
-          structure is the hairline grid, which arrives at `lg` and is
-          simply absent below it. Four boxes stacked directly above the
-          pillars' four boxes is the failure this avoids.
-
-          The heading sits in its own column rather than above the text.
-          Two words set against a paragraph is the cheapest way to give a
-          section an opening without adding an eyebrow, and this is the
-          one head on the page that does without one.
+          What does your business need? The product chooser. Visitors who do
+          not speak telecom pick the situation closest to theirs, not a
+          product name. Laid out as a bento — see `pillarLayout`.
          --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-16">
-            <h2 className="font-heading text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-              Why {site.name}
+      {/* Styled to match the feature bento below it (FeatureCards): no
+          outlines, a soft pink shadow on a pale pink ground, and the same
+          icon-chip header — so the two "what does it provide?" sections read
+          as one. */}
+      <section className="border-b border-border bg-gradient-to-b from-primary/5 via-primary/[0.03] to-background">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+          <div className="max-w-2xl">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              Solutions
+            </span>
+            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              What Does Your Business Need?
             </h2>
-
-            <div className="max-w-2xl space-y-4">
-              {whyIntro.map((paragraph) => (
-                <p
-                  key={paragraph.slice(0, 32)}
-                  className="text-pretty text-muted-foreground"
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            <p className="mt-4 text-pretty text-muted-foreground">
+              Pick the situation closest to yours and we will show you the right
+              solution.
+            </p>
           </div>
+
+          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+            {homePillars.map(
+              (
+                { title, headline, description, href, icon: Icon, image, ai },
+                index,
+              ) => {
+                const { cell, kind } = pillarLayout[index] ?? {
+                  cell: "",
+                  kind: "small",
+                };
+
+                // The featured cell: the one card on the brand gradient, so AI
+                // is the first thing the eye lands on in the section.
+                if (kind === "tall") {
+                  return (
+                    <Link
+                      key={title}
+                      href={href}
+                      className={cn(
+                        "group rounded-2xl transition-transform duration-300 ease-out focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none motion-safe:hover:-translate-y-1",
+                        cell,
+                      )}
+                    >
+                      <Card className="relative h-full gap-0 overflow-hidden rounded-2xl bg-gradient-to-b from-brand-from to-brand-to p-5 text-primary-foreground shadow-xl ring-0 shadow-primary/25 transition-shadow duration-300 group-hover:shadow-2xl group-hover:shadow-primary/40">
+                        {/* A soft light in the top corner, so the gradient
+                            has depth rather than reading as a flat fill. */}
+                        <span
+                          aria-hidden
+                          className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full bg-background/20 blur-2xl"
+                        />
+
+                        <div className="relative flex items-center gap-2">
+                          <span className="rounded-full bg-background/95 p-1">
+                            <AiMark />
+                          </span>
+                          <span className="text-sm font-semibold">{title}</span>
+                          <Badge className="ml-auto h-5 bg-background px-1.5 text-[10px] text-primary">
+                            New
+                          </Badge>
+                        </div>
+
+                        <CardTitle className="relative mt-4 text-2xl font-semibold tracking-tight text-balance">
+                          {headline}
+                        </CardTitle>
+                        <CardDescription className="relative mt-1.5 text-pretty text-primary-foreground/80">
+                          {description}
+                        </CardDescription>
+
+                        {/* White, like the illustration's own ground, so the
+                            two read as one panel. */}
+                        <div className="relative mt-5 flex min-h-56 flex-1 items-center justify-center overflow-hidden rounded-xl bg-background shadow-lg shadow-black/10">
+                          {image ? (
+                            <Image
+                              src={image.src}
+                              alt={image.alt}
+                              width={720}
+                              height={841}
+                              sizes="(min-width: 1024px) 18rem, 90vw"
+                              className="h-full max-h-96 w-full object-contain p-2 transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.04]"
+                            />
+                          ) : null}
+                        </div>
+
+                        <ul className="relative mt-4 flex flex-wrap gap-1.5">
+                          {aiHighlights.map((label) => (
+                            <li
+                              key={label}
+                              className="flex items-center gap-1 rounded-full bg-background/15 px-2.5 py-1 text-xs font-medium ring-1 ring-background/25"
+                            >
+                              <Check className="size-3" aria-hidden />
+                              {label}
+                            </li>
+                          ))}
+                        </ul>
+
+                        <span className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">
+                          Explore {title}
+                          <ArrowRight
+                            className="size-4 transition-transform group-hover:translate-x-0.5"
+                            aria-hidden
+                          />
+                        </span>
+                      </Card>
+                    </Link>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={title}
+                    href={href}
+                    className={cn(
+                      "group rounded-2xl transition-transform duration-300 ease-out focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none motion-safe:hover:-translate-y-1",
+                      cell,
+                    )}
+                  >
+                    <Card
+                      className={cn(
+                        "h-full gap-4 rounded-2xl p-5 shadow-xl ring-0 shadow-primary/5 transition-shadow duration-300 group-hover:shadow-2xl group-hover:shadow-primary/15",
+                        "bg-gradient-to-br from-background via-background to-primary/10",
+                        kind === "wide" &&
+                          "md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:items-stretch md:gap-5",
+                      )}
+                    >
+                      {/* The drawings are pink on transparent PNGs, so they
+                          get a soft pink inset panel to stand on. */}
+                      <div
+                        className={cn(
+                          "flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent",
+                          kind === "small" && "h-40",
+                          kind === "wide" && "h-44 md:order-2 md:h-auto md:min-h-52",
+                        )}
+                      >
+                        {image ? (
+                          <Image
+                            src={image.src}
+                            alt={image.alt}
+                            width={512}
+                            height={512}
+                            sizes="(min-width: 1024px) 20rem, 90vw"
+                            className="h-full w-full object-contain p-4 transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.05]"
+                          />
+                        ) : (
+                          <span
+                            aria-hidden
+                            className="flex size-24 items-center justify-center rounded-full bg-primary/10 text-primary"
+                          >
+                            <Icon className="size-10" />
+                          </span>
+                        )}
+                      </div>
+
+                      <div
+                        className={cn(
+                          "flex flex-col px-1",
+                          kind === "wide" ? "md:justify-center md:py-2" : "flex-1",
+                        )}
+                      >
+                        <div className="flex items-center gap-2">
+                          {ai ? (
+                            <AiMark />
+                          ) : (
+                            <span className="flex size-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                              <Icon className="size-4" aria-hidden />
+                            </span>
+                          )}
+                          <span className="text-sm font-semibold">{title}</span>
+                          {ai ? (
+                            <Badge className="h-5 bg-primary/10 px-1.5 text-[10px] text-primary">
+                              New
+                            </Badge>
+                          ) : null}
+                        </div>
+
+                        <CardTitle
+                          className={cn(
+                            "mt-3 font-semibold tracking-tight text-balance",
+                            kind === "small" ? "text-lg" : "text-xl lg:text-2xl",
+                          )}
+                        >
+                          {headline}
+                        </CardTitle>
+                        <CardDescription className="mt-1.5 text-pretty">
+                          {description}
+                        </CardDescription>
+                        <span
+                          className={cn(
+                            "inline-flex items-center gap-1.5 pt-4 text-sm font-medium text-primary",
+                            kind !== "wide" && "mt-auto",
+                          )}
+                        >
+                          Explore {title}
+                          <ArrowRight
+                            className="size-4 transition-transform group-hover:translate-x-0.5"
+                            aria-hidden
+                          />
+                        </span>
+                      </div>
+                    </Card>
+                  </Link>
+                );
+              },
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* What the products do, straight after which product — so "what does
+          it provide?" is answered in one place before anything else. */}
+      <FeatureCards />
+
+      {/* Who it is for, while the visitor is still deciding whether to read
+          on. Buried lower, most visitors never learn it fits them. */}
+      <SectorStage />
+
+      {/* ---------------------------------------------------------------
+          The SipLink advantage. Answers "why you instead of another VoIP
+          provider?": the side-by-side first, with SipLink raised in the
+          middle, then the four reasons to believe it as a hairline band.
+          Sits after the chooser, so the visitor knows what is being
+          compared before being asked to compare it.
+         --------------------------------------------------------------- */}
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-background to-background">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="font-mono text-xs tracking-widest text-primary uppercase">
+              The {site.name} advantage
+            </span>
+            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-5xl">
+              More than just a <span className="text-primary">provider.</span>
+            </h2>
+            <p className="mt-5 text-pretty text-muted-foreground">
+              Get dedicated support, seamless migration, and a complete
+              communication stack built for your business growth.
+            </p>
+          </div>
+
+          <AdvantageTable />
 
           {/* Below `lg` this is an ordinary spaced grid with no rules at
               all; at `lg` the left borders turn it into the band. Doing it
               with per-cell borders rather than `divide-x` is what keeps the
               2-up tablet layout from growing stray verticals. */}
-          <div className="mt-10 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-x-0">
+          <div className="mt-20 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:mt-24 lg:grid-cols-4 lg:gap-x-0">
             {whyPoints.map(({ title, description, icon: Icon }) => (
               <div
                 key={title}
@@ -333,109 +625,10 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Named, because nine bare lines after four explained ones read
-              as an afterthought rather than an inventory. The heading is
-              what tells you these are contents, not more arguments. */}
-          <div className="mt-14 border-t border-border pt-10 lg:mt-16">
-            <h3 className="font-heading text-base font-semibold tracking-tight">
-              What that includes
-            </h3>
-
-            <ul className="mt-6 grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-              {whyIncludes.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span
-                    className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10"
-                    aria-hidden
-                  >
-                    <Check className="size-3 text-primary" />
-                  </span>
-                  <span className="text-sm leading-relaxed text-pretty text-muted-foreground">
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
       </section>
-
-      {/* ---------------------------------------------------------------
-          Pillars. Four ways in, labelled by the job the customer is
-          hiring us for — not by product name alone.
-         --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="max-w-2xl">
-            <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Where you start
-            </span>
-            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Four ways onto the network
-            </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">
-              Whether you are replacing a PBX, connecting equipment you already
-              own, or running a floor of agents — the same platform underneath,
-              configured to your situation.
-            </p>
-          </div>
-
-          {/* Every card the same shape, two to a row, white with the pink
-              blooming out of the corner the illustration sits in.
-
-              The bloom is placed there on purpose rather than spread over
-              the whole card: these are pink drawings, and a soft pink ground
-              is what they were made to stand on, while the copy stays on
-              plain white where it reads hardest. Same gradient language as
-              the card on /pricing, so the two are recognisably a pair. */}
-          <div className="mt-14 grid gap-5 sm:grid-cols-2">
-            {homePillars.map(({ eyebrow, title, description, href, image }) => (
-              <Link
-                key={title}
-                href={href}
-                className="group flex flex-col overflow-hidden rounded-3xl border border-primary/12 bg-gradient-to-br from-brand-from/20 via-background via-45% to-background shadow-sm transition duration-300 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:outline-none sm:min-h-64 sm:flex-row sm:items-stretch motion-safe:hover:-translate-y-1 motion-safe:focus-visible:-translate-y-1"
-              >
-                <div className="flex h-44 shrink-0 items-center justify-center overflow-hidden sm:h-auto sm:w-[40%]">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={512}
-                    height={512}
-                    sizes="(min-width: 640px) 16rem, 90vw"
-                    className="h-full w-full object-contain p-4 transition-transform duration-500 ease-out motion-safe:group-hover:-translate-y-1.5 motion-safe:group-hover:scale-[1.06] motion-safe:group-focus-visible:-translate-y-1.5 motion-safe:group-focus-visible:scale-[1.06]"
-                  />
-                </div>
-
-                <div className="flex flex-1 flex-col justify-center p-6 lg:p-7">
-                  <span className="text-sm text-muted-foreground">
-                    {eyebrow}
-                  </span>
-
-                  <h3 className="font-heading mt-2 text-xl font-semibold tracking-tight text-balance">
-                    {title}
-                  </h3>
-
-                  <p className="mt-2.5 text-sm leading-relaxed text-pretty text-muted-foreground">
-                    {description}
-                  </p>
-
-                  {/* The rule draws in from the left on hover — the whole
-                      card is the link, so an arrow would say it twice. */}
-                  <span className="relative mt-5 inline-block self-start pt-0.5 text-sm font-medium text-primary after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100">
-                    Explore {title}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <AiConsole />
 
       <SwitchingStory />
-
-      <FeatureCards />
 
       {/* ---------------------------------------------------------------
           The support claim, evidenced. The hero promises people who pick
@@ -458,8 +651,8 @@ export default function Home() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Every provider sells the same features. What customers write
-              about, over and over, is that someone answers — on WhatsApp, on
-              the phone, at any hour, and the problem gets fixed.
+              about, over and over, is that someone answers, on WhatsApp, on the
+              phone, at any hour, and the problem gets fixed.
             </p>
           </div>
 
@@ -503,79 +696,35 @@ export default function Home() {
         </div>
       </section>
 
-      <SectorStage />
-
       <IntegrationWall />
 
       {/* The reviews land here rather than up beside the film: by this point
-          the visitor has seen the products, the migration, their own sector
+          the visitor has seen the products, their own sector, the migration
           and their own tools, so the objection left is whether anyone else
           actually went through with it. The wall of names answers that, and
           it is the last thing read before the closing ask. */}
       <CustomerStories />
 
-      {/* ---------------------------------------------------------------
-          Apps. The other half of "does it fit my stack?" — the integration
-          diagram above makes the same argument at full width, so this
-          stands on its own.
-         --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:items-center lg:gap-16">
-            <div>
-              <span className="font-mono text-xs tracking-widest text-primary uppercase">
-                Mobile &amp; desktop
-              </span>
-              <h2 className="font-heading mt-4 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-                Take your extension anywhere
-              </h2>
-              <p className="mt-4 text-pretty text-muted-foreground">
-                The SipLink UC app puts your business line on your phone and
-                desktop — calls, video, messaging and voicemail, wherever you
-                are.
-              </p>
-            </div>
+      <HowItWorks />
 
-            <div className="flex flex-wrap gap-4 lg:justify-end">
-              <Button asChild variant="outline" size="lg">
-                <a
-                  href={mobileApps.ios}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <AppleLogo className="size-5" />
-                  Download for iOS
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <a
-                  href={mobileApps.android}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <PlayStoreLogo className="size-5" />
-                  Download for Android
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AppsShowcase />
+
+      <FaqSection />
 
       {/* ---------------------------------------------------------------
-          Closing CTA, with the compliance credentials folded in — the
-          last reassurance sits next to the last ask.
+          Closing CTA. Outcome-first: what changes for the business, one
+          ask, and the three things that remove the risk of making it.
          --------------------------------------------------------------- */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        {/* This panel is now a component, because every solution page closes
+        {/* This panel is a component, because every solution page closes
             with the same one. Keeping a copy here would have meant the home
             CTA and the seven others drifting apart the first time either was
             touched. See components/site/cta-panel. */}
         <CtaPanel
-          eyebrow="Zero risk &middot; Instant onboarding"
-          heading="Ready to modernize your enterprise telephony?"
-          body="Activate your elastic SIP trunk in minutes with complimentary test credits, or schedule a private architecture review with a certified carrier engineer."
-          contactLabel="Speak to an architect"
+          heading="Ready to Upgrade Your Business Communications?"
+          body="Replace outdated PBX systems, improve call handling and give your team one reliable communications platform."
+          action={{ label: "Book a Free Consultation", href: "/contact" }}
+          note="No obligation &middot; Free consultation &middot; Migration guidance included"
         />
       </section>
     </>

@@ -47,7 +47,7 @@ export const conversationStages: ConversationStage[] = [
     label: "Reaches you",
     question: "Can customers get through?",
     heading: "Every conversation starts with a number that works",
-    body: "Local presence where your customers are, toll-free where cost would stop them calling, and the numbers you already advertise — kept exactly as they are.",
+    body: "Local presence where your customers are, toll-free where cost would stop them calling, and the numbers you already advertise, kept exactly as they are.",
     icon: PhoneIncoming,
     products: [
       {
@@ -117,7 +117,7 @@ export const conversationStages: ConversationStage[] = [
     label: "Is handled",
     question: "Can your team cope with the volume?",
     heading: "Where the work actually happens",
-    body: "Agents need the tools to move faster and supervisors need to see what is happening while it happens — not in a report the following week.",
+    body: "Agents need the tools to move faster and supervisors need to see what is happening while it happens, not in a report the following week.",
     icon: Headset,
     products: [
       {

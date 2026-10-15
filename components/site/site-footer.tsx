@@ -1,102 +1,206 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Phone } from "lucide-react";
+import {
+  Building2,
+  ChartColumn,
+  Cloud,
+  CodeXml,
+  FileText,
+  Headphones,
+  Layers,
+  Mail,
+  MapPin,
+  Phone,
+  Smartphone,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 
-import { AppleLogo, PlayStoreLogo } from "@/components/site/store-icons";
-import { Separator } from "@/components/ui/separator";
-import { footerNav, mobileApps, site, social } from "@/lib/site";
+import { hasSocialIcon, SocialIcon } from "@/components/site/social-icons";
+import { footerNav, site, social } from "@/lib/site";
+import dotLogo from "@/public/trust/dot-full.webp";
+import gdprLogo from "@/public/trust/gdpr.webp";
+import hipaaLogo from "@/public/trust/hipaa.webp";
+import isoLogo from "@/public/trust/iso.webp";
+
+const complianceBadges = [
+  { src: dotLogo, alt: "Department of Telecommunications, India Telecom" },
+  { src: isoLogo, alt: "ISO/IEC 27001:2022" },
+  { src: hipaaLogo, alt: "HIPAA compliant" },
+  { src: gdprLogo, alt: "EU GDPR compliant" },
+];
+
+/**
+ * The link columns, two groups stacked in each. Paired so the five columns
+ * come out roughly even in height: a long group sits with a short one.
+ *
+ * Internet is left out, as in the design: it has its own section of the site
+ * and its own menu, and a sixth column would crowd the row.
+ */
+const COLUMNS: string[][] = [
+  ["Business Voice", "Phone Numbers"],
+  ["Communication APIs", "Contact Center"],
+  ["Enterprise Features", "By Business Size"],
+  ["By Use Case", "Migration"],
+  ["Industries", "Company"],
+];
+
+/** One icon per group heading. */
+const ICONS: Record<string, LucideIcon> = {
+  "Business Voice": Phone,
+  "Phone Numbers": Smartphone,
+  "Communication APIs": CodeXml,
+  "Contact Center": Headphones,
+  "Enterprise Features": Layers,
+  "By Business Size": Building2,
+  "By Use Case": Users,
+  Migration: Cloud,
+  Industries: ChartColumn,
+  Company: FileText,
+};
+
+/**
+ * Only the accounts we have a mark for, in the design's order. There is no
+ * Instagram account, so WhatsApp takes its place at the end.
+ */
+const SOCIAL_ORDER = ["LinkedIn", "YouTube", "X (Twitter)", "Facebook", "WhatsApp"];
+const socialLinks = social
+  .filter(({ label }) => hasSocialIcon(label))
+  .sort((a, b) => SOCIAL_ORDER.indexOf(a.label) - SOCIAL_ORDER.indexOf(b.label));
+
+function Group({ heading }: { heading: string }) {
+  const group = footerNav.find((item) => item.heading === heading);
+  if (!group) return null;
+  const Icon = ICONS[heading];
+
+  return (
+    <div>
+      <h3 className="flex items-center gap-2 text-[13px] font-semibold whitespace-nowrap">
+        {Icon ? <Icon className="size-4 text-primary" aria-hidden /> : null}
+        {group.heading}
+      </h3>
+      <ul className="mt-3 space-y-1.5">
+        {group.links.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              className="text-[13px] leading-snug text-muted-foreground transition-colors hover:text-primary"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-muted/40">
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
-          <div className="col-span-2 md:col-span-1">
+    <footer className="border-t border-border bg-gradient-to-b from-primary/5 to-background">
+      {/* Full width rather than the page's max-w-7xl: six columns of links
+          need the room, and on a wide screen the capped version left the
+          outer thirds empty. */}
+      <div className="w-full px-6 pt-16 pb-8 lg:px-10 2xl:px-16">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.3fr)_repeat(5,minmax(0,1fr))] lg:gap-0">
+          <div className="lg:pr-6">
             <Image
               src="/siplink-logo.webp"
               alt={site.legalName}
               width={300}
               height={135}
-              className="h-9 w-auto object-contain"
+              className="h-14 w-auto object-contain"
             />
-            <p className="mt-4 max-w-xs text-sm text-muted-foreground">
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
               {site.description}
             </p>
-            <div className="mt-6 space-y-2 text-sm">
-              <a
-                href={`tel:${site.phone.replace(/\s/g, "")}`}
-                className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <Phone className="size-4" aria-hidden />
-                {site.phone}
-              </a>
-              <a
-                href={`mailto:${site.email}`}
-                className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <Mail className="size-4" aria-hidden />
-                {site.email}
-              </a>
-            </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href={mobileApps.ios}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
-              >
-                <AppleLogo className="size-4" />
-                SipLink UC for iOS
-              </a>
-              <a
-                href={mobileApps.android}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
-              >
-                <PlayStoreLogo className="size-4" />
-                SipLink UC for Android
-              </a>
-            </div>
+            <ul className="mt-6 space-y-3 text-sm">
+              <li>
+                <a
+                  href={`tel:${site.phone.replace(/\s/g, "")}`}
+                  className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
+                >
+                  <Phone className="size-4 text-primary" aria-hidden />
+                  {site.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
+                >
+                  <Mail className="size-4 text-primary" aria-hidden />
+                  {site.email}
+                </a>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="flex items-start gap-3 text-muted-foreground transition-colors hover:text-primary"
+                >
+                  <MapPin
+                    className="mt-0.5 size-4 shrink-0 text-primary"
+                    aria-hidden
+                  />
+                  <address className="max-w-xs leading-relaxed not-italic">
+                    {site.address}
+                  </address>
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          {footerNav.map((group) => (
-            <div key={group.heading}>
-              <h3 className="text-sm font-semibold">{group.heading}</h3>
-              <ul className="mt-4 space-y-3">
-                {group.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
+          {/* Two groups per column on desktop; below that the columns simply
+              flow two or three across, each keeping its pair together. */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:contents">
+            {COLUMNS.map((pair) => (
+              <div
+                key={pair[0]}
+                className="space-y-8 lg:border-l lg:border-border lg:px-5 lg:last:pr-0"
+              >
+                {pair.map((heading) => (
+                  <Group key={heading} heading={heading} />
                 ))}
-              </ul>
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
 
-        <Separator className="my-10" />
+        <div className="mt-14 flex flex-col gap-6 border-t border-border pt-8 lg:flex-row lg:items-center">
+          <ul className="flex flex-wrap items-center gap-6">
+            {complianceBadges.map((badge) => (
+              <li key={badge.alt}>
+                <Image
+                  src={badge.src}
+                  alt={badge.alt}
+                  className="h-10 w-auto"
+                  sizes="96px"
+                />
+              </li>
+            ))}
+          </ul>
 
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-muted-foreground">
-            Copyright © 2026 {site.legalName}. All Rights Reserved.
+          <span
+            aria-hidden
+            className="hidden h-10 w-px bg-border lg:mx-4 lg:block"
+          />
+
+          <p className="text-sm text-muted-foreground">
+            © 2026 {site.legalName}. All Rights Reserved.
           </p>
 
-          <ul className="flex flex-wrap gap-x-5 gap-y-2">
-            {social.map((item) => (
-              <li key={item.label}>
+          <ul className="flex items-center gap-5 lg:ml-auto">
+            {socialLinks.map(({ label, href }) => (
+              <li key={label}>
                 <a
-                  href={item.href}
+                  href={href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label={label}
+                  className="text-foreground transition-colors hover:text-primary"
                 >
-                  {item.label}
+                  <SocialIcon label={label} className="size-5" />
                 </a>
               </li>
             ))}

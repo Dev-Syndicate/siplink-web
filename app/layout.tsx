@@ -25,7 +25,7 @@ const script = Caveat({
 
 export const metadata: Metadata = {
   title: {
-    default: `${site.legalName} — ${site.tagline}`,
+    default: `${site.legalName}, ${site.tagline}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,

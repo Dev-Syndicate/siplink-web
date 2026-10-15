@@ -98,7 +98,7 @@ const OPENERS: Record<string, () => [InternetOpener, InternetOpener]> = {
     {
       eyebrow: "Nine people, one line",
       heading: "The number a plan is sized from is not the headcount",
-      lede: "Watch the floor arrive over twenty minutes, and watch the second number climb behind the first. Two are reading, one is in a meeting, one is away from the desk — and the gap between the two figures is the whole of this page.",
+      lede: "Watch the floor arrive over twenty minutes, and watch the second number climb behind the first. Two are reading, one is in a meeting, one is away from the desk, and the gap between the two figures is the whole of this page.",
       scene: (
         <PlanConcurrencyScene label="Nine people arriving at an office between 08:52 and 09:14, with a running count of how many are on the payroll against how many are actually moving traffic at the same moment." />
       ),
@@ -116,15 +116,15 @@ const OPENERS: Record<string, () => [InternetOpener, InternetOpener]> = {
     {
       eyebrow: "The same minute, twice",
       heading: "What “it does not queue” actually looks like",
-      lede: "A client on video, the CRM loading, a card payment and a call on the desk phone — all in the same minute. On the left they take turns. On the right nothing happens at all, which is the product.",
+      lede: "A client on video, the CRM loading, a card payment and a call on the desk phone, all in the same minute. On the left they take turns. On the right nothing happens at all, which is the product.",
       scene: (
-        <FeatureQueueScene label="The same four jobs — a client video call, the CRM loading, a card payment and a desk phone call — running on a line that makes them queue beside a business line that carries all four at once." />
+        <FeatureQueueScene label="The same four jobs, a client video call, the CRM loading, a card payment and a desk phone call, running on a line that makes them queue beside a business line that carries all four at once." />
       ),
     },
     {
       eyebrow: "“It is slow”",
       heading: "Four boxes, and who gets to argue about which one",
-      lede: "The complaint never says which part. Follow the search along the chain — the Wi-Fi, the switch, the router, the circuit — and count the phone numbers involved in each half of the picture.",
+      lede: "The complaint never says which part. Follow the search along the chain, the Wi-Fi, the switch, the router, the circuit, and count the phone numbers involved in each half of the picture.",
       scene: (
         <FeatureOneCallScene label="A fault report being traced along the Wi-Fi, the switch, the router and the circuit by one operations team on one ticket, beside the same four boxes bought from four separate suppliers." />
       ),
@@ -142,7 +142,7 @@ const OPENERS: Record<string, () => [InternetOpener, InternetOpener]> = {
     {
       eyebrow: "Month end",
       heading: "Three invoices that never quite reconcile",
-      lede: "The finance lead never touches the network and still has a view. Theirs is the only benefit on this page that is administrative rather than technical — and the only one visible from a desk with a spreadsheet on it.",
+      lede: "The finance lead never touches the network and still has a view. Theirs is the only benefit on this page that is administrative rather than technical, and the only one visible from a desk with a spreadsheet on it.",
       scene: (
         <BenefitOneBillScene label="Three separate supplier invoices on their own cycles and formats, replaced by one document itemised per location for connectivity, voice and network kit, with a single support number behind it." />
       ),
@@ -186,7 +186,7 @@ export async function generateMetadata({
   return {
     // Titled against the parent, so a search result reads
     // "Plans — Business Broadband" rather than a bare "Plans".
-    title: `${found.section.title} — ${found.service.title}`,
+    title: `${found.section.title}, ${found.service.title}`,
     description: found.section.intro,
   };
 }

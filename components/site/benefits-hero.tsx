@@ -72,7 +72,7 @@ export function BenefitsHero() {
 
           <p className="mt-7 max-w-xl text-lg text-pretty text-muted-foreground">
             The difference between a business connection and a consumer one
-            shows up in ordinary weeks rather than exceptional ones — in
+            shows up in ordinary weeks rather than exceptional ones, in
             whether the Monday call holds, and in who picks up when it does
             not.
           </p>

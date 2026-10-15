@@ -83,7 +83,7 @@ const JOBS: Job[] = [
     id: "card",
     icon: CreditCard,
     what: "A card payment",
-    bad: "Timed out — please retry",
+    bad: "Timed out, please retry",
     good: "Approved, in front of the customer",
     person: PEOPLE.lei,
   },

@@ -66,7 +66,7 @@ const STAGES: Stage[] = [
     title: "Requirement confirmed",
     icon: ClipboardCheck,
     detail:
-      "What needs to reach what. A VPN, a trunk, an allowlist or a hosted system — this is what decides whether one address is enough.",
+      "What needs to reach what. A VPN, a trunk, an allowlist or a hosted system, this is what decides whether one address is enough.",
   },
   {
     id: "eligibility",

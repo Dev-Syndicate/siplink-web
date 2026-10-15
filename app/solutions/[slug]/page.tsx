@@ -40,7 +40,7 @@ export async function generateMetadata({
   if (!solution) return {};
 
   return {
-    title: `${solution.title} — Solutions`,
+    title: `${solution.title}, Solutions`,
     description: solution.intro,
   };
 }
@@ -248,7 +248,7 @@ export default async function SolutionDetailPage({
                 A structured move, from planning to go-live
               </h2>
               <p className="mt-3 text-pretty text-muted-foreground">
-                We treat migration as a process, not a switch you flip — so
+                We treat migration as a process, not a switch you flip, so
                 communication keeps running while the infrastructure beneath it
                 changes.
               </p>
@@ -398,7 +398,7 @@ export default async function SolutionDetailPage({
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
           Tell us how your teams communicate today and we&rsquo;ll recommend a
-          configuration — including porting your existing numbers.
+          configuration, including porting your existing numbers.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Button asChild size="lg">

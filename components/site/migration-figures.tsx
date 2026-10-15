@@ -182,7 +182,7 @@ export function PriCeiling() {
                   strokeLinecap="round"
                 />
                 <Note x={166} y={306} tone="muted">
-                  engaged — no channel free
+                  engaged, no channel free
                 </Note>
               </>
             ) : (
@@ -384,7 +384,7 @@ export function CloudUntether() {
       viewBox={`0 0 ${W} ${H}`}
       className="w-full"
       role="img"
-      aria-label="Four people — at the head office, at home, at a branch and on the road — each reaching the same phone system in the cloud."
+      aria-label="Four people, at the head office, at home, at a branch and on the road, each reaching the same phone system in the cloud."
     >
       <Defs uid="cld" w={W} h={H} />
       <Field uid="cld" w={W} h={H} />

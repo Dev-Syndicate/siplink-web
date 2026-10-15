@@ -39,7 +39,7 @@ export default function ContactPage() {
           </h1>
           <p className="mt-6 text-lg text-pretty text-muted-foreground">
             Tell us how your teams communicate today and we will map it to a
-            plan — including porting your existing numbers.
+            plan, including porting your existing numbers.
           </p>
         </div>
       </section>

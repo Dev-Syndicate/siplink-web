@@ -90,7 +90,7 @@ export function PlanBusyHour() {
           </h2>
           <p className="mt-4 text-pretty text-muted-foreground">
             This is the same office across one day. Watch which applications
-            are live at each hour — the connection has to carry the worst of
+            are live at each hour, the connection has to carry the worst of
             it, not the average of it.
           </p>
         </div>
@@ -219,7 +219,7 @@ export function PlanBusyHour() {
                       />
                       {app}
                       <span className="sr-only">
-                        {live ? " — in use" : " — idle"}
+                        {live ? ", in use" : ", idle"}
                       </span>
                     </span>
                   </li>

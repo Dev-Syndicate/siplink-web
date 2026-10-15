@@ -204,7 +204,7 @@ export function DedicatedBandwidthSections() {
               <p className="mt-8 text-sm text-pretty text-muted-foreground">
                 Every subscriber who joins the segment takes a share of the same
                 capacity. Nothing has broken and nothing will show on a fault
-                report — the service is behaving exactly as sold.
+                report, the service is behaving exactly as sold.
               </p>
             </div>
 
@@ -266,7 +266,7 @@ export function DedicatedBandwidthSections() {
           </ScrollReveal>
 
           <ScrollReveal delay={120} className="mt-12 lg:mt-14">
-            <DedicatedLineScene label="A dedicated circuit followed hop by hop — the building, the access tail, your port at 50 Mbps to 100 Gbps, our DoT-licensed IP core and the internet — with a capacity band that stays the same width at every one of them." />
+            <DedicatedLineScene label="A dedicated circuit followed hop by hop, the building, the access tail, your port at 50 Mbps to 100 Gbps, our DoT-licensed IP core and the internet, with a capacity band that stays the same width at every one of them." />
           </ScrollReveal>
         </div>
       </section>

@@ -131,7 +131,7 @@ export function MidMarketSolution({
             </h2>
             <p className="mt-4 max-w-[52ch] text-pretty text-muted-foreground">
               Where supported, calls connect to the CRM and business
-              applications your teams already use — so an agent answers with the
+              applications your teams already use, so an agent answers with the
               record already open.
             </p>
           </div>

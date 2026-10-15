@@ -69,7 +69,7 @@ export function SymmetricalSpeedsHero() {
 
           <p className="mt-8 max-w-lg text-lg text-pretty text-muted-foreground">
             Consumer connections assume data flows inward. Business traffic does
-            not behave that way — and on an asymmetric line the outbound half
+            not behave that way, and on an asymmetric line the outbound half
             fails quietly, while the download test still looks fine.
           </p>
 
@@ -251,7 +251,7 @@ export function SymmetricalSpeedsSections() {
               The same line, read from both ends
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Six kinds of business traffic, each taking its turn. Watch which way each one actually travels, and the two meters either side of the middle — on a symmetrical service they read the same whichever flow is running.
+              Six kinds of business traffic, each taking its turn. Watch which way each one actually travels, and the two meters either side of the middle, on a symmetrical service they read the same whichever flow is running.
             </p>
           </ScrollReveal>
 

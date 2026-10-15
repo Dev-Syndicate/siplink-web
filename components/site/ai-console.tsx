@@ -3,44 +3,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
+import { AiMark } from "@/components/site/ai-mark";
 import { aiDemo, aiStages } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /** How long a stage holds before the console moves on. */
 const DWELL = 5000;
-
-/**
- * The AI lettermark.
- *
- * A lettermark rather than the usual sparkle: the brief is that AI should be
- * named, not hinted at, and two letters on the brand gradient say it plainly
- * where a wand or a star asks the reader to infer it. It also survives being
- * shrunk into the console's header row, which an icon at this size does not.
- *
- * The sheen is the section's AI signature — the same moving highlight appears
- * on every marker that stands for the AI and nowhere else on the site.
- */
-function AiMark({ live = false }: { live?: boolean }) {
-  return (
-    // The wrapper does not clip, so the dashed copy can rise clear of the
-    // chip. The sheen is clipped by the chip itself, one level in.
-    <span className="relative inline-flex size-6 shrink-0 items-center justify-center">
-      {live ? (
-        <span
-          aria-hidden
-          className="ghost-lift pointer-events-none absolute inset-0 rounded-md border border-dashed border-current"
-        />
-      ) : null}
-
-      <span className="relative inline-flex size-6 items-center justify-center overflow-hidden rounded-md bg-gradient-to-br from-brand-from to-brand-to">
-        <span className="font-mono text-[10px] leading-none font-semibold tracking-tight text-primary-foreground">
-          AI
-        </span>
-        <span aria-hidden className="ai-sheen absolute inset-0" />
-      </span>
-    </span>
-  );
-}
 
 /** Per-word stagger for the streaming transcript. */
 const WORD_STEP = 52;
@@ -171,7 +139,9 @@ export function AiConsole() {
   return (
     <section
       ref={section}
-      className="border-b border-border"
+      // The hero's "New" pill jumps here; the margin clears the sticky header.
+      id="ai"
+      className="scroll-mt-24 border-b border-border"
       onFocusCapture={() => setHeld(true)}
       onBlurCapture={() => setHeld(false)}
     >
@@ -192,8 +162,8 @@ export function AiConsole() {
           </h2>
 
           <p className="mt-4 text-pretty text-muted-foreground">
-            AI turns speech into text, text into a summary, and — where you
-            enable it — answers the call itself. Nobody has to replay a
+            AI turns speech into text, text into a summary, and, where you
+            enable it, answers the call itself. Nobody has to replay a
             recording to find out what was agreed.
           </p>
         </div>
@@ -307,7 +277,7 @@ export function AiConsole() {
             className="overflow-hidden rounded-2xl bg-foreground text-background shadow-xl"
           >
             <div className="flex items-center gap-2.5 border-b border-background/15 px-5 py-3.5">
-              <AiMark live={running} />
+              <AiMark />
 
               <span className="text-xs font-medium">
                 {active === 2 ? "AI answering" : "AI transcribing"}
@@ -533,7 +503,7 @@ function Notes({ dim }: { dim: boolean }) {
         style={{ "--note-delay": "120ms" } as React.CSSProperties}
         className="note-attach flex items-center gap-2.5"
       >
-        <AiMark live={!dim} />
+        <AiMark />
         <span className="text-xs font-medium">AI wrote this</span>
       </div>
 
@@ -586,7 +556,7 @@ function Reply() {
         style={{ "--note-delay": "120ms" } as React.CSSProperties}
         className="note-attach flex items-center gap-2.5"
       >
-        <AiMark live />
+        <AiMark />
         <span className="text-xs font-medium">AI said this</span>
       </div>
 

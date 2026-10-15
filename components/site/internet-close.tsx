@@ -32,7 +32,7 @@ export function InternetClose({
   secondaryLabel,
   secondaryHref,
   heading = "Tell us where your offices are",
-  body = "We will check what is deliverable at each address, size the service against how you actually work, and quote the whole network — voice included — as one bill.",
+  body = "We will check what is deliverable at each address, size the service against how you actually work, and quote the whole network, voice included, as one bill.",
 }: {
   ctaLabel: string;
   ctaHref: string;

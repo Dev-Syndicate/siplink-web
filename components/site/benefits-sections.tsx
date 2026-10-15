@@ -52,7 +52,7 @@ export function BenefitsSections() {
               </h2>
               <p className="mt-4 text-pretty text-muted-foreground">
                 Anyone can write &ldquo;reliable connectivity&rdquo; on a page.
-                These are the moments that phrase is supposed to mean — one for
+                These are the moments that phrase is supposed to mean, one for
                 each day, in the order they tend to happen.
               </p>
 
@@ -62,7 +62,7 @@ export function BenefitsSections() {
                   aria-hidden
                 />
                 <p className="text-sm text-muted-foreground">
-                  Monday morning is the week&rsquo;s real test — not the
+                  Monday morning is the week&rsquo;s real test, not the
                   afternoon a speed test gets run in.
                 </p>
               </div>

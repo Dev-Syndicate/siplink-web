@@ -105,7 +105,7 @@ const BEATS: Beat[] = [
     address: REISSUED,
     swapped: true,
     moved: true,
-    note: "A different service means a different address, and a round of reconfiguration everywhere the old one was written down — which is why it is worth raising early in a migration.",
+    note: "A different service means a different address, and a round of reconfiguration everywhere the old one was written down, which is why it is worth raising early in a migration.",
   },
 ];
 

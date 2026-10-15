@@ -81,7 +81,7 @@ const BEATS: Beat[] = [
     address: "203.0.113.88",
     dynamic: true,
     headline: "The lease renews",
-    note: "A different address, no notice, no error. The partner refuses a request from an address that is not on their list — correctly.",
+    note: "A different address, no notice, no error. The partner refuses a request from an address that is not on their list, correctly.",
   },
   {
     id: "static",

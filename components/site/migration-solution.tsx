@@ -168,7 +168,7 @@ export function MigrationSolution({ solution }: { solution: SolutionDetail }) {
                starts on the building and reads out to the copy. */
             <div className="mt-8 grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-14">
               <div>
-                <CloudScene label="One business number and four people — at the head office, at home, at a branch and on the road — on the same phone system in the cloud, each answering calls wherever they are." />
+                <CloudScene label="One business number and four people, at the head office, at home, at a branch and on the road, on the same phone system in the cloud, each answering calls wherever they are." />
                 <p className="mt-4 text-sm text-pretty text-muted-foreground">
                   {FIGURE_LEAD.scatter}
                 </p>

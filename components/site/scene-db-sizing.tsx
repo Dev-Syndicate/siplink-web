@@ -92,7 +92,7 @@ const STEPS: Step[] = [
     asks: "What does the worst hour look like?",
     answer: "Sized against the peak, not the average",
     settled: 62,
-    note: "The hour a circuit is judged on is never the hour anyone runs a speed test in — so the sizing is done against the former.",
+    note: "The hour a circuit is judged on is never the hour anyone runs a speed test in, so the sizing is done against the former.",
   },
   {
     id: "headroom",
@@ -281,7 +281,7 @@ export function DedicatedSizingScene({ label }: { label: string }) {
           </span>
 
           <span className="rounded-[0.7cqw] bg-card/70 px-[0.6cqw] py-[0.45cqw] text-[0.7cqw] leading-snug text-muted-foreground">
-            No figure is quoted until all four answers are in — which is why
+            No figure is quoted until all four answers are in, which is why
             there is no price list on this page.
           </span>
         </ScenePanel>

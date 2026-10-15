@@ -87,8 +87,7 @@ export function PlansHero() {
 
           <p className="mt-7 max-w-xl text-lg text-pretty text-muted-foreground">
             There is no standard office, so we do not sell a standard plan.
-            Your connection is built from what the business actually runs —
-            and changed when that changes, rather than at renewal.
+            Your connection is built from what the business actually runs, and changed when that changes, rather than at renewal.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">

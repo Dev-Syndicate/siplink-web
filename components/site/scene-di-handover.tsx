@@ -94,7 +94,7 @@ const RACK: Item[] = [
     label: "Your port",
     sub: "50 Mbps to 100 Gbps",
     side: "ours",
-    note: "Sized per site after a feasibility check, and uncontended — the capacity behind it is not shared with anybody else.",
+    note: "Sized per site after a feasibility check, and uncontended, the capacity behind it is not shared with anybody else.",
     frame: "top-[72%] left-[3%] w-[19%]",
     depth: 0.95,
     joint: { id: "ho-port", side: "r", left: "100%", top: "50%" },

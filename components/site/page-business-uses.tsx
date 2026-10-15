@@ -43,7 +43,7 @@ export function BusinessUsesHero() {
           <p className="mt-7 max-w-lg text-lg text-pretty text-muted-foreground">
             That is the pattern behind every use on this page. A partner, a
             platform, a trunk provider or your own staff need to know traffic
-            is yours — and recognition needs an address that does not move.
+            is yours, and recognition needs an address that does not move.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -63,7 +63,7 @@ export function BusinessUsesHero() {
 
         {/* Who is doing the recognising, one at a time. */}
         <ScrollReveal delay={140}>
-          <BusinessUsesHeroScene label="Four arrivals at one checkpoint — a partner platform, a trunk provider, a colleague connecting from home and an address nobody listed — each presenting a public address and being recognised or refused against the same rule." />
+          <BusinessUsesHeroScene label="Four arrivals at one checkpoint, a partner platform, a trunk provider, a colleague connecting from home and an address nobody listed, each presenting a public address and being recognised or refused against the same rule." />
         </ScrollReveal>
 
       </div>
@@ -146,7 +146,7 @@ export function BusinessUsesSections() {
           >
             <p className="max-w-xl text-pretty text-muted-foreground">
               The address is what a policy refers to. The policy itself is a
-              firewall&rsquo;s job — which is what a managed router and firewall
+              firewall&rsquo;s job, which is what a managed router and firewall
               service is for.
             </p>
             <Button asChild variant="outline" className="ml-auto">
@@ -175,7 +175,7 @@ export function BusinessUsesSections() {
           </ScrollReveal>
 
           <ScrollReveal delay={120} className="mt-12 lg:mt-14">
-            <StaticUsesScene label="Six inbound connections — a site-to-site VPN, remote access, remote monitoring, SIP trunking, partner allowlists and a hosted system — all configured against the same fixed public address." />
+            <StaticUsesScene label="Six inbound connections, a site-to-site VPN, remote access, remote monitoring, SIP trunking, partner allowlists and a hosted system, all configured against the same fixed public address." />
           </ScrollReveal>
         </div>
       </section>

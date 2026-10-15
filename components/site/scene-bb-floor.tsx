@@ -94,7 +94,7 @@ const SEATS: Seat[] = [
     device: Laptop,
     screen: "files",
     headline: "Work going the other way",
-    note: "An upload, however the app describes it — and the half of the line nobody is sold on.",
+    note: "An upload, however the app describes it, and the half of the line nobody is sold on.",
   },
   {
     id: "card",
@@ -410,7 +410,7 @@ function Screen({ seat, elapsed }: { seat: Seat; elapsed: number }) {
             <span className="text-[0.66cqw]">
               {index === 0
                 ? "Taking this one from the meeting room"
-                : "No problem — same extension either way"}
+                : "No problem, same extension either way"}
             </span>
           </span>
         ))}

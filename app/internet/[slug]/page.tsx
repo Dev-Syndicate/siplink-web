@@ -72,9 +72,9 @@ const OPENERS: Record<string, () => [InternetOpener, InternetOpener]> = {
     {
       eyebrow: "A floor at eleven",
       heading: "Five different jobs, one line, nobody waiting",
-      lede: "This is what a business connection is actually for. A client call, the CRM, a job going out to a customer, a card payment and somebody on the phone three rooms away — all at the same moment, none of them aware of each other.",
+      lede: "This is what a business connection is actually for. A client call, the CRM, a job going out to a customer, a card payment and somebody on the phone three rooms away, all at the same moment, none of them aware of each other.",
       scene: (
-        <BroadbandFloorScene label="An office floor at eleven in the morning: a video call with a client, cloud applications loading, files uploading to a customer, a card payment at the front desk and a colleague on the business number over Wi-Fi — all carried by one connection." />
+        <BroadbandFloorScene label="An office floor at eleven in the morning: a video call with a client, cloud applications loading, files uploading to a customer, a card payment at the front desk and a colleague on the business number over Wi-Fi, all carried by one connection." />
       ),
     },
     {
@@ -112,7 +112,7 @@ function ServiceStackSection({ slug, title }: { slug: string; title: string }) {
           <p className="mt-4 text-pretty text-muted-foreground">
             {title} is the base of a design rather than the whole of one.
             Security and network infrastructure layer onto the same service,
-            supported by the same team — added when you need them, not bundled
+            supported by the same team, added when you need them, not bundled
             on day one.
           </p>
         </ScrollReveal>

@@ -204,7 +204,7 @@ export function VpnSections() {
               These are not alternatives
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Site-to-site and remote access read as a choice when they sit side by side. Most estates end up with both, doing different jobs — and with the limit that neither of them is a firewall.
+              Site-to-site and remote access read as a choice when they sit side by side. Most estates end up with both, doing different jobs, and with the limit that neither of them is a firewall.
             </p>
           </ScrollReveal>
 

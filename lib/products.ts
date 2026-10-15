@@ -119,7 +119,7 @@ export const productDetails: ProductDetail[] = [
     categorySlug: "business-voice",
     tagline: "Connect your PBX to our IP network.",
     intro:
-      "SipLink SIP Trunking provides SIP-enabled connectivity for IP-PBX environments, allowing businesses to connect existing telephony systems to external voice networks using SIP and VoIP — for immediate savings and guaranteed quality of service.",
+      "SipLink SIP Trunking provides SIP-enabled connectivity for IP-PBX environments, allowing businesses to connect existing telephony systems to external voice networks using SIP and VoIP, for immediate savings and guaranteed quality of service.",
     icon: Router,
     problem: {
       heading: "Legacy trunks are expensive and inflexible",
@@ -214,7 +214,7 @@ export const productDetails: ProductDetail[] = [
     explainer: {
       question: "What is SIP trunking?",
       definition:
-        "A SIP trunk is SIP-enabled connectivity between your business IP-PBX infrastructure and the telephone network. Instead of physical PRI or analogue lines running into your building, calls travel over your internet or private connection as data — so the phone system you already own keeps working while the lines underneath it become software.",
+        "A SIP trunk is SIP-enabled connectivity between your business IP-PBX infrastructure and the telephone network. Instead of physical PRI or analogue lines running into your building, calls travel over your internet or private connection as data, so the phone system you already own keeps working while the lines underneath it become software.",
       steps: [
         {
           title: "Your PBX stays where it is",
@@ -265,7 +265,7 @@ export const productDetails: ProductDetail[] = [
       {
         question: "Do we have to replace our existing PBX?",
         answer:
-          "No. SIP trunking connects the IP-PBX you already operate to our voice network. Your extensions, call flows and internal dialling keep working — what changes is the connectivity underneath them.",
+          "No. SIP trunking connects the IP-PBX you already operate to our voice network. Your extensions, call flows and internal dialling keep working, what changes is the connectivity underneath them.",
       },
       {
         question: "Can we keep our existing phone numbers?",
@@ -295,7 +295,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "Lower per-channel costs, capacity that scales with demand, and a path to cloud calling that does not require discarding the equipment you have already paid for — with carrier redundancy and number portability built into the design rather than added later.",
+      body: "Lower per-channel costs, capacity that scales with demand, and a path to cloud calling that does not require discarding the equipment you have already paid for, with carrier redundancy and number portability built into the design rather than added later.",
     },
   },
   {
@@ -305,7 +305,7 @@ export const productDetails: ProductDetail[] = [
     categorySlug: "business-voice",
     tagline: "Customer conversations, routed and managed as one operation.",
     intro:
-      "SipLink CCaaS brings inbound and outbound customer calling into a cloud contact-centre environment. Intelligent routing, queues, agent tools and live reporting help every conversation reach the right person — and give supervisors the visibility to keep service moving.",
+      "SipLink CCaaS brings inbound and outbound customer calling into a cloud contact-centre environment. Intelligent routing, queues, agent tools and live reporting help every conversation reach the right person, and give supervisors the visibility to keep service moving.",
     icon: CloudCog,
     features: [
       {
@@ -483,7 +483,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "A customer-calling operation in which the next conversation has a route, waiting callers have a plan and supervisors can see what needs attention — backed by recording and reporting for what happens after the call.",
+      body: "A customer-calling operation in which the next conversation has a route, waiting callers have a plan and supervisors can see what needs attention, backed by recording and reporting for what happens after the call.",
     },
   },
   {
@@ -565,7 +565,7 @@ export const productDetails: ProductDetail[] = [
     ],
       problem: {
       heading: "Not every business wants to run a phone system",
-      body: "A traditional on-premises PBX has to live somewhere, and someone has to look after it — firmware, patches, backups and a call at the weekend when it stops answering. That work rarely belongs on a small IT team's plate, and branch offices drift onto separate systems.",
+      body: "A traditional on-premises PBX has to live somewhere, and someone has to look after it, firmware, patches, backups and a call at the weekend when it stops answering. That work rarely belongs on a small IT team's plate, and branch offices drift onto separate systems.",
     },
     approach: {
       heading: "How SipLink handles it",
@@ -619,11 +619,11 @@ export const productDetails: ProductDetail[] = [
     ],
     migration: {
       heading: "Moving off an on-premises PBX",
-      intro: "Many businesses still depend on a PBX that needs dedicated hardware, maintenance and physical space. We treat the move as a structured process from planning to go-live rather than switching one system off and another on — the goal is to modernise the environment while keeping you connected and minimising disruption for employees and customers.",
+      intro: "Many businesses still depend on a PBX that needs dedicated hardware, maintenance and physical space. We treat the move as a structured process from planning to go-live rather than switching one system off and another on, the goal is to modernise the environment while keeping you connected and minimising disruption for employees and customers.",
       steps: [
         {
           title: "Review what you run today",
-          body: "We go through the existing environment — users, extensions, numbers, departments, call flows, routing and the communication your business cannot be without.",
+          body: "We go through the existing environment, users, extensions, numbers, departments, call flows, routing and the communication your business cannot be without.",
         },
         {
           title: "Map it into the hosted platform",
@@ -654,7 +654,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "Who administers the system day to day?",
-        answer: "You do, through the web portal — extensions, IVR menus, time conditions, phonebooks and permissions are all yours to change. SipLink is responsible for hosting, monitoring and maintaining the platform underneath.",
+        answer: "You do, through the web portal, extensions, IVR menus, time conditions, phonebooks and permissions are all yours to change. SipLink is responsible for hosting, monitoring and maintaining the platform underneath.",
       },
       {
         question: "Can branch offices and home workers use the same system?",
@@ -671,7 +671,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "A full business phone system for offices, branches and remote staff with no hardware to own and no platform to maintain — you manage the people and the call flows, and SipLink manages everything underneath them.",
+      body: "A full business phone system for offices, branches and remote staff with no hardware to own and no platform to maintain, you manage the people and the call flows, and SipLink manages everything underneath them.",
     },
   },
   {
@@ -769,7 +769,7 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is an IP PBX?",
-      definition: "A PBX is the private exchange that runs a business's internal telephony — extensions, transfers, hold, voicemail and the rules deciding where an incoming call goes. An IP PBX does that work over your data network using SIP rather than over dedicated telephone wiring. In this deployment the IP PBX is a system you own and operate at your own site, rather than a service someone else hosts for you. It connects outward to the public telephone network over SIP trunks, so internal calling stays local while external calls travel over IP.",
+      definition: "A PBX is the private exchange that runs a business's internal telephony, extensions, transfers, hold, voicemail and the rules deciding where an incoming call goes. An IP PBX does that work over your data network using SIP rather than over dedicated telephone wiring. In this deployment the IP PBX is a system you own and operate at your own site, rather than a service someone else hosts for you. It connects outward to the public telephone network over SIP trunks, so internal calling stays local while external calls travel over IP.",
       steps: [
         {
           title: "The PBX runs on your premises",
@@ -781,7 +781,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "Cloud services extend it where you want them",
-          body: "Hybrid deployment adds SipLink capability around the on-premise core — remote and mobile endpoints, additional routing, messaging or contact-centre functions — without moving call control off your site.",
+          body: "Hybrid deployment adds SipLink capability around the on-premise core, remote and mobile endpoints, additional routing, messaging or contact-centre functions, without moving call control off your site.",
         },
       ],
     },
@@ -817,7 +817,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "Call control that stays inside your own network and under your own administration, with the SIP connectivity, number management and routing of a modern platform attached to it — and a hybrid path to cloud services whenever you decide you want one.",
+      body: "Call control that stays inside your own network and under your own administration, with the SIP connectivity, number management and routing of a modern platform attached to it, and a hybrid path to cloud services whenever you decide you want one.",
     },
   },
 
@@ -889,12 +889,12 @@ export const productDetails: ProductDetail[] = [
     ],
       problem: {
       heading: "Switchboards slow customers down",
-      body: "When every caller arrives on one main number, the first thing they meet is a menu, a receptionist or a queue — not the person they were trying to reach. Each transfer adds hold time, and a caller who knows who they want still has to explain themselves first.",
+      body: "When every caller arrives on one main number, the first thing they meet is a menu, a receptionist or a queue, not the person they were trying to reach. Each transfer adds hold time, and a caller who knows who they want still has to explain themselves first.",
     },
     approach: {
       heading: "How SipLink handles it",
       body: [
-        "Each DID is a real, dialable number that maps directly to a destination you choose — an individual employee, a department, an extension or an application. Callers who know where they are going connect straight through, and the switchboard becomes the fallback rather than the only route in. Numbers are not tied to a desk.",
+        "Each DID is a real, dialable number that maps directly to a destination you choose, an individual employee, a department, an extension or an application. Callers who know where they are going connect straight through, and the switchboard becomes the fallback rather than the only route in. Numbers are not tied to a desk.",
       ],
     },
     audiences: [
@@ -917,11 +917,11 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is a DID number?",
-      definition: "DID stands for Direct Inward Dialing. A DID number is a business telephone number that connects a caller straight to a specific destination inside your organisation — an employee, a department, an extension or an application — without passing through a main switchboard. The number is external and public, so customers dial it as they would any other, but internally it is bound to whatever destination you configure. Because DIDs are handled by your communication platform rather than by physical lines, you can hand out many direct numbers without needing a separate line for each one.",
+      definition: "DID stands for Direct Inward Dialing. A DID number is a business telephone number that connects a caller straight to a specific destination inside your organisation, an employee, a department, an extension or an application, without passing through a main switchboard. The number is external and public, so customers dial it as they would any other, but internally it is bound to whatever destination you configure. Because DIDs are handled by your communication platform rather than by physical lines, you can hand out many direct numbers without needing a separate line for each one.",
       steps: [
         {
           title: "A number is assigned to a destination",
-          body: "You decide what each DID points to — a named employee, a department, an extension or an application — and that mapping is configured in the SipLink environment.",
+          body: "You decide what each DID points to, a named employee, a department, an extension or an application, and that mapping is configured in the SipLink environment.",
         },
         {
           title: "A customer dials it directly",
@@ -929,7 +929,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "The call lands where it should",
-          body: "SipLink routes the call to the configured destination, applying whatever call handling you have set up around it — extension routing, IVR, queues, forwarding or business-hour rules.",
+          body: "SipLink routes the call to the configured destination, applying whatever call handling you have set up around it, extension routing, IVR, queues, forwarding or business-hour rules.",
         },
       ],
     },
@@ -1062,7 +1062,7 @@ export const productDetails: ProductDetail[] = [
     ],
       problem: {
       heading: "The cost of calling puts people off",
-      body: "When reaching your sales line or support desk costs the caller money, a proportion of them decide it can wait — and you never find out what they wanted. Contact is also scattered across whichever direct number a customer happened to find, leaving no single route you can staff and measure.",
+      body: "When reaching your sales line or support desk costs the caller money, a proportion of them decide it can wait, and you never find out what they wanted. Contact is also scattered across whichever direct number a customer happened to find, leaving no single route you can staff and measure.",
     },
     approach: {
       heading: "How SipLink handles it",
@@ -1090,7 +1090,7 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is a toll-free number?",
-      definition: "A toll-free number is a business phone number a customer can dial without being charged for the call, depending on the applicable toll-free service and calling region. Instead of the caller paying, the cost of the call sits with the business that publishes the number — though exactly who is charged, and for what, genuinely varies between services and calling regions. To the caller it looks like any other number to dial; behind it, the call is routed into your business communication system rather than to a particular handset. That is what lets one advertised number serve several teams, departments or locations at once.",
+      definition: "A toll-free number is a business phone number a customer can dial without being charged for the call, depending on the applicable toll-free service and calling region. Instead of the caller paying, the cost of the call sits with the business that publishes the number, though exactly who is charged, and for what, genuinely varies between services and calling regions. To the caller it looks like any other number to dial; behind it, the call is routed into your business communication system rather than to a particular handset. That is what lets one advertised number serve several teams, departments or locations at once.",
       steps: [
         {
           title: "You publish one number",
@@ -1139,7 +1139,7 @@ export const productDetails: ProductDetail[] = [
     faqs: [
       {
         question: "Is the call really free for the customer?",
-        answer: "The caller is not charged for the call, depending on the applicable toll-free service and calling region. Who is charged, and for which types of call, genuinely varies between regions and services — calls from mobile networks in particular are treated differently in different places. Tell us where your customers call from and we will confirm what applies before you advertise the number.",
+        answer: "The caller is not charged for the call, depending on the applicable toll-free service and calling region. Who is charged, and for which types of call, genuinely varies between regions and services, calls from mobile networks in particular are treated differently in different places. Tell us where your customers call from and we will confirm what applies before you advertise the number.",
       },
       {
         question: "Which countries and regions can you provide toll-free numbers in?",
@@ -1234,12 +1234,12 @@ export const productDetails: ProductDetail[] = [
     ],
       problem: {
       heading: "A number should not require a building",
-      body: "Traditionally, a business number in a place meant something physical there — a line into a building, a PBX in a cupboard, someone on site to answer it. No office in a market means no number in that market, and a distributed team has nowhere for the line to terminate.",
+      body: "Traditionally, a business number in a place meant something physical there, a line into a building, a PBX in a cupboard, someone on site to answer it. No office in a market means no number in that market, and a distributed team has nowhere for the line to terminate.",
     },
     approach: {
       heading: "How SipLink handles it",
       body: [
-        "A virtual number has no physical line behind it. It exists on the SipLink platform, and where a call lands is decided only by the destination you configure — SIP phones, softphones, mobile devices or extensions. Destinations are yours to change, so a number can follow a team through a move without the number itself changing.",
+        "A virtual number has no physical line behind it. It exists on the SipLink platform, and where a call lands is decided only by the destination you configure, SIP phones, softphones, mobile devices or extensions. Destinations are yours to change, so a number can follow a team through a move without the number itself changing.",
       ],
     },
     audiences: [
@@ -1262,7 +1262,7 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is a virtual phone number?",
-      definition: "A virtual phone number is a business number that is not attached to a physical telephone line. Nothing is wired into a building for it — the number lives on the SipLink platform, and where calls go is a setting rather than a cable. You choose the destinations: SIP phones, softphones, mobile devices, extensions or other configured endpoints. Because the number and the destination are separate things, you can change who answers, and from where, without changing the number your customers dial.",
+      definition: "A virtual phone number is a business number that is not attached to a physical telephone line. Nothing is wired into a building for it, the number lives on the SipLink platform, and where calls go is a setting rather than a cable. You choose the destinations: SIP phones, softphones, mobile devices, extensions or other configured endpoints. Because the number and the destination are separate things, you can change who answers, and from where, without changing the number your customers dial.",
       steps: [
         {
           title: "You take a number",
@@ -1270,7 +1270,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "You choose where it lands",
-          body: "The number is pointed at the destinations you nominate — SIP phones, softphones, mobiles, extensions or other configured endpoints — and the same number can serve people working in different places.",
+          body: "The number is pointed at the destinations you nominate, SIP phones, softphones, mobiles, extensions or other configured endpoints, and the same number can serve people working in different places.",
         },
         {
           title: "Calls follow your configuration",
@@ -1296,7 +1296,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "Decide where calls should land",
-          body: "For each number, you nominate the destinations — SIP phones, softphones, mobiles or extensions — and whether calls go straight to a person or into a menu, a group or a queue.",
+          body: "For each number, you nominate the destinations, SIP phones, softphones, mobiles or extensions, and whether calls go straight to a person or into a menu, a group or a queue.",
         },
         {
           title: "Bring existing numbers with you",
@@ -1311,7 +1311,7 @@ export const productDetails: ProductDetail[] = [
     faqs: [
       {
         question: "Do we need any equipment or a phone line for this?",
-        answer: "No. A virtual number has no physical line behind it, and nothing needs to be installed at a site for it to work. Calls are delivered to whatever destinations you configure — SIP phones, softphones, mobiles or extensions — so the devices your teams already use are usually enough.",
+        answer: "No. A virtual number has no physical line behind it, and nothing needs to be installed at a site for it to work. Calls are delivered to whatever destinations you configure, SIP phones, softphones, mobiles or extensions, so the devices your teams already use are usually enough.",
       },
       {
         question: "How is this different from a DID number?",
@@ -1336,7 +1336,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "A business phone presence that reflects where your customers are rather than where your equipment is, and numbers that can be repointed as teams, markets and working patterns change — without anything being installed, moved or replaced.",
+      body: "A business phone presence that reflects where your customers are rather than where your equipment is, and numbers that can be repointed as teams, markets and working patterns change, without anything being installed, moved or replaced.",
     },
   },
   {
@@ -1433,7 +1433,7 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is number porting?",
-      definition: "Number porting is the process of transferring an existing business phone number from one provider to another, so the number stays the same while the service behind it changes. The number is not copied or forwarded — ownership of it moves, and calls to it arrive on your new platform instead of the old one. Porting applies to eligible numbers, and whether a particular number qualifies is established during validation rather than assumed at the outset. Once a number has ported, it behaves like any other number on the SipLink platform and can carry your routing, IVR, extensions and queue workflows.",
+      definition: "Number porting is the process of transferring an existing business phone number from one provider to another, so the number stays the same while the service behind it changes. The number is not copied or forwarded, ownership of it moves, and calls to it arrive on your new platform instead of the old one. Porting applies to eligible numbers, and whether a particular number qualifies is established during validation rather than assumed at the outset. Once a number has ported, it behaves like any other number on the SipLink platform and can carry your routing, IVR, extensions and queue workflows.",
       steps: [
         {
           title: "The number is checked and validated",
@@ -1467,7 +1467,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "Validate the numbers and account details",
-          body: "The numbers and the account information are checked to establish which are eligible to port and to catch mismatches — a name, address or account reference that does not agree with the losing carrier's records is the usual cause of a rejected port.",
+          body: "The numbers and the account information are checked to establish which are eligible to port and to catch mismatches, a name, address or account reference that does not agree with the losing carrier's records is the usual cause of a rejected port.",
         },
         {
           title: "Plan the migration",
@@ -1482,11 +1482,11 @@ export const productDetails: ProductDetail[] = [
     faqs: [
       {
         question: "How long does porting take?",
-        answer: "There is no single answer, because a port is not something SipLink completes alone — it depends on validation and on the process of the carrier you are leaving. We can give you a realistic expectation once we have your numbers and account details and have coordinated with that carrier. Talk to us with the specifics and we will tell you what to plan around.",
+        answer: "There is no single answer, because a port is not something SipLink completes alone, it depends on validation and on the process of the carrier you are leaving. We can give you a realistic expectation once we have your numbers and account details and have coordinated with that carrier. Talk to us with the specifics and we will tell you what to plan around.",
       },
       {
         question: "Can every number be ported?",
-        answer: "No — porting covers eligible numbers, and eligibility is established during validation rather than assumed. We check your numbers and account details up front, so you find out what can move before any plan is committed to. Where a number cannot port, we will tell you and discuss the alternatives.",
+        answer: "No, porting covers eligible numbers, and eligibility is established during validation rather than assumed. We check your numbers and account details up front, so you find out what can move before any plan is committed to. Where a number cannot port, we will tell you and discuss the alternatives.",
       },
       {
         question: "Will our phones stop working during the port?",
@@ -1519,7 +1519,7 @@ export const productDetails: ProductDetail[] = [
     categorySlug: "contact-center",
     tagline: "A smarter way to manage every call.",
     intro:
-      "SipLink Call Center Solution gives businesses the tools to manage high volumes of customer calls without making the process complicated — intelligent routing, organised queues and centralised agent management.",
+      "SipLink Call Center Solution gives businesses the tools to manage high volumes of customer calls without making the process complicated, intelligent routing, organised queues and centralised agent management.",
     icon: Headset,
     features: [
       {
@@ -1615,7 +1615,7 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is a cloud call centre?",
-      definition: "A cloud call centre is the software that runs a calling operation — routing, queues, agents, supervision, recording and reporting — delivered as a service rather than installed as hardware in your building. Instead of a phone system that simply rings extensions, it treats calls as work to be distributed: it knows which agents are logged in, what they are skilled at and who is free, and it decides accordingly. Supervisors get a live picture of queues and agents, and every conversation leaves a record and a set of numbers behind it. Because it is centralised, the same rules, monitoring and reporting apply whether your agents sit in one office or several, or at home. Queues, IVR and dialling are components within it, configured together rather than bolted onto each other.",
+      definition: "A cloud call centre is the software that runs a calling operation, routing, queues, agents, supervision, recording and reporting, delivered as a service rather than installed as hardware in your building. Instead of a phone system that simply rings extensions, it treats calls as work to be distributed: it knows which agents are logged in, what they are skilled at and who is free, and it decides accordingly. Supervisors get a live picture of queues and agents, and every conversation leaves a record and a set of numbers behind it. Because it is centralised, the same rules, monitoring and reporting apply whether your agents sit in one office or several, or at home. Queues, IVR and dialling are components within it, configured together rather than bolted onto each other.",
       steps: [
         {
           title: "The call arrives and is identified",
@@ -1645,7 +1645,7 @@ export const productDetails: ProductDetail[] = [
       steps: [
         {
           title: "Understand what you run today",
-          body: "We review your existing numbers, call flows, queues, departments, agent structure and the business-critical calling requirements your teams depend on — including the reports managers actually use.",
+          body: "We review your existing numbers, call flows, queues, departments, agent structure and the business-critical calling requirements your teams depend on, including the reports managers actually use.",
         },
         {
           title: "Design the environment around it",
@@ -1661,7 +1661,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "Monitor and adjust",
-          body: "After the move the environment is monitored and tuned — routing, queue strategies and reporting adjusted as you see how the operation actually behaves on the new platform.",
+          body: "After the move the environment is monitored and tuned, routing, queue strategies and reporting adjusted as you see how the operation actually behaves on the new platform.",
         },
       ],
     },
@@ -1672,7 +1672,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "Can supervisors listen to live calls?",
-        answer: "Yes — live call monitoring offers listen, whisper and barge, where licensed, and call barging and monitoring where authorised. What is available depends on your deployment, licensing and the policies you set, and role-based access control governs who can use it.",
+        answer: "Yes, live call monitoring offers listen, whisper and barge, where licensed, and call barging and monitoring where authorised. What is available depends on your deployment, licensing and the policies you set, and role-based access control governs who can use it.",
       },
       {
         question: "Do we need separate systems for inbound and outbound?",
@@ -1680,7 +1680,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "How is this different from just having call queues?",
-        answer: "Queues are one component. The call centre solution is the whole operation around them — routing and IVR in front, agent management, supervision and live monitoring alongside, and recording, analytics and reporting behind — configured and administered together from one platform.",
+        answer: "Queues are one component. The call centre solution is the whole operation around them, routing and IVR in front, agent management, supervision and live monitoring alongside, and recording, analytics and reporting behind, configured and administered together from one platform.",
       },
       {
         question: "Are calls recorded, and who can hear them?",
@@ -1693,7 +1693,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "Fewer calls lost to a busy hour, supervisors who can see and coach the floor as it works rather than after the fact, and a complete record — recorded, analysed and reported — of what your operation is actually doing.",
+      body: "Fewer calls lost to a busy hour, supervisors who can see and coach the floor as it works rather than after the fact, and a complete record, recorded, analysed and reported, of what your operation is actually doing.",
     },
   },
   {
@@ -1823,7 +1823,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "Is outbound dialling regulated where we operate?",
-        answer: "Requirements around outbound calling — consent, permitted calling hours, disclosure, record-keeping and registration — vary by jurisdiction and by industry, and they change. We cannot tell you what applies to your operation, so confirm the position for every market you call into with your own legal or compliance advisers. We will then configure campaigns and calling windows to match what you tell us is required.",
+        answer: "Requirements around outbound calling, consent, permitted calling hours, disclosure, record-keeping and registration, vary by jurisdiction and by industry, and they change. We cannot tell you what applies to your operation, so confirm the position for every market you call into with your own legal or compliance advisers. We will then configure campaigns and calling windows to match what you tell us is required.",
       },
       {
         question: "Can the same agents handle inbound calls too?",
@@ -1947,11 +1947,11 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is an IVR?",
-      definition: "IVR stands for Interactive Voice Response. It is the automated system that answers an incoming call, plays a recorded greeting and menu, and then acts on what the caller does next — usually a keypad selection. Rather than every call ringing the same handset, the IVR makes the routing decision in the first seconds and sends the caller to the department, extension or queue that matches their choice. It is sometimes called an auto attendant, because it does the job a receptionist would do when directing a call.",
+      definition: "IVR stands for Interactive Voice Response. It is the automated system that answers an incoming call, plays a recorded greeting and menu, and then acts on what the caller does next, usually a keypad selection. Rather than every call ringing the same handset, the IVR makes the routing decision in the first seconds and sends the caller to the department, extension or queue that matches their choice. It is sometimes called an auto attendant, because it does the job a receptionist would do when directing a call.",
       steps: [
         {
           title: "The caller hears your greeting and menu",
-          body: "The call is answered straight away with your own recorded voice prompt and the options you have defined, in the wording and — where supported — the language you choose.",
+          body: "The call is answered straight away with your own recorded voice prompt and the options you have defined, in the wording and, where supported, the language you choose.",
         },
         {
           title: "They choose, or the call identifies itself",
@@ -1959,7 +1959,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "Your rules send them to the right destination",
-          body: "The selection is matched against your routing plan — department, extension, queue or an alternative destination — with time-based and holiday rules deciding which flow applies at that moment.",
+          body: "The selection is matched against your routing plan, department, extension, queue or an alternative destination, with time-based and holiday rules deciding which flow applies at that moment.",
         },
       ],
     },
@@ -1978,7 +1978,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "What happens to calls outside business hours?",
-        answer: "Time-based routing gives after-hours, holiday and lunch or break periods their own call flow. That might be a different announcement, a voicemail box or an on-call destination — the rule is yours to set, and it applies automatically rather than depending on someone remembering to switch it.",
+        answer: "Time-based routing gives after-hours, holiday and lunch or break periods their own call flow. That might be a different announcement, a voicemail box or an on-call destination, the rule is yours to set, and it applies automatically rather than depending on someone remembering to switch it.",
       },
       {
         question: "How many menu levels can we have?",
@@ -2119,7 +2119,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "Authorised people find and use them",
-          body: "Search and filtering locate the conversation you need, and it can then be played back, downloaded or shared — or transferred to your own FTP or SFTP server.",
+          body: "Search and filtering locate the conversation you need, and it can then be played back, downloaded or shared, or transferred to your own FTP or SFTP server.",
         },
       ],
     },
@@ -2134,7 +2134,7 @@ export const productDetails: ProductDetail[] = [
     faqs: [
       {
         question: "Are we allowed to record calls?",
-        answer: "Recording requirements — including consent, notification and data protection obligations — vary by jurisdiction and by the kind of business you run, so they should be confirmed for your own operation before you record. What we can tell you is what the platform gives you to work with: role-based access controls and secure recording access so you can enforce the policy you settle on.",
+        answer: "Recording requirements, including consent, notification and data protection obligations, vary by jurisdiction and by the kind of business you run, so they should be confirmed for your own operation before you record. What we can tell you is what the platform gives you to work with: role-based access controls and secure recording access so you can enforce the policy you settle on.",
       },
       {
         question: "Who can listen to a recording?",
@@ -2169,7 +2169,7 @@ export const productDetails: ProductDetail[] = [
     categorySlug: "contact-center",
     tagline: "Turn call data into better decisions.",
     intro:
-      "SipLink Call Analytics turns everyday calling activity into useful business insight — so you understand what is happening across your communication environment, not just how many calls were made.",
+      "SipLink Call Analytics turns everyday calling activity into useful business insight, so you understand what is happening across your communication environment, not just how many calls were made.",
     icon: BarChart3,
     features: [
       {
@@ -2234,12 +2234,12 @@ export const productDetails: ProductDetail[] = [
     ],
       problem: {
       heading: "You know how many calls you took, not what happened",
-      body: "Most phone systems will tell you a number of calls and stop there. That leaves the questions managers actually need answered — when demand peaks, how many callers gave up waiting, which agents are carrying the load — to be settled by instinct rather than by evidence.",
+      body: "Most phone systems will tell you a number of calls and stop there. That leaves the questions managers actually need answered, when demand peaks, how many callers gave up waiting, which agents are carrying the load, to be settled by instinct rather than by evidence.",
     },
     approach: {
       heading: "How SipLink handles it",
       body: [
-        "Every call through your SipLink environment leaves a call detail record — who called, which number or queue it arrived on, when, for how long, and how it ended. Nothing needs to be logged by hand. Those records feed the volume, agent and queue reports in the web portal, alongside real-time call monitoring.",
+        "Every call through your SipLink environment leaves a call detail record, who called, which number or queue it arrived on, when, for how long, and how it ended. Nothing needs to be logged by hand. Those records feed the volume, agent and queue reports in the web portal, alongside real-time call monitoring.",
       ],
     },
     audiences: [
@@ -2262,7 +2262,7 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is call analytics?",
-      definition: "Call analytics is the reporting layer over your phone system. Every call your business makes or receives leaves a call detail record, and call analytics collects those records and turns them into readable reports — volumes, answered and missed calls, call duration, activity by agent, extension and queue. It describes the pattern across many calls rather than the content of any single one: what was said inside a conversation is the job of call recording and transcription, not analytics. The value is in what the pattern tells you about staffing, routing and service, and in being able to see that pattern change over time.",
+      definition: "Call analytics is the reporting layer over your phone system. Every call your business makes or receives leaves a call detail record, and call analytics collects those records and turns them into readable reports, volumes, answered and missed calls, call duration, activity by agent, extension and queue. It describes the pattern across many calls rather than the content of any single one: what was said inside a conversation is the job of call recording and transcription, not analytics. The value is in what the pattern tells you about staffing, routing and service, and in being able to see that pattern change over time.",
       steps: [
         {
           title: "Every call leaves a record",
@@ -2301,11 +2301,11 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "Does this tell us what was said on the call?",
-        answer: "No — analytics describes the pattern across calls, not the content of a conversation. For what was said, call recording keeps the audio, while call transcription, call summaries and AI-assisted call analysis are available where enabled; our AI Voice Assistant page covers that side.",
+        answer: "No, analytics describes the pattern across calls, not the content of a conversation. For what was said, call recording keeps the audio, while call transcription, call summaries and AI-assisted call analysis are available where enabled; our AI Voice Assistant page covers that side.",
       },
       {
         question: "How is this different from call recording?",
-        answer: "Call recording is about an individual conversation — replaying a specific call for quality, training or a dispute. Call analytics is about everything around it: how many calls, from where, at what time, answered by whom and for how long. Most teams use the two together.",
+        answer: "Call recording is about an individual conversation, replaying a specific call for quality, training or a dispute. Call analytics is about everything around it: how many calls, from where, at what time, answered by whom and for how long. Most teams use the two together.",
       },
       {
         question: "Can we see what is happening right now, not just after the fact?",
@@ -2314,7 +2314,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "A clear view of how your organisation actually communicates — busy periods, missed calls, agent activity and trends over time — so staffing, routing and service decisions are made from evidence rather than instinct.",
+      body: "A clear view of how your organisation actually communicates, busy periods, missed calls, agent activity and trends over time, so staffing, routing and service decisions are made from evidence rather than instinct.",
     },
   },
 
@@ -2385,7 +2385,7 @@ export const productDetails: ProductDetail[] = [
     ],
       problem: {
       heading: "Telephony is a lot to build yourself",
-      body: "Adding calling to your own product sounds like a feature, but underneath it is an industry. Before your application places its first call you would need carrier relationships, number ranges, signalling, media handling and the reliability engineering that keeps it standing up — specialist work in another domain.",
+      body: "Adding calling to your own product sounds like a feature, but underneath it is an industry. Before your application places its first call you would need carrier relationships, number ranges, signalling, media handling and the reliability engineering that keeps it standing up, specialist work in another domain.",
     },
     approach: {
       heading: "How SipLink handles it",
@@ -2408,16 +2408,16 @@ export const productDetails: ProductDetail[] = [
       },
       {
         situation: "You need calls triggered by something happening in your system",
-        fit: "Automated and event-driven calling workflows — notifications, follow-ups, reminders — are initiated by your own code when the business event occurs.",
+        fit: "Automated and event-driven calling workflows, notifications, follow-ups, reminders, are initiated by your own code when the business event occurs.",
       },
     ],
     explainer: {
       question: "What is a voice API?",
-      definition: "A voice API is a way for your own software to make and answer phone calls. Rather than a person picking up a handset and dialling, your application sends an instruction and the call happens on a real voice network. It works the other way too: when someone calls in, your application is told about it and can decide what should happen next. The practical effect is that calling stops being a separate system your staff switch into and becomes part of the product they already use. The telephony itself — the carriers, the numbers, the network — is operated by SipLink rather than by you.",
+      definition: "A voice API is a way for your own software to make and answer phone calls. Rather than a person picking up a handset and dialling, your application sends an instruction and the call happens on a real voice network. It works the other way too: when someone calls in, your application is told about it and can decide what should happen next. The practical effect is that calling stops being a separate system your staff switch into and becomes part of the product they already use. The telephony itself, the carriers, the numbers, the network, is operated by SipLink rather than by you.",
       steps: [
         {
           title: "Your application makes a request",
-          body: "Your code asks SipLink to place a call, or to handle one coming in — triggered by a user clicking a contact, or by an event in your own business workflow.",
+          body: "Your code asks SipLink to place a call, or to handle one coming in, triggered by a user clicking a contact, or by an event in your own business workflow.",
         },
         {
           title: "SipLink places the call on the voice network",
@@ -2425,7 +2425,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "Your application is told what happened",
-          body: "Call events are reported back so your system knows the outcome and can act on it — logging the activity, updating a record or moving the workflow forward.",
+          body: "Call events are reported back so your system knows the outcome and can act on it, logging the activity, updating a record or moving the workflow forward.",
         },
       ],
     },
@@ -2440,7 +2440,7 @@ export const productDetails: ProductDetail[] = [
     faqs: [
       {
         question: "How is this different from the SIP API?",
-        answer: "The Voice API is for placing and receiving calls from your own application — you ask for a call, and it happens. The SIP API works at the level of SIP infrastructure itself, for organisations integrating applications with existing SIP or PBX environments and wanting more control over the voice architecture. If you are adding calling to a product, the Voice API is usually the right starting point.",
+        answer: "The Voice API is for placing and receiving calls from your own application, you ask for a call, and it happens. The SIP API works at the level of SIP infrastructure itself, for organisations integrating applications with existing SIP or PBX environments and wanting more control over the voice architecture. If you are adding calling to a product, the Voice API is usually the right starting point.",
       },
       {
         question: "Where is the documentation, and how do we get started?",
@@ -2555,12 +2555,12 @@ export const productDetails: ProductDetail[] = [
       },
       {
         situation: "Your staff spend the day typing confirmations and updates",
-        fit: "Transactional messages and customer notifications — orders, deliveries, payments, status changes — are generated by the application that already holds the information, freeing the team for work that needs a person.",
+        fit: "Transactional messages and customer notifications, orders, deliveries, payments, status changes, are generated by the application that already holds the information, freeing the team for work that needs a person.",
       },
     ],
     explainer: {
       question: "What is an SMS API?",
-      definition: "An SMS API is a way for your own software to send text messages without a person doing it. Instead of someone opening a phone or a messaging tool and typing, your application makes a request to SipLink describing the message and who it is for, and SipLink handles getting it to the mobile network. Because the request comes from your software, the message can be tied to something that has actually happened in your business — an order confirmed, a passcode requested, an appointment approaching. Text messages arrive on any mobile phone without the recipient installing an application or creating an account, which is why SMS is often chosen for things that simply have to reach the customer. The result is messaging that behaves like part of your system rather than a separate manual task.",
+      definition: "An SMS API is a way for your own software to send text messages without a person doing it. Instead of someone opening a phone or a messaging tool and typing, your application makes a request to SipLink describing the message and who it is for, and SipLink handles getting it to the mobile network. Because the request comes from your software, the message can be tied to something that has actually happened in your business, an order confirmed, a passcode requested, an appointment approaching. Text messages arrive on any mobile phone without the recipient installing an application or creating an account, which is why SMS is often chosen for things that simply have to reach the customer. The result is messaging that behaves like part of your system rather than a separate manual task.",
       steps: [
         {
           title: "Something happens in your system",
@@ -2612,7 +2612,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "Customers are told what they need to know at the moment it happens, on a channel that reaches any mobile phone — and your team is freed from sending those messages one at a time.",
+      body: "Customers are told what they need to know at the moment it happens, on a channel that reaches any mobile phone, and your team is freed from sending those messages one at a time.",
     },
   },
   {
@@ -2736,7 +2736,7 @@ export const productDetails: ProductDetail[] = [
     faqs: [
       {
         question: "When should I use WhatsApp rather than SMS?",
-        answer: "Use WhatsApp when the exchange is a conversation — a support thread, a sales discussion or an order query the customer will reply to and return to over days. Use SMS when you need to reach anyone with a mobile number and no app involved, such as one-way alerts and verification messages. Most businesses run both, and both arrive in the same centralised inbox.",
+        answer: "Use WhatsApp when the exchange is a conversation, a support thread, a sales discussion or an order query the customer will reply to and return to over days. Use SMS when you need to reach anyone with a mobile number and no app involved, such as one-way alerts and verification messages. Most businesses run both, and both arrive in the same centralised inbox.",
       },
       {
         question: "Can several agents handle the same WhatsApp number?",
@@ -2761,7 +2761,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "Customer conversations happen on the app your customers already use every day, and they happen somewhere your organisation can see, assign and answer them — with the history intact whoever replies next.",
+      body: "Customer conversations happen on the app your customers already use every day, and they happen somewhere your organisation can see, assign and answer them, with the history intact whoever replies next.",
     },
   },
   {
@@ -2865,7 +2865,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "A user clicks instead of dialling",
-          body: "A customer or an agent starts the call from the page they are on. They allow access to their microphone and talk — there is nothing to download and no number to look up.",
+          body: "A customer or an agent starts the call from the page they are on. They allow access to their microphone and talk, there is nothing to download and no number to look up.",
         },
         {
           title: "The call runs on the SipLink platform",
@@ -2884,7 +2884,7 @@ export const productDetails: ProductDetail[] = [
     faqs: [
       {
         question: "Do our customers need to install anything?",
-        answer: "No — that is the point of it. Voice runs in the application or page they already have open, so there is no softphone to download and no setup step before they can speak to you.",
+        answer: "No, that is the point of it. Voice runs in the application or page they already have open, so there is no softphone to download and no setup step before they can speak to you.",
       },
       {
         question: "Which platforms does the SDK support, and what is it written in?",
@@ -2892,7 +2892,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "How is this different from the Voice API?",
-        answer: "The Voice API places and controls calls from your systems — your software decides a call should happen and telephony carries it out. The WebRTC SDK puts the call in front of a person inside your interface, so a customer or an agent clicks and talks in the page they are already on. Many businesses use both.",
+        answer: "The Voice API places and controls calls from your systems, your software decides a call should happen and telephony carries it out. The WebRTC SDK puts the call in front of a person inside your interface, so a customer or an agent clicks and talks in the page they are already on. Many businesses use both.",
       },
       {
         question: "Is there documentation we can read or a trial we can try first?",
@@ -2909,7 +2909,7 @@ export const productDetails: ProductDetail[] = [
     ],
     outcome: {
       heading: "What you gain",
-      body: "Conversations that start where the need appeared — inside your product, with the context intact — instead of losing people at a number they have to go and dial somewhere else.",
+      body: "Conversations that start where the need appeared, inside your product, with the context intact, instead of losing people at a number they have to go and dial somewhere else.",
     },
   },
   {
@@ -2976,12 +2976,12 @@ export const productDetails: ProductDetail[] = [
     ],
       problem: {
       heading: "Your SIP estate and your software are two separate worlds",
-      body: "Most organisations run SIP infrastructure the way it was installed — configured by hand and disconnected from the applications that depend on it. The platform your teams work in cannot see a call, place one or react when one arrives, so anything needing both is done manually by a person sitting between them.",
+      body: "Most organisations run SIP infrastructure the way it was installed, configured by hand and disconnected from the applications that depend on it. The platform your teams work in cannot see a call, place one or react when one arrives, so anything needing both is done manually by a person sitting between them.",
     },
     approach: {
       heading: "How SipLink handles it",
       body: [
-        "The SIP API gives your applications a programmatic route into SIP-based voice, so voice workflows are built in code against your existing SIP infrastructure — connecting applications to trunks, endpoints and routing behaviour. Your telephony environment stays in place, with the integration details confirmed with you during onboarding.",
+        "The SIP API gives your applications a programmatic route into SIP-based voice, so voice workflows are built in code against your existing SIP infrastructure, connecting applications to trunks, endpoints and routing behaviour. Your telephony environment stays in place, with the integration details confirmed with you during onboarding.",
       ],
     },
     audiences: [
@@ -3004,7 +3004,7 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is a SIP API?",
-      definition: "SIP is the signalling protocol that telephone systems use to set up, manage and end voice calls — it is the conversation the systems have with each other about a call, separate from the audio itself. Most SIP infrastructure is configured and operated through its own tools, which means your own software has no way to take part. A SIP API puts a programmable interface over that signalling layer, so your applications can work with SIP-based voice communication directly from code. That is a lower-level position than a general-purpose calling API: you are integrating with the voice architecture rather than being shielded from it. It suits organisations that have already invested in SIP infrastructure and want their software to reach it.",
+      definition: "SIP is the signalling protocol that telephone systems use to set up, manage and end voice calls, it is the conversation the systems have with each other about a call, separate from the audio itself. Most SIP infrastructure is configured and operated through its own tools, which means your own software has no way to take part. A SIP API puts a programmable interface over that signalling layer, so your applications can work with SIP-based voice communication directly from code. That is a lower-level position than a general-purpose calling API: you are integrating with the voice architecture rather than being shielded from it. It suits organisations that have already invested in SIP infrastructure and want their software to reach it.",
       steps: [
         {
           title: "Your SIP infrastructure stays as it is",
@@ -3031,14 +3031,14 @@ export const productDetails: ProductDetail[] = [
     faqs: [
       {
         question: "How is this different from the Voice API?",
-        answer: "The Voice API is the higher-level option: your application asks SipLink to place or receive a call, and the voice infrastructure underneath is ours to run. The SIP API is lower-level and architecture-facing — it is for organisations that already have SIP infrastructure and want their applications to work with it programmatically, keeping control of the voice architecture rather than handing it over. If you want calling in your product without thinking about SIP, the Voice API is the better fit.",
+        answer: "The Voice API is the higher-level option: your application asks SipLink to place or receive a call, and the voice infrastructure underneath is ours to run. The SIP API is lower-level and architecture-facing, it is for organisations that already have SIP infrastructure and want their applications to work with it programmatically, keeping control of the voice architecture rather than handing it over. If you want calling in your product without thinking about SIP, the Voice API is the better fit.",
       },
       {
         question: "Can this work alongside our existing PBX or SBC?",
         answer: "That is the usual reason to choose it. The SIP API is designed for environments where SIP infrastructure is already in place, so your existing systems keep operating while your applications gain a programmatic way to work with them. We review what you run today and design the integration around it rather than asking you to change it first.",
       },
       {
-        question: "I need the authentication method, supported codecs and the API reference — where are they?",
+        question: "I need the authentication method, supported codecs and the API reference, where are they?",
         answer: "Those specifics are confirmed during onboarding and designed to your deployment, because the right answer depends on the SIP infrastructure you are integrating with. We would rather give you details that apply to your environment than publish a generic set that does not. Tell us about your setup and we will go through them with you.",
       },
       {
@@ -3047,7 +3047,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "How is this different from SIP trunking?",
-        answer: "SIP trunking is connectivity — it connects your telephony system to the external voice network. The SIP API is an interface for your software, so your own applications and platforms can work with SIP-based communication programmatically. Many organisations use both: the trunk carries the calls, the API lets their software take part in them.",
+        answer: "SIP trunking is connectivity, it connects your telephony system to the external voice network. The SIP API is an interface for your software, so your own applications and platforms can work with SIP-based communication programmatically. Many organisations use both: the trunk carries the calls, the API lets their software take part in them.",
       },
       {
         question: "What do you need from us to get started?",
@@ -3126,7 +3126,7 @@ export const productDetails: ProductDetail[] = [
     ],
       problem: {
       heading: "Two systems for one working day",
-      body: "Your employees already live in Microsoft Teams for internal collaboration, but the working day does not stop at the organisation's own walls. They still need to call customers, suppliers, partners and ordinary telephone numbers — which means two applications to keep open and two things for IT to administer.",
+      body: "Your employees already live in Microsoft Teams for internal collaboration, but the working day does not stop at the organisation's own walls. They still need to call customers, suppliers, partners and ordinary telephone numbers, which means two applications to keep open and two things for IT to administer.",
     },
     approach: {
       heading: "How SipLink handles it",
@@ -3154,11 +3154,11 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is Teams calling?",
-      definition: "Teams calling means using Microsoft Teams to make and receive calls to ordinary telephone numbers, not just to colleagues inside your own organisation. On its own, Teams handles internal collaboration — chat, meetings and calls between people in the same environment. To reach the outside world it needs a connection to the external voice network, and that connection is what SipLink provides and manages. Your business numbers are mapped to the right Teams users and departments, and calls travel between Teams and the public telephone network through the SipLink environment configured for your organisation. Teams integration is available where enabled, so what applies to you is confirmed against your Microsoft environment during design.",
+      definition: "Teams calling means using Microsoft Teams to make and receive calls to ordinary telephone numbers, not just to colleagues inside your own organisation. On its own, Teams handles internal collaboration, chat, meetings and calls between people in the same environment. To reach the outside world it needs a connection to the external voice network, and that connection is what SipLink provides and manages. Your business numbers are mapped to the right Teams users and departments, and calls travel between Teams and the public telephone network through the SipLink environment configured for your organisation. Teams integration is available where enabled, so what applies to you is confirmed against your Microsoft environment during design.",
       steps: [
         {
           title: "A customer dials your business number",
-          body: "They call the same published number they have always used — a main line, a departmental number or a direct number belonging to one of your employees.",
+          body: "They call the same published number they have always used, a main line, a departmental number or a direct number belonging to one of your employees.",
         },
         {
           title: "SipLink routes the call into your Teams environment",
@@ -3211,7 +3211,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "Do employees need a second application?",
-        answer: "No. Authorised users make and receive external business calls from within the Teams environment they already use every day. That is the point of the integration — one application for internal collaboration and external calling, rather than switching between two.",
+        answer: "No. Authorised users make and receive external business calls from within the Teams environment they already use every day. That is the point of the integration, one application for internal collaboration and external calling, rather than switching between two.",
       },
       {
         question: "Does every employee need external calling?",
@@ -3334,7 +3334,7 @@ export const productDetails: ProductDetail[] = [
         },
         {
           title: "It passes to the right environment",
-          body: "Communication is then passed on to the intended platform — a PBX, a cloud service, a contact-centre platform or an external carrier — with the crossing visible to your IT team.",
+          body: "Communication is then passed on to the intended platform, a PBX, a cloud service, a contact-centre platform or an external carrier, with the crossing visible to your IT team.",
         },
       ],
     },
@@ -3353,7 +3353,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "How much traffic can it handle?",
-        answer: "The SBC layer is designed around your environment — the platforms you are connecting, your busy-hour call patterns and how your estate is expected to grow. Tell us what you run today and what you plan to add, and we will size it with you rather than quote a figure that may not match your architecture.",
+        answer: "The SBC layer is designed around your environment, the platforms you are connecting, your busy-hour call patterns and how your estate is expected to grow. Tell us what you run today and what you plan to add, and we will size it with you rather than quote a figure that may not match your architecture.",
       },
       {
         question: "How does the SBC help with security?",
@@ -3361,7 +3361,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "Will it let our different voice platforms work together?",
-        answer: "Supporting interoperability between SIP-enabled platforms is one of the main reasons the layer exists — it is where communication between a legacy PBX, cloud telephony and contact-centre systems is managed. What is achievable depends on the specific platforms involved, so we review them with you before committing to a design.",
+        answer: "Supporting interoperability between SIP-enabled platforms is one of the main reasons the layer exists, it is where communication between a legacy PBX, cloud telephony and contact-centre systems is managed. What is achievable depends on the specific platforms involved, so we review them with you before committing to a design.",
       },
       {
         question: "Do we have to replace our existing voice systems?",
@@ -3480,11 +3480,11 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is a call queue?",
-      definition: "A call queue is what happens to a caller when everyone who could help them is already on another call. Instead of hearing a busy tone or being dropped into voicemail, the caller is held in an organised line for a specific department and told they are waiting. Automatic call distribution then hands each waiting call to an agent as that agent becomes free, in the order and by the method you have configured. The queue does not decide where the caller wanted to go — the IVR or your inbound routing does that — it decides what happens between arriving at the right department and reaching a person.",
+      definition: "A call queue is what happens to a caller when everyone who could help them is already on another call. Instead of hearing a busy tone or being dropped into voicemail, the caller is held in an organised line for a specific department and told they are waiting. Automatic call distribution then hands each waiting call to an agent as that agent becomes free, in the order and by the method you have configured. The queue does not decide where the caller wanted to go, the IVR or your inbound routing does that, it decides what happens between arriving at the right department and reaching a person.",
       steps: [
         {
           title: "The caller reaches the right department",
-          body: "A customer calling Support passes through the IVR, selects Support, and arrives at the Support queue — or is routed straight there by the number they dialled and your inbound rules.",
+          body: "A customer calling Support passes through the IVR, selects Support, and arrives at the Support queue, or is routed straight there by the number they dialled and your inbound rules.",
         },
         {
           title: "If everyone is busy, they hold in the queue",
@@ -3511,7 +3511,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "How is this different from an IVR?",
-        answer: "The IVR is the menu that decides where a caller should go; the queue decides what happens once they get there and everyone is busy. A customer calling Support passes through the IVR, selects Support, and then enters the Support queue — the menu did the routing, the queue holds them until an agent is free.",
+        answer: "The IVR is the menu that decides where a caller should go; the queue decides what happens once they get there and everyone is busy. A customer calling Support passes through the IVR, selects Support, and then enters the Support queue, the menu did the routing, the queue holds them until an agent is free.",
       },
       {
         question: "Can callers request a callback instead of waiting?",
@@ -3602,12 +3602,12 @@ export const productDetails: ProductDetail[] = [
     ],
       problem: {
       heading: "Your CRM and your phone system have never been introduced",
-      body: "Sales and support teams work all day inside a CRM, then use a separate phone system to actually talk to customers. That means moving between two applications for every interaction — finding the customer record before the call, typing up what happened afterwards. The conversation ends up recorded by hand or not at all.",
+      body: "Sales and support teams work all day inside a CRM, then use a separate phone system to actually talk to customers. That means moving between two applications for every interaction, finding the customer record before the call, typing up what happened afterwards. The conversation ends up recorded by hand or not at all.",
     },
     approach: {
       heading: "How SipLink handles it",
       body: [
-        "SipLink connects business communication with the CRM environment your organisation already uses, so calls can be placed from the customer record and the activity written back against it — with the exact behaviour depending on the integration and how it is configured for you. The CRM stays the system of record and the place people work.",
+        "SipLink connects business communication with the CRM environment your organisation already uses, so calls can be placed from the customer record and the activity written back against it, with the exact behaviour depending on the integration and how it is configured for you. The CRM stays the system of record and the place people work.",
       ],
     },
     audiences: [
@@ -3630,11 +3630,11 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is CRM integration?",
-      definition: "A CRM holds what your organisation knows about a customer: who they are, what they have bought, what they have asked for and who spoke to them last. A phone system, on its own, knows none of that — it only knows a number. CRM integration is the link between the two, so that a call and a customer record are treated as the same event rather than two unrelated ones. In practice that means the phone system can look a caller up in the CRM, present what it finds to the person answering, and write the outcome of the conversation back when the call ends. The aim is that communication becomes part of the customer journey instead of sitting isolated inside the telephony platform.",
+      definition: "A CRM holds what your organisation knows about a customer: who they are, what they have bought, what they have asked for and who spoke to them last. A phone system, on its own, knows none of that, it only knows a number. CRM integration is the link between the two, so that a call and a customer record are treated as the same event rather than two unrelated ones. In practice that means the phone system can look a caller up in the CRM, present what it finds to the person answering, and write the outcome of the conversation back when the call ends. The aim is that communication becomes part of the customer journey instead of sitting isolated inside the telephony platform.",
       steps: [
         {
           title: "A call starts",
-          body: "Someone rings one of your business numbers, or a representative places an outbound call — often with click-to-dial straight from the record they are already looking at in the CRM.",
+          body: "Someone rings one of your business numbers, or a representative places an outbound call, often with click-to-dial straight from the record they are already looking at in the CRM.",
         },
         {
           title: "The customer record is matched and presented",
@@ -3669,7 +3669,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "Can you integrate a system you have not worked with before?",
-        answer: "Yes — open API, REST, webhook and SDK-based routes exist precisely for applications that are not on anyone's standard list, including custom business workflow integration. We look at what the system exposes and design the integration around it.",
+        answer: "Yes, open API, REST, webhook and SDK-based routes exist precisely for applications that are not on anyone's standard list, including custom business workflow integration. We look at what the system exposes and design the integration around it.",
       },
       {
         question: "What is needed to set this up?",
@@ -3677,7 +3677,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "Do our teams have to change how they work?",
-        answer: "The CRM stays where your teams work and stays the system of record. The intention is to remove steps — the searching, the switching and the retyping — rather than to add a new application for people to learn.",
+        answer: "The CRM stays where your teams work and stays the system of record. The intention is to remove steps, the searching, the switching and the retyping, rather than to add a new application for people to learn.",
       },
     ],
     outcome: {
@@ -3778,7 +3778,7 @@ export const productDetails: ProductDetail[] = [
     ],
     explainer: {
       question: "What is an AI voice assistant?",
-      definition: "An AI voice assistant is a voice layer that answers a call and lets the caller explain what they need in ordinary speech. A traditional keypad menu asks the caller to fit their request into a fixed list of options and press a number; the assistant works the other way round, taking what the caller says and working out what should happen with it. Where enabled, it can handle appropriate routine interactions itself — answering a question, collecting details, confirming information. When the conversation calls for human expertise, it hands over to the right department or agent. It is designed to sit alongside your team rather than replace it.",
+      definition: "An AI voice assistant is a voice layer that answers a call and lets the caller explain what they need in ordinary speech. A traditional keypad menu asks the caller to fit their request into a fixed list of options and press a number; the assistant works the other way round, taking what the caller says and working out what should happen with it. Where enabled, it can handle appropriate routine interactions itself, answering a question, collecting details, confirming information. When the conversation calls for human expertise, it hands over to the right department or agent. It is designed to sit alongside your team rather than replace it.",
       steps: [
         {
           title: "The caller says what they need",
@@ -3809,7 +3809,7 @@ export const productDetails: ProductDetail[] = [
       },
       {
         question: "What kinds of conversation is it suited to?",
-        answer: "Routine interactions are the natural fit — repetitive questions, information requests, status checks and appointment-related queries. Conversations that need judgement, negotiation or specialist knowledge are the ones to route to a person, and we agree that boundary with you when the assistant is configured.",
+        answer: "Routine interactions are the natural fit, repetitive questions, information requests, status checks and appointment-related queries. Conversations that need judgement, negotiation or specialist knowledge are the ones to route to a person, and we agree that boundary with you when the assistant is configured.",
       },
       {
         question: "How accurate is it, and how many calls will it handle without an agent?",
