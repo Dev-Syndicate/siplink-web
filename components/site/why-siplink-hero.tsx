@@ -421,19 +421,18 @@ function PlatformCard({ still }: { still: boolean }) {
   );
 }
 
+/** The engineers on shift in the support card. Illustrative people. */
+const ON_SHIFT = [
+  { avatar: "avatar-sofia", name: "Sofia", role: "VoIP & SIP", status: "On a call", live: true },
+  { avatar: "avatar-daniel", name: "Daniel", role: "Networking", status: "Available", live: false },
+  { avatar: "avatar-emma", name: "Emma", role: "Number porting", status: "Available", live: false },
+];
+
 function SupportCard({ still }: { still: boolean }) {
   return (
-    <div className="relative aspect-[3/4] bg-gradient-to-br from-brand-from to-brand-to">
-      <Image
-        src="/images/about/support-agent.webp"
-        alt="A SipLink support engineer on a headset call"
-        fill
-        sizes="(min-width: 1024px) 320px, 60vw"
-        quality={90}
-        className="object-cover"
-        priority
-      />
-      <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
+    <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-brand-from to-brand-to">
+      {/* Soft light across the top, so the white text keeps its contrast. */}
+      <span aria-hidden className="absolute -top-16 -right-10 size-48 rounded-full bg-card/15 blur-2xl" />
 
       <span className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-card/85 px-2.5 py-1 text-[10px] font-semibold text-foreground backdrop-blur">
         <span className="relative flex size-1.5">
@@ -442,6 +441,55 @@ function SupportCard({ still }: { still: boolean }) {
         </span>
         On the line
       </span>
+
+      <div className="absolute inset-x-3 top-12 text-card">
+        <div className="flex items-baseline justify-between px-1">
+          <span className="text-xs font-semibold">Engineers on shift</span>
+          <span className="font-mono text-[10px] text-card/75">{ON_SHIFT.length} online</span>
+        </div>
+        <ul className="mt-2 space-y-1.5">
+          {ON_SHIFT.map((p) => (
+            <li
+              key={p.name}
+              className={cn(
+                "flex items-center gap-2.5 rounded-xl px-2 py-1.5",
+                p.live ? "bg-card text-foreground shadow-lg shadow-foreground/15" : "bg-card/15",
+              )}
+            >
+              <span className="relative shrink-0">
+                <Image
+                  src={`/images/avatars/${p.avatar}.webp`}
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="size-9 rounded-full object-cover ring-2 ring-card"
+                />
+                <span
+                  className={cn(
+                    "absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full ring-2",
+                    p.live ? "bg-primary ring-card" : "bg-success ring-brand-to",
+                  )}
+                />
+              </span>
+              <span className="min-w-0 leading-tight">
+                <span className="block text-xs font-semibold">{p.name}</span>
+                <span className={cn("block truncate text-[10px]", p.live ? "text-muted-foreground" : "text-card/75")}>
+                  {p.role}
+                </span>
+              </span>
+              <span
+                className={cn(
+                  "ml-auto shrink-0 text-[10px] font-medium",
+                  p.live ? "flex items-center gap-1 text-primary" : "text-card/80",
+                )}
+              >
+                {p.live && <Headphones className="size-3" aria-hidden />}
+                {p.status}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className="absolute inset-x-3 bottom-3 rounded-2xl border border-card/40 bg-card/20 p-3 text-card backdrop-blur-md">
         <div className="flex items-center gap-2.5">
