@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
 
+import { HeroBackdrop } from "@/components/site/hero-backdrop";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { announcement } from "@/lib/site";
@@ -110,6 +111,7 @@ export function NewsHero({ name }: { name: string }) {
   return (
     <MotionConfig reducedMotion="user">
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-accent/40 via-background to-background">
+        <HeroBackdrop src="/images/about/about-mission.jpg" position="60% center" />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 [background-image:radial-gradient(color-mix(in_oklab,var(--primary)_18%,transparent)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_55%_60%_at_72%_45%,black,transparent)]"
