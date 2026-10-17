@@ -368,7 +368,7 @@ export function MegaMenu() {
                           href={item.href}
                           className="group/all relative mt-4 flex items-center justify-center gap-2 overflow-hidden rounded-2xl bg-muted px-4 py-3 text-sm font-semibold text-foreground ring-1 ring-transparent transition-all duration-300 ease-out hover:bg-gradient-to-r hover:from-brand-from hover:to-brand-to hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/25 focus-visible:outline-none"
                         >
-                          View all {item.label}
+                          View All
                           <ArrowRight
                             className="size-4 transition-transform duration-300 ease-out group-hover/all:translate-x-1"
                             aria-hidden

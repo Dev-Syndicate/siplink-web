@@ -2,8 +2,10 @@ import {
   BadgeCheck,
   Braces,
   Building2,
+  ChartNoAxesCombined,
   Cloud,
   Code2,
+  Contact,
   Factory,
   FileText,
   Gauge,
@@ -84,6 +86,11 @@ export type IndustryFlowStep = {
   icon: LucideIcon;
 };
 
+export type IndustryHighlightCard = {
+  title: string;
+  icon: LucideIcon;
+};
+
 export type IndustryDetail = {
   slug: string;
   title: string;
@@ -118,6 +125,8 @@ export type IndustryDetail = {
   idealFor: string[];
   /** The payoff line that closes the argument. */
   gain: { heading: string; body: string };
+  /** Highlight cards rendered above the closing CTA. */
+  highlightCards?: IndustryHighlightCard[];
 };
 
 export const industryDetails: IndustryDetail[] = [
@@ -341,6 +350,24 @@ export const industryDetails: IndustryDetail[] = [
       heading: "Recruit More. Communicate Better. Grow Faster.",
       body: "Bring candidate calling, business SMS, CloudPBX, CRM integration, call management, and intelligent communication capabilities together in one connected platform built for recruitment teams.",
     },
+    highlightCards: [
+      {
+        title: "CNAM & Caller ID",
+        icon: Contact,
+      },
+      {
+        title: "Spam-Free Number Support",
+        icon: ShieldCheck,
+      },
+      {
+        title: "Spam Monitoring",
+        icon: ChartNoAxesCombined,
+      },
+      {
+        title: "Recruitment Call Centre",
+        icon: Headset,
+      },
+    ],
   },
   {
     slug: "healthcare",

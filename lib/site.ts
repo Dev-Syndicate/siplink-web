@@ -1916,7 +1916,7 @@ export const nav: NavItem[] = [
   },
   {
     label: "Company",
-    href: "/about",
+    href: "/company",
     flat: true,
     groups: [
       {
@@ -1937,6 +1937,7 @@ export const nav: NavItem[] = [
           },
           { label: "Careers", href: "/company/careers", icon: Briefcase },
           { label: "News", href: "/company/news", icon: Newspaper },
+          { label: "10 DLC", href: "/company/10dlc", icon: ShieldCheck },
         ],
       },
     ],
@@ -2292,9 +2293,15 @@ export const footerNav: { heading: string; links: NavLeaf[] }[] = [
   {
     heading: "Company",
     links: [
-      { label: "About SipLink", href: "/about" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Contact", href: "/contact" },
+      { label: "Why SipLink", href: "/why-siplink" },
+      { label: "About Us", href: "/about" },
+      { label: "Certifications", href: "/company/certifications" },
+      { label: "Partners", href: "/company/partners" },
+      { label: "Careers", href: "/company/careers" },
+      { label: "News & Insights", href: "/company/news" },
+      { label: "10 DLC Compliance", href: "/company/10dlc" },
+      { label: "Contact Us", href: "/contact" },
+      { label: "Privacy Policy", href: "/privacy" },
     ],
   },
 ];

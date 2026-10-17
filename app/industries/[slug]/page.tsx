@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { ArrowRight, Check, Phone, PhoneCall } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { IndustryIllustration } from "@/components/site/industry-illustration";
 import { getIndustryDetail, industryDetails } from "@/lib/industries-detail";
@@ -119,6 +120,7 @@ export default async function IndustryDetailPage({
     capabilities,
     idealFor,
     gain,
+    highlightCards,
   } = industry;
 
   // Up to four other industries for the closing strip; the rest live on the
@@ -479,6 +481,25 @@ export default async function IndustryDetailPage({
                 ),
               )}
             </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ── Highlight cards (e.g. Staffing & Recruitment) ───────────────── */}
+      {highlightCards?.length ? (
+        <section className="mx-auto max-w-7xl px-4 pt-12 sm:px-6 sm:pt-16 lg:px-10 lg:pt-20">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+            {highlightCards.map(({ title: cardTitle, icon: CardIcon }) => (
+              <Card
+                key={cardTitle}
+                className="flex min-h-[160px] flex-col items-center justify-center rounded-2xl border border-border bg-card p-6 text-center shadow-xs ring-0 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:min-h-[200px] sm:rounded-3xl sm:p-8 lg:min-h-[220px] lg:p-10"
+              >
+                <CardIcon className="size-8 text-primary sm:size-10 lg:size-11" aria-hidden />
+                <h3 className="mt-3.5 text-sm font-semibold leading-snug tracking-tight text-foreground sm:mt-5 sm:text-lg lg:text-xl">
+                  {cardTitle}
+                </h3>
+              </Card>
+            ))}
           </div>
         </section>
       ) : null}
