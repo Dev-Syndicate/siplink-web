@@ -6,7 +6,8 @@ import dotFull from "@/public/trust/dot-full.webp";
 import dotLogo from "@/public/trust/dot.webp";
 import hipaaLogo from "@/public/trust/hipaa.webp";
 import soc2Logo from "@/public/trust/soc2.webp";
-import traiLogo from "@/public/trust/trai.webp";
+import gdprLogo from "@/public/trust/gdpr.webp";
+import isoLogo from "@/public/trust/iso-mark.webp";
 import { cn } from "@/lib/utils";
 
 /**
@@ -16,8 +17,8 @@ import { cn } from "@/lib/utils";
  * customer counts and certifications are deliberately absent until the
  * client can substantiate them; add them as a new entry, not as copy.
  *
- * No cards: a hairline grid keeps four short claims reading as one
- * statement instead of four competing boxes.
+ * No cards: a hairline grid keeps five short claims reading as one
+ * statement instead of five competing boxes.
  *
  * Each mark plays its effect when hovered; the
  * `motion` class names the effect in globals.css.
@@ -41,7 +42,8 @@ const trustPoints: TrustPoint[] = [
     silhouette: dotFull,
     motion: "trust-shine trust-broadcast",
   },
-  { label: "TRAI Regulated", logo: traiLogo, motion: "trust-shine" },
+  { label: "GDPR Compliant", logo: gdprLogo, motion: "trust-shine" },
+  { label: "ISO Certified", logo: isoLogo, motion: "trust-shine" },
   { label: "SOC 2 Type 2", logo: soc2Logo, motion: "trust-shine" },
 ];
 
@@ -59,11 +61,11 @@ export function TrustStrip() {
           Trusted Communication Infrastructure for Growing Businesses
         </h2>
 
-        <ul className="mt-8 grid grid-cols-2 gap-y-6 sm:grid-cols-4 sm:gap-y-0 sm:divide-x sm:divide-border">
+        <ul className="mt-8 grid grid-cols-2 gap-y-6 md:grid-cols-5 md:gap-y-0 md:divide-x md:divide-border">
           {trustPoints.map((point) => (
             <li
               key={point.label}
-              className="group flex flex-col items-center gap-2.5 px-4 text-center"
+              className="group flex flex-col items-center gap-2.5 px-4 text-center max-md:last:col-span-2"
             >
               {/* Fixed-height slot keeps labels aligned across logos. */}
               <span className="flex h-12 items-center">
