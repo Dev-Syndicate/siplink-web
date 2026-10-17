@@ -40,7 +40,7 @@ export function BenefitsHero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-border">
       <Image
-        src="/internet/benifits.png"
+        src="/internet/benifits.webp"
         alt=""
         fill
         priority

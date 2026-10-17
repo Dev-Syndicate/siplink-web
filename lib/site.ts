@@ -293,7 +293,7 @@ export const industries: Industry[] = [
     icon: Receipt,
     href: "/industries/medical-billing-rcm",
     image: {
-      src: "/images/industry-medical-billing.png",
+      src: "/images/industry-medical-billing.webp",
       alt: "A clinician in a white coat reviewing patient billing records on a tablet",
     },
     badge: "HIPAA compliant",
@@ -306,7 +306,7 @@ export const industries: Industry[] = [
     icon: UsersRound,
     href: "/industries/staffing",
     image: {
-      src: "/images/industry-staffing.png",
+      src: "/images/industry-staffing.webp",
       alt: "A recruiter wearing a headset working at a laptop",
     },
   },
@@ -317,7 +317,7 @@ export const industries: Industry[] = [
     icon: Code2,
     href: "/industries/it-software",
     image: {
-      src: "/images/industry-it-software.png",
+      src: "/images/industry-it-software.webp",
       alt: "A laptop on a desk showing source code in an editor",
     },
   },
@@ -328,7 +328,7 @@ export const industries: Industry[] = [
     icon: Megaphone,
     href: "/industries/marketing-sales",
     image: {
-      src: "/images/industry-marketing-sales.png",
+      src: "/images/industry-marketing-sales.webp",
       alt: "A rising bar chart captioned more leads, higher conversions",
     },
   },
@@ -339,7 +339,7 @@ export const industries: Industry[] = [
     icon: Cloud,
     href: "/industries/tech-saas",
     image: {
-      src: "/images/industry-tech-saas.png",
+      src: "/images/industry-tech-saas.webp",
       alt: "A stack of servers linked to a cloud with database, security and settings icons",
     },
   },
@@ -1640,7 +1640,7 @@ export const nav: NavItem[] = [
         "Scalable communication solutions designed for businesses of all sizes and use cases.",
       cta: "Find Your Solution",
       href: "/solutions",
-      image: "/nav_images/solutions.png",
+      image: "/nav_images/solutions.webp",
       imageAlt:
         "SipLink solution areas, phone numbers, contact centre, enterprise communication, industries, AI, migration, APIs and internet, arranged around a globe",
     },
@@ -1790,7 +1790,7 @@ export const nav: NavItem[] = [
         "Licensed by the DoT, with carrier-neutral POPs in Bangalore and Chennai and a Global NOC watching every circuit.",
       cta: "Explore connectivity",
       href: "/internet",
-      image: "/nav_images/internet.png",
+      image: "/nav_images/internet.webp",
       imageAlt:
         "Illustrated business district and data centre linked to a SipLink router, with internet leased line, dedicated internet, leased line and SD-WAN callouts",
     },
@@ -1858,7 +1858,7 @@ export const nav: NavItem[] = [
         "Deployments tuned to the compliance, volume and workflow demands of your sector.",
       cta: "See all industries",
       href: "/industries",
-      image: "/nav_images/industries.png",
+      image: "/nav_images/industries.webp",
       imageAlt:
         "Industry tiles for healthcare, banking, retail, education, hospitality, logistics, manufacturing, government, IT and call centres around a globe",
     },
@@ -1909,7 +1909,7 @@ export const nav: NavItem[] = [
         "Pay for what you use, scale when you need to, and talk to a human before you commit.",
       cta: "Compare all plans",
       href: "/pricing",
-      image: "/nav_images/pricing.png",
+      image: "/nav_images/pricing.webp",
       imageAlt:
         "SipLink plan comparison cards, with voice, messaging, internet and API callouts above them",
     },
@@ -1948,7 +1948,7 @@ export const nav: NavItem[] = [
         "D-U-N-S registered, globally connected, and backed by a support team that answers.",
       cta: "About SipLink",
       href: "/about",
-      image: "/nav_images/company.png",
+      image: "/nav_images/company.webp",
       imageAlt:
         "SipLink office building with mission, vision, people and innovation callouts",
     },
@@ -2594,7 +2594,7 @@ export const homePillars: {
     href: "/products/hosted-pbx",
     icon: CloudCog,
     image: {
-      src: "/images/pillar-hosted-pbx.png",
+      src: "/images/pillar-hosted-pbx.webp",
       alt: "A desk phone and a laptop connected to a cloud, the laptop showing extensions, IVR, voicemail and call routing",
     },
   },
@@ -2606,7 +2606,7 @@ export const homePillars: {
     href: "/products/sip-trunking",
     icon: Router,
     image: {
-      src: "/images/pillar-sip-trunking.png",
+      src: "/images/pillar-sip-trunking.webp",
       alt: "An on-premise IP-PBX stack linked by a SIP trunk to the SipLink cloud",
     },
   },
@@ -2618,7 +2618,7 @@ export const homePillars: {
     href: "/products/call-center",
     icon: Headset,
     image: {
-      src: "/images/pillar-call-centre.png",
+      src: "/images/pillar-call-centre.webp",
       alt: "A live calls panel showing agents on a call, in queue, available and wrapping up, beside a weekly total calls chart",
     },
   },
@@ -2630,7 +2630,7 @@ export const homePillars: {
     href: "/solutions/unified-communications",
     icon: MessagesSquare,
     image: {
-      src: "/images/pillar-unified-communications.png",
+      src: "/images/pillar-unified-communications.webp",
       alt: "A desktop team messaging app beside a phone on an active call, ringed by video, voice, chat and team icons",
     },
   },

@@ -173,7 +173,7 @@ export function AboutMissionVision() {
                 transition={{ duration: 2.4, ease: EASE }}
               >
                 <Image
-                  src="/images/about/about-mission-vision.png"
+                  src="/images/about/about-mission-vision.webp"
                   alt="SipLink leadership team in a boardroom reviewing a global connectivity map at dusk"
                   fill
                   sizes="(max-width: 1024px) 100vw, 58vw"

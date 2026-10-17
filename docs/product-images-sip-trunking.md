@@ -1,6 +1,6 @@
 # SIP Trunking artwork
 
-Generated with the built-in image generation tool. Project asset: `public/images/sip-trunking-hero.png`.
+Generated with the built-in image generation tool. Project asset: `public/images/sip-trunking-hero-v2.webp`.
 
 ## Prompt
 

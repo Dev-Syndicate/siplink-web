@@ -333,7 +333,7 @@ function Hub() {
             <div aria-hidden className="absolute inset-[10%] rounded-full bg-primary/10 blur-3xl" />
             <div className="card-float absolute inset-0" style={{ "--float-duration": "7s" } as React.CSSProperties}>
               <Image
-                src="/images/about/why-choose-voip-network-hd.png"
+                src="/images/about/why-choose-voip-network-hd.webp"
                 alt="SipLink 3D isometric VoIP communications network showing connected cloud, IP desk phone, mobile, laptop and server infrastructure"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

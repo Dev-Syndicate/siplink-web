@@ -83,7 +83,7 @@ export default function AboutPage() {
         {/* The photograph is the section's backdrop on the right half, blending into background via scrim */}
         <div className="absolute inset-y-0 right-0 hidden w-[64%] lg:block">
           <Image
-            src="/images/about/about-hero.jpg"
+            src="/images/about/about-hero.webp"
             alt="SipLink enterprise communications team in modern tech headquarters"
             fill
             priority
@@ -195,7 +195,7 @@ export default function AboutPage() {
           <div className="relative mt-10 overflow-hidden rounded-2xl border border-border/80 lg:hidden">
             <div className="relative aspect-[16/10] w-full">
               <Image
-                src="/images/about/about-hero.jpg"
+                src="/images/about/about-hero.webp"
                 alt="SipLink enterprise communications team in modern tech headquarters"
                 fill
                 priority

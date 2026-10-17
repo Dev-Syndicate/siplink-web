@@ -216,7 +216,7 @@ export default function CompanyHubPage() {
               <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-card shadow-2xl">
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
                   <Image
-                    src="/images/company/company-hero.png"
+                    src="/images/company/company-hero.webp"
                     alt="SipLink team collaborating on business communications and cloud voice"
                     fill
                     priority

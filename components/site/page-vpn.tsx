@@ -70,7 +70,7 @@ export function VpnHero() {
         <ScrollReveal delay={140}>
           <div className="overflow-hidden rounded-2xl border border-border shadow-sm">
             <Image
-              src="/internet/vpn.png"
+              src="/internet/vpn.webp"
               alt=""
               aria-hidden
               width={1444}

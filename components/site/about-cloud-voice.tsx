@@ -292,7 +292,7 @@ function Orbit({ still }: { still: boolean }) {
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
       >
         <Image
-          src="/images/about/about-modern-cloud-voice.png"
+          src="/images/about/about-modern-cloud-voice.webp"
           alt="Modern business team collaborating with SipLink cloud voice and unified communications"
           fill
           sizes="(max-width: 1024px) 100vw, 58vw"

@@ -131,7 +131,7 @@ export default function Home() {
             which stays legible via the scrim below. */}
         <div className="absolute inset-y-0 right-0 hidden w-[64%] lg:block">
           <Image
-            src="/images/hero-agent-headset.png"
+            src="/images/hero-agent-headset.webp"
             alt="Support agent wearing a headset at a desk with a laptop and desk phone, city skyline behind her"
             fill
             priority
@@ -221,7 +221,7 @@ export default function Home() {
                 as an ordinary framed image instead. */}
             <div className="relative lg:hidden">
               <Image
-                src="/images/hero-agent-headset.png"
+                src="/images/hero-agent-headset.webp"
                 alt="Support agent wearing a headset at a desk with a laptop and desk phone, city skyline behind her"
                 width={1613}
                 height={975}

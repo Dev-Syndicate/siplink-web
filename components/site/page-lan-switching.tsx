@@ -65,7 +65,7 @@ export function LanSwitchingHero() {
             className="pointer-events-none absolute inset-0 -z-10 m-auto size-[78%] rounded-full bg-gradient-to-br from-brand-from/20 to-brand-to/5 blur-2xl"
           />
           <Image
-            src="/internet/lan.png"
+            src="/internet/lan.webp"
             alt=""
             width={1460}
             height={1080}

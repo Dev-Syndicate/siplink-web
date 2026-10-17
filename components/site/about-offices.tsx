@@ -128,7 +128,7 @@ export function AboutOffices({ offices }: { offices: AboutOffice[] }) {
             >
               <motion.div style={{ y: imageY }} className="absolute -inset-y-[8%] inset-x-0">
                 <Image
-                  src="/images/about/about-global-network.png"
+                  src="/images/about/about-global-network.webp"
                   alt="SipLink brand illustration representing people, technology, and global connection"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"

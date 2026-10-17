@@ -51,7 +51,7 @@ export default function IndustriesPage() {
           </div>
 
           <Image
-            src="/images/industry-verticals.png"
+            src="/images/industry-verticals.webp"
             alt="A cloud phone dashboard connected to healthcare, recruitment, retail and customer support teams"
             width={1536}
             height={1024}

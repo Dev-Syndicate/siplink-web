@@ -63,8 +63,8 @@ export function ProductHero({ product, headline, action, secondaryLabel, seconda
   const artworkSizes = `(min-width: 1024px) max(62vw, ${720 * aspectRatio}px), (min-width: 640px) max(100vw, ${384 * aspectRatio}px), max(100vw, ${320 * aspectRatio}px)`;
   const artworkVersion = product.slug === "sms-api" ? "v4" : maskedArtworkSlugs.has(product.slug) ? "v3" : "v2";
   const artworkSrc = product.slug === "sip-trunking"
-    ? "/images/sip-trunking-hero-v2.png"
-    : `/images/products/${product.slug}-${artworkVersion}.png`;
+    ? "/images/sip-trunking-hero-v2.webp"
+    : `/images/products/${product.slug}-${artworkVersion}.webp`;
   return <section data-product-hero={product.slug} className="relative isolate overflow-hidden border-b border-border bg-background">
     <div className={cn("relative z-10 mx-auto max-w-7xl px-6", scene ? "grid items-center gap-10 py-12 lg:min-h-180 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-8 lg:px-10 lg:py-14" : "flex flex-col pt-8 pb-10 lg:min-h-180 lg:px-10 lg:pt-6 lg:pb-8 xl:pt-8 xl:pb-10")}>
       <div className={cn("flex flex-col", scene ? "min-w-0" : "flex-1")}>

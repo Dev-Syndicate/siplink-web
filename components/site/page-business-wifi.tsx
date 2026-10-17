@@ -61,7 +61,7 @@ export function BusinessWifiHero() {
             ground and its glow falls onto the page. */}
         <ScrollReveal delay={140}>
           <Image
-            src="/internet/business_wifi.png"
+            src="/internet/business_wifi.webp"
             alt=""
             aria-hidden
             width={1536}

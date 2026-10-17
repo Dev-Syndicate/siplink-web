@@ -31,10 +31,10 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 /** A cut-out for each integration category, in lib/company order. */
 const CATEGORY_ART = [
-  "/images/agent-cloud-telephony.png",
-  "/images/pillar-unified-communications.png",
-  "/images/industry-staffing.png",
-  "/images/industry-verticals.png",
+  "/images/agent-cloud-telephony.webp",
+  "/images/pillar-unified-communications.webp",
+  "/images/industry-staffing.webp",
+  "/images/industry-verticals.webp",
 ];
 
 const RING = "PARTNERSHIP TRACKS • EXPLORE • ";
@@ -210,7 +210,7 @@ export function PartnersHero({ name }: { name: string }) {
                 transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
               >
                 <Image
-                  src="/images/hero-agent-headset.png"
+                  src="/images/hero-agent-headset.webp"
                   alt=""
                   fill
                   sizes="(max-width: 1024px) 100vw, 45vw"
@@ -328,7 +328,7 @@ export function PartnersHero({ name }: { name: string }) {
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               >
                 <Image
-                  src="/images/cloud-communications.png"
+                  src="/images/cloud-communications.webp"
                   alt="SipLink's cloud at the centre of partner devices, apps and services"
                   fill
                   priority

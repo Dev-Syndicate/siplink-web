@@ -38,7 +38,7 @@ export function FeaturesHero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-border">
       <Image
-        src="/internet/features.png"
+        src="/internet/features.webp"
         alt=""
         fill
         priority

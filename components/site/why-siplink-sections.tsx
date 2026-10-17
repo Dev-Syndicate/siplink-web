@@ -35,13 +35,13 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 /** A photograph behind each differentiator, in the order of lib/company. */
 const BACKDROPS = [
-  "/images/pillar-unified-communications.png",
-  "/images/cloud-communications.png",
-  "/images/about/about-unified-voice.png",
-  "/images/agent-cloud-telephony.png",
-  "/images/pillar-sip-trunking.png",
-  "/images/hero-agent-headset.png",
-  "/images/about/about-mission.jpg",
+  "/images/pillar-unified-communications.webp",
+  "/images/cloud-communications.webp",
+  "/images/about/about-unified-voice.webp",
+  "/images/agent-cloud-telephony.webp",
+  "/images/pillar-sip-trunking.webp",
+  "/images/hero-agent-headset.webp",
+  "/images/about/about-mission.webp",
 ];
 
 const STEP_MS = 7000;
@@ -288,7 +288,7 @@ export function InfrastructureBand({
         {/* The server room */}
         <motion.div className="absolute -inset-y-[12%] inset-x-0" style={{ y }}>
           <Image
-            src="/images/sip-trunking-hero-v2.png"
+            src="/images/sip-trunking-hero-v2.webp"
             alt=""
             fill
             sizes="100vw"

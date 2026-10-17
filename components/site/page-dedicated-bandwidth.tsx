@@ -33,7 +33,7 @@ export function DedicatedBandwidthHero() {
         className="absolute inset-y-0 right-0 -z-10 hidden w-1/2 overflow-hidden lg:block"
       >
         <Image
-          src="/internet/dedicated.png"
+          src="/internet/dedicated.webp"
           alt=""
           fill
           priority

@@ -46,7 +46,7 @@ export function PlansHero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-border">
       <Image
-        src="/internet/business.png"
+        src="/internet/business.webp"
         alt=""
         fill
         priority

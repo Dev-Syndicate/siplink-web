@@ -64,7 +64,7 @@ export function ManagedRouterFirewallHero() {
             className="pointer-events-none absolute inset-0 -z-10 m-auto size-[80%] rounded-full bg-gradient-to-br from-brand-from/20 to-brand-to/5 blur-2xl"
           />
           <Image
-            src="/internet/manage.png"
+            src="/internet/manage.webp"
             alt=""
             width={1320}
             height={1200}
