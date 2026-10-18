@@ -4,18 +4,14 @@ import type { CSSProperties } from "react";
 import {
   ArrowRight,
   ArrowUp,
-  Building2,
   ChartColumn,
-  Cloud,
   CodeXml,
   FileText,
-  Headphones,
   Layers,
   Phone,
   ShieldCheck,
   Smartphone,
   Sparkles,
-  Users,
   type LucideIcon,
 } from "lucide-react";
 
@@ -38,28 +34,42 @@ const complianceBadges = [
 ];
 
 /**
- * The link columns, two groups stacked in most. Paired so the columns come
- * out roughly even in height: a long group sits with a short one, and the
- * two longest — Industries and Company — each get a column to themselves.
+ * The link groups, one column each. Company is the long one, so on wide
+ * screens it takes a double column and splits its links in two; that keeps
+ * every column between four and six links tall, with the headings in a row.
  *
- * Internet is left out, as in the design: it has its own section of the site
- * and its own menu.
+ * The footer carries a curated set rather than the whole menu: Contact
+ * Center, By Business Size, By Use Case, Migration and Internet live in the
+ * header's menus and are left out here.
  */
-const COLUMNS: string[][] = [
-  ["Business Voice", "Phone Numbers"],
-  ["Communication APIs", "Contact Center"],
-  ["Enterprise Features", "By Business Size"],
-  ["By Use Case", "Migration"],
-  ["Industries"],
-  ["Company"],
+const GROUPS = [
+  "Business Voice",
+  "Phone Numbers",
+  "Communication APIs",
+  "Enterprise Features",
+  "Industries",
+  "Company",
 ];
+
+/** Groups that span two columns on wide screens, their links split in two. */
+const WIDE = new Set(["Company"]);
+
+/** Groups that show only some of their links; the rest show them all. */
+const SHOWN: Record<string, Set<string>> = {
+  Industries: new Set([
+    "Healthcare",
+    "Staffing & Recruitment",
+    "Education",
+    "IT & SaaS",
+    "Government",
+    "Telecom Operators",
+  ]),
+};
 
 /** Links flagged with a small star, as the design marks them. */
 const STARRED = new Set([
   "SIP Trunking",
   "DID Numbers",
-  "Predictive Dialer",
-  "PBX Migration",
   "Healthcare",
   "Staffing & Recruitment",
   "Education",
@@ -73,11 +83,7 @@ const ICONS: Record<string, LucideIcon> = {
   "Business Voice": Phone,
   "Phone Numbers": Smartphone,
   "Communication APIs": CodeXml,
-  "Contact Center": Headphones,
   "Enterprise Features": Layers,
-  "By Business Size": Building2,
-  "By Use Case": Users,
-  Migration: Cloud,
   Industries: ChartColumn,
   Company: FileText,
 };
@@ -110,10 +116,13 @@ function Group({ heading, index }: { heading: string; index: number }) {
   const group = footerNav.find((item) => item.heading === heading);
   if (!group) return null;
   const Icon = ICONS[heading];
+  const links = SHOWN[heading]
+    ? group.links.filter((link) => SHOWN[heading].has(link.label))
+    : group.links;
 
   return (
     <div
-      className="reveal-item footer-group group/col"
+      className={cn("reveal-item footer-group group/col", WIDE.has(heading) && "2xl:col-span-2")}
       style={{ "--reveal-index": index } as CSSProperties}
     >
       <h3 className="flex items-center gap-2.5 text-sm font-semibold tracking-tight text-foreground">
@@ -124,15 +133,15 @@ function Group({ heading, index }: { heading: string; index: number }) {
         ) : null}
         <span className="lg:whitespace-nowrap">{group.heading}</span>
         <span className="ml-auto font-mono text-[10px] font-normal text-muted-foreground tabular-nums">
-          {String(group.links.length).padStart(2, "0")}
+          {String(links.length).padStart(2, "0")}
         </span>
       </h3>
       {/* A hairline under the heading that draws in, pink, on hover. */}
       <span aria-hidden className="relative mt-3 block h-px overflow-hidden bg-border">
         <span className="absolute inset-0 origin-left scale-x-0 bg-gradient-to-r from-brand-to to-brand-from transition-transform duration-500 ease-out group-hover/col:scale-x-100" />
       </span>
-      <ul className="mt-3 space-y-0.5">
-        {group.links.map((link) => (
+      <ul className={cn("mt-3 space-y-0.5", WIDE.has(heading) && "2xl:columns-2 2xl:gap-x-10 [&>li]:break-inside-avoid")}>
+        {links.map((link) => (
           <li key={link.href}>
             <Link
               href={link.href}
@@ -230,21 +239,17 @@ export function SiteFooter() {
       />
 
       <div className="w-full px-6 pt-16 lg:px-10 lg:pt-20 2xl:px-16">
-        {/* The links: two groups per column on desktop; below that the
-            columns simply flow two or three across, each keeping its pair. */}
-        <RevealGroup className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 lg:grid-cols-6 lg:gap-x-8">
-          {COLUMNS.map((pair, col) => (
-            <div key={pair[0]} className="space-y-10">
-              {pair.map((heading, row) => (
-                <Group key={heading} heading={heading} index={col + row * 2} />
-              ))}
-            </div>
+        {/* The links: a column per group on wide screens, three across on
+            tablets and two on phones. */}
+        <RevealGroup className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 xl:grid-cols-6 xl:gap-x-6 2xl:grid-cols-7 2xl:gap-x-10">
+          {GROUPS.map((heading, i) => (
+            <Group key={heading} heading={heading} index={i} />
           ))}
         </RevealGroup>
 
         {/* Credentials: a band of their own between the links and the
             wordmark, the marks on white tiles so they keep their colours. */}
-        <div className="mt-16 flex flex-col gap-8 border-y border-border py-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+        <div className="mt-16 flex flex-col gap-8 border-y border-border py-10 xl:flex-row xl:items-center xl:justify-between xl:gap-12">
           <div className="max-w-xs">
             <p className="flex items-center gap-2.5 text-sm font-semibold tracking-tight text-foreground">
               <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
@@ -257,7 +262,7 @@ export function SiteFooter() {
             </p>
           </div>
 
-          <ul className="grid grid-cols-6 gap-3 md:flex md:flex-wrap md:items-stretch lg:justify-end lg:gap-4">
+          <ul className="grid grid-cols-6 gap-3 md:flex md:flex-wrap md:items-stretch xl:justify-end xl:gap-4">
             {complianceBadges.map((badge) => (
               <li
                 key={badge.alt}
