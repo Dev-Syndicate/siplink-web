@@ -399,6 +399,9 @@
     padding: 0.3rem 0.5rem;
     border-radius: var(--radius-md);
     line-height: 1.35;
+    /* One line always: the arrow that slides in on hover adds width, and a
+       long label must not wrap to make room for it. */
+    white-space: nowrap;
     transition:
       background-color 0.3s ease,
       opacity 0.3s ease,
