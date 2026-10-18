@@ -479,55 +479,6 @@
     }
   }
 
-  /* The oversized footer wordmark: each letter rises out of a mask, in
-     turn, when the footer is scrolled to. */
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal-group .footer-letter {
-      transform: translateY(105%);
-    }
-
-    .reveal-group[data-revealed] .footer-letter {
-      animation: footer-letter-rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
-      animation-delay: calc(var(--letter-index, 0) * 70ms + 150ms);
-    }
-
-    /* Slow orbit for the signal rings, and a gentle drift for the motes. */
-    .footer-orbit {
-      animation: footer-orbit var(--orbit-duration, 40s) linear infinite;
-    }
-
-    .footer-float {
-      animation: footer-float var(--float-duration, 9s) ease-in-out infinite
-        alternate;
-      animation-delay: var(--float-delay, 0s);
-    }
-  }
-
-  .footer-letter {
-    display: inline-block;
-  }
-
-  @keyframes footer-letter-rise {
-    from {
-      transform: translateY(105%);
-    }
-    to {
-      transform: none;
-    }
-  }
-
-  @keyframes footer-orbit {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes footer-float {
-    to {
-      transform: translate(var(--float-x, 10px), var(--float-y, -18px));
-    }
-  }
-
   /* Items of a <RevealGroup> rise in, staggered, once the group is scrolled
      to. Hidden only while motion is allowed, so reduced-motion visitors and
      anything that never observes still get the content. */
