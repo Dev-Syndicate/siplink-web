@@ -198,6 +198,14 @@
   body {
     overflow-x: clip;
   }
+
+  /* Radix Select locks page scroll while open, which hides the scrollbar and
+     shifts the layout. Keep the page as-is unless a real dialog is open. */
+  html body[data-scroll-locked]:not(:has([role="dialog"])) {
+    overflow: visible !important;
+    overflow-x: clip !important;
+    margin-right: 0 !important;
+  }
 }
 
 @layer base {
