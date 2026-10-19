@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import {
@@ -7,6 +8,8 @@ import {
   CodeXml,
   FileText,
   Layers,
+  Mail,
+  MapPin,
   Phone,
   Smartphone,
   Sparkles,
@@ -16,12 +19,9 @@ import {
 import { RevealGroup } from "@/components/site/reveal-group";
 import { hasSocialIcon, SocialIcon } from "@/components/site/social-icons";
 import { footerNav, site, social } from "@/lib/site";
-import { cn } from "@/lib/utils";
 
 /**
- * The link groups, one column each. Company is the long one, so on wide
- * screens it takes a double column and splits its links in two; that keeps
- * every column between four and six links tall, with the headings in a row.
+ * The link groups, three across on wide screens, right of the brand column.
  *
  * The footer carries a curated set rather than the whole menu: Contact
  * Center, By Business Size, By Use Case, Migration and Internet live in the
@@ -35,9 +35,6 @@ const GROUPS = [
   "Industries",
   "Company",
 ];
-
-/** Groups that span two columns on wide screens, their links split in two. */
-const WIDE = new Set(["Company"]);
 
 /** Groups that show only some of their links; the rest show them all. */
 const SHOWN: Record<string, Set<string>> = {
@@ -62,6 +59,18 @@ const STARRED = new Set([
   "Telecom Operators",
   "About SipLink",
 ]);
+
+/**
+ * Plainer names for links whose menu label is developer jargon. Only the
+ * wording changes; each still goes to its own page.
+ */
+const RENAMED: Record<string, string> = {
+  "Voice API": "Voice Calling",
+  "SMS API": "Business SMS",
+  "WhatsApp Business API": "WhatsApp Messaging",
+  "WebRTC SDK": "In-App Calling",
+  "SIP API": "SIP Connectivity",
+};
 
 /** One icon per group heading. */
 const ICONS: Record<string, LucideIcon> = {
@@ -92,7 +101,7 @@ function Group({ heading, index }: { heading: string; index: number }) {
 
   return (
     <div
-      className={cn("reveal-item footer-group group/col", WIDE.has(heading) && "2xl:col-span-2")}
+      className="reveal-item footer-group group/col"
       style={{ "--reveal-index": index } as CSSProperties}
     >
       <h3 className="flex items-center gap-2.5 text-sm font-semibold tracking-tight text-foreground">
@@ -110,29 +119,32 @@ function Group({ heading, index }: { heading: string; index: number }) {
       <span aria-hidden className="relative mt-3 block h-px overflow-hidden bg-border">
         <span className="absolute inset-0 origin-left scale-x-0 bg-gradient-to-r from-brand-to to-brand-from transition-transform duration-500 ease-out group-hover/col:scale-x-100" />
       </span>
-      <ul className={cn("mt-3 space-y-0.5", WIDE.has(heading) && "2xl:columns-2 2xl:gap-x-10 [&>li]:break-inside-avoid")}>
-        {links.map((link) => (
-          <li key={link.href}>
-            <Link
-              href={link.href}
-              className="footer-nav-link text-sm text-foreground/75 outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              <ArrowRight className="footer-nav-arrow text-primary" aria-hidden />
-              <span className="footer-roll">
-                <span>{link.label}</span>
-                <span aria-hidden className="text-primary">
-                  {link.label}
+      <ul className="mt-3 space-y-0.5">
+        {links.map((link) => {
+          const label = RENAMED[link.label] ?? link.label;
+          return (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className="footer-nav-link text-sm text-foreground/75 outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <ArrowRight className="footer-nav-arrow text-primary" aria-hidden />
+                <span className="footer-roll">
+                  <span>{label}</span>
+                  <span aria-hidden className="text-primary">
+                    {label}
+                  </span>
                 </span>
-              </span>
-              {STARRED.has(link.label) ? (
-                <Sparkles
-                  className="ml-1.5 size-3 shrink-0 fill-amber-400 text-amber-400 transition-transform duration-500 group-hover/col:rotate-12"
-                  aria-hidden
-                />
-              ) : null}
-            </Link>
-          </li>
-        ))}
+                {STARRED.has(link.label) ? (
+                  <Sparkles
+                    className="ml-1.5 size-3 shrink-0 fill-amber-400 text-amber-400 transition-transform duration-500 group-hover/col:rotate-12"
+                    aria-hidden
+                  />
+                ) : null}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -141,10 +153,60 @@ function Group({ heading, index }: { heading: string; index: number }) {
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-gradient-to-b from-background to-accent/70 text-foreground">
-      <div className="w-full px-6 pt-16 lg:px-10 lg:pt-20 2xl:px-16">
-        {/* The links: a column per group on wide screens, three across on
-            tablets and two on phones. */}
-        <RevealGroup className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 xl:grid-cols-6 xl:gap-x-6 2xl:grid-cols-7 2xl:gap-x-10">
+      <div className="flex w-full flex-col gap-14 px-6 pt-16 lg:flex-row lg:gap-10 lg:px-10 lg:pt-20 2xl:gap-16 2xl:px-16">
+        {/* The brand column: above the links on small screens, on the left
+            from desktop up. */}
+        <RevealGroup className="border-b border-border pb-12 lg:w-80 lg:shrink-0 lg:border-r lg:border-b-0 lg:pr-10 lg:pb-0 2xl:w-96 2xl:pr-16">
+          <div className="reveal-item" style={{ "--reveal-index": 0 } as CSSProperties}>
+            <Link
+              href="/"
+              className="inline-flex rounded-md outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <Image
+                src="/siplink-logo.webp"
+                alt={`${site.legalName} home`}
+                width={300}
+                height={135}
+                className="h-14 w-auto object-contain 2xl:h-16"
+              />
+            </Link>
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">{site.description}</p>
+          </div>
+
+          <ul className="mt-8 space-y-4 text-sm">
+            {[
+              { icon: Phone, label: site.phone, href: `tel:${site.phone.replace(/\s/g, "")}` },
+              { icon: Mail, label: site.email, href: `mailto:${site.email}` },
+            ].map(({ icon: Icon, label, href }, i) => (
+              <li
+                key={href}
+                className="reveal-item"
+                style={{ "--reveal-index": 1 + i } as CSSProperties}
+              >
+                <a
+                  href={href}
+                  className="group/contact flex items-center gap-3 font-medium text-foreground outline-none hover:text-primary focus-visible:text-primary"
+                >
+                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary transition-colors duration-300 group-hover/contact:bg-primary group-hover/contact:text-primary-foreground">
+                    <Icon className="size-4" aria-hidden />
+                  </span>
+                  {label}
+                </a>
+              </li>
+            ))}
+            <li className="reveal-item" style={{ "--reveal-index": 3 } as CSSProperties}>
+              <div className="flex items-start gap-3">
+                <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                  <MapPin className="size-4" aria-hidden />
+                </span>
+                <address className="leading-relaxed text-foreground/75 not-italic">{site.address}</address>
+              </div>
+            </li>
+          </ul>
+        </RevealGroup>
+
+        {/* The links: three across on tablets and up, two on phones. */}
+        <RevealGroup className="grid flex-1 grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 xl:gap-x-10">
           {GROUPS.map((heading, i) => (
             <Group key={heading} heading={heading} index={i} />
           ))}
