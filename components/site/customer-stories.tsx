@@ -104,10 +104,7 @@ export function CustomerStories() {
   // Renders nothing until real reviews exist. See lib/site.ts.
   if (reviews.length === 0) return null;
 
-  // `reviews[0]` already carries the "why customers stay" section further up
-  // the page, so start at the next one rather than quoting it twice.
-  const pool = reviews.length > SHOWN ? reviews.slice(1) : reviews;
-  const row = pool.slice(0, SHOWN);
+  const row = reviews.slice(0, SHOWN);
 
   const rating = reviewStats[0];
   const average = Number.parseFloat(rating.value);
