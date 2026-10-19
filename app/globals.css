@@ -399,6 +399,9 @@
     padding: 0.3rem 0.5rem;
     border-radius: var(--radius-md);
     line-height: 1.35;
+    /* One line always: the arrow that slides in on hover adds width, and a
+       long label must not wrap to make room for it. */
+    white-space: nowrap;
     transition:
       background-color 0.3s ease,
       opacity 0.3s ease,
@@ -476,55 +479,6 @@
     .footer-nav-link:hover .footer-roll > :last-child,
     .footer-nav-link:focus-visible .footer-roll > :last-child {
       transform: none;
-    }
-  }
-
-  /* The oversized footer wordmark: each letter rises out of a mask, in
-     turn, when the footer is scrolled to. */
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal-group .footer-letter {
-      transform: translateY(105%);
-    }
-
-    .reveal-group[data-revealed] .footer-letter {
-      animation: footer-letter-rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
-      animation-delay: calc(var(--letter-index, 0) * 70ms + 150ms);
-    }
-
-    /* Slow orbit for the signal rings, and a gentle drift for the motes. */
-    .footer-orbit {
-      animation: footer-orbit var(--orbit-duration, 40s) linear infinite;
-    }
-
-    .footer-float {
-      animation: footer-float var(--float-duration, 9s) ease-in-out infinite
-        alternate;
-      animation-delay: var(--float-delay, 0s);
-    }
-  }
-
-  .footer-letter {
-    display: inline-block;
-  }
-
-  @keyframes footer-letter-rise {
-    from {
-      transform: translateY(105%);
-    }
-    to {
-      transform: none;
-    }
-  }
-
-  @keyframes footer-orbit {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes footer-float {
-    to {
-      transform: translate(var(--float-x, 10px), var(--float-y, -18px));
     }
   }
 
