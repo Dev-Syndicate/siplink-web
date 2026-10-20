@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 
-import { VideoEmbed } from "@/components/site/video-embed";
+import { AutoplayVideo } from "@/components/site/autoplay-video";
 import { Button } from "@/components/ui/button";
 import { companyVideo } from "@/lib/site";
 
@@ -11,8 +11,8 @@ import { companyVideo } from "@/lib/site";
  * runs wider than the page's usual column and the video takes most of it,
  * so the film is the thing you see.
  *
- * The video is the click-to-load facade, so nothing from YouTube loads
- * until someone presses play.
+ * The video plays on its own, muted and looping, with no YouTube player
+ * chrome and a single sound button in its corner.
  */
 export function VideoShowcase() {
   return (
@@ -69,7 +69,7 @@ export function VideoShowcase() {
 
             <div className="relative">
               <div className="rounded-[1.8rem] border border-card/80 bg-card/45 p-2.5 shadow-2xl shadow-primary/20 backdrop-blur-sm">
-                <VideoEmbed video={companyVideo} className="rounded-[1.3rem] ring-0" />
+                <AutoplayVideo video={companyVideo} className="rounded-[1.3rem]" />
               </div>
             </div>
           </div>
