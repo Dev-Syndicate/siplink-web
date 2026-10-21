@@ -11,6 +11,7 @@ import {
   Mail,
   MapPin,
   Phone,
+  ShieldCheck,
   Smartphone,
   Sparkles,
   type LucideIcon,
@@ -19,6 +20,12 @@ import {
 import { RevealGroup } from "@/components/site/reveal-group";
 import { hasSocialIcon, SocialIcon } from "@/components/site/social-icons";
 import { footerNav, site, social } from "@/lib/site";
+import { cn } from "@/lib/utils";
+import dotLogo from "@/public/images/certifications/dot.jpeg";
+import gdprLogo from "@/public/images/certifications/gdpr.jpeg";
+import hipaaLogo from "@/public/images/certifications/hipaa.jpeg";
+import isoLogo from "@/public/images/certifications/iso27001.jpeg";
+import soc2Logo from "@/public/images/certifications/soc2.jpeg";
 
 /**
  * The link groups, three across on wide screens, right of the brand column.
@@ -47,6 +54,19 @@ const SHOWN: Record<string, Set<string>> = {
     "Telecom Operators",
   ]),
 };
+
+/**
+ * The certification marks under the contact details. Three square marks
+ * share the first row; the wide HIPAA lockup and SOC 2 take the second, in
+ * wider tiles, so all five sit at one height in the narrow brand column.
+ */
+const CERTIFICATIONS = [
+  { src: dotLogo, alt: "Department of Telecommunications, India Telecom", wide: false },
+  { src: isoLogo, alt: "ISO/IEC 27001:2022", wide: false },
+  { src: gdprLogo, alt: "EU GDPR compliant", wide: false },
+  { src: hipaaLogo, alt: "HIPAA compliant", wide: true },
+  { src: soc2Logo, alt: "SOC 2 Type 2", wide: true },
+];
 
 /** Links flagged with a small star, as the design marks them. */
 const STARRED = new Set([
@@ -203,6 +223,31 @@ export function SiteFooter() {
               </div>
             </li>
           </ul>
+
+          <div className="reveal-item mt-10" style={{ "--reveal-index": 4 } as CSSProperties}>
+            <p className="flex items-center gap-2 text-xs font-semibold tracking-wide text-foreground/80 uppercase">
+              <ShieldCheck className="size-3.5 text-primary" aria-hidden />
+              Certified &amp; compliant
+            </p>
+            <ul className="mt-4 grid max-w-sm grid-cols-6 gap-2.5">
+              {CERTIFICATIONS.map(({ src, alt, wide }) => (
+                <li
+                  key={alt}
+                  className={cn(
+                    "grid h-[4.5rem] place-items-center rounded-xl border border-border bg-card p-1.5 shadow-sm shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md hover:shadow-primary/10 2xl:h-20",
+                    wide ? "col-span-3" : "col-span-2",
+                  )}
+                >
+                  <Image
+                    src={src}
+                    alt={alt}
+                    sizes="160px"
+                    className="h-full max-h-14 w-auto max-w-full object-contain 2xl:max-h-16"
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
         </RevealGroup>
 
         {/* The links: three across on tablets and up, two on phones. */}

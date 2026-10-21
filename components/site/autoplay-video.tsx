@@ -18,6 +18,10 @@ import { cn } from "@/lib/utils";
  * drawn slightly larger than its box so the edges YouTube can still flash a
  * title into stay out of view.
  *
+ * YouTube picks the stream quality from the player's size on screen and no
+ * longer honours a requested quality, so the player is laid out at a full
+ * 1920 × 1080 and scaled down to fit. Laid out that size, it streams 1080p.
+ *
  * YouTube still draws its channel name and its play controls over the
  * first seconds of playback, and over any pause or buffer, whatever the
  * embed parameters say. So the thumbnail stays on top until the film has
@@ -32,6 +36,13 @@ import { cn } from "@/lib/utils";
 
 /** How long YouTube keeps its title and controls up once playback starts. */
 const CHROME_SECONDS = 4;
+
+/** The size the player is laid out at, so YouTube streams 1080p. */
+const PLAYER_WIDTH = 1920;
+const PLAYER_HEIGHT = 1080;
+
+/** How much larger than its box the player is drawn, to crop YouTube's edges. */
+const OVERSCAN = 1.18;
 
 /** YouTube's `playerState` values that this component acts on. */
 const ENDED = 0;
@@ -58,7 +69,20 @@ export function AutoplayVideo({
   // Armed once a time inside the opening seconds is seen, so the final
   // timestamp reported alongside "ended" cannot clear the next loop early.
   const armed = useRef(false);
+  // The scale that fits the 1080p player to its box, with the overscan.
+  const [scale, setScale] = useState(0);
   const { id, title } = video;
+
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    // The observer reports once as soon as it starts, which sets the first scale.
+    const observer = new ResizeObserver(() =>
+      setScale((el.clientWidth / PLAYER_WIDTH) * OVERSCAN),
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [box]);
 
   useEffect(() => {
     if (!seen) return;
@@ -106,6 +130,8 @@ export function AutoplayVideo({
     modestbranding: "1",
     playsinline: "1",
     enablejsapi: "1",
+    // Long deprecated, but harmless, and some players still read it.
+    vq: "hd1080",
   });
 
   const toggleSound = () => {
@@ -127,7 +153,10 @@ export function AutoplayVideo({
           allow="autoplay; encrypted-media; picture-in-picture"
           tabIndex={-1}
           onLoad={listen}
-          className="pointer-events-none absolute top-1/2 left-1/2 aspect-video w-[118%] -translate-x-1/2 -translate-y-1/2"
+          width={PLAYER_WIDTH}
+          height={PLAYER_HEIGHT}
+          style={{ transform: `translate(-50%, -50%) scale(${scale})` }}
+          className="pointer-events-none absolute top-1/2 left-1/2 max-w-none origin-center"
         />
       ) : null}
 

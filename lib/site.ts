@@ -1811,11 +1811,6 @@ export const nav: NavItem[] = [
         icon: Building2,
         links: [
           {
-            label: "Call Centers",
-            href: "/industries/call-centers",
-            icon: Headset,
-          },
-          {
             label: "Healthcare",
             href: "/industries/healthcare",
             icon: HeartPulse,
