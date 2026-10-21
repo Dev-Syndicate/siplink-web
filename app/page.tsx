@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, PhoneCall, Quote, Star } from "lucide-react";
+import { ArrowRight, Check, PhoneCall } from "lucide-react";
 
 import { AiConsole } from "@/components/site/ai-console";
 import { AppsShowcase } from "@/components/site/apps-showcase";
@@ -15,8 +15,7 @@ import { IntegrationWall } from "@/components/site/integration-wall";
 import { SectorStage } from "@/components/site/sector-stage";
 import { SwitchingStory } from "@/components/site/switching-story";
 import { TrustStrip } from "@/components/site/trust-strip";
-import { TypedQuote } from "@/components/site/typed-quote";
-import { VideoEmbed } from "@/components/site/video-embed";
+import { VideoShowcase } from "@/components/site/video-showcase";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +28,6 @@ import {
   aiStages,
   heroHighlights,
   homePillars,
-  reviews,
   site,
   whyPoints,
 } from "@/lib/site";
@@ -109,9 +107,6 @@ const aiHighlights = aiStages
       "Intelligent workflow automation",
     ].includes(label),
   );
-
-/** The single review we pull forward as the page's headline proof. */
-const featuredReview = reviews[0];
 
 export default function Home() {
   return (
@@ -351,6 +346,11 @@ export default function Home() {
       </section>
 
       <TrustStrip />
+
+      {/* The company film, framed as an invitation rather than a feature:
+          a short pitch on one side, the video on the other, just before the
+          AI section takes over the detail. */}
+      <VideoShowcase />
 
       {/* AI straight after the trust strip, the way Quo, Aircall and
           Nextiva lead with theirs: it is what competitors selling the same
@@ -630,75 +630,9 @@ export default function Home() {
 
       <SwitchingStory />
 
-      {/* ---------------------------------------------------------------
-          The support claim, evidenced. The hero promises people who pick
-          up; this is where a real customer says it instead of us.
-
-          Stacked down the centre and narrowing as it goes — header, then
-          the film, then the review answering it. The quote writes itself
-          out because that is what the quote is about: a message that gets
-          a reply. It is the only motion in the section, which is why the
-          film and the header are left completely still.
-         --------------------------------------------------------------- */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Why customers stay
-            </span>
-            <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The part no feature list covers
-            </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">
-              Every provider sells the same features. What customers write
-              about, over and over, is that someone answers, on WhatsApp, on the
-              phone, at any hour, and the problem gets fixed.
-            </p>
-          </div>
-
-          <div className="mx-auto mt-14 max-w-4xl">
-            <VideoEmbed />
-          </div>
-
-          {/* The block is centred; the text inside it is not. Centred body
-              copy over four lines is hard to read, and a caret on centred
-              text jumps sideways with every character it adds. */}
-          <figure className="mx-auto mt-14 max-w-3xl">
-            <Quote
-              className="size-7 rotate-180 fill-primary/20 text-primary/20"
-              aria-hidden
-            />
-
-            <blockquote className="mt-4">
-              <TypedQuote
-                quote={featuredReview.quote}
-                className="text-xl leading-relaxed text-pretty lg:text-2xl"
-              />
-            </blockquote>
-
-            <figcaption className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
-              <span
-                className="flex items-center gap-0.5 text-primary"
-                aria-hidden
-              >
-                {Array.from({ length: featuredReview.rating }).map(
-                  (_, index) => (
-                    <Star key={index} className="size-3.5 fill-current" />
-                  ),
-                )}
-              </span>
-              <span className="font-medium">{featuredReview.name}</span>
-              <span className="text-muted-foreground">
-                {featuredReview.rating}/5 on Google
-              </span>
-            </figcaption>
-          </figure>
-        </div>
-      </section>
-
       <IntegrationWall />
 
-      {/* The reviews land here rather than up beside the film: by this point
+      {/* The reviews land here, late in the page, on purpose: by this point
           the visitor has seen the products, their own sector, the migration
           and their own tools, so the objection left is whether anyone else
           actually went through with it. The wall of names answers that, and

@@ -1124,6 +1124,12 @@ export const explainerVideo = {
   title: "SIPLINK UCPBX",
 } as const;
 
+/** The company film on the homepage, from SipLink's own YouTube channel. */
+export const companyVideo = {
+  id: "J4LtDm8Y0O0",
+  title: "SIPLINK - Your Trusted VoIP Partner",
+} as const;
+
 /**
  * The wired integrations, and how much of a plate each mark should take.
  *
