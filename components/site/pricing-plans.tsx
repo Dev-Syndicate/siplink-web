@@ -278,7 +278,7 @@ export function PricingPlans() {
               </p>
             ) : null}
 
-            <Card className="mt-6 gap-0 overflow-hidden py-0 sm:grid sm:grid-cols-2 xl:grid-cols-4">
+            <Card className="mt-6 gap-0 overflow-hidden py-0 md:grid md:grid-cols-3">
               {tiers.map((tier) => (
                 <TierColumn
                   key={tier.name}
@@ -365,15 +365,15 @@ function TierColumn({
   yearly: boolean;
   currency: Currency;
 }) {
-  const price =
-    tier.price === null
-      ? "Free"
-      : formatPrice(yearly ? (tier.price * 9) / 12 : tier.price, currency);
+  const price = formatPrice(
+    yearly ? (tier.price * 9) / 12 : tier.price,
+    currency
+  );
 
   return (
     <div
       className={cn(
-        "relative flex flex-col border-border not-last:border-b sm:border-b xl:border-b-0 xl:not-last:border-r sm:odd:border-r",
+        "relative flex flex-col border-border not-last:border-b md:not-last:border-r md:not-last:border-b-0",
         tier.popular && "bg-primary/5"
       )}
     >
@@ -389,16 +389,11 @@ function TierColumn({
         <p className="text-sm text-muted-foreground">{tier.tagline}</p>
         <p className="mt-5 text-4xl font-semibold tracking-tight">{price}</p>
         <p className="mt-1 h-4 text-xs text-muted-foreground">
-          {tier.price === null
-            ? ""
-            : yearly
-              ? "Per user/month, billed yearly"
-              : "Per user/month"}
+          {yearly ? "Per user/month, billed yearly" : "Per user/month"}
         </p>
         <Button
           asChild
           size="lg"
-          variant={tier.price === null ? "outline" : "default"}
           className={cn(
             "mt-6 w-full rounded-full",
             tier.name === "Starter" && "bg-background text-foreground ring-1 ring-border hover:bg-muted"

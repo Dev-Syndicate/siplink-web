@@ -12,6 +12,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -265,11 +266,16 @@ export function MegaMenu() {
                   <Link
                     href={item.href}
                     aria-current={isActive ? "page" : undefined}
+                    // Same shape and hover pill as the dropdown triggers, so
+                    // plain links sit in the row without a different look.
+                    // `!` because NavigationMenuLink's own rounded-lg and
+                    // grey hover are concatenated by asChild, not merged.
                     className={cn(
-                      "rounded-full px-3 py-2 text-sm transition-colors",
+                      navigationMenuTriggerStyle(),
+                      "rounded-full! bg-transparent! px-3 py-2 text-sm transition-colors hover:bg-gradient-to-r hover:from-primary/15 hover:to-primary/5 hover:text-primary",
                       isActive
                         ? "font-semibold text-primary"
-                        : "font-medium text-foreground/80 hover:text-foreground",
+                        : "font-medium text-foreground/80",
                     )}
                   >
                     {item.label}
