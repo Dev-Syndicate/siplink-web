@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
-  CircleCheck,
   MessageSquareText,
   PhoneIncoming,
   Sparkles,
@@ -16,13 +15,6 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 const words = ["every team", "sales teams", "support teams", "remote teams"];
-
-const ticks = [
-  "10-day free trial",
-  "No credit card needed",
-  "Cancel anytime",
-  "Trusted by businesses across the US",
-];
 
 /** Floating UI chips either side of the headline (hidden below lg). */
 const chips: {
@@ -210,22 +202,12 @@ export function PricingHero() {
           Five products. One platform. Pick what fits, or stack them all.
         </motion.p>
 
-        <motion.ul
+        <motion.p
           variants={rise}
-          transition={{ staggerChildren: 0.08 }}
-          className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-muted-foreground"
+          className="mt-8 text-base font-medium text-foreground"
         >
-          {ticks.map((tick) => (
-            <motion.li
-              key={tick}
-              variants={rise}
-              className="flex items-center gap-2"
-            >
-              <CircleCheck className="size-4 text-primary" aria-hidden />
-              {tick}
-            </motion.li>
-          ))}
-        </motion.ul>
+          Your trusted VoIP partner, on every call.
+        </motion.p>
       </motion.div>
     </section>
   );
