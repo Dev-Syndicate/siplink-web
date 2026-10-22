@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   ArrowDown,
-  Check,
   ChevronRight,
   Bot,
   Building2,
@@ -14,7 +13,6 @@ import {
   MessageCircle,
   PhoneCall,
   PhoneForwarded,
-  Plug,
   Store,
   type LucideIcon,
 } from "lucide-react";
@@ -30,29 +28,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { tiers, type Tier } from "@/lib/pricing";
+import { tiers, type Currency, type Tier } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
-
-/** Approximate rates from USD, for the currency switcher. */
-const currencies = {
-  USD: 1,
-  AUD: 1.52,
-  CAD: 1.37,
-  EUR: 0.92,
-  GBP: 0.79,
-  INR: 84,
-} as const;
-type Currency = keyof typeof currencies;
 
 const regions = ["US/CA", "UK", "AUS", "IN", "US/CA/UK", "Global"];
 const teamSizes = ["1-4", "5-49", "50+"] as const;
+const currencies: Currency[] = ["USD", "INR"];
 
-export function formatPrice(usd: number, currency: Currency) {
-  const value = usd * currencies[currency];
-  return new Intl.NumberFormat("en-US", {
+function formatPrice(value: number, currency: Currency) {
+  return new Intl.NumberFormat(currency === "INR" ? "en-IN" : "en-US", {
     style: "currency",
     currency,
-    maximumFractionDigits: value >= 100 || Number.isInteger(value) ? 0 : 2,
+    maximumFractionDigits: Number.isInteger(value) ? 0 : 2,
   }).format(value);
 }
 
@@ -113,12 +100,10 @@ const products: Product[] = [
 
 export function PricingPlans() {
   const [selected, setSelected] = useState("essential");
-  const [billing, setBilling] = useState("monthly");
   const [region, setRegion] = useState(regions[0]);
   const [teamSize, setTeamSize] = useState<string>(teamSizes[0]);
   const [currency, setCurrency] = useState<Currency>("USD");
 
-  const yearly = billing === "yearly";
   const activeTitle =
     products
       .flatMap((p) => [p, ...(p.children ?? [])])
@@ -170,32 +155,6 @@ export function PricingPlans() {
       <div className="min-w-0 py-8 lg:pl-8">
         {/* Toolbar */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-          <div className="flex items-center gap-2">
-            <ToggleGroup
-              type="single"
-              variant="outline"
-              value={billing}
-              onValueChange={(v) => v && setBilling(v)}
-              className="bg-muted p-1"
-            >
-              <ToggleGroupItem
-                value="monthly"
-                className="border-0 data-[state=on]:bg-background data-[state=on]:shadow-sm"
-              >
-                Monthly
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value="yearly"
-                className="border-0 data-[state=on]:bg-background data-[state=on]:shadow-sm"
-              >
-                Yearly
-              </ToggleGroupItem>
-            </ToggleGroup>
-            <Badge variant="secondary" className="text-primary">
-              Save 3 months&rsquo; cost
-            </Badge>
-          </div>
-
           <div className="flex items-center gap-2 text-sm">
             <span className="flex items-center gap-1">
               Phone number region
@@ -247,7 +206,7 @@ export function PricingPlans() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {Object.keys(currencies).map((c) => (
+                {currencies.map((c) => (
                   <SelectItem key={c} value={c}>
                     {c}
                   </SelectItem>
@@ -260,37 +219,42 @@ export function PricingPlans() {
         {selected === "essential" ? (
           <>
             <h2 className="mt-8 text-2xl font-semibold tracking-tight sm:text-3xl">
-              Core Calling for Business Teams
+              Plans for every business team
             </h2>
             <p className="mt-2 text-pretty text-muted-foreground">
-              Ideal for small teams managing low to moderate call volumes and
-              seeking reliable, day-to-day business calling.
+              Cloud business calling priced per line, per month. Pick the plan
+              that fits today and upgrade as your team grows.
             </p>
 
             {teamSize === "50+" ? (
               <p className="mt-4 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm">
-                Teams of 50+ get Enterprise pricing.{" "}
+                Rolling out to 50+ users?{" "}
                 <Link
-                  href="#enterprise"
+                  href="/contact"
                   className="font-medium text-primary underline-offset-4 hover:underline"
                 >
-                  See the Enterprise plan
-                </Link>
+                  Talk to sales
+                </Link>{" "}
+                for a tailored setup.
               </p>
             ) : null}
 
-            <Card className="mt-6 gap-0 overflow-hidden py-0 md:grid md:grid-cols-3">
+            {/* Columns share header/body rows (subgrid) so buttons and features line up */}
+            <Card className="mt-6 gap-0 overflow-hidden py-0 md:grid md:grid-cols-3 md:grid-rows-[auto_1fr]">
               {tiers.map((tier) => (
                 <TierColumn
                   key={tier.name}
                   tier={tier}
-                  yearly={yearly}
                   currency={currency}
                 />
               ))}
             </Card>
-            <p className="mt-4 text-sm text-muted-foreground">
-              Local taxes will be applicable in addition to the listed prices.
+            <p className="mt-4 text-xs text-pretty text-muted-foreground">
+              All prices are exclusive of applicable taxes. GST and other
+              applicable charges will be added to the final invoice. Optional
+              add-ons, usage-based services, hardware, and specialized
+              integrations may be charged separately. Feature availability
+              depends on the selected package and service terms.
             </p>
           </>
         ) : (
@@ -373,107 +337,76 @@ function SidebarItem({
 
 function TierColumn({
   tier,
-  yearly,
   currency,
 }: {
   tier: Tier;
-  yearly: boolean;
   currency: Currency;
 }) {
-  const price = formatPrice(
-    yearly ? (tier.price * 9) / 12 : tier.price,
-    currency
-  );
-
   return (
     <div
       className={cn(
-        "relative flex flex-col border-border not-last:border-b md:not-last:border-r md:not-last:border-b-0",
+        "relative flex flex-col border-border not-last:border-b md:row-span-2 md:grid md:grid-rows-subgrid md:not-last:border-r md:not-last:border-b-0",
         tier.popular && "bg-primary/5"
       )}
     >
       {tier.popular ? (
         <Badge className="absolute top-0 right-4 rounded-t-none rounded-b-md">
           <Flame aria-hidden />
-          Popular
+          Most popular
         </Badge>
       ) : null}
 
-      <div className="border-b border-border p-5">
+      <div className="flex flex-col border-b border-border p-5">
         <h3 className="text-lg font-semibold">{tier.name}</h3>
         <p className="text-sm text-muted-foreground">{tier.tagline}</p>
-        <p className="mt-5 text-4xl font-semibold tracking-tight">{price}</p>
-        <p className="mt-1 h-4 text-xs text-muted-foreground">
-          {yearly ? "Per user/month, billed yearly" : "Per user/month"}
+        <p className="mt-5 text-4xl font-semibold tracking-tight">
+          {formatPrice(tier.price[currency], currency)}
+        </p>
+        <p className="mt-1 text-xs text-muted-foreground">Per line/month</p>
+        <p className="mt-4 mb-5 text-sm text-pretty text-muted-foreground">
+          {tier.summary}
         </p>
         <Button
           asChild
           size="lg"
-          className={cn(
-            "mt-6 w-full rounded-full",
-            tier.name === "Starter" && "bg-background text-foreground ring-1 ring-border hover:bg-muted"
-          )}
+          variant={tier.popular ? "default" : "outline"}
+          className="mt-auto w-full rounded-full"
         >
-          <Link href="/contact">{tier.cta}</Link>
+          <Link href="/contact">Book a demo</Link>
         </Button>
       </div>
 
-      <div className="flex-1 space-y-5 p-5">
+      <div className="flex flex-1 flex-col gap-5 p-5">
         {tier.inherits ? (
           <p className="flex items-center gap-2 rounded-md border border-border bg-muted/60 px-3 py-1.5 text-xs text-muted-foreground italic">
             <ArrowDown className="size-3.5 shrink-0" aria-hidden />
             {tier.inherits}
           </p>
         ) : (
-          <div className="h-[30px]" aria-hidden />
+          <p className="py-1.5 text-xs font-semibold tracking-wider uppercase">
+            Features included
+          </p>
         )}
 
-        {tier.groups.map(({ heading, icon: Icon, items }) => (
-          <div key={heading}>
-            <p className="flex items-center gap-2 border-b border-border pb-2 text-xs font-semibold tracking-wider uppercase">
-              <Icon className="size-4" aria-hidden />
-              {heading}
-            </p>
-            <ul className="mt-3 space-y-2.5">
-              {items.map((item) => (
-                <li key={item} className="flex gap-2 text-sm">
-                  <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <Check className="size-2.5" strokeWidth={3} aria-hidden />
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <ul className="space-y-4">
+          {tier.features.map(({ title, description, icon: Icon }) => (
+            <li key={title} className="flex gap-3">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <Icon className="size-4" aria-hidden />
+              </span>
+              <span>
+                <span className="block text-sm font-medium">{title}</span>
+                <span className="block text-xs text-pretty text-muted-foreground">
+                  {description}
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
 
-        {tier.integrations ? (
-          <div>
-            <p className="flex items-center gap-2 border-b border-border pb-2 text-xs font-semibold tracking-wider uppercase">
-              <Plug className="size-4" aria-hidden />
-              Integrations
-            </p>
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {tier.integrations.map((name) => (
-                <Badge key={name} variant="outline" className="rounded-md">
-                  <span className="flex size-3.5 items-center justify-center rounded-sm bg-primary text-[0.6rem] text-primary-foreground">
-                    {name[0]}
-                  </span>
-                  {name}
-                </Badge>
-              ))}
-              <Badge variant="secondary" className="rounded-md">
-                50+
-              </Badge>
-            </div>
-            <Link
-              href="#compare"
-              className="mt-3 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
-            >
-              View all features
-            </Link>
-          </div>
-        ) : null}
+        <p className="mt-auto border-t border-border pt-4 text-xs text-muted-foreground">
+          {tier.note}
+        </p>
       </div>
     </div>
   );

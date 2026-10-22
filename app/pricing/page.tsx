@@ -1,19 +1,11 @@
 import type { Metadata } from "next";
-import { Fragment, type ReactNode } from "react";
 import Link from "next/link";
 import {
-  AudioLines,
-  BadgeCheck,
-  Bot,
   Check,
   CircleCheck,
-  IdCard,
-  LayoutDashboard,
-  MessageSquareText,
-  ShieldAlert,
   ShieldCheck,
+  Sparkles,
   TableProperties,
-  type LucideIcon,
 } from "lucide-react";
 
 import { AppsShowcase } from "@/components/site/apps-showcase";
@@ -32,128 +24,18 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { tiers } from "@/lib/pricing";
+import { addOns, aiAddOns, tiers } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "SipLink pricing for every team: Starter, Professional, Ultimate and Enterprise plans, plus add-ons.",
+    "SipLink plans from $10.99 per line per month: Core, Business Pro and Enterprise Plus, with optional add-ons and AI add-ons.",
 };
-
-const enterpriseFeatures = [
-  "Minimum 50 users",
-  "Unlimited minutes to US/CA",
-  "Service-Level Agreement (SLA)",
-  "WhatsApp Business API",
-  "Custom reports",
-  "Custom onboarding",
-  "Customized add-ons for other countries & SMS",
-  "Custom data storage and API usage",
-  "Developer support",
-  "Dedicated account manager",
-  "Priority support",
-  "Dedicated compliance support",
-  "Speech analytics or SipLink AI included",
-  "WhatsApp/Slack support",
-];
-
-const proSuiteFeatures = [
-  "Conference calls",
-  "Warm transfer",
-  "Smart dashboard",
-  "Softphone",
-  "Call transfer",
-  "Blind transfer",
-  "Last call details",
-  "IP whitelisting",
-  "Custom caller ID",
-  "Call recording rights",
-  "Number masking",
-  "Smart DID routing",
-  "Auto rotate",
-  "AI voicemail drop",
-  "Call disposition",
-  "Unlimited QA/guest users",
-  "Custom integrations",
-];
-
-const addOns: {
-  title: string;
-  price: string;
-  unit: string;
-  from?: boolean;
-  description: string;
-  icon: LucideIcon;
-}[] = [
-  {
-    title: "AI Voice Agent",
-    price: "$45",
-    unit: "Per user/month",
-    description:
-      "AI-powered voice agent that handles calls and conversations automatically.",
-    icon: Bot,
-  },
-  {
-    title: "Dashboard User",
-    price: "$15",
-    unit: "Per user/month",
-    description:
-      "Invite users to access and manage features through the web app dashboard.",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "CNAM",
-    price: "$100",
-    unit: "One-time setup cost",
-    description:
-      "CNAM (Caller ID Name) lets callers see your business name on incoming calls, available in the US.",
-    icon: IdCard,
-  },
-  {
-    title: "SMS Services",
-    price: "$3",
-    unit: "Per month",
-    from: true,
-    description:
-      "SMS in the US and Canada follow A2P guidelines with applicable charges.",
-    icon: MessageSquareText,
-  },
-  {
-    title: "Remediation Service",
-    price: "$100",
-    unit: "Per number",
-    description: "Get help removing the spam status from your number.",
-    icon: ShieldAlert,
-  },
-  {
-    title: "Spam Watch",
-    price: "$3",
-    unit: "Per number/month (US/CA)",
-    description:
-      "Monitor numbers to reduce spam flagging and maintain dialing reputation.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Branded Calling",
-    price: "$0.12",
-    unit: "Per call",
-    description:
-      "Display your business name and call reason on recipient screens before they pick up.",
-    icon: BadgeCheck,
-  },
-  {
-    title: "AI Copilot",
-    price: "$10",
-    unit: "Per user/month",
-    description:
-      "AI-powered call insights with transcription, summaries, sentiment, intent alerts and key topic analysis.",
-    icon: AudioLines,
-  },
-];
 
 const pricingFaqs = [
   {
@@ -168,56 +50,13 @@ const pricingFaqs = [
   },
 ];
 
-const fairUsage = [
-  "The service is provided to you as a business user for business or home office use. It may not be used for personal, residential, or non-business purposes, or resold without prior written permission from SipLink.",
-  "Customers are prohibited from using the service for auto-dialing, predictive dialing, trunking, traffic pumping, or access stimulation.",
-  "The business phone system is designed for business teams. If usage indicates call center-level bulk calling, SipLink may change your plan, apply call center rates, or suspend the account.",
-  "If unusually high usage is detected that may impact network, API, or system performance, SipLink may temporarily suspend calling services without prior notice.",
-  "Unlimited calling does not apply to premium or toll-free numbers.",
-  "Unlimited calling applies only to domestic calls within the United States and Canada. International calls are billed at current rates.",
-  "Outgoing calls to the same number may not exceed 10 calls per hour.",
-  "Parallel calls may not exceed 30% of total call capacity within the business phone system.",
-];
-
-/**
- * The comparison table, built from the plan cards: each feature is included
- * from the tier that introduces it upwards.
- */
-const comparison = (() => {
-  const groups = new Map<string, Map<string, number>>();
-  tiers.forEach((tier, index) => {
-    const sections = [
-      ...tier.groups,
-      ...(tier.integrations
-        ? [{ heading: "Integrations", items: tier.integrations }]
-        : []),
-    ];
-    for (const { heading, items } of sections) {
-      const rows = groups.get(heading) ?? new Map<string, number>();
-      for (const item of items) if (!rows.has(item)) rows.set(item, index);
-      groups.set(heading, rows);
-    }
-  });
-  return [...groups].map(([heading, rows]) => ({
-    heading,
-    rows: [...rows].map(([label, from]) => ({
-      label,
-      tiers: tiers.map((_, i) => i >= from),
-    })),
-  }));
-})();
-
-function CheckItem({ children }: { children: ReactNode }) {
-  return (
-    <li className="flex gap-2 text-sm">
-      <CircleCheck
-        className="mt-0.5 size-4 shrink-0 text-primary"
-        aria-hidden
-      />
-      {children}
-    </li>
-  );
-}
+/** Each feature is included from the plan that introduces it upwards. */
+const comparison = tiers.flatMap((tier, from) =>
+  tier.features.map(({ title }) => ({
+    title,
+    tiers: tiers.map((_, i) => i >= from),
+  }))
+);
 
 export default function PricingPage() {
   return (
@@ -229,74 +68,31 @@ export default function PricingPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-10 lg:pb-20">
-        {/* Enterprise */}
-        <Card
-          id="enterprise"
-          className="mt-6 scroll-mt-28 gap-0 overflow-hidden py-0 lg:grid lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]"
-        >
-          <CardHeader className="gap-3 bg-primary/5 p-8 lg:p-10">
-            <CardDescription className="text-xl text-foreground">
-              Enterprise Plan
-            </CardDescription>
-            <CardTitle className="text-3xl font-semibold tracking-tight">
-              Talk to Us
+        {/* Enterprise-ready */}
+        <Card className="mt-6 gap-0 overflow-hidden py-0 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+          <CardHeader className="gap-3 p-8 lg:p-10">
+            <CardTitle className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
+              <ShieldCheck className="size-6 text-primary" aria-hidden />
+              Enterprise-Ready Communication
             </CardTitle>
-            <p className="text-sm text-pretty text-muted-foreground">
-              For organizations with advanced requirements beyond standard
-              plans.
-            </p>
+            <CardDescription className="max-w-2xl text-base text-pretty">
+              Scalable business telephony, centralized call management,
+              collaboration capabilities, and integration options to support
+              your communication workflows.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3 px-8 pb-8 sm:flex-row lg:p-10">
+            <Button asChild size="lg" className="rounded-full">
+              <Link href="/contact">Book a Demo</Link>
+            </Button>
             <Button
               asChild
               size="lg"
-              className="mt-4 w-full rounded-full sm:w-56"
+              variant="outline"
+              className="rounded-full border-primary text-primary"
             >
-              <Link href="/contact">Contact Sales</Link>
+              <Link href="/contact">Talk to Sales</Link>
             </Button>
-          </CardHeader>
-          <CardContent className="p-8 lg:p-10">
-            <p className="font-semibold">Includes all Ultimate plan features</p>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-              {enterpriseFeatures.map((item) => (
-                <CheckItem key={item}>{item}</CheckItem>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-
-        {/* Pro Suite */}
-        <Card className="mt-6 gap-0 py-0 lg:grid lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-          <CardHeader className="gap-3 p-8 lg:p-10">
-            <CardTitle className="text-2xl font-semibold tracking-tight">
-              Get <span className="text-primary">MORE</span> with the Pro Suite
-            </CardTitle>
-            <p className="text-sm text-pretty text-muted-foreground">
-              Here&rsquo;s what you&rsquo;re missing in the Essential plan and
-              what you gain by upgrading.
-            </p>
-            <div className="mt-4 flex flex-col gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="w-full rounded-full sm:w-56"
-              >
-                <Link href="/products">Explore More Features</Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="w-full rounded-full border-primary text-primary sm:w-56"
-              >
-                <Link href="/contact">Request a Demo</Link>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="p-8 lg:p-10">
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {proSuiteFeatures.map((item) => (
-                <CheckItem key={item}>{item}</CheckItem>
-              ))}
-            </ul>
           </CardContent>
         </Card>
 
@@ -316,7 +112,7 @@ export default function PricingPage() {
             </AccordionTrigger>
             <AccordionContent className="px-6 pb-6">
               <div className="overflow-x-auto">
-                <table className="w-full min-w-3xl border-collapse text-sm">
+                <table className="w-full min-w-2xl border-collapse text-sm">
                   <thead>
                     <tr>
                       <th
@@ -330,64 +126,48 @@ export default function PricingPage() {
                           key={plan.name}
                           scope="col"
                           className={cn(
-                            "w-44 border border-border px-4 py-4 text-center font-semibold",
+                            "w-40 border border-border px-4 py-4 text-center font-semibold",
                             plan.popular && "text-primary"
                           )}
                         >
                           {plan.name}
                           <span className="block text-xs font-normal text-muted-foreground">
-                            ${plan.price} / user / mo
+                            ${plan.price.USD} / line / mo
                           </span>
                         </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {comparison.map((group) => (
-                      <Fragment key={group.heading}>
-                        <tr>
-                          <th
-                            scope="colgroup"
-                            colSpan={tiers.length + 1}
-                            className="border border-border bg-primary/5 px-4 py-3 text-left font-semibold text-primary"
+                    {comparison.map((row) => (
+                      <tr key={row.title} className="even:bg-muted/40">
+                        <th
+                          scope="row"
+                          className="border border-border px-4 py-3 text-left font-normal"
+                        >
+                          {row.title}
+                        </th>
+                        {row.tiers.map((included, i) => (
+                          <td
+                            key={i}
+                            className="border border-border px-4 py-3 text-center"
                           >
-                            {group.heading}
-                          </th>
-                        </tr>
-                        {group.rows.map((row) => (
-                          <tr key={row.label} className="even:bg-muted/40">
-                            <th
-                              scope="row"
-                              className="border border-border px-4 py-3 text-left font-normal"
-                            >
-                              {row.label}
-                            </th>
-                            {row.tiers.map((value, i) => (
-                              <td
-                                key={i}
-                                className="border border-border px-4 py-3 text-center"
-                              >
-                                {value ? (
-                                  <>
-                                    <Check
-                                      className="mx-auto size-4 text-primary"
-                                      aria-hidden
-                                    />
-                                    <span className="sr-only">Included</span>
-                                  </>
-                                ) : (
-                                  <span className="text-muted-foreground">
-                                    –
-                                    <span className="sr-only">
-                                      Not included
-                                    </span>
-                                  </span>
-                                )}
-                              </td>
-                            ))}
-                          </tr>
+                            {included ? (
+                              <>
+                                <Check
+                                  className="mx-auto size-4 text-primary"
+                                  aria-hidden
+                                />
+                                <span className="sr-only">Included</span>
+                              </>
+                            ) : (
+                              <span className="text-muted-foreground">
+                                –<span className="sr-only">Not included</span>
+                              </span>
+                            )}
+                          </td>
                         ))}
-                      </Fragment>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
@@ -397,61 +177,124 @@ export default function PricingPage() {
         </Accordion>
       </section>
 
-      {/* Add-ons */}
+      {/* Optional add-ons */}
       <section className="border-t border-border bg-muted/30">
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            Explore Our Add-ons
+            Optional Add-ons
           </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
+          <p className="mt-2 max-w-2xl text-pretty text-muted-foreground">
+            Extend any plan with the services your teams need. Our team scopes
+            each add-on with you.
+          </p>
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
             {addOns.map(
-              ({ title, price, unit, from, description, icon: Icon }) => (
-                <Card key={title} className="relative overflow-hidden">
-                  <Badge
-                    variant="secondary"
-                    className="absolute top-0 right-0 rounded-none rounded-bl-md text-primary"
-                  >
-                    Add-On
-                  </Badge>
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <span className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <Icon className="size-5" aria-hidden />
-                      </span>
+              ({ title, subtitle, description, includes, icon: Icon }) => (
+                <Card key={title}>
+                  <CardHeader className="flex-row items-start gap-3">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <Icon className="size-5" aria-hidden />
+                    </span>
+                    <div>
                       <CardTitle className="text-lg">{title}</CardTitle>
+                      <CardDescription>{subtitle}</CardDescription>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    {from ? (
-                      <p className="text-xs text-muted-foreground">
-                        Starting from
-                      </p>
-                    ) : null}
-                    <p className="flex items-baseline gap-1.5">
-                      <span className="text-2xl font-semibold tracking-tight">
-                        {price}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {unit}
-                      </span>
-                    </p>
-                    <p className="mt-3 text-sm text-pretty text-muted-foreground">
-                      {description}
+                  <CardContent className="space-y-3">
+                    <p className="text-sm text-pretty">{description}</p>
+                    <p className="text-xs text-pretty text-muted-foreground">
+                      <span className="font-semibold text-foreground">
+                        Includes:
+                      </span>{" "}
+                      {includes}
                     </p>
                   </CardContent>
                 </Card>
               )
             )}
           </div>
-          <div className="mt-8 text-center">
-            <Button asChild size="lg" className="rounded-full">
-              <Link href="/contact">Contact us</Link>
-            </Button>
+        </div>
+      </section>
+
+      {/* SipLink AI add-ons */}
+      <section className="relative overflow-hidden border-t border-border">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-32 right-0 size-[520px] rounded-full bg-brand-to/10 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+          <Badge
+            variant="outline"
+            className="rounded-full border-primary/30 bg-background px-3 py-1 font-mono tracking-widest text-primary uppercase"
+          >
+            <Sparkles aria-hidden />
+            SipLink AI
+          </Badge>
+          <h2 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
+            SipLink AI Add-ons
+          </h2>
+          <p className="mt-2 max-w-2xl text-pretty text-muted-foreground">
+            Add intelligence to every call: transcripts, summaries, voice
+            assistance and analytics, configured for your workflows.
+          </p>
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            {aiAddOns.map(
+              ({ title, subtitle, description, features, icon: Icon }) => (
+                <Card
+                  key={title}
+                  className="relative transition-shadow hover:shadow-lg"
+                >
+                  <Badge
+                    variant="secondary"
+                    className="absolute top-4 right-4 text-primary"
+                  >
+                    AI Add-on
+                  </Badge>
+                  <CardHeader className="flex-row items-start gap-3">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-brand-from to-brand-to text-primary-foreground">
+                      <Icon className="size-5" aria-hidden />
+                    </span>
+                    <div>
+                      <CardTitle className="text-lg">{title}</CardTitle>
+                      <CardDescription>{subtitle}</CardDescription>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex-1 space-y-4">
+                    <p className="text-sm text-pretty">{description}</p>
+                    <div>
+                      <p className="text-xs font-semibold tracking-wider uppercase">
+                        Features
+                      </p>
+                      <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                        {features.map((feature) => (
+                          <li key={feature} className="flex gap-2 text-sm">
+                            <CircleCheck
+                              className="mt-0.5 size-4 shrink-0 text-primary"
+                              aria-hidden
+                            />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </CardContent>
+                  <CardFooter>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="w-full rounded-full"
+                    >
+                      <Link href="/contact">Talk to Sales</Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              )
+            )}
           </div>
         </div>
       </section>
 
-      {/* FAQ + fair usage */}
+      {/* FAQ */}
       <section className="border-t border-border">
         <div className="mx-auto max-w-3xl px-6 py-16 lg:px-10 lg:py-20">
           <h2 className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -468,26 +311,15 @@ export default function PricingPage() {
                 </AccordionContent>
               </AccordionItem>
             ))}
-            <AccordionItem value="fair-usage">
-              <AccordionTrigger className="py-4 text-base">
-                Fair Usage Policy
-              </AccordionTrigger>
-              <AccordionContent className="text-pretty text-muted-foreground">
-                <ol className="list-decimal space-y-2 pl-5">
-                  {fairUsage.map((rule) => (
-                    <li key={rule}>{rule}</li>
-                  ))}
-                </ol>
-              </AccordionContent>
-            </AccordionItem>
           </Accordion>
         </div>
       </section>
 
       <ClosingCta
-        heading="Try for free, upgrade as you grow"
-        body="Try all the features of our all-in-one communication platform with a 10-day free trial."
-        action="Start free trial"
+        heading="Find the right plan for your team"
+        body="Book a demo and our team will walk you through the plans, add-ons and AI features that fit your workflows."
+        action="Book a Demo"
+        secondary={{ label: "Talk to Sales", href: "/contact" }}
       />
 
       <AppsShowcase />
