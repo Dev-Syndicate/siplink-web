@@ -38,8 +38,8 @@ const chips: {
   },
   {
     icon: TrendingDown,
-    title: "$18.95",
-    detail: "per user / month",
+    title: "From $10.99",
+    detail: "per line / month",
     className: "bottom-[16%] left-[9%]",
     delay: 0.8,
   },

@@ -379,11 +379,11 @@ export function AppsShowcase() {
           </div>
 
           {/* Two by two on a phone, where four labels across collide. */}
-          <ul className="mt-10 grid max-w-md grid-cols-2 gap-y-6 sm:grid-cols-4 sm:gap-y-0">
+          <ul className="mt-10 grid grid-cols-2 gap-y-6 sm:flex sm:gap-y-0">
             {FEATURES.map(({ label, icon: Icon }) => (
               <li
                 key={label}
-                className="flex items-center gap-3 sm:flex-col sm:items-start sm:gap-2.5 sm:border-l sm:border-border sm:px-6 sm:first:border-l-0 sm:first:pl-0"
+                className="flex items-center gap-3 sm:flex-col sm:items-start sm:gap-2.5 sm:border-l sm:border-border sm:px-7 sm:first:border-l-0 sm:first:pl-0"
               >
                 <span className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
                   <Icon className="size-5" aria-hidden />
