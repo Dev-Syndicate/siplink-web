@@ -56,9 +56,9 @@ const SHOWN: Record<string, Set<string>> = {
 };
 
 /**
- * The certification marks under the contact details. Three square marks
- * share the first row; the wide HIPAA lockup and SOC 2 take the second, in
- * wider tiles, so all five sit at one height in the narrow brand column.
+ * The certification marks under the contact details, in one row of small
+ * tiles. The HIPAA lockup is wide where the rest are square, so its tile
+ * takes a little more of the row to keep it legible.
  */
 const CERTIFICATIONS = [
   { src: dotLogo, alt: "Department of Telecommunications, India Telecom", wide: false },
@@ -176,7 +176,7 @@ export function SiteFooter() {
       <div className="flex w-full flex-col gap-14 px-6 pt-16 lg:flex-row lg:gap-10 lg:px-10 lg:pt-20 2xl:gap-16 2xl:px-16">
         {/* The brand column: above the links on small screens, on the left
             from desktop up. */}
-        <RevealGroup className="border-b border-border pb-12 lg:w-80 lg:shrink-0 lg:border-r lg:border-b-0 lg:pr-10 lg:pb-0 2xl:w-96 2xl:pr-16">
+        <RevealGroup className="border-b border-border pb-12 lg:w-80 lg:shrink-0 lg:border-r lg:border-b-0 lg:pr-8 lg:pb-0 xl:w-88 2xl:w-[26rem] 2xl:pr-10">
           <div className="reveal-item" style={{ "--reveal-index": 0 } as CSSProperties}>
             <Link
               href="/"
@@ -190,7 +190,7 @@ export function SiteFooter() {
                 className="h-14 w-auto object-contain 2xl:h-16"
               />
             </Link>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">{site.description}</p>
+            <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{site.description}</p>
           </div>
 
           <ul className="mt-8 space-y-4 text-sm">
@@ -229,20 +229,20 @@ export function SiteFooter() {
               <ShieldCheck className="size-3.5 text-primary" aria-hidden />
               Certified &amp; compliant
             </p>
-            <ul className="mt-4 grid max-w-sm grid-cols-6 gap-2.5">
+            <ul className="mt-4 flex gap-2">
               {CERTIFICATIONS.map(({ src, alt, wide }) => (
                 <li
                   key={alt}
                   className={cn(
-                    "grid h-[4.5rem] place-items-center rounded-xl border border-border bg-card p-1.5 shadow-sm shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md hover:shadow-primary/10 2xl:h-20",
-                    wide ? "col-span-3" : "col-span-2",
+                    "grid h-12 min-w-0 place-items-center rounded-lg border border-border bg-card p-1 shadow-sm shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md hover:shadow-primary/10 2xl:h-14",
+                    wide ? "flex-[1.6]" : "flex-1",
                   )}
                 >
                   <Image
                     src={src}
                     alt={alt}
                     sizes="160px"
-                    className="h-full max-h-14 w-auto max-w-full object-contain 2xl:max-h-16"
+                    className="h-full max-h-10 w-auto max-w-full object-contain 2xl:max-h-12"
                   />
                 </li>
               ))}
