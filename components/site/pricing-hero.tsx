@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
-  CircleCheck,
   MessageSquareText,
+  PhoneCall,
   PhoneIncoming,
   Sparkles,
   TrendingDown,
@@ -15,14 +15,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-const words = ["every team", "sales teams", "support teams", "remote teams"];
+const tagline = "Your trusted VoIP partner, on every call.";
 
-const ticks = [
-  "10-day free trial",
-  "No credit card needed",
-  "Cancel anytime",
-  "Trusted by businesses across the US",
-];
+const words = ["every team", "sales teams", "support teams", "remote teams"];
 
 /** Floating UI chips either side of the headline (hidden below lg). */
 const chips: {
@@ -210,22 +205,81 @@ export function PricingHero() {
           Five products. One platform. Pick what fits, or stack them all.
         </motion.p>
 
-        <motion.ul
-          variants={rise}
-          transition={{ staggerChildren: 0.08 }}
-          className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-muted-foreground"
-        >
-          {ticks.map((tick) => (
-            <motion.li
-              key={tick}
-              variants={rise}
-              className="flex items-center gap-2"
+        <motion.div variants={rise} className="mt-8 flex justify-center">
+          <Badge
+            variant="outline"
+            className="relative h-auto gap-3 overflow-hidden rounded-full bg-background/80 py-2 pr-5 pl-2 text-sm font-medium text-foreground shadow-sm backdrop-blur"
+          >
+            {/* Live call dot with ripple */}
+            <span className="relative flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <PhoneCall className="size-3.5" aria-hidden />
+              {!reduce ? (
+                <motion.span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full border-2 border-primary"
+                  animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                  transition={{ duration: 1.6, repeat: Infinity }}
+                />
+              ) : null}
+            </span>
+
+            {/* Words arrive one by one */}
+            <motion.span
+              className="flex flex-wrap gap-x-1"
+              initial="hidden"
+              animate="show"
+              transition={{ staggerChildren: 0.08, delayChildren: 0.9 }}
             >
-              <CircleCheck className="size-4 text-primary" aria-hidden />
-              {tick}
-            </motion.li>
-          ))}
-        </motion.ul>
+              {tagline.split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  variants={{
+                    hidden: { opacity: 0, y: 8, filter: "blur(4px)" },
+                    show: { opacity: 1, y: 0, filter: "blur(0px)" },
+                  }}
+                  className={cn(word.startsWith("VoIP") && "text-primary")}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.span>
+
+            {/* Voice waveform */}
+            <span aria-hidden className="flex h-4 items-center gap-0.5">
+              {[0.5, 1, 0.7, 0.9, 0.4].map((h, i) => (
+                <motion.span
+                  key={i}
+                  className="w-0.5 rounded-full bg-primary"
+                  style={{ height: `${h * 100}%` }}
+                  animate={reduce ? undefined : { scaleY: [0.4, 1, 0.4] }}
+                  transition={{
+                    duration: 0.9,
+                    repeat: Infinity,
+                    delay: i * 0.12,
+                    ease: "easeInOut",
+                  }}
+                />
+              ))}
+            </span>
+
+            {/* Shimmer sweep */}
+            {!reduce ? (
+              <motion.span
+                aria-hidden
+                className="pointer-events-none absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-primary/10 to-transparent"
+                initial={{ left: "-40%" }}
+                animate={{ left: "140%" }}
+                transition={{
+                  duration: 2.2,
+                  repeat: Infinity,
+                  repeatDelay: 2.5,
+                  delay: 1.8,
+                  ease: "easeInOut",
+                }}
+              />
+            ) : null}
+          </Badge>
+        </motion.div>
       </motion.div>
     </section>
   );

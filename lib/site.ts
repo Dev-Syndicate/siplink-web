@@ -1869,57 +1869,7 @@ export const nav: NavItem[] = [
         "Industry tiles for healthcare, banking, retail, education, hospitality, logistics, manufacturing, government, IT and call centres around a globe",
     },
   },
-  {
-    label: "Pricing",
-    href: "/pricing",
-    flat: true,
-    groups: [
-      {
-        heading: "Plans & pricing",
-        icon: Receipt,
-        links: [
-          {
-            label: "SIP Trunk Pricing",
-            href: "/pricing/sip-trunk",
-            icon: Cable,
-          },
-          { label: "CCaaS Plans", href: "/pricing/cloud-pbx", icon: Cloud },
-          { label: "DID Pricing", href: "/pricing/did", icon: PhoneIncoming },
-          {
-            label: "Toll-Free Pricing",
-            href: "/pricing/toll-free",
-            icon: PhoneCall,
-          },
-          {
-            label: "Contact Center Pricing",
-            href: "/pricing/contact-center",
-            icon: Headset,
-          },
-          {
-            label: "Voice API Pricing",
-            href: "/pricing/voice-api",
-            icon: AudioLines,
-          },
-          {
-            label: "Enterprise Quote",
-            href: "/pricing/enterprise-quote",
-            icon: FileSpreadsheet,
-          },
-        ],
-      },
-    ],
-    feature: {
-      eyebrow: "SIPLINK PRICING",
-      title: "Transparent pricing, no surprises",
-      description:
-        "Pay for what you use, scale when you need to, and talk to a human before you commit.",
-      cta: "Compare all plans",
-      href: "/pricing",
-      image: "/nav_images/pricing.webp",
-      imageAlt:
-        "SipLink plan comparison cards, with voice, messaging, internet and API callouts above them",
-    },
-  },
+  { label: "Pricing", href: "/pricing" },
   {
     label: "Company",
     href: "/company",

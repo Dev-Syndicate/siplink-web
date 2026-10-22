@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   ArrowDown,
   Check,
+  ChevronRight,
   Bot,
   Building2,
   Flame,
@@ -278,7 +279,7 @@ export function PricingPlans() {
               </p>
             ) : null}
 
-            <Card className="mt-6 gap-0 overflow-hidden py-0 sm:grid sm:grid-cols-2 xl:grid-cols-4">
+            <Card className="mt-6 gap-0 overflow-hidden py-0 md:grid md:grid-cols-3">
               {tiers.map((tier) => (
                 <TierColumn
                   key={tier.name}
@@ -333,25 +334,39 @@ function SidebarItem({
       onClick={onClick}
       aria-current={active ? "true" : undefined}
       className={cn(
-        "h-auto w-full justify-start gap-3 rounded-lg px-4 py-3 text-left whitespace-normal",
+        "group/side relative h-auto w-full justify-start gap-3 rounded-lg px-4 py-3 text-left whitespace-normal transition-all duration-300 hover:translate-x-1 hover:bg-primary/5 motion-reduce:transition-none motion-reduce:hover:translate-x-0",
         active && "bg-primary/5 hover:bg-primary/10",
         emphasis && "lg:rounded-l-none lg:border-l-2 lg:border-l-primary"
       )}
     >
+      {/* Accent bar that grows in on hover (the emphasised row has one) */}
+      {!emphasis ? (
+        <span
+          aria-hidden
+          className="absolute top-1/2 left-0 h-0 w-0.5 -translate-y-1/2 rounded-full bg-primary transition-all duration-300 group-hover/side:h-2/3 motion-reduce:transition-none"
+        />
+      ) : null}
       <span
         className={cn(
-          "flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background",
-          active && "border-primary/40 text-primary"
+          "flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background transition-all duration-300 group-hover/side:-rotate-6 group-hover/side:scale-110 group-hover/side:border-primary group-hover/side:bg-primary group-hover/side:text-primary-foreground group-hover/side:shadow-md motion-reduce:transition-none motion-reduce:group-hover/side:rotate-0 motion-reduce:group-hover/side:scale-100",
+          active &&
+            "border-primary bg-primary text-primary-foreground shadow-sm"
         )}
       >
         <Icon className="size-4" aria-hidden />
       </span>
       <span>
-        <span className="block text-sm font-medium">{title}</span>
+        <span className="block text-sm font-medium transition-colors duration-300 group-hover/side:text-primary">
+          {title}
+        </span>
         <span className="block text-xs font-normal text-muted-foreground">
           {description}
         </span>
       </span>
+      <ChevronRight
+        aria-hidden
+        className="absolute top-1/2 right-2 size-4 -translate-x-2 -translate-y-1/2 text-primary opacity-0 transition-all duration-300 group-hover/side:translate-x-0 group-hover/side:opacity-100 motion-reduce:transition-none"
+      />
     </Button>
   );
 }
@@ -365,15 +380,15 @@ function TierColumn({
   yearly: boolean;
   currency: Currency;
 }) {
-  const price =
-    tier.price === null
-      ? "Free"
-      : formatPrice(yearly ? (tier.price * 9) / 12 : tier.price, currency);
+  const price = formatPrice(
+    yearly ? (tier.price * 9) / 12 : tier.price,
+    currency
+  );
 
   return (
     <div
       className={cn(
-        "relative flex flex-col border-border not-last:border-b sm:border-b xl:border-b-0 xl:not-last:border-r sm:odd:border-r",
+        "relative flex flex-col border-border not-last:border-b md:not-last:border-r md:not-last:border-b-0",
         tier.popular && "bg-primary/5"
       )}
     >
@@ -389,16 +404,11 @@ function TierColumn({
         <p className="text-sm text-muted-foreground">{tier.tagline}</p>
         <p className="mt-5 text-4xl font-semibold tracking-tight">{price}</p>
         <p className="mt-1 h-4 text-xs text-muted-foreground">
-          {tier.price === null
-            ? ""
-            : yearly
-              ? "Per user/month, billed yearly"
-              : "Per user/month"}
+          {yearly ? "Per user/month, billed yearly" : "Per user/month"}
         </p>
         <Button
           asChild
           size="lg"
-          variant={tier.price === null ? "outline" : "default"}
           className={cn(
             "mt-6 w-full rounded-full",
             tier.name === "Starter" && "bg-background text-foreground ring-1 ring-border hover:bg-muted"

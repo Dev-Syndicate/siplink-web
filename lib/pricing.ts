@@ -17,8 +17,8 @@ export type FeatureGroup = {
 export type Tier = {
   name: string;
   tagline: string;
-  /** Monthly USD price per user; null for the free tier. */
-  price: number | null;
+  /** Monthly USD price per user. */
+  price: number;
   cta: string;
   popular?: boolean;
   inherits?: string;
@@ -28,46 +28,20 @@ export type Tier = {
 
 export const tiers: Tier[] = [
   {
-    name: "Basic",
-    tagline: "Ideal for getting started",
-    price: null,
-    cta: "Sign up now",
-    groups: [
-      {
-        heading: "Calling",
-        icon: Phone,
-        items: [
-          "Pay only for numbers",
-          "Voicemail",
-          "Click to dial",
-          "Business hours",
-          "Smart failover system",
-        ],
-      },
-      {
-        heading: "Messaging",
-        icon: MessageSquareMore,
-        items: ["SMS (text messages) & MMS"],
-      },
-      {
-        heading: "Platform",
-        icon: ShieldCheck,
-        items: ["2FA", "Desktop & mobile apps"],
-      },
-    ],
-  },
-  {
     name: "Starter",
     tagline: "Ideal for small businesses",
     price: 18.95,
     cta: "Book a demo",
-    inherits: "Everything in Basic + Telephony",
     groups: [
       {
         heading: "Calling",
         icon: Phone,
         items: [
           "Unlimited minutes (includes both landline & mobile calling)",
+          "Voicemail",
+          "Click to dial",
+          "Business hours",
+          "Smart failover system",
           "Forward to device",
           "Ring all devices",
           "Country blocking",
@@ -76,7 +50,17 @@ export const tiers: Tier[] = [
       {
         heading: "Messaging",
         icon: MessageSquareMore,
-        items: ["100 SMS (text messages)", "SMS templates", "Omnichannel inbox"],
+        items: [
+          "SMS (text messages) & MMS",
+          "100 SMS (text messages)",
+          "SMS templates",
+          "Omnichannel inbox",
+        ],
+      },
+      {
+        heading: "Platform",
+        icon: ShieldCheck,
+        items: ["2FA", "Desktop & mobile apps"],
       },
       {
         heading: "Analytics",

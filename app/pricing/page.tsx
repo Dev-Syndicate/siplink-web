@@ -41,7 +41,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "SipLink pricing for every team: Basic, Starter, Professional, Ultimate and Enterprise plans, plus add-ons.",
+    "SipLink pricing for every team: Starter, Professional, Ultimate and Enterprise plans, plus add-ons.",
 };
 
 const enterpriseFeatures = [
@@ -175,7 +175,6 @@ const fairUsage = [
   "If unusually high usage is detected that may impact network, API, or system performance, SipLink may temporarily suspend calling services without prior notice.",
   "Unlimited calling does not apply to premium or toll-free numbers.",
   "Unlimited calling applies only to domestic calls within the United States and Canada. International calls are billed at current rates.",
-  "The Basic plan is free for the first 6 months from signup, after which users must upgrade to the Starter plan to continue using the service.",
   "Outgoing calls to the same number may not exceed 10 calls per hour.",
   "Parallel calls may not exceed 30% of total call capacity within the business phone system.",
 ];
@@ -337,9 +336,7 @@ export default function PricingPage() {
                         >
                           {plan.name}
                           <span className="block text-xs font-normal text-muted-foreground">
-                            {plan.price === null
-                              ? "Free"
-                              : `$${plan.price} / user / mo`}
+                            ${plan.price} / user / mo
                           </span>
                         </th>
                       ))}
