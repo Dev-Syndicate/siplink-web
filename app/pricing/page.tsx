@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Fragment, type ReactNode } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
 import {
+  ArrowRight,
   AudioLines,
   BadgeCheck,
   Bot,
@@ -18,8 +19,9 @@ import {
 
 import { AppsShowcase } from "@/components/site/apps-showcase";
 import { ClosingCta } from "@/components/site/closing-cta";
-import { PricingHero } from "@/components/site/pricing-hero";
+import { PricingAtmosphere } from "@/components/site/pricing-atmosphere";
 import { PricingPlans } from "@/components/site/pricing-plans";
+import { RevealGroup } from "@/components/site/reveal-group";
 import {
   Accordion,
   AccordionContent,
@@ -220,262 +222,336 @@ function CheckItem({ children }: { children: ReactNode }) {
   );
 }
 
+/** A heading block shared by the sections below the plans. */
+function SectionHead({
+  eyebrow,
+  title,
+  body,
+  align = "left",
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  body?: string;
+  align?: "left" | "center";
+}) {
+  return (
+    <div
+      className={cn(
+        "reveal-item max-w-2xl",
+        align === "center" && "mx-auto text-center",
+      )}
+    >
+      <p className="font-mono text-xs tracking-widest text-primary uppercase">{eyebrow}</p>
+      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{title}</h2>
+      {body ? <p className="mt-3 text-pretty text-muted-foreground">{body}</p> : null}
+    </div>
+  );
+}
+
+/** Thin rings for a section's corner, echoing the hero's. */
+function CornerRings({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 400 400"
+      fill="none"
+      className={cn("footer-orbit pointer-events-none absolute -z-10 [--orbit-duration:160s]", className)}
+    >
+      {[80, 130, 180].map((r, i) => (
+        <circle
+          key={r}
+          cx="200"
+          cy="200"
+          r={r}
+          className="stroke-primary"
+          strokeOpacity={0.22 - i * 0.05}
+          strokeDasharray={i === 1 ? "1 9" : undefined}
+          strokeLinecap="round"
+        />
+      ))}
+    </svg>
+  );
+}
+
 export default function PricingPage() {
   return (
-    <>
-      <PricingHero />
+    // The page marks itself so the shared header can take its look (the
+    // `pricing:` variant), and runs up under the fixed header so the
+    // atmosphere sits behind the floating nav too.
+    <div data-page="pricing" className="relative isolate -mt-20 pt-20 sm:-mt-30 sm:pt-30">
+      <PricingAtmosphere />
 
-      <section className="mx-auto max-w-screen-2xl px-6 lg:px-10">
-        <PricingPlans />
+      <PricingPlans />
+
+      {/* Enterprise and Pro Suite: two ways up from the plans. */}
+      <section className="mx-auto max-w-[96rem] px-4 pt-20 pb-6 sm:px-6 lg:px-10 lg:pt-28">
+        <RevealGroup className="grid gap-5 lg:grid-cols-2">
+          <Card
+            id="enterprise"
+            className="reveal-item relative scroll-mt-28 gap-0 overflow-hidden rounded-[1.75rem] border-0 bg-gradient-to-br from-brand-to via-primary to-brand-from py-0 text-primary-foreground shadow-2xl shadow-primary/25 ring-0"
+          >
+            <span aria-hidden className="pointer-events-none absolute -top-24 -right-16 size-80 rounded-full bg-primary-foreground/15 blur-3xl" />
+            <CornerRings className="-right-24 -bottom-28 size-[26rem] opacity-60 [&_circle]:stroke-primary-foreground" />
+            <CardHeader className="relative gap-3 p-8 lg:p-10">
+              <Badge className="w-fit rounded-full bg-primary-foreground/15 px-3 text-primary-foreground">
+                Enterprise Plan
+              </Badge>
+              <CardTitle className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                Talk to Us
+              </CardTitle>
+              <CardDescription className="max-w-md text-pretty text-primary-foreground/85">
+                For organizations with advanced requirements beyond standard
+                plans.
+              </CardDescription>
+              <Button
+                asChild
+                size="lg"
+                className="pricing-sheen group/cta relative mt-4 w-full overflow-hidden rounded-full bg-primary-foreground text-primary transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-foreground/90 sm:w-56"
+              >
+                <Link href="/contact">
+                  Contact Sales
+                  <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
+                </Link>
+              </Button>
+            </CardHeader>
+            <CardContent className="relative px-8 pb-8 lg:px-10 lg:pb-10">
+              <p className="font-semibold">Includes all Ultimate plan features</p>
+              <ul className="mt-4 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
+                {enterpriseFeatures.map((item) => (
+                  <li key={item} className="flex gap-2 text-sm">
+                    <CircleCheck className="mt-0.5 size-4 shrink-0 text-primary-foreground/90" aria-hidden />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card className="reveal-item relative gap-0 overflow-hidden rounded-[1.75rem] border border-primary/15 bg-card/80 py-0 shadow-xl shadow-primary/10 ring-0 backdrop-blur [--reveal-index:1]">
+            <CornerRings className="-top-32 -right-28 size-[24rem]" />
+            <CardHeader className="relative gap-3 p-8 lg:p-10">
+              <Badge variant="secondary" className="w-fit rounded-full bg-accent px-3 text-primary">
+                Pro Suite
+              </Badge>
+              <CardTitle className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                Get{" "}
+                <span className="bg-gradient-to-r from-brand-to to-brand-from bg-clip-text text-transparent">
+                  MORE
+                </span>{" "}
+                with the Pro Suite
+              </CardTitle>
+              <CardDescription className="max-w-md text-pretty">
+                Here&rsquo;s what you&rsquo;re missing in the Essential plan and
+                what you gain by upgrading.
+              </CardDescription>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                <Button
+                  asChild
+                  size="lg"
+                  className="pricing-sheen group/cta relative overflow-hidden rounded-full bg-gradient-to-r from-brand-to to-brand-from shadow-lg shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  <Link href="/products">
+                    Explore More Features
+                    <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full border-primary/40 bg-card text-primary transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent hover:text-primary"
+                >
+                  <Link href="/contact">Request a Demo</Link>
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="relative px-8 pb-8 lg:px-10 lg:pb-10">
+              <ul className="grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
+                {proSuiteFeatures.map((item) => (
+                  <CheckItem key={item}>{item}</CheckItem>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        </RevealGroup>
+
+        {/* Full comparison */}
+        <RevealGroup>
+          <Accordion
+            id="compare"
+            type="single"
+            collapsible
+            className="reveal-item mt-5 scroll-mt-24 overflow-hidden rounded-[1.75rem] border border-border/80 bg-card/80 shadow-lg shadow-primary/5 backdrop-blur"
+          >
+            <AccordionItem value="compare" className="border-0">
+              <AccordionTrigger className="group/compare px-6 py-5 text-base hover:no-underline sm:px-8">
+                <span className="flex items-center gap-3">
+                  <span className="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary transition-colors duration-300 group-hover/compare:bg-primary group-hover/compare:text-primary-foreground">
+                    <TableProperties className="size-4" aria-hidden />
+                  </span>
+                  <span>
+                    <span className="block font-semibold">View full feature comparison</span>
+                    <span className="block text-sm font-normal text-muted-foreground">
+                      Every feature, plan by plan
+                    </span>
+                  </span>
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4 pb-6 sm:px-8">
+                <div className="overflow-x-auto rounded-2xl border border-border">
+                  <table className="w-full min-w-3xl border-collapse text-sm">
+                    <thead>
+                      <tr className="bg-accent/60">
+                        <th scope="col" className="px-4 py-4 text-left font-semibold">
+                          Features
+                        </th>
+                        {tiers.map((plan) => (
+                          <th
+                            key={plan.name}
+                            scope="col"
+                            className={cn(
+                              "w-44 px-4 py-4 text-center font-semibold",
+                              plan.popular && "bg-primary/10 text-primary",
+                            )}
+                          >
+                            {plan.name}
+                            <span className="block text-xs font-normal text-muted-foreground">
+                              {plan.price === null ? "Free" : `$${plan.price} / user / mo`}
+                            </span>
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {comparison.map((group) => (
+                        <Fragment key={group.heading}>
+                          <tr>
+                            <th
+                              scope="colgroup"
+                              colSpan={tiers.length + 1}
+                              className="border-t border-border bg-primary/5 px-4 py-3 text-left text-xs font-semibold tracking-wider text-primary uppercase"
+                            >
+                              {group.heading}
+                            </th>
+                          </tr>
+                          {group.rows.map((row) => (
+                            <tr key={row.label} className="border-t border-border/70 transition-colors hover:bg-accent/40">
+                              <th scope="row" className="px-4 py-3 text-left font-normal">
+                                {row.label}
+                              </th>
+                              {row.tiers.map((value, i) => (
+                                <td
+                                  key={i}
+                                  className={cn("px-4 py-3 text-center", tiers[i].popular && "bg-primary/[0.04]")}
+                                >
+                                  {value ? (
+                                    <>
+                                      <span className="mx-auto flex size-5 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                        <Check className="size-3" strokeWidth={3} aria-hidden />
+                                      </span>
+                                      <span className="sr-only">Included</span>
+                                    </>
+                                  ) : (
+                                    <span className="text-muted-foreground">
+                                      –<span className="sr-only">Not included</span>
+                                    </span>
+                                  )}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </RevealGroup>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-10 lg:pb-20">
-        {/* Enterprise */}
-        <Card
-          id="enterprise"
-          className="mt-6 scroll-mt-28 gap-0 overflow-hidden py-0 lg:grid lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]"
-        >
-          <CardHeader className="gap-3 bg-primary/5 p-8 lg:p-10">
-            <CardDescription className="text-xl text-foreground">
-              Enterprise Plan
-            </CardDescription>
-            <CardTitle className="text-3xl font-semibold tracking-tight">
-              Talk to Us
-            </CardTitle>
-            <p className="text-sm text-pretty text-muted-foreground">
-              For organizations with advanced requirements beyond standard
-              plans.
-            </p>
+      {/* Add-ons, on a blush band. */}
+      <section className="relative mt-16 overflow-hidden border-y border-primary/10 bg-gradient-to-b from-accent/70 to-accent/30">
+        <CornerRings className="-top-40 -left-32 size-[30rem]" />
+        <CornerRings className="-right-40 -bottom-48 size-[34rem] [animation-direction:reverse]" />
+        <RevealGroup className="mx-auto max-w-[96rem] px-4 py-20 sm:px-6 lg:px-10 lg:py-24">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHead
+              eyebrow="Add-ons"
+              title="Explore Our Add-ons"
+              body="Stack these on any plan as you need them."
+            />
             <Button
               asChild
               size="lg"
-              className="mt-4 w-full rounded-full sm:w-56"
+              className="reveal-item pricing-sheen group/cta relative overflow-hidden rounded-full bg-gradient-to-r from-brand-to to-brand-from shadow-lg shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <Link href="/contact">Contact Sales</Link>
-            </Button>
-          </CardHeader>
-          <CardContent className="p-8 lg:p-10">
-            <p className="font-semibold">Includes all Ultimate plan features</p>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-              {enterpriseFeatures.map((item) => (
-                <CheckItem key={item}>{item}</CheckItem>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-
-        {/* Pro Suite */}
-        <Card className="mt-6 gap-0 py-0 lg:grid lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-          <CardHeader className="gap-3 p-8 lg:p-10">
-            <CardTitle className="text-2xl font-semibold tracking-tight">
-              Get <span className="text-primary">MORE</span> with the Pro Suite
-            </CardTitle>
-            <p className="text-sm text-pretty text-muted-foreground">
-              Here&rsquo;s what you&rsquo;re missing in the Essential plan and
-              what you gain by upgrading.
-            </p>
-            <div className="mt-4 flex flex-col gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="w-full rounded-full sm:w-56"
-              >
-                <Link href="/products">Explore More Features</Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="w-full rounded-full border-primary text-primary sm:w-56"
-              >
-                <Link href="/contact">Request a Demo</Link>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="p-8 lg:p-10">
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {proSuiteFeatures.map((item) => (
-                <CheckItem key={item}>{item}</CheckItem>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-
-        {/* Full comparison */}
-        <Accordion
-          id="compare"
-          type="single"
-          collapsible
-          className="mt-6 scroll-mt-24 rounded-xl border border-border"
-        >
-          <AccordionItem value="compare">
-            <AccordionTrigger className="px-6 py-4 text-base hover:no-underline">
-              <span className="flex items-center gap-2">
-                <TableProperties className="size-4 text-primary" aria-hidden />
-                View full feature comparison
-              </span>
-            </AccordionTrigger>
-            <AccordionContent className="px-6 pb-6">
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-3xl border-collapse text-sm">
-                  <thead>
-                    <tr>
-                      <th
-                        scope="col"
-                        className="border border-border px-4 py-4 text-left font-semibold"
-                      >
-                        Features
-                      </th>
-                      {tiers.map((plan) => (
-                        <th
-                          key={plan.name}
-                          scope="col"
-                          className={cn(
-                            "w-44 border border-border px-4 py-4 text-center font-semibold",
-                            plan.popular && "text-primary"
-                          )}
-                        >
-                          {plan.name}
-                          <span className="block text-xs font-normal text-muted-foreground">
-                            {plan.price === null
-                              ? "Free"
-                              : `$${plan.price} / user / mo`}
-                          </span>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {comparison.map((group) => (
-                      <Fragment key={group.heading}>
-                        <tr>
-                          <th
-                            scope="colgroup"
-                            colSpan={tiers.length + 1}
-                            className="border border-border bg-primary/5 px-4 py-3 text-left font-semibold text-primary"
-                          >
-                            {group.heading}
-                          </th>
-                        </tr>
-                        {group.rows.map((row) => (
-                          <tr key={row.label} className="even:bg-muted/40">
-                            <th
-                              scope="row"
-                              className="border border-border px-4 py-3 text-left font-normal"
-                            >
-                              {row.label}
-                            </th>
-                            {row.tiers.map((value, i) => (
-                              <td
-                                key={i}
-                                className="border border-border px-4 py-3 text-center"
-                              >
-                                {value ? (
-                                  <>
-                                    <Check
-                                      className="mx-auto size-4 text-primary"
-                                      aria-hidden
-                                    />
-                                    <span className="sr-only">Included</span>
-                                  </>
-                                ) : (
-                                  <span className="text-muted-foreground">
-                                    –
-                                    <span className="sr-only">
-                                      Not included
-                                    </span>
-                                  </span>
-                                )}
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                      </Fragment>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </section>
-
-      {/* Add-ons */}
-      <section className="border-t border-border bg-muted/30">
-        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            Explore Our Add-ons
-          </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            {addOns.map(
-              ({ title, price, unit, from, description, icon: Icon }) => (
-                <Card key={title} className="relative overflow-hidden">
-                  <Badge
-                    variant="secondary"
-                    className="absolute top-0 right-0 rounded-none rounded-bl-md text-primary"
-                  >
-                    Add-On
-                  </Badge>
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <span className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <Icon className="size-5" aria-hidden />
-                      </span>
-                      <CardTitle className="text-lg">{title}</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    {from ? (
-                      <p className="text-xs text-muted-foreground">
-                        Starting from
-                      </p>
-                    ) : null}
-                    <p className="flex items-baseline gap-1.5">
-                      <span className="text-2xl font-semibold tracking-tight">
-                        {price}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {unit}
-                      </span>
-                    </p>
-                    <p className="mt-3 text-sm text-pretty text-muted-foreground">
-                      {description}
-                    </p>
-                  </CardContent>
-                </Card>
-              )
-            )}
-          </div>
-          <div className="mt-8 text-center">
-            <Button asChild size="lg" className="rounded-full">
-              <Link href="/contact">Contact us</Link>
+              <Link href="/contact">
+                Contact us
+                <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
+              </Link>
             </Button>
           </div>
-        </div>
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {addOns.map(({ title, price, unit, from, description, icon: Icon }, i) => (
+              <Card
+                key={title}
+                className="reveal-item group/addon relative gap-0 overflow-hidden rounded-[1.4rem] border border-border/80 bg-card/85 py-0 shadow-sm shadow-primary/5 ring-0 backdrop-blur transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/15"
+                style={{ "--reveal-index": i + 1 } as CSSProperties}
+              >
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -top-16 -right-16 size-40 rounded-full bg-brand-from/0 blur-2xl transition-colors duration-500 group-hover/addon:bg-brand-from/25"
+                />
+                <CardHeader className="relative gap-0 p-6 pb-0">
+                  <div className="flex items-center justify-between">
+                    <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover/addon:-rotate-6 group-hover/addon:bg-primary group-hover/addon:text-primary-foreground">
+                      <Icon className="size-5" aria-hidden />
+                    </span>
+                    <Badge variant="secondary" className="rounded-full bg-accent text-primary">
+                      Add-On
+                    </Badge>
+                  </div>
+                  <CardTitle className="mt-5 text-lg">{title}</CardTitle>
+                </CardHeader>
+                <CardContent className="relative p-6 pt-3">
+                  {from ? <p className="text-xs text-muted-foreground">Starting from</p> : null}
+                  <p className="flex flex-wrap items-baseline gap-x-1.5">
+                    <span className="text-3xl font-semibold tracking-tight">{price}</span>
+                    <span className="text-xs text-muted-foreground">{unit}</span>
+                  </p>
+                  <p className="mt-3 text-sm text-pretty text-muted-foreground">{description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </RevealGroup>
       </section>
 
       {/* FAQ + fair usage */}
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-3xl px-6 py-16 lg:px-10 lg:py-20">
-          <h2 className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-            Frequently Asked Questions
-          </h2>
-          <Accordion type="single" collapsible className="mt-8">
+      <section className="relative">
+        <RevealGroup className="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:py-24">
+          <SectionHead eyebrow="Questions" title="Frequently Asked Questions" align="center" />
+          <Accordion
+            type="single"
+            collapsible
+            className="reveal-item mt-10 overflow-hidden rounded-[1.75rem] border border-border/80 bg-card/85 px-2 shadow-lg shadow-primary/5 backdrop-blur [--reveal-index:1] sm:px-4"
+          >
             {pricingFaqs.map(({ question, answer }, index) => (
               <AccordionItem key={question} value={`faq-${index}`}>
-                <AccordionTrigger className="py-4 text-base">
+                <AccordionTrigger className="px-3 py-5 text-base hover:text-primary hover:no-underline">
                   {question}
                 </AccordionTrigger>
-                <AccordionContent className="text-pretty text-muted-foreground">
-                  {answer}
-                </AccordionContent>
+                <AccordionContent className="px-3 text-pretty text-muted-foreground">{answer}</AccordionContent>
               </AccordionItem>
             ))}
-            <AccordionItem value="fair-usage">
-              <AccordionTrigger className="py-4 text-base">
+            <AccordionItem value="fair-usage" className="border-b-0">
+              <AccordionTrigger className="px-3 py-5 text-base hover:text-primary hover:no-underline">
                 Fair Usage Policy
               </AccordionTrigger>
-              <AccordionContent className="text-pretty text-muted-foreground">
+              <AccordionContent className="px-3 text-pretty text-muted-foreground">
                 <ol className="list-decimal space-y-2 pl-5">
                   {fairUsage.map((rule) => (
                     <li key={rule}>{rule}</li>
@@ -484,7 +560,7 @@ export default function PricingPage() {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </div>
+        </RevealGroup>
       </section>
 
       <ClosingCta
@@ -494,6 +570,6 @@ export default function PricingPage() {
       />
 
       <AppsShowcase />
-    </>
+    </div>
   );
 }

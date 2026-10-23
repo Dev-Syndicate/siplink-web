@@ -52,6 +52,9 @@ export function HeaderShell({ children }: { children: React.ReactNode }) {
         scrolled
           ? "border-transparent px-3 pt-3 sm:px-6 lg:px-8"
           : "border-border/60 bg-background/85 py-2 backdrop-blur-xl",
+        // The pricing page floats the bar from the start, over its
+        // animated background, at the same overall height.
+        "pricing:border-transparent pricing:bg-transparent pricing:px-3 pricing:pt-3 pricing:pb-1 pricing:backdrop-blur-none sm:pricing:px-6 lg:pricing:px-8",
       )}
     >
       <div
@@ -61,6 +64,7 @@ export function HeaderShell({ children }: { children: React.ReactNode }) {
           scrolled
             ? "rounded-full border-border/60 bg-background/85 pr-2 pl-3 shadow-lg shadow-foreground/5 backdrop-blur-xl sm:pr-3 sm:pl-5"
             : "rounded-none border-transparent px-4 sm:px-6 lg:px-10",
+          "pricing:rounded-full pricing:border-primary/10 pricing:bg-background/70 pricing:pr-2 pricing:pl-3 pricing:shadow-lg pricing:shadow-primary/10 pricing:backdrop-blur-xl sm:pricing:pr-3 sm:pricing:pl-5",
         )}
       >
         {children}

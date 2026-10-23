@@ -56,7 +56,7 @@ const SHOWN: Record<string, Set<string>> = {
 
 /**
  * The certification marks above the bottom bar, in the trust strip's order
- * and wording: each mark over its name, a hairline between them, no tile.
+ * and wording, as a plain row of marks; each name is the mark's alt text.
  */
 const CERTIFICATIONS = [
   { src: hipaaLogo, label: "HIPAA-Aligned" },
@@ -230,22 +230,18 @@ export function SiteFooter() {
 
       {/* Credentials, in one row above the bottom bar. */}
       <div className="mt-14 mb-2 px-6 lg:px-10 2xl:px-16">
-        <ul className="grid grid-cols-5 divide-x divide-border sm:inline-grid">
+        <ul className="flex flex-wrap items-center gap-x-6 gap-y-4 sm:gap-x-10">
           {CERTIFICATIONS.map(({ src, label }) => (
-            <li
-              key={label}
-              className="group/cert flex flex-col items-center gap-2 px-2 text-center first:pl-0 sm:px-6 lg:px-8"
-            >
+            <li key={label} className="group/cert">
               {/* Multiply drops the marks' white backgrounds into the footer. */}
               <span className="grid h-10 place-items-center overflow-hidden sm:h-12">
                 <Image
                   src={src}
-                  alt=""
+                  alt={label}
                   sizes="96px"
                   className="h-10 w-auto max-w-full object-contain mix-blend-multiply sm:h-12 transition-transform duration-300 group-hover/cert:-translate-y-0.5"
                 />
               </span>
-              <span className="text-[11px] leading-tight font-medium text-foreground/80 sm:text-xs">{label}</span>
             </li>
           ))}
         </ul>
