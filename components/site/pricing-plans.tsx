@@ -150,7 +150,7 @@ function PricingHeroBlock({
   }, [reduce]);
 
   return (
-    <section className="relative px-6 pt-16 pb-10 sm:pt-20 lg:px-10 lg:pt-24">
+    <section className="relative px-6 pt-8 pb-8 sm:pt-10 lg:px-10 lg:pt-12">
       <motion.div
         className="mx-auto max-w-4xl text-center"
         initial="hidden"
@@ -173,7 +173,7 @@ function PricingHeroBlock({
         <motion.h1
           variants={rise}
           transition={{ duration: 0.7, ease }}
-          className="mt-7 text-4xl leading-[1.04] font-semibold tracking-[-0.035em] text-balance sm:text-6xl lg:text-7xl"
+          className="mt-6 text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-balance sm:text-5xl lg:text-6xl"
         >
           The complete communication platform for{" "}
           <span className="relative inline-grid align-bottom">
@@ -226,7 +226,7 @@ function PricingHeroBlock({
         <motion.div
           variants={rise}
           transition={{ duration: 0.6, ease }}
-          className="mt-10 flex flex-col items-center gap-4"
+          className="mt-8 flex flex-col items-center gap-4"
         >
           <div className="flex flex-wrap items-center justify-center gap-3">
             <ToggleGroup
@@ -507,6 +507,7 @@ function TierCard({
   const featured = Boolean(tier.popular);
   const top = tier.name === "Ultimate";
   const starter = tier.name === "Starter";
+  const highlights = tier.groups.flatMap((group) => group.items).slice(0, 4);
   const count =
     tier.groups.reduce((sum, group) => sum + group.items.length, 0) +
     (tier.integrations?.length ?? 0);
@@ -606,7 +607,30 @@ function TierCard({
           </span>
         </div>
 
-        <div className="mt-5 flex items-center gap-2">
+        {/* The plan's lead features, from its own list; the panel below
+            has the rest. flex-1 keeps every card's button on one line. */}
+        <div className="mt-5 flex-1 border-t border-dashed border-border pt-4">
+          <p className="text-[11px] font-semibold tracking-wider text-foreground/70 uppercase">
+            {tier.inherits ? "Key additions" : "Key features"}
+          </p>
+          <ul className="mt-3 space-y-2">
+            {highlights.map((item) => (
+              <li key={item} className="flex gap-2.5 text-sm leading-snug">
+                <span
+                  className={cn(
+                    "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full",
+                    featured ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary",
+                  )}
+                >
+                  <Check className="size-2.5" strokeWidth={3} aria-hidden />
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-6 flex items-center gap-2">
           <Button
             asChild
             size="lg"
