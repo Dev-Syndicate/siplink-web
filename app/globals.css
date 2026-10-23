@@ -409,6 +409,68 @@
     }
   }
 
+  /* Pricing hero: signal pulses, a sweeping light, flowing waveforms,
+     rising motes and bobbing chips. */
+  @media (prefers-reduced-motion: no-preference) {
+    .pricing-pulse {
+      animation: pricing-pulse 7.5s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+      animation-delay: var(--pulse-delay, 0s);
+    }
+
+    /* Slow rotation for rings, sweeps and orbiting lights; each sets its
+       own --orbit-duration. */
+    .pricing-orbit {
+      animation: pricing-orbit var(--orbit-duration, 40s) linear infinite;
+    }
+
+    .pricing-rise {
+      animation: pricing-rise var(--rise-duration, 12s) linear infinite;
+      animation-delay: var(--rise-delay, 0s);
+    }
+  }
+
+  /* Without motion the pulses rest as faint static rings. */
+  .pricing-pulse {
+    opacity: 0.25;
+  }
+
+  @keyframes pricing-pulse {
+    0% {
+      transform: scale(0.35);
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(2.3);
+      opacity: 0;
+    }
+  }
+
+  @keyframes pricing-orbit {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  @keyframes pricing-rise {
+    0% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    85% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate3d(var(--rise-x, 20px), -38rem, 0);
+      opacity: 0;
+    }
+  }
+
   @keyframes pricing-drift {
     0% {
       transform: translate3d(0, 0, 0) scale(1);

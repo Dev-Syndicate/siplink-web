@@ -60,7 +60,7 @@ export function PricingAtmosphere() {
         <svg
           viewBox="0 0 1000 1000"
           fill="none"
-          className="footer-orbit absolute inset-0 size-full [--orbit-duration:180s]"
+          className="pricing-orbit absolute inset-0 size-full [--orbit-duration:180s]"
         >
           {[110, 190, 270, 350, 430, 495].map((r, i) => (
             <circle
@@ -80,7 +80,7 @@ export function PricingAtmosphere() {
         <svg
           viewBox="0 0 1000 1000"
           fill="none"
-          className="footer-orbit absolute inset-[12%] [animation-direction:reverse] [--orbit-duration:140s]"
+          className="pricing-orbit absolute inset-[12%] [animation-direction:reverse] [--orbit-duration:140s]"
         >
           {[150, 300, 440].map((r) => (
             <circle
