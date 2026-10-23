@@ -11,7 +11,6 @@ import {
   Mail,
   MapPin,
   Phone,
-  ShieldCheck,
   Smartphone,
   Sparkles,
   type LucideIcon,
@@ -56,16 +55,15 @@ const SHOWN: Record<string, Set<string>> = {
 };
 
 /**
- * The certification marks under the contact details, in one row of small
- * tiles. The HIPAA lockup is wide where the rest are square, so its tile
- * takes a little more of the row to keep it legible.
+ * The certification marks above the bottom bar, in the trust strip's order
+ * and wording: each mark over its name, a hairline between them, no tile.
  */
 const CERTIFICATIONS = [
-  { src: dotLogo, alt: "Department of Telecommunications, India Telecom", wide: false },
-  { src: isoLogo, alt: "ISO/IEC 27001:2022", wide: false },
-  { src: gdprLogo, alt: "EU GDPR compliant", wide: false },
-  { src: hipaaLogo, alt: "HIPAA compliant", wide: true },
-  { src: soc2Logo, alt: "SOC 2 Type 2", wide: true },
+  { src: hipaaLogo, label: "HIPAA-Aligned" },
+  { src: dotLogo, label: "DoT Licensed" },
+  { src: gdprLogo, label: "GDPR Compliant" },
+  { src: isoLogo, label: "ISO Certified" },
+  { src: soc2Logo, label: "SOC 2 Type 2" },
 ];
 
 /** Links flagged with a small star, as the design marks them. */
@@ -223,31 +221,6 @@ export function SiteFooter() {
               </div>
             </li>
           </ul>
-
-          <div className="reveal-item mt-10" style={{ "--reveal-index": 4 } as CSSProperties}>
-            <p className="flex items-center gap-2 text-xs font-semibold tracking-wide text-foreground/80 uppercase">
-              <ShieldCheck className="size-3.5 text-primary" aria-hidden />
-              Certified &amp; compliant
-            </p>
-            <ul className="mt-4 flex gap-2">
-              {CERTIFICATIONS.map(({ src, alt, wide }) => (
-                <li
-                  key={alt}
-                  className={cn(
-                    "grid h-12 min-w-0 place-items-center rounded-lg border border-border bg-card p-1 shadow-sm shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md hover:shadow-primary/10 2xl:h-14",
-                    wide ? "flex-[1.6]" : "flex-1",
-                  )}
-                >
-                  <Image
-                    src={src}
-                    alt={alt}
-                    sizes="160px"
-                    className="h-full max-h-10 w-auto max-w-full object-contain 2xl:max-h-12"
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>
         </RevealGroup>
 
         {/* The links: three across on tablets and up, two on phones. */}
@@ -258,8 +231,31 @@ export function SiteFooter() {
         </RevealGroup>
       </div>
 
+      {/* Credentials, in one row above the bottom bar. */}
+      <div className="mt-14 mb-2 px-6 lg:px-10 2xl:px-16">
+        <ul className="grid grid-cols-5 divide-x divide-border sm:inline-grid">
+          {CERTIFICATIONS.map(({ src, label }) => (
+            <li
+              key={label}
+              className="group/cert flex flex-col items-center gap-2 px-2 text-center first:pl-0 sm:px-6 lg:px-8"
+            >
+              {/* Multiply drops the marks' white backgrounds into the footer. */}
+              <span className="grid h-10 place-items-center overflow-hidden sm:h-12">
+                <Image
+                  src={src}
+                  alt=""
+                  sizes="96px"
+                  className="h-10 w-auto max-w-full object-contain mix-blend-multiply sm:h-12 transition-transform duration-300 group-hover/cert:-translate-y-0.5"
+                />
+              </span>
+              <span className="text-[11px] leading-tight font-medium text-foreground/80 sm:text-xs">{label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {/* Bottom bar. */}
-      <div className="mt-16 flex flex-col gap-6 border-t border-border px-6 py-7 text-sm text-muted-foreground lg:flex-row lg:items-center lg:px-10 2xl:px-16">
+      <div className="flex flex-col gap-6 px-6 py-7 text-sm text-muted-foreground lg:flex-row lg:items-center lg:px-10 2xl:px-16">
         <p>
           © 2026 {site.legalName}. All Rights Reserved.
         </p>
