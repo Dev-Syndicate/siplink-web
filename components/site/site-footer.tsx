@@ -129,9 +129,6 @@ function Group({ heading, index }: { heading: string; index: number }) {
           </span>
         ) : null}
         <span className="lg:whitespace-nowrap">{group.heading}</span>
-        <span className="ml-auto font-mono text-[10px] font-normal text-muted-foreground tabular-nums">
-          {String(links.length).padStart(2, "0")}
-        </span>
       </h3>
       {/* A hairline under the heading that draws in, pink, on hover. */}
       <span aria-hidden className="relative mt-3 block h-px overflow-hidden bg-border">
