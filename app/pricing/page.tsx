@@ -1,328 +1,228 @@
 import type { Metadata } from "next";
+import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
-import {
-  Check,
-  CircleCheck,
-  ShieldCheck,
-  Sparkles,
-  TableProperties,
-} from "lucide-react";
+import { ArrowRight, CircleCheck, PackagePlus, Sparkles } from "lucide-react";
 
-import { AppsShowcase } from "@/components/site/apps-showcase";
-import { ClosingCta } from "@/components/site/closing-cta";
-import { PricingHero } from "@/components/site/pricing-hero";
+import { PricingAtmosphere } from "@/components/site/pricing-atmosphere";
 import { PricingPlans } from "@/components/site/pricing-plans";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { RevealGroup } from "@/components/site/reveal-group";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { addOns, aiAddOns, tiers } from "@/lib/pricing";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { aiAddOns, pricingDisclaimer } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 
+/**
+ * The pricing page. Every plan, price, feature and add-on on it comes from
+ * docs/Document 3.pdf, by way of lib/pricing.ts.
+ */
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "SipLink plans from $10.99 per line per month: Core, Business Pro and Enterprise Plus, with optional add-ons and AI add-ons.",
+    "SipLink plans: Core, Business Pro and Enterprise Plus, per line per month, with SIPLINK AI add-ons.",
 };
 
-const pricingFaqs = [
-  {
-    question: "How do you buy a phone number from SipLink?",
-    answer:
-      "Sign in to the SipLink dashboard, choose a country and area code, pick a local, toll-free or mobile number and add it to your account. Our team can also provision numbers for you during onboarding.",
-  },
-  {
-    question: "How do I port a number to SipLink?",
-    answer:
-      "Share your current carrier details and a recent bill, and our team handles the port request. We confirm the schedule for your numbers before anything changes, so customers keep reaching you throughout the switch.",
-  },
-];
+function SectionHead({
+  eyebrow,
+  title,
+  body,
+  align = "left",
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  body?: string;
+  align?: "left" | "center";
+}) {
+  return (
+    <div
+      className={cn(
+        "reveal-item max-w-2xl",
+        align === "center" && "mx-auto text-center",
+      )}
+    >
+      <p className="font-mono text-xs tracking-widest text-primary uppercase">{eyebrow}</p>
+      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{title}</h2>
+      {body ? <p className="mt-3 text-pretty text-muted-foreground">{body}</p> : null}
+    </div>
+  );
+}
 
-/** Each feature is included from the plan that introduces it upwards. */
-const comparison = tiers.flatMap((tier, from) =>
-  tier.features.map(({ title }) => ({
-    title,
-    tiers: tiers.map((_, i) => i >= from),
-  }))
-);
+/** Thin rings for a section's corner, echoing the hero's. */
+function CornerRings({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 400 400"
+      fill="none"
+      className={cn("pricing-orbit pointer-events-none absolute -z-10 [--orbit-duration:160s]", className)}
+    >
+      {[80, 130, 180].map((r, i) => (
+        <circle
+          key={r}
+          cx="200"
+          cy="200"
+          r={r}
+          className="stroke-primary"
+          strokeOpacity={0.22 - i * 0.05}
+          strokeDasharray={i === 1 ? "1 9" : undefined}
+          strokeLinecap="round"
+        />
+      ))}
+    </svg>
+  );
+}
+
 
 export default function PricingPage() {
   return (
-    <>
-      <PricingHero />
+    // The page marks itself so the shared header can take its look (the
+    // `pricing:` variant), and runs up under the fixed header so the
+    // atmosphere sits behind the floating nav too.
+    <div data-page="pricing" className="relative isolate -mt-20 pt-20 sm:-mt-30 sm:pt-30">
+      <PricingAtmosphere />
 
-      <section className="mx-auto max-w-screen-2xl px-6 lg:px-10">
-        <PricingPlans />
-      </section>
+      <PricingPlans />
 
-      <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-10 lg:pb-20">
-        {/* Enterprise-ready */}
-        <Card className="mt-6 gap-0 overflow-hidden py-0 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-          <CardHeader className="gap-3 p-8 lg:p-10">
-            <CardTitle className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
-              <ShieldCheck className="size-6 text-primary" aria-hidden />
-              Enterprise-Ready Communication
-            </CardTitle>
-            <CardDescription className="max-w-2xl text-base text-pretty">
-              Scalable business telephony, centralized call management,
-              collaboration capabilities, and integration options to support
-              your communication workflows.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3 px-8 pb-8 sm:flex-row lg:p-10">
-            <Button asChild size="lg" className="rounded-full">
-              <Link href="/contact">Book a Demo</Link>
-            </Button>
+      {/* Add-ons are quoted, not listed: one line pointing to a conversation. */}
+      <section className="relative mt-16 lg:mt-20">
+        <RevealGroup className="mx-auto max-w-[96rem] px-4 sm:px-6 lg:px-10">
+          <div className="reveal-item flex flex-col items-start gap-5 rounded-[1.6rem] border border-primary/15 bg-card/80 p-6 shadow-lg shadow-primary/10 backdrop-blur sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <div className="flex items-center gap-4">
+              <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-to to-brand-from text-primary-foreground shadow-lg shadow-primary/25">
+                <PackagePlus className="size-5" aria-hidden />
+              </span>
+              <div>
+                <p className="text-lg font-semibold">Need add-ons?</p>
+                <p className="text-sm text-muted-foreground">
+                  For add-ons, contact us and we&rsquo;ll share the details for your plan.
+                </p>
+              </div>
+            </div>
             <Button
               asChild
               size="lg"
-              variant="outline"
-              className="rounded-full border-primary text-primary"
+              className="pricing-sheen group/cta relative shrink-0 overflow-hidden rounded-full bg-gradient-to-r from-brand-to to-brand-from px-7 shadow-lg shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <Link href="/contact">Talk to Sales</Link>
+              <Link href="/contact">
+                Contact us
+                <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
+              </Link>
             </Button>
-          </CardContent>
-        </Card>
-
-        {/* Full comparison */}
-        <Accordion
-          id="compare"
-          type="single"
-          collapsible
-          className="mt-6 scroll-mt-24 rounded-xl border border-border"
-        >
-          <AccordionItem value="compare">
-            <AccordionTrigger className="px-6 py-4 text-base hover:no-underline">
-              <span className="flex items-center gap-2">
-                <TableProperties className="size-4 text-primary" aria-hidden />
-                View full feature comparison
-              </span>
-            </AccordionTrigger>
-            <AccordionContent className="px-6 pb-6">
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-2xl border-collapse text-sm">
-                  <thead>
-                    <tr>
-                      <th
-                        scope="col"
-                        className="border border-border px-4 py-4 text-left font-semibold"
-                      >
-                        Features
-                      </th>
-                      {tiers.map((plan) => (
-                        <th
-                          key={plan.name}
-                          scope="col"
-                          className={cn(
-                            "w-40 border border-border px-4 py-4 text-center font-semibold",
-                            plan.popular && "text-primary"
-                          )}
-                        >
-                          {plan.name}
-                          <span className="block text-xs font-normal text-muted-foreground">
-                            ${plan.price.USD} / line / mo
-                          </span>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {comparison.map((row) => (
-                      <tr key={row.title} className="even:bg-muted/40">
-                        <th
-                          scope="row"
-                          className="border border-border px-4 py-3 text-left font-normal"
-                        >
-                          {row.title}
-                        </th>
-                        {row.tiers.map((included, i) => (
-                          <td
-                            key={i}
-                            className="border border-border px-4 py-3 text-center"
-                          >
-                            {included ? (
-                              <>
-                                <Check
-                                  className="mx-auto size-4 text-primary"
-                                  aria-hidden
-                                />
-                                <span className="sr-only">Included</span>
-                              </>
-                            ) : (
-                              <span className="text-muted-foreground">
-                                –<span className="sr-only">Not included</span>
-                              </span>
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </section>
-
-      {/* Optional add-ons */}
-      <section className="border-t border-border bg-muted/30">
-        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            Optional Add-ons
-          </h2>
-          <p className="mt-2 max-w-2xl text-pretty text-muted-foreground">
-            Extend any plan with the services your teams need. Our team scopes
-            each add-on with you.
-          </p>
-          <div className="mt-8 grid gap-6 md:grid-cols-2">
-            {addOns.map(
-              ({ title, subtitle, description, includes, icon: Icon }) => (
-                <Card key={title}>
-                  <CardHeader className="flex-row items-start gap-3">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                      <Icon className="size-5" aria-hidden />
-                    </span>
-                    <div>
-                      <CardTitle className="text-lg">{title}</CardTitle>
-                      <CardDescription>{subtitle}</CardDescription>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <p className="text-sm text-pretty">{description}</p>
-                    <p className="text-xs text-pretty text-muted-foreground">
-                      <span className="font-semibold text-foreground">
-                        Includes:
-                      </span>{" "}
-                      {includes}
-                    </p>
-                  </CardContent>
-                </Card>
-              )
-            )}
           </div>
-        </div>
+        </RevealGroup>
       </section>
 
-      {/* SipLink AI add-ons */}
-      <section className="relative overflow-hidden border-t border-border">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-32 right-0 size-[520px] rounded-full bg-brand-to/10 blur-3xl"
-        />
-        <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
-          <Badge
-            variant="outline"
-            className="rounded-full border-primary/30 bg-background px-3 py-1 font-mono tracking-widest text-primary uppercase"
-          >
-            <Sparkles aria-hidden />
-            SipLink AI
-          </Badge>
-          <h2 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
-            SipLink AI Add-ons
-          </h2>
-          <p className="mt-2 max-w-2xl text-pretty text-muted-foreground">
-            Add intelligence to every call: transcripts, summaries, voice
-            assistance and analytics, configured for your workflows.
-          </p>
-          <div className="mt-8 grid gap-6 md:grid-cols-2">
-            {aiAddOns.map(
-              ({ title, subtitle, description, features, icon: Icon }) => (
-                <Card
-                  key={title}
-                  className="relative transition-shadow hover:shadow-lg"
-                >
-                  <Badge
-                    variant="secondary"
-                    className="absolute top-4 right-4 text-primary"
-                  >
-                    AI Add-on
-                  </Badge>
-                  <CardHeader className="flex-row items-start gap-3">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-brand-from to-brand-to text-primary-foreground">
+      {/* SIPLINK AI add-ons, on a blush band. */}
+      <section className="relative mt-20 overflow-hidden border-y border-primary/10 bg-gradient-to-b from-accent/70 to-accent/30 lg:mt-28">
+        <CornerRings className="-top-40 -left-32 size-[30rem]" />
+        <CornerRings className="-right-40 -bottom-48 size-[34rem] [animation-direction:reverse]" />
+        <RevealGroup className="mx-auto max-w-[96rem] px-4 py-20 sm:px-6 lg:px-10 lg:py-24">
+          <SectionHead
+            eyebrow="SIPLINK AI"
+            title={
+              <>
+                SIPLINK{" "}
+                <span className="bg-gradient-to-r from-brand-to to-brand-from bg-clip-text text-transparent">
+                  AI Add-ons
+                </span>
+              </>
+            }
+          />
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {aiAddOns.map(({ title, subtitle, description, features, pricing, icon: Icon }, i) => (
+              <Card
+                key={title}
+                className="reveal-item group/ai relative gap-0 overflow-hidden rounded-[1.4rem] border border-border/80 bg-card/90 py-0 shadow-sm shadow-primary/5 ring-0 backdrop-blur transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/15"
+                style={{ "--reveal-index": i + 1 } as CSSProperties}
+              >
+                <CardHeader className="gap-0 p-6 pb-0">
+                  <div className="flex items-center justify-between">
+                    <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover/ai:-rotate-6 group-hover/ai:bg-primary group-hover/ai:text-primary-foreground">
                       <Icon className="size-5" aria-hidden />
                     </span>
-                    <div>
-                      <CardTitle className="text-lg">{title}</CardTitle>
-                      <CardDescription>{subtitle}</CardDescription>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex-1 space-y-4">
-                    <p className="text-sm text-pretty">{description}</p>
-                    <div>
-                      <p className="text-xs font-semibold tracking-wider uppercase">
-                        Features
-                      </p>
-                      <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-                        {features.map((feature) => (
-                          <li key={feature} className="flex gap-2 text-sm">
-                            <CircleCheck
-                              className="mt-0.5 size-4 shrink-0 text-primary"
-                              aria-hidden
-                            />
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </CardContent>
-                  <CardFooter>
+                    <Badge variant="secondary" className="rounded-full bg-accent text-primary">
+                      <Sparkles aria-hidden />
+                      AI Add-on
+                    </Badge>
+                  </div>
+                  <CardTitle className="mt-5 text-lg">{title}</CardTitle>
+                  <p className="mt-0.5 text-sm text-muted-foreground">{subtitle}</p>
+                </CardHeader>
+                <CardContent className="flex flex-1 flex-col p-6 pt-4">
+                  <p className="text-sm text-pretty text-foreground/80">{description}</p>
+                  <p className="mt-5 text-[11px] font-semibold tracking-wider text-foreground/70 uppercase">
+                    Features
+                  </p>
+                  <ul className="mt-3 flex-1 space-y-2">
+                    {features.map((item) => (
+                      <li key={item} className="flex gap-2 text-sm">
+                        <CircleCheck className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 border-t border-dashed border-border pt-4">
+                    <p className="font-semibold">Contact Sales</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{pricing}</p>
                     <Button
                       asChild
-                      variant="outline"
-                      className="w-full rounded-full"
+                      variant={i === 0 ? "default" : "outline"}
+                      className={cn(
+                        "pricing-sheen group/cta relative mt-4 w-full overflow-hidden rounded-full transition-all duration-300 hover:-translate-y-0.5",
+                        i === 0
+                          ? "bg-gradient-to-r from-brand-to to-brand-from shadow-md shadow-primary/25"
+                          : "bg-card hover:border-primary/40 hover:bg-accent hover:text-primary",
+                      )}
                     >
-                      <Link href="/contact">Talk to Sales</Link>
+                      <Link href="/contact">
+                        Get Pricing
+                        <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
+                      </Link>
                     </Button>
-                  </CardFooter>
-                </Card>
-              )
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-3xl px-6 py-16 lg:px-10 lg:py-20">
-          <h2 className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-            Frequently Asked Questions
-          </h2>
-          <Accordion type="single" collapsible className="mt-8">
-            {pricingFaqs.map(({ question, answer }, index) => (
-              <AccordionItem key={question} value={`faq-${index}`}>
-                <AccordionTrigger className="py-4 text-base">
-                  {question}
-                </AccordionTrigger>
-                <AccordionContent className="text-pretty text-muted-foreground">
-                  {answer}
-                </AccordionContent>
-              </AccordionItem>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
-          </Accordion>
-        </div>
+          </div>
+        </RevealGroup>
       </section>
 
-      <ClosingCta
-        heading="Find the right plan for your team"
-        body="Book a demo and our team will walk you through the plans, add-ons and AI features that fit your workflows."
-        action="Book a Demo"
-        secondary={{ label: "Talk to Sales", href: "/contact" }}
-      />
-
-      <AppsShowcase />
-    </>
+      {/* Closing: the document's two calls to action and its price terms. */}
+      <section className="relative">
+        <RevealGroup className="mx-auto max-w-[96rem] px-4 py-20 sm:px-6 lg:px-10 lg:py-24">
+          <Card className="reveal-item relative gap-0 overflow-hidden rounded-[1.75rem] border-0 bg-gradient-to-br from-brand-to via-primary to-brand-from py-0 text-primary-foreground shadow-2xl shadow-primary/25 ring-0">
+            <span aria-hidden className="pointer-events-none absolute -top-24 -right-16 size-80 rounded-full bg-primary-foreground/15 blur-3xl" />
+            <CornerRings className="-right-24 -bottom-28 size-[26rem] opacity-60 [&_circle]:stroke-primary-foreground" />
+            <CardContent className="relative flex flex-col gap-8 p-8 lg:flex-row lg:items-center lg:justify-between lg:p-12">
+              <div className="max-w-2xl">
+                <p className="text-3xl font-semibold tracking-tight sm:text-4xl">Enterprise-Ready Communication</p>
+                <p className="mt-4 text-sm text-pretty text-primary-foreground/85">{pricingDisclaimer}</p>
+              </div>
+              <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+                <Button
+                  asChild
+                  size="lg"
+                  className="pricing-sheen group/cta relative overflow-hidden rounded-full bg-primary-foreground px-7 text-primary transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-foreground/90"
+                >
+                  <Link href="/contact">
+                    Book a Demo
+                    <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full border-primary-foreground/40 bg-primary-foreground/10 px-7 text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-foreground/20 hover:text-primary-foreground dark:border-primary-foreground/40 dark:bg-primary-foreground/10"
+                >
+                  <Link href="/contact">Talk to Sales</Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </RevealGroup>
+      </section>
+    </div>
   );
 }

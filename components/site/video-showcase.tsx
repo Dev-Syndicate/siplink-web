@@ -33,11 +33,11 @@ export function VideoShowcase() {
             <div>
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-card/70 px-3 py-1.5 text-xs font-medium text-primary">
                 <Play className="size-3 fill-current" aria-hidden />
-                Watch the film
+                Watch The Film
               </span>
 
               <h2 className="font-heading mt-6 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[2.75rem] xl:text-5xl">
-                Your trusted VoIP partner, on every call
+                Your Trusted VoIP Partner, On Every Call
               </h2>
 
               <p className="mt-6 max-w-lg text-lg leading-relaxed text-pretty text-muted-foreground">
@@ -49,7 +49,7 @@ export function VideoShowcase() {
               <div className="mt-9 flex flex-wrap gap-3">
                 <Button asChild size="lg" className="group rounded-full">
                   <Link href="/pricing">
-                    See pricing
+                    See Pricing
                     <ArrowRight
                       className="transition-transform duration-300 group-hover:translate-x-1"
                       aria-hidden
@@ -62,7 +62,7 @@ export function VideoShowcase() {
                   variant="outline"
                   className="rounded-full border-foreground/15 bg-transparent hover:bg-card"
                 >
-                  <Link href="/contact">Book a demo</Link>
+                  <Link href="/contact">Book A Demo</Link>
                 </Button>
               </div>
             </div>

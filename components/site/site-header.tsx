@@ -43,7 +43,7 @@ export function SiteHeader() {
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <Button
             asChild
-            className="h-9 rounded-full px-3 text-[0.8rem] transition-all duration-300 ease-out sm:h-10 sm:px-5 sm:text-sm"
+            className="h-9 rounded-full px-3 text-[0.8rem] transition-all duration-300 ease-out sm:h-10 sm:px-5 sm:text-sm pricing:bg-linear-to-r pricing:from-brand-to pricing:to-brand-from pricing:shadow-lg pricing:shadow-primary/30 pricing:hover:-translate-y-0.5 pricing:hover:shadow-xl pricing:hover:shadow-primary/40"
           >
             <Link href="/contact">Book a demo</Link>
           </Button>

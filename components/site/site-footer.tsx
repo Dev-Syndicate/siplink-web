@@ -19,6 +19,12 @@ import {
 import { RevealGroup } from "@/components/site/reveal-group";
 import { hasSocialIcon, SocialIcon } from "@/components/site/social-icons";
 import { footerNav, site, social } from "@/lib/site";
+import { cn } from "@/lib/utils";
+import dotLogo from "@/public/images/certifications/dot.jpeg";
+import gdprLogo from "@/public/images/certifications/gdpr.jpeg";
+import hipaaLogo from "@/public/images/certifications/hipaa.jpeg";
+import isoLogo from "@/public/images/certifications/iso27001.jpeg";
+import soc2Logo from "@/public/images/certifications/soc2.jpeg";
 
 /**
  * The link groups, three across on wide screens, right of the brand column.
@@ -47,6 +53,18 @@ const SHOWN: Record<string, Set<string>> = {
     "Telecom Operators",
   ]),
 };
+
+/**
+ * The certification marks above the bottom bar, in the trust strip's order
+ * and wording, as a plain row of marks; each name is the mark's alt text.
+ */
+const CERTIFICATIONS = [
+  { src: hipaaLogo, label: "HIPAA-Aligned" },
+  { src: dotLogo, label: "DoT Licensed" },
+  { src: gdprLogo, label: "GDPR Compliant" },
+  { src: isoLogo, label: "ISO Certified" },
+  { src: soc2Logo, label: "SOC 2 Type 2" },
+];
 
 /** Links flagged with a small star, as the design marks them. */
 const STARRED = new Set([
@@ -111,9 +129,6 @@ function Group({ heading, index }: { heading: string; index: number }) {
           </span>
         ) : null}
         <span className="lg:whitespace-nowrap">{group.heading}</span>
-        <span className="ml-auto font-mono text-[10px] font-normal text-muted-foreground tabular-nums">
-          {String(links.length).padStart(2, "0")}
-        </span>
       </h3>
       {/* A hairline under the heading that draws in, pink, on hover. */}
       <span aria-hidden className="relative mt-3 block h-px overflow-hidden bg-border">
@@ -156,7 +171,7 @@ export function SiteFooter() {
       <div className="flex w-full flex-col gap-14 px-6 pt-16 lg:flex-row lg:gap-10 lg:px-10 lg:pt-20 2xl:gap-16 2xl:px-16">
         {/* The brand column: above the links on small screens, on the left
             from desktop up. */}
-        <RevealGroup className="border-b border-border pb-12 lg:w-80 lg:shrink-0 lg:border-r lg:border-b-0 lg:pr-10 lg:pb-0 2xl:w-96 2xl:pr-16">
+        <RevealGroup className="border-b border-border pb-12 lg:w-80 lg:shrink-0 lg:border-r lg:border-b-0 lg:pr-8 lg:pb-0 xl:w-88 2xl:w-[26rem] 2xl:pr-10">
           <div className="reveal-item" style={{ "--reveal-index": 0 } as CSSProperties}>
             <Link
               href="/"
@@ -170,7 +185,7 @@ export function SiteFooter() {
                 className="h-14 w-auto object-contain 2xl:h-16"
               />
             </Link>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">{site.description}</p>
+            <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{site.description}</p>
           </div>
 
           <ul className="mt-8 space-y-4 text-sm">
@@ -213,8 +228,27 @@ export function SiteFooter() {
         </RevealGroup>
       </div>
 
+      {/* Credentials, in one row above the bottom bar. */}
+      <div className="mt-14 mb-2 px-6 lg:px-10 2xl:px-16">
+        <ul className="flex flex-wrap items-center gap-x-6 gap-y-4 sm:gap-x-10">
+          {CERTIFICATIONS.map(({ src, label }) => (
+            <li key={label} className="group/cert">
+              {/* Multiply drops the marks' white backgrounds into the footer. */}
+              <span className="grid h-10 place-items-center overflow-hidden sm:h-12">
+                <Image
+                  src={src}
+                  alt={label}
+                  sizes="96px"
+                  className="h-10 w-auto max-w-full object-contain mix-blend-multiply sm:h-12 transition-transform duration-300 group-hover/cert:-translate-y-0.5"
+                />
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {/* Bottom bar. */}
-      <div className="mt-16 flex flex-col gap-6 border-t border-border px-6 py-7 text-sm text-muted-foreground lg:flex-row lg:items-center lg:px-10 2xl:px-16">
+      <div className="flex flex-col gap-6 px-6 py-7 text-sm text-muted-foreground lg:flex-row lg:items-center lg:px-10 2xl:px-16">
         <p>
           © 2026 {site.legalName}. All Rights Reserved.
         </p>

@@ -37,6 +37,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* `pricing:` — styles that apply only while the pricing page is showing.
+   The shared header uses it to take the pricing page's look without that
+   page owning the header. The page marks its root with data-page. */
+@custom-variant pricing (&:where(html:has([data-page="pricing"]) *));
+
 @theme inline {
   --color-brand-from: var(--brand-from);
   --color-brand-to: var(--brand-to);
@@ -240,6 +245,12 @@
   }
 }
 
+@property --pricing-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 @property --approach-outline-angle {
   syntax: "<angle>";
   inherits: false;
@@ -380,6 +391,186 @@
 }
 
 @layer components {
+  /* Pricing page atmosphere: lights that drift on long, independent
+     paths, and a ribbon of light that sways. Transforms and opacity only. */
+  @media (prefers-reduced-motion: no-preference) {
+    .pricing-drift {
+      animation: pricing-drift var(--drift-duration, 28s) ease-in-out infinite
+        alternate;
+      animation-delay: var(--drift-delay, 0s);
+    }
+
+    .pricing-sway {
+      animation: pricing-sway 18s ease-in-out infinite alternate;
+    }
+
+    .pricing-ping {
+      animation: pricing-ping 2.4s ease-out infinite;
+    }
+  }
+
+  /* Pricing hero: signal pulses, a sweeping light, flowing waveforms,
+     rising motes and bobbing chips. */
+  @media (prefers-reduced-motion: no-preference) {
+    .pricing-pulse {
+      animation: pricing-pulse 7.5s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+      animation-delay: var(--pulse-delay, 0s);
+    }
+
+    /* Slow rotation for rings, sweeps and orbiting lights; each sets its
+       own --orbit-duration. */
+    .pricing-orbit {
+      animation: pricing-orbit var(--orbit-duration, 40s) linear infinite;
+    }
+
+    .pricing-rise {
+      animation: pricing-rise var(--rise-duration, 12s) linear infinite;
+      animation-delay: var(--rise-delay, 0s);
+    }
+  }
+
+  /* Without motion the pulses rest as faint static rings. */
+  .pricing-pulse {
+    opacity: 0.25;
+  }
+
+  @keyframes pricing-pulse {
+    0% {
+      transform: scale(0.35);
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(2.3);
+      opacity: 0;
+    }
+  }
+
+  @keyframes pricing-orbit {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  @keyframes pricing-rise {
+    0% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    85% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate3d(var(--rise-x, 20px), -38rem, 0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes pricing-drift {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translate3d(var(--drift-x, 80px), var(--drift-y, 40px), 0)
+        scale(1.12);
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(calc(var(--drift-x, 80px) * -0.6), 0, 0)
+        scale(0.95);
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes pricing-sway {
+    from {
+      transform: translateX(-3%) rotate(-4deg) scale(1);
+    }
+    to {
+      transform: translateX(3%) rotate(5deg) scale(1.06);
+    }
+  }
+
+  @keyframes pricing-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    80%,
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+
+  /* Pricing: the featured plan's halo breathes, slowly, and its border
+     light travels round the card. Both stop under reduced motion. */
+  .pricing-featured-border {
+    background: conic-gradient(
+      from var(--pricing-angle),
+      color-mix(in oklab, var(--primary) 35%, transparent) 0deg,
+      var(--brand-from) 90deg,
+      color-mix(in oklab, var(--primary) 35%, transparent) 180deg,
+      var(--brand-to) 270deg,
+      color-mix(in oklab, var(--primary) 35%, transparent) 360deg
+    );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pricing-featured-border {
+      animation: pricing-border-run 8s linear infinite;
+    }
+
+    .pricing-halo {
+      animation: pricing-breathe 6s ease-in-out infinite;
+    }
+
+    /* A light that sweeps across a CTA on hover. */
+    .pricing-sheen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        110deg,
+        transparent 30%,
+        color-mix(in oklab, white 45%, transparent) 50%,
+        transparent 70%
+      );
+      transform: translateX(-120%);
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+
+    .pricing-sheen:hover::after,
+    .pricing-sheen:focus-visible::after {
+      transform: translateX(120%);
+    }
+  }
+
+  @keyframes pricing-border-run {
+    to {
+      --pricing-angle: 360deg;
+    }
+  }
+
+  @keyframes pricing-breathe {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(0.97);
+    }
+    50% {
+      opacity: 0.9;
+      transform: scale(1.03);
+    }
+  }
+
   /* Footer links: an underline that draws in from the left on hover and
      focus, in the link's own colour. */
   .footer-link {

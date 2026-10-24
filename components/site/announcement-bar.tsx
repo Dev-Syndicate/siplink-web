@@ -15,13 +15,19 @@ import { announcement, site } from "@/lib/site";
  */
 export function AnnouncementBar() {
   return (
-    <div className="relative hidden overflow-hidden bg-background/80 text-foreground shadow-md shadow-primary/10 backdrop-blur-2xl sm:block">
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-linear-to-r from-background/80 via-accent/65 to-accent/90" />
+    // `pricing:` classes give the pricing page a lighter, glassier bar; every
+    // other page is unchanged.
+    <div className="relative hidden overflow-hidden bg-background/80 text-foreground shadow-md shadow-primary/10 backdrop-blur-2xl sm:block pricing:bg-card/45 pricing:shadow-sm pricing:shadow-primary/5">
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-linear-to-r from-background/80 via-accent/65 to-accent/90 pricing:opacity-55" />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-background/90 to-transparent" />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-primary/15" />
       <div className="relative mx-auto flex h-10 max-w-7xl items-center justify-between gap-6 px-6 lg:px-10">
         <div className="flex min-w-0 items-center gap-3">
-          <Badge className="border border-primary/15 bg-primary/90 font-mono text-[10px] tracking-widest text-primary-foreground uppercase shadow-sm shadow-primary/20 backdrop-blur-sm">
+          <Badge className="border border-primary/15 bg-primary/90 font-mono text-[10px] tracking-widest text-primary-foreground uppercase shadow-sm shadow-primary/20 backdrop-blur-sm pricing:bg-linear-to-r pricing:from-brand-to pricing:to-brand-from">
+            <span aria-hidden className="relative hidden size-1.5 pricing:flex">
+              <span className="pricing-ping absolute inset-0 rounded-full bg-primary-foreground" />
+              <span className="relative size-1.5 rounded-full bg-primary-foreground" />
+            </span>
             {announcement.label}
           </Badge>
 
@@ -29,7 +35,7 @@ export function AnnouncementBar() {
             {announcement.message}{" "}
             <Link
               href={announcement.href}
-              className="group/link inline-flex items-center gap-1 font-medium text-primary underline-offset-4 hover:underline"
+              className="group/link inline-flex items-center gap-1 bg-[linear-gradient(currentColor,currentColor)] bg-size-[0%_1px] bg-bottom-left bg-no-repeat font-medium text-primary underline-offset-4 transition-[background-size] duration-300 hover:underline pricing:hover:bg-size-[100%_1px] pricing:hover:no-underline"
             >
               {announcement.linkLabel}
               <ArrowRight
@@ -55,7 +61,7 @@ export function AnnouncementBar() {
 
           <a
             href={`tel:${site.phone.replace(/\s/g, "")}`}
-            className="flex items-center gap-1.5 font-mono tracking-wider text-foreground transition-colors hover:text-primary"
+            className="flex items-center gap-1.5 font-mono tracking-wider text-foreground transition-colors hover:text-primary pricing:rounded-full pricing:border pricing:border-primary/15 pricing:bg-card/70 pricing:px-2.5 pricing:py-0.5"
           >
             <PhoneCall className="size-3" aria-hidden />
             {site.phone}
