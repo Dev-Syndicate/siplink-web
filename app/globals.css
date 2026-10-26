@@ -519,6 +519,81 @@
     mask-image: radial-gradient(ellipse 60% 55% at 50% 20%, black, transparent 75%);
   }
 
+  /* Pricing: dot texture for a plan card's head, in `currentColor` so the
+     card sets its tone, fading toward the bottom-left. */
+  .pricing-dots {
+    background-image: radial-gradient(currentColor 1px, transparent 1.5px);
+    background-size: 14px 14px;
+    mask-image: linear-gradient(200deg, black, transparent 65%);
+  }
+
+  /* Pricing: a plan card's border — a quiet brand hairline with one bright
+     arc of light travelling round it. `--glow-delay` staggers the cards so
+     their lights never run in step; under reduced motion the arc rests. */
+  .pricing-glow-border {
+    background: conic-gradient(
+      from var(--pricing-angle),
+      color-mix(in oklab, var(--primary) 18%, transparent) 0deg,
+      color-mix(in oklab, var(--primary) 18%, transparent) 230deg,
+      var(--brand-from) 290deg,
+      var(--primary) 320deg,
+      color-mix(in oklab, var(--primary) 18%, transparent) 360deg
+    );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pricing-glow-border {
+      animation: pricing-border-run 9s linear infinite;
+      animation-delay: var(--glow-delay, 0s);
+    }
+  }
+
+  /* Pricing: layered elevation for the plan cards, tinted with the brand so
+     the shadow reads as glow rather than grime; deeper on hover. */
+  .pricing-elevate {
+    box-shadow:
+      0 1px 2px color-mix(in oklab, var(--primary) 6%, transparent),
+      0 8px 20px -6px color-mix(in oklab, var(--primary) 14%, transparent),
+      0 28px 56px -16px color-mix(in oklab, var(--primary) 22%, transparent);
+    transition: box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .group\/tier:hover .pricing-elevate {
+    box-shadow:
+      0 2px 4px color-mix(in oklab, var(--primary) 8%, transparent),
+      0 16px 32px -8px color-mix(in oklab, var(--primary) 22%, transparent),
+      0 44px 80px -20px color-mix(in oklab, var(--primary) 36%, transparent);
+  }
+
+  /* Pricing: a band of light that crosses the featured plan's head every
+     few seconds. Hidden under reduced motion. */
+  .pricing-band-sheen {
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      color-mix(in oklab, white 28%, transparent) 50%,
+      transparent 65%
+    );
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pricing-band-sheen {
+      opacity: 1;
+      animation: pricing-band-sweep 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+  }
+
+  @keyframes pricing-band-sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    40%,
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
   /* Pricing: the featured plan's halo breathes, slowly, and its border
      light travels round the card. Both stop under reduced motion. */
   .pricing-featured-border {

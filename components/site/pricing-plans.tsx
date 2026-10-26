@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, type PointerEvent, type ReactNode } from "react";
+import { useState, type CSSProperties, type PointerEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowRight, AudioLines, PackagePlus } from "lucide-react";
+import { ArrowRight, AudioLines, PackagePlus, Sparkles } from "lucide-react";
 
 import { PricingAtmosphere } from "@/components/site/pricing-atmosphere";
 import { PricingHeroBackdrop } from "@/components/site/pricing-hero-backdrop";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -235,6 +234,44 @@ function CurrencySwitch({
   );
 }
 
+/**
+ * Signal bars as the plan's tier: one lit for Core, two for Business Pro,
+ * three for Enterprise Plus. They rise in when the card comes into view.
+ */
+function TierSignal({ level, inverted }: { level: number; inverted: boolean }) {
+  return (
+    <span aria-hidden className="flex h-5 items-end gap-1">
+      {plans.map((plan, i) => (
+        <motion.span
+          key={plan.name}
+          className={cn(
+            "w-1.5 origin-bottom rounded-full",
+            i < level
+              ? inverted
+                ? "bg-primary-foreground"
+                : "bg-primary"
+              : inverted
+                ? "bg-primary-foreground/30"
+                : "bg-primary/20",
+          )}
+          style={{ height: `${((i + 1) / plans.length) * 100}%` }}
+          initial={{ scaleY: 0 }}
+          whileInView={{ scaleY: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease, delay: 0.5 + i * 0.12 }}
+        />
+      ))}
+    </span>
+  );
+}
+
+/**
+ * One plan. The card is three bands: a tinted head with the plan's identity
+ * and price, the full feature list, and a foot with the terms and the ask.
+ * Business Pro's head is filled with the brand gradient, under a light that
+ * sweeps across it now and then; the others are blush, and light a gradient
+ * border on hover.
+ */
 function PlanCard({
   plan,
   index,
@@ -262,93 +299,159 @@ function PlanCard({
     <Card
       onPointerMove={track}
       className={cn(
-        "group/card relative h-full gap-0 overflow-hidden rounded-[1.75rem] py-0 ring-0 backdrop-blur-xl transition-[border-color,box-shadow] duration-500",
-        featured
-          ? "border-0 bg-card shadow-2xl shadow-primary/20"
-          : "border border-border/80 bg-card/85 shadow-lg shadow-primary/5 group-hover/tier:border-primary/30 group-hover/tier:shadow-2xl group-hover/tier:shadow-primary/10",
+        "group/card relative h-full gap-0 overflow-hidden rounded-[1.75rem] border-0 bg-card py-0 ring-0",
       )}
     >
-      {/* Glass: a lit top edge, a pointer spotlight, and on the featured
-          plan a warm light pooled behind the price. */}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover/card:opacity-100"
+        className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover/card:opacity-100"
         style={{
           background:
-            "radial-gradient(320px circle at var(--spot-x, 50%) var(--spot-y, 0%), color-mix(in oklab, var(--primary) 14%, transparent), transparent 70%)",
+            "radial-gradient(320px circle at var(--spot-x, 50%) var(--spot-y, 0%), color-mix(in oklab, var(--primary) 10%, transparent), transparent 70%)",
         }}
       />
-      {featured ? (
+
+      {/* The head. */}
+      <div
+        className={cn(
+          "relative overflow-hidden px-6 pt-6 pb-7 sm:px-7",
+          featured
+            ? "bg-gradient-to-br from-brand-to via-primary to-brand-from text-primary-foreground"
+            : "bg-gradient-to-br from-accent via-accent/60 to-card",
+        )}
+      >
         <span
           aria-hidden
-          className="pointer-events-none absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-brand-from/25 blur-3xl"
+          className={cn(
+            "pricing-dots pointer-events-none absolute inset-0",
+            featured ? "text-primary-foreground/25" : "text-primary/25",
+          )}
         />
-      ) : null}
+        <Icon
+          aria-hidden
+          strokeWidth={1.25}
+          className={cn(
+            "pointer-events-none absolute -right-6 -bottom-10 size-44 -rotate-12 transition-transform duration-700 ease-out group-hover/card:rotate-0 group-hover/card:scale-110",
+            featured ? "text-primary-foreground/15" : "text-primary/10",
+          )}
+        />
+        {featured ? (
+          <>
+            <span aria-hidden className="pricing-band-sheen pointer-events-none absolute inset-0" />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -top-16 -left-10 size-48 rounded-full bg-primary-foreground/20 blur-3xl"
+            />
+          </>
+        ) : null}
 
-      <div className="relative flex h-full flex-col p-6 sm:p-7">
-        <div className="flex items-center gap-3.5">
-          <span
-            className={cn(
-              "grid size-12 shrink-0 place-items-center rounded-2xl transition-transform duration-500 group-hover/card:-rotate-6 group-hover/card:scale-105",
-              featured
-                ? "bg-gradient-to-br from-brand-to to-brand-from text-primary-foreground shadow-lg shadow-primary/30"
-                : "bg-primary/12 text-primary ring-1 ring-primary/20",
-            )}
-          >
-            <Icon className="size-5" aria-hidden />
-          </span>
-          <div className="min-w-0">
-            <h2 className="text-xl font-semibold tracking-tight">{plan.name}</h2>
-            <p className="text-sm text-muted-foreground">{plan.tagline}</p>
-          </div>
-        </div>
-
-        <div className="mt-7 flex items-end gap-2">
-          <span className="relative flex h-14 items-end overflow-y-clip">
-            <AnimatePresence mode="popLayout" initial={false}>
-              <motion.span
-                key={price}
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -30, opacity: 0 }}
-                transition={{ duration: 0.35, ease }}
+        <div className="relative">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <TierSignal level={index + 1} inverted={featured} />
+              <span
                 className={cn(
-                  "text-5xl leading-none font-semibold tracking-tight tabular-nums",
-                  featured && "bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text text-transparent",
+                  "font-mono text-[10px] tracking-widest uppercase",
+                  featured ? "text-primary-foreground/80" : "text-primary",
                 )}
               >
-                {price}
-              </motion.span>
-            </AnimatePresence>
-          </span>
-          <span className="pb-1 text-sm text-muted-foreground">/line/month</span>
+                Plan {String(index + 1).padStart(2, "0")}
+              </span>
+            </div>
+            {featured && plan.badge ? (
+              <span className="inline-flex items-center gap-1 rounded-full bg-primary-foreground px-2.5 py-1 font-mono text-[10px] font-semibold tracking-widest text-primary uppercase shadow-md shadow-primary/30">
+                <Sparkles className="size-3" aria-hidden />
+                {plan.badge}
+              </span>
+            ) : null}
+          </div>
+
+          <div className="mt-5 flex items-center gap-3.5">
+            <span
+              className={cn(
+                "grid size-12 shrink-0 place-items-center rounded-2xl transition-transform duration-500 group-hover/card:-rotate-6 group-hover/card:scale-105",
+                featured
+                  ? "bg-primary-foreground/15 text-primary-foreground ring-1 ring-primary-foreground/35 backdrop-blur-sm"
+                  : "bg-card text-primary shadow-md shadow-primary/10 ring-1 ring-primary/15",
+              )}
+            >
+              <Icon className="size-5" aria-hidden />
+            </span>
+            <div className="min-w-0">
+              <h2 className="text-xl font-semibold tracking-tight">{plan.name}</h2>
+              <p className={cn("text-sm", featured ? "text-primary-foreground/80" : "text-muted-foreground")}>
+                {plan.tagline}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-7 flex items-end gap-2">
+            <span className="relative flex h-16 items-end overflow-y-clip">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span
+                  key={price}
+                  initial={{ y: 34, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -34, opacity: 0 }}
+                  transition={{ duration: 0.35, ease }}
+                  className="flex items-start leading-none font-semibold tracking-tight tabular-nums"
+                >
+                  <span className={cn("mt-1 mr-0.5 text-2xl", featured ? "text-primary-foreground/80" : "text-primary")}>
+                    {price.slice(0, 1)}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-6xl",
+                      !featured && "bg-gradient-to-br from-foreground via-foreground to-primary bg-clip-text text-transparent",
+                    )}
+                  >
+                    {price.slice(1)}
+                  </span>
+                </motion.span>
+              </AnimatePresence>
+            </span>
+            <span className={cn("pb-1.5 text-sm", featured ? "text-primary-foreground/80" : "text-muted-foreground")}>
+              /line/month
+            </span>
+          </div>
+          <p
+            className={cn(
+              "mt-3 flex flex-wrap items-center gap-2 text-xs",
+              featured ? "text-primary-foreground/80" : "text-muted-foreground",
+            )}
+          >
+            <span
+              className={cn(
+                "rounded-full border px-2 py-0.5 font-mono tabular-nums",
+                featured
+                  ? "border-primary-foreground/30 bg-primary-foreground/15 text-primary-foreground"
+                  : "border-primary/15 bg-card text-accent-foreground",
+              )}
+            >
+              {other}
+            </span>
+            per line/month · Taxes extra
+          </p>
         </div>
-        <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-          <span className="rounded-full border border-primary/15 bg-accent px-2 py-0.5 font-mono text-accent-foreground tabular-nums">
-            {other}
-          </span>
-          per line/month · Taxes extra
-        </p>
+      </div>
 
-        <p className="mt-5 text-sm text-pretty text-foreground/80">{plan.description}</p>
+      {/* The features. */}
+      <div className="relative flex flex-1 flex-col px-6 pt-6 sm:px-7">
+        <p className="text-sm text-pretty text-foreground/80">{plan.description}</p>
 
-        <div className="mt-7 flex items-center gap-3">
+        <div className="mt-6 flex items-center gap-3">
           <p className="text-[11px] font-semibold tracking-wider whitespace-nowrap text-foreground/75 uppercase">
             {plan.featuresHeading}
           </p>
-          <span aria-hidden className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
-          <span className="font-mono text-[11px] text-muted-foreground tabular-nums">
+          <span aria-hidden className="h-px flex-1 bg-gradient-to-r from-primary/25 to-transparent" />
+          <span className="grid size-6 place-items-center rounded-full bg-accent font-mono text-[10px] text-accent-foreground tabular-nums">
             {plan.features.length}
           </span>
         </div>
 
         <ul
           className={cn(
-            "mt-5 grid gap-x-6 gap-y-4",
+            "mt-5 grid gap-x-6 gap-y-4 pb-7",
             wide && "md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2",
           )}
         >
@@ -356,10 +459,8 @@ function PlanCard({
             <li key={title} className="group/item flex gap-3">
               <span
                 className={cn(
-                  "mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg transition-colors duration-300",
-                  featured
-                    ? "bg-primary/15 text-primary group-hover/item:bg-primary group-hover/item:text-primary-foreground"
-                    : "bg-accent text-primary ring-1 ring-primary/10 group-hover/item:bg-primary group-hover/item:text-primary-foreground",
+                  "mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg transition-all duration-300 group-hover/item:scale-110 group-hover/item:bg-gradient-to-br group-hover/item:from-brand-to group-hover/item:to-brand-from group-hover/item:text-primary-foreground group-hover/item:shadow-md group-hover/item:shadow-primary/30",
+                  featured ? "bg-primary/12 text-primary" : "bg-accent text-primary ring-1 ring-primary/10",
                 )}
               >
                 <FeatureIcon className="size-3.5" aria-hidden />
@@ -373,28 +474,34 @@ function PlanCard({
             </li>
           ))}
         </ul>
+      </div>
 
-        <div className="mt-auto pt-8">
-          <div className="border-t border-dashed border-border pt-5">
-            <p className="text-xs text-pretty text-muted-foreground">{plan.note}</p>
-            <Button
-              asChild
-              size="lg"
-              variant={featured ? "default" : "outline"}
-              className={cn(
-                "pricing-sheen group/cta relative mt-4 h-11 w-full overflow-hidden rounded-full transition-all duration-300 hover:-translate-y-0.5",
-                featured
-                  ? "bg-gradient-to-r from-brand-to to-brand-from shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
-                  : "border-primary/30 bg-card text-primary hover:border-primary/50 hover:bg-accent hover:text-primary",
-              )}
-            >
-              <Link href="/contact">
-                {wide ? "Talk to Sales" : "Book a Demo"}
-                <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
-              </Link>
-            </Button>
-          </div>
-        </div>
+      {/* The foot. */}
+      <div
+        className={cn(
+          "relative mt-auto border-t px-6 py-5 sm:px-7",
+          featured
+            ? "border-primary/15 bg-gradient-to-b from-accent/40 to-accent"
+            : "border-border/70 bg-gradient-to-b from-card to-accent/50",
+        )}
+      >
+        <p className="text-xs text-pretty text-muted-foreground">{plan.note}</p>
+        <Button
+          asChild
+          size="lg"
+          variant={featured ? "default" : "outline"}
+          className={cn(
+            "pricing-sheen group/cta relative mt-4 h-11 w-full overflow-hidden rounded-full transition-all duration-300 hover:-translate-y-0.5",
+            featured
+              ? "bg-gradient-to-r from-brand-to to-brand-from shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
+              : "border-primary/30 bg-card text-primary hover:border-transparent hover:bg-gradient-to-r hover:from-brand-to hover:to-brand-from hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/30",
+          )}
+        >
+          <Link href="/contact">
+            {wide ? "Talk to Sales" : "Book a Demo"}
+            <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
+          </Link>
+        </Button>
       </div>
     </Card>
   );
@@ -408,23 +515,44 @@ function PlanCard({
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.7, ease, delay: index * 0.1 }}
     >
-      <div className="h-full transition-transform duration-500 ease-out group-hover/tier:-translate-y-1.5">
+      <div
+        className="relative h-full transition-transform duration-500 ease-out group-hover/tier:-translate-y-2"
+        style={{ "--glow-delay": `${-index * 3}s` } as CSSProperties}
+      >
+        {/* A pool of light on the page under the card, which spreads as the
+            card lifts. */}
+        <span
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-x-10 -bottom-5 -z-10 h-14 rounded-full blur-2xl transition-all duration-500 group-hover/tier:inset-x-4 group-hover/tier:-bottom-8",
+            featured ? "bg-primary/40" : "bg-primary/20 group-hover/tier:bg-primary/30",
+          )}
+        />
         {featured ? (
-          <>
-            <span
-              aria-hidden
-              className="pricing-halo pointer-events-none absolute -inset-x-2 -inset-y-4 -z-10 rounded-[2.4rem] bg-gradient-to-b from-brand-from/40 via-primary/15 to-transparent blur-2xl sm:-inset-4"
-            />
-            <div className="pricing-featured-border h-full rounded-[1.85rem] p-[1.5px]">{card}</div>
-            {plan.badge ? (
-              <Badge className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-to to-brand-from px-3.5 py-1 font-mono text-[10px] tracking-widest uppercase shadow-lg shadow-primary/40">
-                {plan.badge}
-              </Badge>
-            ) : null}
-          </>
-        ) : (
-          card
-        )}
+          <span
+            aria-hidden
+            className="pricing-halo pointer-events-none absolute -inset-x-2 -inset-y-4 -z-10 rounded-[2.4rem] bg-gradient-to-b from-brand-from/45 via-primary/20 to-transparent blur-2xl sm:-inset-4"
+          />
+        ) : null}
+        {/* The border's light, blurred behind the card so it glows onto
+            the page as it travels. */}
+        <span
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute -inset-1 -z-10 rounded-[2rem] blur-lg transition-opacity duration-500",
+            featured
+              ? "pricing-featured-border opacity-70"
+              : "pricing-glow-border opacity-60 group-hover/tier:opacity-100",
+          )}
+        />
+        <div
+          className={cn(
+            "pricing-elevate relative h-full rounded-[1.85rem]",
+            featured ? "pricing-featured-border p-[1.5px]" : "pricing-glow-border p-px",
+          )}
+        >
+          {card}
+        </div>
       </div>
     </motion.article>
   );
