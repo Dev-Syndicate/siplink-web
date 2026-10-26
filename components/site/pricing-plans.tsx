@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, type CSSProperties, type PointerEvent, type ReactNode } from "react";
+import { useState, type CSSProperties, type PointerEvent } from "react";
 import Link from "next/link";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowRight, AudioLines, PackagePlus, Sparkles } from "lucide-react";
+import { ArrowRight, PackagePlus, Sparkles } from "lucide-react";
 
 import { PricingAtmosphere } from "@/components/site/pricing-atmosphere";
 import { PricingHeroBackdrop } from "@/components/site/pricing-hero-backdrop";
@@ -77,33 +77,9 @@ function PricingHero({
   currency: Currency;
   onCurrency: (value: Currency) => void;
 }) {
-  const entry = plans[0];
-  const entryPrice = currency === "inr" ? entry.inr : entry.usd;
-
   return (
     <div className="relative isolate px-4 pt-16 pb-14 sm:px-6 sm:pt-20 lg:pt-24 lg:pb-16">
       <PricingHeroBackdrop />
-
-      {/* Two glass notes floating either side of the headline, on wide
-          screens only: the entry price and the headline AI feature. */}
-      <FloatingNote className="top-[30%] left-[6%] 2xl:left-[10%]" delay={0.9} drift={-8}>
-        <p className="text-[11px] tracking-wide text-muted-foreground uppercase">{entry.name} from</p>
-        <p className="mt-0.5 text-xl font-semibold tabular-nums">
-          {entryPrice}
-          <span className="text-xs font-normal text-muted-foreground"> /line/month</span>
-        </p>
-      </FloatingNote>
-      <FloatingNote className="top-[52%] right-[6%] 2xl:right-[10%]" delay={1.1} drift={8}>
-        <div className="flex items-center gap-3">
-          <span className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-brand-to to-brand-from text-primary-foreground">
-            <AudioLines className="size-4" aria-hidden />
-          </span>
-          <div className="text-left">
-            <p className="text-sm font-medium">AI Voice Assistant</p>
-            <p className="text-[11px] text-muted-foreground">In {widePlan.name}</p>
-          </div>
-        </div>
-      </FloatingNote>
 
       <motion.div
         className="relative mx-auto max-w-4xl text-center"
@@ -164,36 +140,6 @@ function PricingHero({
         </motion.div>
       </motion.div>
     </div>
-  );
-}
-
-function FloatingNote({
-  className,
-  delay,
-  drift,
-  children,
-}: {
-  className: string;
-  delay: number;
-  drift: number;
-  children: ReactNode;
-}) {
-  return (
-    <motion.div
-      aria-hidden
-      className={cn("pointer-events-none absolute z-10 hidden xl:block", className)}
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay, duration: 0.7, ease }}
-    >
-      <motion.div
-        animate={{ y: [0, drift, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        className="rounded-2xl border border-primary/10 bg-card/80 px-4 py-3 shadow-xl shadow-primary/10 backdrop-blur-xl"
-      >
-        {children}
-      </motion.div>
-    </motion.div>
   );
 }
 
