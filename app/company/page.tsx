@@ -151,7 +151,7 @@ const officeLocations = [
   {
     city: "Hyderabad",
     badge: "Technical Engineering Hub",
-    address: "Capital Park, No. 602, Ayyappa Society, Madhapur",
+    address: "2nd Floor, Jain Sadguru Images Capital Park, 206, Capital Pk Rd, Madhapur",
     phone: "+91 82172 02075",
   },
   {

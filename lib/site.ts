@@ -449,8 +449,8 @@ export const offices: Office[] = [
     city: "Hyderabad",
     entity: "SIPLINK Communications Pvt. Ltd.",
     address: [
-      "Capital Park, No. 602, 6th Floor, Capital Pk Rd",
-      "Ayyappa Society, Madhapur",
+      "2nd Floor, Jain Sadguru Images Capital Park, 206, Capital Pk Rd",
+      "Ayyappa Society, VIP Hills, Silicon Valley, Madhapur",
       "Hyderabad, Telangana 500081",
     ],
     phone: "+91 82172 02075",
@@ -2251,8 +2251,6 @@ export const footerNav: { heading: string; links: NavLeaf[] }[] = [
       { label: "Careers", href: "/company/careers" },
       { label: "News & Insights", href: "/company/news" },
       { label: "10 DLC Compliance", href: "/company/10dlc" },
-      { label: "Contact Us", href: "/contact" },
-      { label: "Privacy Policy", href: "/privacy" },
     ],
   },
 ];
