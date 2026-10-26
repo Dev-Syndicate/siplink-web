@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ClipboardList, Rocket, Route } from "lucide-react";
-
+import { onboardingSteps as steps } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -20,27 +19,6 @@ import { cn } from "@/lib/utils";
  * when the badges stack in one column it still bows from side to side rather
  * than running straight.
  */
-const steps = [
-  {
-    title: "Plan",
-    description:
-      "Our communication specialists understand your current setup and business requirements.",
-    icon: ClipboardList,
-  },
-  {
-    title: "Migrate",
-    description:
-      "Number porting, configuration, integrations, devices and deployment support.",
-    icon: Route,
-  },
-  {
-    title: "Go Live",
-    description:
-      "Launch your communication system with ongoing technical support.",
-    icon: Rocket,
-  },
-] as const;
-
 /** `ys` are the badge centres, top to bottom. */
 type Path = { d: string; width: number; height: number; ys: number[] };
 

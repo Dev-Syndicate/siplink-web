@@ -94,7 +94,7 @@ export const plans: Plan[] = [
     description:
       "For growing teams that need advanced call handling, messaging, and productivity tools.",
     featured: true,
-    badge: "Pro",
+    badge: "Recommended",
     featuresHeading: "Everything in Core, plus",
     features: [
       { title: "IVR & Auto-Attendant", detail: "Professional greetings and menu-based call routing", icon: Grid2x2Check },
@@ -157,6 +157,32 @@ export const enterpriseReady = {
 
 export const pricingDisclaimer =
   "All prices are exclusive of applicable taxes. GST and other applicable charges will be added to the final invoice. Optional add-ons, usage-based services, hardware, and specialized integrations may be charged separately. Feature availability depends on the selected package and service terms.";
+
+/**
+ * Billing questions for the pricing page. Answers are the disclaimer's own
+ * sentences; the page adds the relevant questions from `homeFaqs` after them.
+ */
+export const pricingFaqs: { question: string; answer: string }[] = [
+  {
+    question: "Are taxes included in the plan price?",
+    answer:
+      "No. All prices are exclusive of applicable taxes. GST and other applicable charges will be added to the final invoice.",
+  },
+  {
+    question: "Are add-ons, hardware and integrations included?",
+    answer:
+      "Optional add-ons, usage-based services, hardware, and specialized integrations may be charged separately. Feature availability depends on the selected package and service terms.",
+  },
+];
+
+/** The `homeFaqs` questions that bear on choosing and paying for a plan. */
+export const pricingHomeFaqQuestions = [
+  "What is the minimum number of users or lines?",
+  "Can I keep my existing phone numbers?",
+  "Do I need to replace my existing phones?",
+  "Can SipLink integrate with Salesforce, HubSpot or Zoho?",
+  "Do you provide 24/7 support?",
+];
 
 export type AiAddOn = {
   title: string;

@@ -13,6 +13,7 @@ import {
   Cable,
   ChartColumn,
   CirclePlus,
+  ClipboardList,
   Clock,
   Cloud,
   CloudCog,
@@ -62,6 +63,7 @@ import {
   Receipt,
   Replace,
   Rocket,
+  Route,
   Router,
   Scale,
   ScrollText,
@@ -355,6 +357,31 @@ export const industries: Industry[] = [
  * text feeds the visible accordion and the FAQPage structured data, so the
  * two cannot drift apart.
  */
+/**
+ * First call to live, in three steps. Shown on the homepage ("How it works")
+ * and on /pricing, after a plan is chosen.
+ */
+export const onboardingSteps: Simple[] = [
+  {
+    title: "Plan",
+    description:
+      "Our communication specialists understand your current setup and business requirements.",
+    icon: ClipboardList,
+  },
+  {
+    title: "Migrate",
+    description:
+      "Number porting, configuration, integrations, devices and deployment support.",
+    icon: Route,
+  },
+  {
+    title: "Go Live",
+    description:
+      "Launch your communication system with ongoing technical support.",
+    icon: Rocket,
+  },
+];
+
 export const homeFaqs: { question: string; answer: string }[] = [
   {
     question: "Can I keep my existing phone numbers?",
