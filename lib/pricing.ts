@@ -155,6 +155,9 @@ export const enterpriseReady = {
   body: "Scalable business telephony, centralized call management, collaboration capabilities, and integration options to support your communication workflows.",
 };
 
+/** Included with every plan; shown beside each plan's price, one part per line. */
+export const callingAllowance = { region: "US/CAN", allowance: "unlimited calling" };
+
 export const pricingDisclaimer =
   "All prices are exclusive of applicable taxes. GST and other applicable charges will be added to the final invoice. Optional add-ons, usage-based services, hardware, and specialized integrations may be charged separately. Feature availability depends on the selected package and service terms.";
 

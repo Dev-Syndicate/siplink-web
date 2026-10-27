@@ -10,7 +10,7 @@ import { PricingHeroBackdrop } from "@/components/site/pricing-hero-backdrop";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { plans, pricingDisclaimer, type Plan } from "@/lib/pricing";
+import { callingAllowance, plans, pricingDisclaimer, type Plan } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 
 type Currency = "inr" | "usd";
@@ -331,7 +331,9 @@ function PlanCard({
             </div>
           </div>
 
-          <div className="mt-7 flex items-end gap-2">
+          {/* The allowance and the unit stack beside the price, and drop
+              below it when the card is too narrow for one row. */}
+          <div className="mt-7 flex flex-wrap items-end gap-x-2.5 gap-y-2">
             <span className="relative flex h-16 items-end overflow-y-clip">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
@@ -347,7 +349,9 @@ function PlanCard({
                   </span>
                   <span
                     className={cn(
-                      "text-6xl",
+                      // A touch smaller on the two narrower cards, so the
+                      // allowance fits beside the price.
+                      wide ? "text-6xl" : "text-[3.25rem]",
                       !featured && "bg-gradient-to-br from-foreground via-foreground to-primary bg-clip-text text-transparent",
                     )}
                   >
@@ -356,8 +360,21 @@ function PlanCard({
                 </motion.span>
               </AnimatePresence>
             </span>
-            <span className={cn("pb-1.5 text-sm", featured ? "text-primary-foreground/80" : "text-muted-foreground")}>
-              /line/month
+            <span className="flex flex-col items-start gap-1 pb-1">
+              <span
+                className={cn(
+                  "rounded-lg px-2 py-1 text-[11px] leading-tight font-semibold whitespace-nowrap",
+                  featured
+                    ? "bg-primary-foreground/20 text-primary-foreground ring-1 ring-primary-foreground/30"
+                    : "bg-card text-primary ring-1 ring-primary/20",
+                )}
+              >
+                <span className="block">{callingAllowance.region}</span>
+                <span className="block">{callingAllowance.allowance}</span>
+              </span>
+              <span className={cn("text-sm", featured ? "text-primary-foreground/80" : "text-muted-foreground")}>
+                /line/month
+              </span>
             </span>
           </div>
           <p
