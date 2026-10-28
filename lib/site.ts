@@ -94,6 +94,8 @@ import {
 
 export const site = {
   name: "SipLink",
+  /** Production origin; the live site redirects the bare domain to www. */
+  url: "https://www.siplink.in",
   legalName: "Siplink Communications",
   tagline: "Global Solutions For SME",
   description:

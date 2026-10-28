@@ -14,12 +14,9 @@ import {
   industryOutcomes,
   platformProof,
 } from "@/lib/product-story";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Products",
-  description:
-    "Follow a customer conversation from the number they dial to the insight it becomes, voice, contact centre, APIs and AI on one network.",
-};
+export const metadata: Metadata = seoFor("/products");
 
 export default function ProductsPage() {
   return (

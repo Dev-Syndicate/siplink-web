@@ -22,6 +22,7 @@ import {
 } from "@/lib/pricing";
 import { homeFaqs, onboardingSteps } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { seoFor } from "@/lib/seo";
 
 /**
  * The pricing page. Every plan, price, feature and add-on on it comes from
@@ -31,11 +32,7 @@ import { cn } from "@/lib/utils";
  * the top, then what can be added (SIPLINK AI), what happens once a plan is
  * chosen (onboarding), the billing questions, and the ask.
  */
-export const metadata: Metadata = {
-  title: "Pricing",
-  description:
-    "SipLink plans: Core, Business Pro and Enterprise Plus, per line per month, with SIPLINK AI add-ons.",
-};
+export const metadata: Metadata = seoFor("/pricing");
 
 /** Billing questions first, then the homepage answers that bear on a plan. */
 const faqs = [

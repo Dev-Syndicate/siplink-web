@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, PhoneCall } from "lucide-react";
@@ -31,6 +32,9 @@ import {
   site,
   whyPoints,
 } from "@/lib/site";
+import { seoFor } from "@/lib/seo";
+
+export const metadata: Metadata = seoFor("/");
 
 /**
  * Homepage.

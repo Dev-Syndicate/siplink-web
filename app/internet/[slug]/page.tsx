@@ -8,6 +8,7 @@ import { InternetServicePage } from "@/components/site/internet-service-page";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { ServiceStackScene } from "@/components/site/scene-service-stack";
 import { connectivityServices, getInternetService } from "@/lib/internet";
+import { seoFor } from "@/lib/seo";
 
 /**
  * The three connectivity services: business broadband, dedicated internet and
@@ -32,6 +33,7 @@ export async function generateMetadata({
   const service = getInternetService(slug);
 
   if (!service || service.parent) return {};
+  if (slug === "dedicated-internet") return seoFor("/internet/dedicated-internet");
 
   return {
     title: service.title,

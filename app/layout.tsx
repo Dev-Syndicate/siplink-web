@@ -3,6 +3,7 @@ import { Caveat, Geist, Geist_Mono } from "next/font/google";
 
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
+import { openGraphDefaults, seo } from "@/lib/seo";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -24,11 +25,39 @@ const script = Caveat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
-    default: `${site.legalName}, ${site.tagline}`,
+    default: seo["/"][0],
     template: `%s | ${site.name}`,
   },
   description: site.description,
+  // No canonical here: a layout canonical would apply "/" to every page.
+  // Pages set their own through `seoFor`.
+  openGraph: openGraphDefaults,
+};
+
+/** Chennai head office for search engines' local results. */
+const localBusiness = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${site.url}/#business`,
+  name: site.legalName,
+  alternateName: site.name,
+  description: site.description,
+  url: site.url,
+  telephone: site.phone,
+  email: site.email,
+  // Split from `site.address`; keep the two in sync.
+  address: {
+    "@type": "PostalAddress",
+    streetAddress:
+      "3rd Floor, Anmol Palani Complex, No.88, Gopathy Narayana Rd, T. Nagar",
+    addressLocality: "Chennai",
+    addressRegion: "Tamil Nadu",
+    postalCode: "600017",
+    addressCountry: "IN",
+  },
+  areaServed: "IN",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -46,6 +75,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <noscript>
           <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
         </noscript>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(localBusiness).replace(/</g, "\\u003c"),
+          }}
+        />
         <SiteHeader />
         {/* Offset matches the fixed header: the h-16 nav pill plus its pt-3
             gap, and above `sm` the h-10 announcement bar as well. The bar is
