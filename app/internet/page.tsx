@@ -29,13 +29,10 @@ import {
   networkSolutionsHub,
   networkServices,
 } from "@/lib/internet";
+import { seoFor } from "@/lib/seo";
 import { DeliveryScene } from "@/components/site/scene-delivery";
 
-export const metadata: Metadata = {
-  title: "Internet",
-  description:
-    "Business internet leased line, dedicated internet leased lines, static IP and managed network solutions, fibre connectivity from a Class A ISP, monitored 24/7.",
-};
+export const metadata: Metadata = seoFor("/internet");
 
 /**
  * The /internet hub.
