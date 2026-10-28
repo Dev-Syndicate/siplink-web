@@ -1,10 +1,10 @@
 import type { CSSProperties } from "react";
 
 /**
- * The pricing page's background, behind everything from the header down:
- * a warm wash, oversized rings turning slowly behind the hero, a ribbon of
- * brand light swaying through the plans, and soft lights drifting on long
- * paths at different depths down the page.
+ * The pricing stage's background: a blush wash and rose glow at the top, a
+ * faint grid, oversized rings turning slowly behind the
+ * hero, a ribbon of brand light swaying through the plans, and soft lights
+ * drifting on long paths at different depths.
  *
  * Pure CSS motion on transforms and opacity, decorative only, and it all
  * stops under reduced motion (see the pricing rules in globals.css).
@@ -34,6 +34,7 @@ export function PricingAtmosphere() {
       {/* The warm base: blush at the top, easing to white. */}
       <div className="absolute inset-0 bg-gradient-to-b from-accent via-background to-background" />
       <div className="absolute inset-x-0 top-0 h-[70rem] bg-[radial-gradient(ellipse_70%_55%_at_50%_0%,color-mix(in_oklab,var(--brand-from)_22%,transparent),transparent_70%)]" />
+      <div className="pricing-grid absolute inset-x-0 top-0 h-[60rem]" />
 
       {LIGHTS.map((light, i) => (
         <span

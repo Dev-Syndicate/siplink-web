@@ -57,8 +57,8 @@ const TOPOLOGY_NODES: TopologyNode[] = [
     xPercent: 50,
     yPercent: 78,
     addressLines: [
-      "Capital Park, No. 602, 6th Floor, Capital Pk Rd",
-      "Ayyappa Society, Madhapur",
+      "2nd Floor, Jain Sadguru Images Capital Park, 206, Capital Pk Rd",
+      "Ayyappa Society, VIP Hills, Silicon Valley, Madhapur",
       "Hyderabad, Telangana 500081",
     ],
     phone: "+91 82172 02075",

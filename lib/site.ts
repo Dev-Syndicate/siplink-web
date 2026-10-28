@@ -13,6 +13,7 @@ import {
   Cable,
   ChartColumn,
   CirclePlus,
+  ClipboardList,
   Clock,
   Cloud,
   CloudCog,
@@ -62,6 +63,7 @@ import {
   Receipt,
   Replace,
   Rocket,
+  Route,
   Router,
   Scale,
   ScrollText,
@@ -355,6 +357,31 @@ export const industries: Industry[] = [
  * text feeds the visible accordion and the FAQPage structured data, so the
  * two cannot drift apart.
  */
+/**
+ * First call to live, in three steps. Shown on the homepage ("How it works")
+ * and on /pricing, after a plan is chosen.
+ */
+export const onboardingSteps: Simple[] = [
+  {
+    title: "Plan",
+    description:
+      "Our communication specialists understand your current setup and business requirements.",
+    icon: ClipboardList,
+  },
+  {
+    title: "Migrate",
+    description:
+      "Number porting, configuration, integrations, devices and deployment support.",
+    icon: Route,
+  },
+  {
+    title: "Go Live",
+    description:
+      "Launch your communication system with ongoing technical support.",
+    icon: Rocket,
+  },
+];
+
 export const homeFaqs: { question: string; answer: string }[] = [
   {
     question: "Can I keep my existing phone numbers?",
@@ -449,8 +476,8 @@ export const offices: Office[] = [
     city: "Hyderabad",
     entity: "SIPLINK Communications Pvt. Ltd.",
     address: [
-      "Capital Park, No. 602, 6th Floor, Capital Pk Rd",
-      "Ayyappa Society, Madhapur",
+      "2nd Floor, Jain Sadguru Images Capital Park, 206, Capital Pk Rd",
+      "Ayyappa Society, VIP Hills, Silicon Valley, Madhapur",
       "Hyderabad, Telangana 500081",
     ],
     phone: "+91 82172 02075",
@@ -2251,8 +2278,6 @@ export const footerNav: { heading: string; links: NavLeaf[] }[] = [
       { label: "Careers", href: "/company/careers" },
       { label: "News & Insights", href: "/company/news" },
       { label: "10 DLC Compliance", href: "/company/10dlc" },
-      { label: "Contact Us", href: "/contact" },
-      { label: "Privacy Policy", href: "/privacy" },
     ],
   },
 ];
