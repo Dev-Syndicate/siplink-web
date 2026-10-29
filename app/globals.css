@@ -594,6 +594,109 @@
     }
   }
 
+  /* Pricing hero: brand gradient text with its colour flowing slowly along
+     it, cards that float, and a background that drifts in very slowly. All
+     three hold still under reduced motion. */
+  .pricing-text-flow {
+    background-image: linear-gradient(
+      90deg,
+      var(--brand-to),
+      var(--primary),
+      var(--brand-from),
+      var(--primary),
+      var(--brand-to)
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pricing-text-flow {
+      animation: pricing-text-flow 6s linear infinite;
+    }
+
+    .pricing-bob {
+      animation: pricing-bob var(--bob-duration, 6s) ease-in-out infinite;
+      animation-delay: var(--bob-delay, 0s);
+    }
+
+    .pricing-kenburns {
+      animation: pricing-kenburns 28s ease-in-out infinite alternate;
+    }
+
+    /* The hero's small cards: a voice waveform, a phone's ripples, and a
+       signal crossing between two places. */
+    .pricing-wave {
+      animation: pricing-wave var(--wave-duration, 1s) ease-in-out infinite alternate;
+      animation-delay: var(--wave-delay, 0s);
+    }
+
+    .pricing-ripple {
+      animation: pricing-ripple 2.2s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+      animation-delay: var(--ripple-delay, 0s);
+    }
+
+    .pricing-travel {
+      animation: pricing-travel 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
+    }
+  }
+
+  @keyframes pricing-wave {
+    from {
+      transform: scaleY(0.25);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes pricing-ripple {
+    from {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    to {
+      transform: scale(2.1);
+      opacity: 0;
+    }
+  }
+
+  @keyframes pricing-travel {
+    from {
+      left: 0;
+    }
+    to {
+      left: calc(100% - 7px);
+    }
+  }
+
+  @keyframes pricing-text-flow {
+    to {
+      background-position: -200% center;
+    }
+  }
+
+  @keyframes pricing-bob {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(var(--bob-x, 0px), var(--bob-y, -12px));
+    }
+  }
+
+  @keyframes pricing-kenburns {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.06) translate(-1%, -0.5%);
+    }
+  }
+
   /* Pricing: the featured plan's halo breathes, slowly, and its border
      light travels round the card. Both stop under reduced motion. */
   .pricing-featured-border {
