@@ -6,18 +6,13 @@ import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { ArrowRight, PackagePlus, Sparkles } from "lucide-react";
 
 import { PricingAtmosphere } from "@/components/site/pricing-atmosphere";
-import { PricingHeroBackdrop } from "@/components/site/pricing-hero-backdrop";
+import { PricingHero, type Currency } from "@/components/site/pricing-hero";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { callingAllowance, plans, pricingDisclaimer, type Plan } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 
-type Currency = "inr" | "usd";
-
 const ease = [0.22, 1, 0.36, 1] as const;
-
-const rise = { hidden: { opacity: 0, y: 18 }, shown: { opacity: 1, y: 0 } };
 
 /** Enterprise Plus: the only plan with add-ons, and the longest list. */
 const widePlan = plans[plans.length - 1];
@@ -42,7 +37,7 @@ export function PricingPlans() {
 
         <PricingHero currency={currency} onCurrency={setCurrency} />
 
-        <div id="plans" className="mx-auto max-w-[88rem] scroll-mt-32 px-4 pb-16 sm:px-6 lg:px-10 lg:pb-24">
+        <div id="plans" className="mx-auto max-w-[88rem] scroll-mt-32 px-4 pt-14 pb-16 lg:pt-20 sm:px-6 lg:px-10 lg:pb-24">
           {/* Core and Business Pro pair up on a tablet with Enterprise Plus
               below them; on a wide screen Enterprise Plus takes the widest
               column so its sixteen features run in two columns and its card
@@ -67,116 +62,6 @@ export function PricingPlans() {
         </div>
       </section>
     </MotionConfig>
-  );
-}
-
-function PricingHero({
-  currency,
-  onCurrency,
-}: {
-  currency: Currency;
-  onCurrency: (value: Currency) => void;
-}) {
-  return (
-    <div className="relative isolate px-4 pt-16 pb-14 sm:px-6 sm:pt-20 lg:pt-24 lg:pb-16">
-      <PricingHeroBackdrop />
-
-      <motion.div
-        className="relative mx-auto max-w-4xl text-center"
-        initial="hidden"
-        animate="shown"
-        transition={{ staggerChildren: 0.1, delayChildren: 0.05 }}
-      >
-        <motion.div variants={rise} transition={{ duration: 0.6, ease }}>
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-card/80 py-1 pr-3.5 pl-1.5 text-xs font-medium text-foreground/80 shadow-sm shadow-primary/10 backdrop-blur-md">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-brand-to to-brand-from px-2 py-0.5 font-mono text-[10px] tracking-widest text-primary-foreground uppercase">
-              <span className="relative flex size-1.5">
-                <span className="pricing-ping absolute inset-0 rounded-full bg-primary-foreground" />
-                <span className="relative size-1.5 rounded-full bg-primary-foreground" />
-              </span>
-              Pricing
-            </span>
-            {plans.map((plan) => plan.name).join(" · ")}
-          </span>
-        </motion.div>
-
-        <motion.h1
-          variants={rise}
-          transition={{ duration: 0.7, ease }}
-          className="font-heading mt-7 text-4xl leading-[1.04] font-semibold tracking-[-0.04em] text-balance sm:text-6xl lg:text-7xl"
-        >
-          Business calling,{" "}
-          <span className="relative inline-block bg-gradient-to-r from-brand-to via-primary to-brand-from bg-clip-text text-transparent">
-            priced per line
-            <motion.span
-              aria-hidden
-              className="absolute inset-x-0 -bottom-1.5 h-1 origin-left rounded-full bg-gradient-to-r from-brand-to to-brand-from"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.8, duration: 0.9, ease }}
-            />
-          </span>
-        </motion.h1>
-
-        <motion.p
-          variants={rise}
-          transition={{ duration: 0.6, ease }}
-          className="mx-auto mt-7 max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg"
-        >
-          Three plans, from essential business calling to AI and enterprise
-          integrations. Everything a plan includes is listed on its card, so
-          you can compare them at a glance.
-        </motion.p>
-
-        <motion.div
-          variants={rise}
-          transition={{ duration: 0.6, ease }}
-          className="mt-9 flex flex-col items-center gap-4"
-        >
-          <CurrencySwitch currency={currency} onCurrency={onCurrency} />
-          <p className="text-sm text-muted-foreground">
-            Prices per line, per month. Taxes extra, as applicable.
-          </p>
-        </motion.div>
-      </motion.div>
-    </div>
-  );
-}
-
-/** The document prices every plan in both currencies. */
-function CurrencySwitch({
-  currency,
-  onCurrency,
-}: {
-  currency: Currency;
-  onCurrency: (value: Currency) => void;
-}) {
-  return (
-    <ToggleGroup
-      type="single"
-      value={currency}
-      onValueChange={(v) => v && onCurrency(v as Currency)}
-      aria-label="Currency"
-      spacing={0}
-      className="rounded-full border border-primary/15 bg-card/80 p-1 shadow-lg shadow-primary/10 backdrop-blur-md"
-    >
-      {(["inr", "usd"] as const).map((value) => (
-        <ToggleGroupItem
-          key={value}
-          value={value}
-          className="relative h-10 rounded-full px-6 text-sm font-medium text-muted-foreground transition-colors hover:bg-transparent hover:text-foreground data-[state=on]:bg-transparent data-[state=on]:text-primary-foreground"
-        >
-          {currency === value ? (
-            <motion.span
-              layoutId="currency-pill"
-              className="absolute inset-0 rounded-full bg-gradient-to-r from-brand-to to-brand-from shadow-md shadow-primary/30"
-              transition={{ type: "spring", stiffness: 420, damping: 34 }}
-            />
-          ) : null}
-          <span className="relative">{value === "inr" ? "₹ INR" : "$ USD"}</span>
-        </ToggleGroupItem>
-      ))}
-    </ToggleGroup>
   );
 }
 

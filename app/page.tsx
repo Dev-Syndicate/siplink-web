@@ -66,10 +66,9 @@ export const metadata: Metadata = seoFor("/");
 
 /** What the hero promises beside the CTAs. */
 const heroSupportPoints = [
-  "Keep Your Existing Numbers",
-  "24/7 Expert Support",
-  "No Hardware Required",
-  "AI Transcripts and Summaries",
+  "Keep your numbers",
+  "Expert support",
+  "AI-enabled calling",
 ];
 
 /**
@@ -164,9 +163,9 @@ export default function Home() {
                 className="group mb-6 inline-flex items-center gap-2.5 rounded-full border border-primary/20 bg-background/80 py-1 pr-3.5 pl-1 text-sm shadow-xs backdrop-blur-md transition-colors hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               >
                 <AiMark />
-                <span className="font-medium">New: AI Voice Assistant</span>
+                <span className="font-medium">Business communications, simplified</span>
                 <span className="hidden text-muted-foreground sm:inline">
-                  See it handle a call
+                  See AI handle a call
                 </span>
                 <ArrowRight
                   className="size-3.5 text-primary transition-transform group-hover:translate-x-0.5"
@@ -177,16 +176,16 @@ export default function Home() {
               {/* Fluid: tracks viewport height too, so a short laptop screen
                   gets a smaller headline rather than an overflowing one. */}
               <h1 className="font-heading text-4xl leading-[1.08] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[clamp(2.25rem,4vh+1.1vw,3.25rem)]">
-                Business Phone Systems{" "}
+                Every business call.{" "}
                 <span className="text-primary">
-                  Built for How Your Team Works
+                  Connected, answered, and under control.
                 </span>
               </h1>
 
               <p className="mt-5 max-w-xl text-base text-pretty text-muted-foreground lg:text-lg">
-                Cloud PBX, SIP trunking, call center and WhatsApp, with AI that
-                transcribes and summarises your calls and, where you enable
-                it, answers them for you. All from one reliable partner.
+                Bring business calling, contact centre, team communication and
+                AI-powered voice into one reliable platform—with expert support
+                from migration to day-to-day operations.
               </p>
 
               <div className="mt-7 flex flex-wrap items-center gap-4">
