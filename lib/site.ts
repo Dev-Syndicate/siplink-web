@@ -1004,54 +1004,63 @@ export const googleReviewsUrl =
 export const reviews: Review[] = [
   {
     name: "Joseph Karthick",
+    photo: "/images/reviews/joseph-karthick.jpg",
     rating: 5,
     quote:
       "Siplink provides excellent and high-quality VOIP/SIP services. Their support team is outstanding — they even offer WhatsApp support, and a single message is enough for them to respond and start working immediately.",
   },
   {
     name: "Excellence MBS",
+    photo: "/images/reviews/excellence-mbs.png",
     rating: 5,
     quote:
       "Siplink is our backbone. Everything is beyond excellent. I have been using the VOIP services and I have always got the best services and always been a satisfactory experience. Looking forward with more decades together.",
   },
   {
     name: "Rohit Yadav",
+    photo: "/images/reviews/rohit-yadav.png",
     rating: 5,
     quote:
       "We've been working with SIPLINK Communications Pvt. Ltd. for over two years, and their services have consistently exceeded our expectations. The VoIP solutions they offer are cutting-edge, and the performance is flawless.",
   },
   {
     name: "orange Pandi",
+    photo: "/images/reviews/orange-pandi.jpg",
     rating: 5,
     quote:
       "Sip-Link Service provides excellent call quality and reliable support. Their customer service is very responsive and always available when needed. It's easy to reach out and get assistance anytime. Overall, a great experience and highly recommended.",
   },
   {
     name: "Manivannan Deenan",
+    photo: "/images/reviews/manivannan-deenan.jpg",
     rating: 5,
     quote:
       "The VoIP service provider SIPLINK has been excellent with their prompt support. I would definitely recommend them to anyone looking for reliable calling services.",
   },
   {
     name: "kashyap inabathini",
+    photo: "/images/reviews/kashyap-inabathini.png",
     rating: 5,
     quote:
       "Siplink gives best service. Any update or issues your team response very quickly and fix the problem ASAP. Excellent service and good communication.",
   },
   {
     name: "Azure Billing Solutions",
+    photo: "/images/reviews/azure-billing-solutions.jpg",
     rating: 5,
     quote:
       "We are happy with your support and any queries or issues are addressed immediately which helps to deliver the work on time. Great work team.",
   },
   {
     name: "Sarath Kumar",
+    photo: "/images/reviews/sarath-kumar.png",
     rating: 5,
     quote:
       "We have been using VoIP service — it's better and easy to access on mobile as well as PC. Great price with great support on time.",
   },
   {
     name: "आकाश यादव",
+    photo: "/images/reviews/aakash-yadav.jpg",
     rating: 5,
     quote:
       "If you're looking for a reliable VoIP service provider with great customer service, look no further than SIPLINK. They're a true partner in every sense of the word!",
@@ -1064,6 +1073,7 @@ export const reviews: Review[] = [
   },
   {
     name: "Razia Banu",
+    photo: "/images/reviews/razia-banu.png",
     rating: 5,
     quote: "Services are good. We get support 24/7. Thank you Siplink.",
   },

@@ -36,8 +36,8 @@ export function VideoShowcase() {
                 Watch The Film
               </span>
 
-              <h2 className="font-heading mt-6 text-4xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[2.75rem] xl:text-5xl">
-                Your Trusted VoIP Partner, On Every Call
+              <h2 className="font-heading mt-6 text-4xl leading-[1.05] font-bold tracking-tighter text-balance sm:text-5xl lg:text-[2.75rem] xl:text-5xl">
+                Building business voice
               </h2>
 
               <p className="mt-6 max-w-lg text-lg leading-relaxed text-pretty text-muted-foreground">
