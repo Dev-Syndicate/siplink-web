@@ -19,12 +19,18 @@ import { industries } from "@/lib/site";
  * No backend exists yet, so the form composes a mailto: rather than pretending
  * to submit. Replace with a server action once an endpoint is available.
  */
-export function ContactForm() {
+export function ContactForm({
+  submitLabel = "Schedule a demo",
+  subject = "Demo request",
+}: {
+  submitLabel?: string;
+  subject?: string;
+}) {
   const [industry, setIndustry] = useState("");
 
   return (
     <form
-      action="mailto:support@siplink.in"
+      action={`mailto:support@siplink.in?subject=${encodeURIComponent(subject)}`}
       method="post"
       encType="text/plain"
       className="space-y-5"
@@ -93,7 +99,7 @@ export function ContactForm() {
       </div>
 
       <Button type="submit" size="lg">
-        Schedule a demo
+        {submitLabel}
       </Button>
     </form>
   );
