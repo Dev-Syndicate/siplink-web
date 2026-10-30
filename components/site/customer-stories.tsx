@@ -5,7 +5,12 @@ import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { googleReviewsUrl, reviewStats, reviews } from "@/lib/site";
+import {
+  customerStats,
+  googleReviewsUrl,
+  reviewStats,
+  reviews,
+} from "@/lib/site";
 
 /**
  * How many reviews the grid carries: two rows of three on desktop. The list
@@ -118,11 +123,11 @@ export function CustomerStories() {
           ))}
         </div>
 
-        <dl className="mt-16 grid grid-cols-1 gap-8 text-center sm:grid-cols-3">
-          {reviewStats.map((stat) => (
+        <dl className="mt-16 grid grid-cols-2 gap-8 text-center lg:grid-cols-4">
+          {[reviewStats[0], ...customerStats, reviewStats[1]].map((stat) => (
             <div key={stat.label} className="flex flex-col-reverse gap-2">
               <dt className="text-sm text-muted-foreground">{stat.label}</dt>
-              <dd className="font-heading text-4xl font-bold text-primary">
+              <dd className="font-heading text-4xl font-bold bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
                 {stat.value}
               </dd>
             </div>

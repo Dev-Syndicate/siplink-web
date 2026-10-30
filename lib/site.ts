@@ -996,6 +996,12 @@ export const reviewStats: {
   { value: "HIPAA", label: "Compliant platform", icon: ShieldCheck },
 ];
 
+/** Customer figures supplied by SipLink (30 Oct 2026), shown with the reviews. */
+export const customerStats = [
+  { value: "10K+", label: "Happy customers" },
+  { value: "99%", label: "Businesses would recommend" },
+];
+
 /** SipLink's Google reviews, opened directly. Built from the Business Profile's
  * Place ID; the shorter share.google link only opens the profile. */
 export const googleReviewsUrl =

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Building2, Mail, MapPin, Phone } from "lucide-react";
+import Image from "next/image";
+import { Building2, CircleCheck, Mail, MapPin, Phone, Star } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -10,7 +11,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ContactForm } from "@/components/site/contact-form";
-import { offices, site, supportChannels } from "@/lib/site";
+import { GoogleLogo } from "@/components/site/store-icons";
+import { offices, reviewStats, site, supportChannels } from "@/lib/site";
+
+/** What a demo covers, as the checklist beside the form. */
+const COVERS = [
+  "Hosted PBX, SIP trunking & call centre",
+  "Keep your existing numbers",
+  "24/7 expert support",
+];
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -19,89 +28,128 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
+  const rating = reviewStats[0];
   const operating = offices.filter((o) => o.kind === "operating");
   const registered = offices.filter((o) => o.kind === "registered");
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-muted/30">
+      {/* Hero: the pitch on the brand colour, the form in a card beside it. */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-brand-to to-brand-from text-primary-foreground">
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-40 left-1/2 size-[560px] -translate-x-1/2 rounded-full bg-brand-to/10 blur-3xl"
+          className="pointer-events-none absolute -top-40 -right-40 size-[36rem] rounded-full border-[4rem] border-primary-foreground/5"
         />
-        <div className="mx-auto max-w-3xl px-6 py-20 text-center lg:px-10">
-          <span className="text-sm font-medium tracking-widest text-primary uppercase">
-            Contact
-          </span>
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-            Let&apos;s talk
-          </h1>
-          <p className="mt-6 text-lg text-pretty text-muted-foreground">
-            Tell us how your teams communicate today and we will map it to a
-            plan, including porting your existing numbers.
-          </p>
-        </div>
-      </section>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-48 -left-32 size-[30rem] rounded-full bg-primary-foreground/5 blur-3xl"
+        />
 
-      {/* Form + direct contact */}
-      <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="grid gap-12 lg:grid-cols-5">
-          <div className="lg:col-span-3">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Schedule a demo
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Fill in your details and our team will get back to you.
+        <div className="relative mx-auto grid max-w-7xl items-start gap-12 px-6 pt-16 pb-24 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-16 lg:px-10 lg:pt-20 lg:pb-32">
+          <div className="lg:pt-6">
+            <h1 className="font-heading text-4xl leading-[1.08] font-bold tracking-tight text-balance sm:text-5xl">
+              Talk to SipLink and see how your calls could run
+            </h1>
+            <p className="mt-5 max-w-xl text-lg text-pretty text-primary-foreground/85">
+              Tell us how your teams communicate today and we will map it to a
+              plan, including porting your existing numbers.
             </p>
-            <div className="mt-8">
-              <ContactForm />
-            </div>
-          </div>
 
-          <div className="lg:col-span-2">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Reach us directly
-            </h2>
-            <div className="mt-6 space-y-4">
+            <p className="mt-7 inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-4 py-2 text-sm ring-1 ring-primary-foreground/20">
+              <span className="flex items-center gap-0.5" aria-hidden>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Star key={index} className="size-4 fill-current" />
+                ))}
+              </span>
+              <span className="font-semibold">{rating.value}</span>
+              <span className="text-primary-foreground/80">{rating.label}</span>
+            </p>
+
+            <ul className="mt-8 space-y-3">
+              {COVERS.map((item) => (
+                <li key={item} className="flex items-center gap-3">
+                  <CircleCheck className="size-5 shrink-0" aria-hidden />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
               <a
                 href={`tel:${site.phone.replace(/\s/g, "")}`}
-                className="flex items-center gap-4 rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
+                className="inline-flex items-center gap-2 hover:underline"
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Phone className="size-5" aria-hidden />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-sm font-medium">Sales</span>
-                  <span className="block truncate text-sm text-muted-foreground">
-                    {site.phone}
-                  </span>
-                </span>
+                <Phone className="size-4" aria-hidden />
+                {site.phone}
               </a>
               <a
                 href={`mailto:${site.email}`}
-                className="flex items-center gap-4 rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
+                className="inline-flex items-center gap-2 hover:underline"
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Mail className="size-5" aria-hidden />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-sm font-medium">Support</span>
-                  <span className="block truncate text-sm text-muted-foreground">
-                    {site.email}
-                  </span>
-                </span>
+                <Mail className="size-4" aria-hidden />
+                {site.email}
               </a>
             </div>
-            <p className="mt-4 text-sm text-muted-foreground">
-              Support is staffed 24/7.
-            </p>
+
+            <Image
+              src="/images/products/call-center-v2.webp"
+              alt="A SipLink call centre team with live queue, routing and analytics dashboards"
+              width={1536}
+              height={1024}
+              sizes="(min-width: 1024px) 34rem, 100vw"
+              className="mt-10 hidden w-full max-w-xl rounded-2xl shadow-2xl shadow-foreground/20 ring-4 ring-primary-foreground/15 lg:block"
+            />
           </div>
+
+          <Card className="rounded-2xl p-2 text-card-foreground shadow-2xl shadow-foreground/20 sm:p-4">
+            <CardHeader className="text-center">
+              <CardTitle className="font-heading text-2xl font-bold tracking-tight sm:text-3xl">
+                Get a demo &amp; pricing
+              </CardTitle>
+              <CardDescription className="text-pretty">
+                See how teams run calls, queues and support on one platform.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ContactForm />
+              <p className="mt-4 text-center text-sm text-muted-foreground">
+                Our support team is staffed 24/7.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Proof strip, lifted over the hero's edge. */}
+      <section className="relative mx-auto -mt-12 max-w-5xl px-6 lg:px-10">
+        <div className="grid gap-4 sm:grid-cols-3">
+          {reviewStats.map(({ value, label, icon: Icon }, index) => (
+            <Card
+              key={label}
+              className="flex-row items-center gap-4 rounded-2xl px-6 py-5 shadow-xl shadow-primary/10"
+            >
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                {index === 0 ? (
+                  <GoogleLogo className="size-6" />
+                ) : (
+                  <Icon className="size-5" aria-hidden />
+                )}
+              </span>
+              <span>
+                <span className="font-heading block text-xl font-bold">
+                  {value}
+                </span>
+                <span className="block text-sm text-muted-foreground">
+                  {label}
+                </span>
+              </span>
+            </Card>
+          ))}
         </div>
       </section>
 
       {/* Support channels */}
-      <section className="border-t border-border bg-muted/30">
+      <section className="mt-20 border-t border-border bg-muted/30">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-semibold tracking-tight text-balance">
