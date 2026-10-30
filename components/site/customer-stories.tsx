@@ -1,191 +1,135 @@
 import Image from "next/image";
-import {
-  ArrowRight,
-  BarChart3,
-  Headphones,
-  MessageSquareMore,
-  Phone,
-  Star,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 
-import { ReviewCarousel } from "@/components/site/review-carousel";
-import { GoogleLogo } from "@/components/site/store-icons";
+import { BicolorHeading } from "@/components/site/bicolor-heading";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { googleReviewsUrl, reviewStats, reviews } from "@/lib/site";
-import { cn } from "@/lib/utils";
 
 /**
- * How many reviews the carousel carries: three pages of three on desktop.
- * The list in lib/site.ts runs longest and most specific first and tails off
- * into one-line ratings, which read as padding on a card this size.
+ * How many reviews the grid carries: two rows of three on desktop. The list
+ * in lib/site.ts runs longest and most specific first and tails off into
+ * one-line ratings, which read as padding on a card this size.
  */
-const SHOWN = 9;
+const SHOWN = 6;
 
-/**
- * The faces framing the heading. Decorative: they stand for the people on
- * the other end of a call, not for any reviewer, which is why no review card
- * ever borrows one — a real person's endorsement only ever carries their own
- * photo or their initials.
- */
-const PEOPLE: {
-  src: string;
-  className: string;
-  tilt: string;
-  icon: LucideIcon;
-  iconClassName: string;
-  float: string;
-}[] = [
-  {
-    src: "/images/people/person-daniel.webp",
-    className: "top-20 left-[11%]",
-    tilt: "-rotate-6",
-    icon: Phone,
-    iconClassName: "-top-3 -left-10",
-    float: "6s",
-  },
-  {
-    src: "/images/people/person-emma.webp",
-    className: "top-64 left-[1%]",
-    tilt: "rotate-6",
-    icon: MessageSquareMore,
-    iconClassName: "-right-6 bottom-6",
-    float: "7s",
-  },
-  {
-    src: "/images/people/person-sofia.webp",
-    className: "top-24 right-[10%]",
-    tilt: "rotate-6",
-    icon: Headphones,
-    iconClassName: "-top-2 -right-12",
-    float: "6.5s",
-  },
-  {
-    src: "/images/people/person-marcus.webp",
-    className: "top-[17rem] right-[1%]",
-    tilt: "-rotate-3",
-    icon: BarChart3,
-    iconClassName: "-right-5 bottom-4",
-    float: "7.5s",
-  },
-];
-
-/** Stars filled to the exact rating, so 4.5 shows four and a half. */
-function RatingStars({ value }: { value: number }) {
-  return (
-    <span className="flex items-center gap-0.5" aria-hidden>
-      {Array.from({ length: 5 }, (_, index) => {
-        const fill = Math.min(Math.max(value - index, 0), 1);
-
-        return (
-          <span key={index} className="relative size-5">
-            <Star className="absolute inset-0 size-5 fill-current text-primary/20" />
-            <span
-              className="absolute inset-0 overflow-hidden"
-              style={{ width: `${fill * 100}%` }}
-            >
-              <Star className="size-5 fill-current text-primary" />
-            </span>
-          </span>
-        );
-      })}
-    </span>
-  );
+/** Two letters for a reviewer with no photo of their own. */
+function initials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
 }
 
 /**
  * Customer stories.
  *
- * A centred heading framed by faces, the Google average, then the reviews as
- * a carousel with the middle card raised, and the way out to every review on
- * Google. The quotes are verbatim from the Google Business Profile.
+ * A centred heading, the reviews as a grid of cards, then the proof bar and
+ * the way out to every review on Google. The quotes are verbatim from the
+ * Google Business Profile.
  */
 export function CustomerStories() {
   // Renders nothing until real reviews exist. See lib/site.ts.
   if (reviews.length === 0) return null;
 
-  const row = reviews.slice(0, SHOWN);
-
-  const rating = reviewStats[0];
-  const average = Number.parseFloat(rating.value);
-
   return (
-    <section className="relative overflow-hidden border-t border-border bg-gradient-to-b from-background via-primary/5 to-primary/10">
-      {/* The broad arc the cards sit on. */}
+    <section className="relative overflow-hidden border-t border-border bg-muted/30">
+      {/* Soft glows behind the heading and the lower cards. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute top-[58%] left-1/2 h-[120%] w-[160%] -translate-x-1/2 rounded-[100%] bg-gradient-to-b from-primary/10 to-transparent"
+        className="pointer-events-none absolute -top-24 -left-32 size-[32rem] rounded-full bg-primary/10 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-32 bottom-24 size-[28rem] rounded-full bg-primary/5 blur-3xl"
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:pt-32 lg:pb-28">
-        {/* Only where there is room beside the heading for them. */}
-        <div aria-hidden className="pointer-events-none hidden xl:block">
-          {PEOPLE.map(
-            ({ src, className, tilt, icon: Icon, iconClassName, float }) => (
-              <div
-                key={src}
-                className={cn("card-float absolute", className)}
-                style={{ "--float-duration": float } as React.CSSProperties}
+      <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+        <div className="mx-auto max-w-3xl text-center">
+          <Badge
+            variant="outline"
+            className="h-8 gap-1.5 rounded-full bg-background px-4 text-sm text-primary"
+          >
+            <Star className="fill-current" aria-hidden />
+            Customer Stories
+          </Badge>
+          <BicolorHeading
+            as="h2"
+            lead="Real stories from"
+            accent="real businesses"
+            className="font-heading mt-6 text-4xl font-semibold tracking-tight sm:text-6xl"
+          />
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-pretty text-muted-foreground">
+            Don&rsquo;t just take our word for it. Here&rsquo;s what teams
+            running their calls on SipLink say about the service and the
+            support behind it.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-8">
+          {reviews.slice(0, SHOWN).map((review) => (
+            <Card
+              key={review.name}
+              className="gap-0 rounded-2xl p-8 shadow-lg shadow-primary/5 transition-shadow hover:shadow-xl hover:shadow-primary/10"
+            >
+              <span
+                className="flex items-center gap-1.5 text-primary"
+                aria-label={`${review.rating} out of 5 stars`}
               >
-                <div
-                  className={cn(
-                    "relative rounded-3xl bg-gradient-to-br from-primary/25 to-primary/5 shadow-xl shadow-primary/15",
-                    tilt,
-                  )}
-                >
+                {Array.from({ length: review.rating }, (_, index) => (
+                  <Star key={index} className="size-4 fill-current" aria-hidden />
+                ))}
+              </span>
+
+              <blockquote className="mt-6 flex-1 leading-relaxed text-pretty text-muted-foreground">
+                &ldquo;{review.quote}&rdquo;
+              </blockquote>
+
+              <div className="mt-8 flex items-center gap-3">
+                {review.photo ? (
                   <Image
-                    src={src}
+                    src={review.photo}
                     alt=""
-                    width={224}
-                    height={224}
-                    sizes="112px"
-                    className="size-28 rounded-3xl object-cover"
+                    width={96}
+                    height={96}
+                    sizes="48px"
+                    className="size-12 shrink-0 rounded-full object-cover"
                   />
+                ) : (
                   <span
-                    className={cn(
-                      "absolute flex size-10 items-center justify-center rounded-full bg-background text-primary shadow-lg shadow-primary/15",
-                      iconClassName,
-                    )}
+                    aria-hidden
+                    className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary"
                   >
-                    <Icon className="size-4" />
+                    {initials(review.name)}
                   </span>
+                )}
+                <div className="min-w-0">
+                  <p className="truncate font-semibold">{review.name}</p>
+                  <p className="truncate text-sm text-muted-foreground">
+                    {review.role ?? "Verified Google review"}
+                  </p>
                 </div>
               </div>
-            ),
-          )}
+            </Card>
+          ))}
         </div>
 
-        <div className="relative mx-auto max-w-2xl text-center">
-          <span className="font-mono text-xs tracking-widest text-primary uppercase">
-            Customer stories
-          </span>
-          <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-5xl">
-            Trusted by businesses that keep conversations moving.
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-pretty text-muted-foreground">
-            Real businesses. Real conversations. Here&rsquo;s what our
-            customers say about their experience with SipLink.
-          </p>
+        <dl className="mt-16 grid grid-cols-1 gap-8 text-center sm:grid-cols-3">
+          {reviewStats.map((stat) => (
+            <div key={stat.label} className="flex flex-col-reverse gap-2">
+              <dt className="text-sm text-muted-foreground">{stat.label}</dt>
+              <dd className="font-heading text-4xl font-bold text-primary">
+                {stat.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
 
-          <p className="mt-8 inline-flex items-center gap-4 rounded-2xl bg-background px-5 py-3 shadow-lg shadow-primary/10">
-            <GoogleLogo className="size-7" />
-            <span aria-hidden className="h-8 w-px bg-border" />
-            <span className="font-heading text-2xl font-semibold">
-              {rating.value}
-            </span>
-            <RatingStars value={average} />
-            <span className="sr-only">out of 5,</span>
-            <span className="max-w-[6.5rem] text-left text-xs leading-tight text-muted-foreground">
-              {rating.label}
-            </span>
-          </p>
-        </div>
-
-        <div className="relative mt-10 lg:mt-12">
-          <ReviewCarousel reviews={row} />
-        </div>
-
-        <div className="relative mt-10 flex justify-center">
+        <div className="mt-14 flex justify-center">
           <Button asChild size="lg" className="group">
             <a href={googleReviewsUrl} target="_blank" rel="noreferrer noopener">
               See all customer stories
