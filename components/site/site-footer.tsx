@@ -18,7 +18,10 @@ import {
 
 import { RevealGroup } from "@/components/site/reveal-group";
 import { hasSocialIcon, SocialIcon } from "@/components/site/social-icons";
-import { footerNav, site, social } from "@/lib/site";
+import { footerNav, offices, site, social } from "@/lib/site";
+
+/** The US entity, shown under the head office with its own number. */
+const usOffice = offices.find((office) => office.kind === "registered");
 import { cn } from "@/lib/utils";
 import dotLogo from "@/public/images/certifications/dot.jpeg";
 import gdprLogo from "@/public/images/certifications/gdpr.jpeg";
@@ -217,6 +220,33 @@ export function SiteFooter() {
                 <address className="leading-relaxed text-foreground/75 not-italic">{site.address}</address>
               </div>
             </li>
+            {usOffice ? (
+              <li
+                className="reveal-item border-t border-border/70 pt-4"
+                style={{ "--reveal-index": 4 } as CSSProperties}
+              >
+                <p className="mb-3 font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+                  United States
+                </p>
+                <a
+                  href={`tel:${usOffice.phone.replace(/\s/g, "")}`}
+                  className="group/contact flex items-center gap-3 font-medium text-foreground outline-none hover:text-primary focus-visible:text-primary"
+                >
+                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary transition-colors duration-300 group-hover/contact:bg-primary group-hover/contact:text-primary-foreground">
+                    <Phone className="size-4" aria-hidden />
+                  </span>
+                  {usOffice.phone}
+                </a>
+                <div className="mt-4 flex items-start gap-3">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                    <MapPin className="size-4" aria-hidden />
+                  </span>
+                  <address className="leading-relaxed text-foreground/75 not-italic">
+                    {usOffice.address.join(", ")}
+                  </address>
+                </div>
+              </li>
+            ) : null}
           </ul>
         </RevealGroup>
 

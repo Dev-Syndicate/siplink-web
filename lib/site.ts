@@ -489,7 +489,7 @@ export const offices: Office[] = [
     city: "United States",
     entity: "SIPLINK COMMUNICATIONS LLC",
     address: ["30 N Gould St, Ste R", "Sheridan, WY 82801"],
-    phone: "+91 82172 02075",
+    phone: "+1 276 695 1464",
     kind: "registered",
   },
 ];
