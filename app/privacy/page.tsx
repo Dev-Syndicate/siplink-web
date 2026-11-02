@@ -44,7 +44,7 @@ export default function PrivacyPolicyPage() {
             Privacy Policy
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            Last Updated: January 2026 · {site.legalName}
+            Last Updated: November 2026 · {site.legalName}
           </p>
         </div>
 
@@ -125,7 +125,43 @@ export default function PrivacyPolicyPage() {
 
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">
-              4. Data Protection & Security Controls
+              4. Website Chat
+            </h2>
+            <p>
+              Our website offers live chat through tawk.to, a third-party
+              provider that handles this information on our behalf. When the chat
+              widget loads or you use it, the following may be collected:
+            </p>
+            <ul className="list-disc space-y-1.5 pl-5">
+              <li>Your name, email address, phone number, and anything else you enter in a chat or chat form.</li>
+              <li>The content of your chat messages and any files you send.</li>
+              <li>Your IP address, approximate location, browser and device type, language, the pages you view, and the site that referred you.</li>
+            </ul>
+            <p>
+              We use this information to answer your questions, follow up on your
+              enquiry, and improve our support. The widget uses cookies and similar
+              browser storage to recognize returning visitors and keep chats
+              connected.
+            </p>
+            <p>
+              tawk.to states that it processes data in the United States, so your
+              information may be transferred outside your country. Its handling of
+              data is also described in the{" "}
+              <a
+                href="https://www.tawk.to/privacy-policy/"
+                className="text-primary hover:underline"
+              >
+                tawk.to Privacy Policy
+              </a>
+              . Please do not share health information, payment details, or
+              passwords in chat. To ask about or request deletion of your chat
+              data, contact us using the details below.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-semibold text-foreground">
+              5. Data Protection & Security Controls
             </h2>
             <p>
               We implement defense-in-depth security measures aligned with
@@ -141,7 +177,7 @@ export default function PrivacyPolicyPage() {
 
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">
-              5. Healthcare & HIPAA Alignment
+              6. Healthcare & HIPAA Alignment
             </h2>
             <p>
               For healthcare providers and medical billing organizations handling
@@ -154,7 +190,7 @@ export default function PrivacyPolicyPage() {
 
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">
-              6. GDPR & International Privacy Rights
+              7. GDPR & International Privacy Rights
             </h2>
             <p>
               In accordance with GDPR principles for European Union and EEA users,
@@ -167,7 +203,7 @@ export default function PrivacyPolicyPage() {
 
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">
-              7. Contact & Privacy Inquiries
+              8. Contact & Privacy Inquiries
             </h2>
             <p>
               If you have any questions or wish to exercise your privacy rights,
