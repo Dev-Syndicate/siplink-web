@@ -24,8 +24,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Rather than claiming a blog archive that does not exist yet, this routes
- * each topic to the real SipLink pages that already cover it in depth — the
+ * This routes each topic to the real SipLink pages that cover it in depth — the
  * product catalogue, the solutions pages, the industry pages, and the
  * certifications page.
  */
@@ -101,8 +100,7 @@ export default function NewsPage() {
       <WhatsAppApiScene />
 
       {/* One hub, four spokes: every topic above resolves to a real page,
-          drawn as the route it actually takes rather than claimed as a
-          blog archive that does not exist yet. */}
+          drawn as the route it actually takes. */}
       <section className="border-t border-border bg-muted/30 py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="mx-auto max-w-2xl text-center">
@@ -114,8 +112,12 @@ export default function NewsPage() {
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Our in-depth technical and compliance detail lives on the
-              product, solution, industry, and certifications pages — not a
-              separate blog archive.
+              product, solution, industry, and certifications pages. For guides
+              and explainers, read the{" "}
+              <Link href="/blog" className="text-primary underline underline-offset-4 hover:no-underline">
+                SipLink blog
+              </Link>
+              .
             </p>
           </div>
 

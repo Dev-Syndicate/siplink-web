@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       // YouTube thumbnail for the explainer video facade.
       { protocol: "https", hostname: "i.ytimg.com" },
+      // Blog images uploaded in Sanity Studio.
+      { protocol: "https", hostname: "cdn.sanity.io" },
     ],
   },
   // The old siplink.in .php pages hold the rankings in the SEO worksheet
@@ -37,9 +39,20 @@ const nextConfig: NextConfig = {
       ["/support-siplink.php", "/contact"],
       ["/enquiry.php", "/contact"],
       ["/privacy-policy-siplink.php", "/privacy"],
-      // shortcut: blog posts have no new home yet; point them at News until the blog is rebuilt.
-      ["/blog", "/company/news"],
-      ["/blog/:path*", "/company/news"],
+      // Old posts keep their slugs in Sanity. Publish each one before the domain moves, or it 404s.
+      ["/blog/what-is-voip-how-does-voip-work.php", "/blog/what-is-voip-how-does-voip-work"],
+      ["/blog/voip-service-providers-in-chennai-india-voip-service-questions-and-answers.php", "/blog/voip-service-providers-in-chennai-india-voip-service-questions-and-answers"],
+      ["/blog/how-to-send-and-receive-fax-over-the-internet-with-siplink.php", "/blog/how-to-send-and-receive-fax-over-the-internet-with-siplink"],
+      ["/blog/the-complete-guide-to-voip-service-providers-in-chennai-india.php", "/blog/the-complete-guide-to-voip-service-providers-in-chennai-india"],
+      ["/blog/the-feature-and-future-of-5g-internet-technology-in-call-center-services.php", "/blog/the-feature-and-future-of-5g-internet-technology-in-call-center-services"],
+      ["/blog/how-to-connect-business-with-high-speed-internet-access-for-multiple-users.php", "/blog/how-to-connect-business-with-high-speed-internet-access-for-multiple-users"],
+      ["/blog/what-is-an-isp-how-to-select-the-best-broadband-internet-service-providers-in-chennai.php", "/blog/what-is-an-isp-how-to-select-the-best-broadband-internet-service-providers-in-chennai"],
+      // These old addresses were exact copies of the posts above.
+      ["/blog/business-voip-services-in-india.php", "/blog/what-is-voip-how-does-voip-work"],
+      ["/blog/internet-service-providers-in-india.php", "/blog/how-to-send-and-receive-fax-over-the-internet-with-siplink"],
+      ["/blog/business-voip-service-providers-in-india.php", "/blog/voip-service-providers-in-chennai-india-voip-service-questions-and-answers"],
+      ["/blog/5g-internet-technology-voip-service-providers-in-india.php", "/blog/the-feature-and-future-of-5g-internet-technology-in-call-center-services"],
+      ["/blog/voip-service-providers-in-india.php", "/blog/the-complete-guide-to-voip-service-providers-in-chennai-india"],
     ].map(([source, destination]) => ({ source, destination, permanent: true }));
   },
 };

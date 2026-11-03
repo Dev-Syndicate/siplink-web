@@ -46,6 +46,10 @@ export const seo = {
     "Dedicated Internet Leased Line in Chennai | SipLink",
     "Dedicated internet leased line in Chennai with dependable bandwidth and SLA-backed service for business-critical operations.",
   ],
+  "/blog": [
+    "Business VoIP and Internet Blog | SipLink",
+    "Practical guides to business VoIP, cloud telephony, SIP trunking and business internet from the SipLink team in Chennai.",
+  ],
   "/pricing": [
     "Business VoIP Plans in Chennai | SipLink Pricing",
     "Affordable, scalable business VoIP plans in Chennai: Core, Business Pro and Enterprise Plus, priced per line per month.",

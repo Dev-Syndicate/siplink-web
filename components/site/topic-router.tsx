@@ -3,10 +3,8 @@ import { type LucideIcon } from "lucide-react";
 
 /**
  * One hub, four spokes — the same grammar as the homepage's integration
- * wall, because the claim is the same shape: SipLink does not have a
- * separate blog archive yet, so every topic a reader comes here for
- * actually resolves on a real page elsewhere on the site. The wire is
- * honest about that instead of papering over it with invented articles.
+ * wall, because the claim is the same shape: every topic a reader comes
+ * here for actually resolves on a real page elsewhere on the site.
  */
 export type RouterTopic = {
   title: string;
