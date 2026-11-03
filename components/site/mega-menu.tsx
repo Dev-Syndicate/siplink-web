@@ -272,7 +272,7 @@ export function MegaMenu() {
                     // grey hover are concatenated by asChild, not merged.
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      "rounded-full! bg-transparent! px-3 py-2 text-sm transition-colors hover:bg-gradient-to-r hover:from-primary/15 hover:to-primary/5 hover:text-primary",
+                      "rounded-full! bg-transparent! px-2 py-2 text-sm transition-colors xl:px-3 hover:bg-gradient-to-r hover:from-primary/15 hover:to-primary/5 hover:text-primary",
                       isActive
                         ? "font-semibold text-primary"
                         : "font-medium text-foreground/80",
@@ -305,7 +305,7 @@ export function MegaMenu() {
             <NavigationMenuItem key={item.label}>
               <NavigationMenuTrigger
                 className={cn(
-                  "rounded-full bg-transparent px-3 py-2 text-sm transition-colors data-[state=open]:bg-gradient-to-r data-[state=open]:from-primary/15 data-[state=open]:to-primary/5",
+                  "rounded-full bg-transparent px-2 py-2 text-sm transition-colors xl:px-3 data-[state=open]:bg-gradient-to-r data-[state=open]:from-primary/15 data-[state=open]:to-primary/5",
                   isActive
                     ? "font-semibold text-primary data-[state=open]:text-primary"
                     : "font-medium text-foreground/80 hover:text-foreground data-[state=open]:text-primary",

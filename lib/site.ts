@@ -1910,6 +1910,7 @@ export const nav: NavItem[] = [
     },
   },
   { label: "Pricing", href: "/pricing" },
+  { label: "Blog", href: "/blog" },
   {
     label: "Company",
     href: "/company",
@@ -1932,7 +1933,6 @@ export const nav: NavItem[] = [
             icon: BadgeCheck,
           },
           { label: "Careers", href: "/company/careers", icon: Briefcase },
-          { label: "Blog", href: "/blog", icon: Newspaper },
           { label: "News", href: "/company/news", icon: Newspaper },
           { label: "10 DLC", href: "/company/10dlc", icon: ShieldCheck },
         ],
