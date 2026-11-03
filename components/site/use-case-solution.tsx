@@ -30,6 +30,9 @@ import {
   type SolutionPoint,
 } from "@/lib/solutions";
 import { cn } from "@/lib/utils";
+import { FaqSection } from "@/components/site/faq-section";
+import { pageFaqs } from "@/lib/page-faqs";
+import type { SeoPath } from "@/lib/seo";
 
 /**
  * The six "By Use Case" solutions, in one style.
@@ -548,6 +551,8 @@ export function UseCaseSolution({ solution }: { solution: SolutionDetail }) {
           </ul>
         </section>
       ) : null}
+
+      <FaqSection faqs={pageFaqs[`/solutions/${slug}` as SeoPath]} />
 
       {/* The closing ask, in the site's one CTA shape. It used to share a row
           with "Who it's for", which capped it at 28rem and left it a quarter

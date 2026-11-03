@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { Caveat, Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 
+import { JsonLd } from "@/components/site/json-ld";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { openGraphDefaults, seo } from "@/lib/seo";
-import { site } from "@/lib/site";
+import { site, social } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -46,6 +47,10 @@ const localBusiness = {
   alternateName: site.name,
   description: site.description,
   url: site.url,
+  logo: `${site.url}/siplink-logo.webp`,
+  image: `${site.url}/siplink-logo.webp`,
+  // WhatsApp is a chat link, not a profile of the business.
+  sameAs: social.filter(({ label }) => label !== "WhatsApp").map(({ href }) => href),
   telephone: site.phone,
   email: site.email,
   // Split from `site.address`; keep the two in sync.
@@ -59,6 +64,15 @@ const localBusiness = {
     addressCountry: "IN",
   },
   areaServed: "IN",
+};
+
+const website = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${site.url}/#website`,
+  name: site.name,
+  url: site.url,
+  publisher: { "@id": `${site.url}/#business` },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -76,12 +90,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <noscript>
           <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
         </noscript>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusiness).replace(/</g, "\\u003c"),
-          }}
-        />
+        <JsonLd data={[localBusiness, website]} />
         <SiteHeader />
         {/* Offset matches the fixed header: the h-16 nav pill plus its pt-3
             gap, and above `sm` the h-10 announcement bar as well. The bar is

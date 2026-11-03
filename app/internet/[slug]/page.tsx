@@ -8,7 +8,8 @@ import { InternetServicePage } from "@/components/site/internet-service-page";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { ServiceStackScene } from "@/components/site/scene-service-stack";
 import { connectivityServices, getInternetService } from "@/lib/internet";
-import { seoFor } from "@/lib/seo";
+import { seoFor, type SeoPath } from "@/lib/seo";
+import { PageSchema } from "@/components/site/json-ld";
 
 /**
  * The three connectivity services: business broadband, dedicated internet and
@@ -33,12 +34,7 @@ export async function generateMetadata({
   const service = getInternetService(slug);
 
   if (!service || service.parent) return {};
-  if (slug === "dedicated-internet") return seoFor("/internet/dedicated-internet");
-
-  return {
-    title: service.title,
-    description: service.intro,
-  };
+  return seoFor(`/internet/${slug}` as SeoPath);
 }
 
 export default async function InternetServiceRoute({
@@ -54,11 +50,14 @@ export default async function InternetServiceRoute({
   const openers = OPENERS[slug];
 
   return (
-    <InternetServicePage
-      service={service}
-      afterHero={openers ? <InternetOpeners scenes={openers()} /> : undefined}
-      extra={<ServiceStackSection slug={slug} title={service.title} />}
-    />
+    <>
+      <PageSchema path={`/internet/${slug}` as SeoPath} />
+      <InternetServicePage
+        service={service}
+        afterHero={openers ? <InternetOpeners scenes={openers()} /> : undefined}
+        extra={<ServiceStackSection slug={slug} title={service.title} />}
+      />
+    </>
   );
 }
 

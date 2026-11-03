@@ -4,26 +4,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { faqPage, JsonLd } from "@/components/site/json-ld";
+import type { Faq } from "@/lib/page-faqs";
 import { homeFaqs } from "@/lib/site";
 
 /**
- * Homepage FAQ, the last thing a hesitant visitor reads before the closing
- * ask. The questions are the ones the brief lists, in its order.
+ * The FAQ band, the last thing a hesitant visitor reads before the closing
+ * ask. Defaults to the homepage questions, in the order the brief lists them.
  *
  * The same list is emitted as FAQPage structured data so search engines can
- * read it. Both come from `homeFaqs`, which keeps the markup and the visible
- * answers identical, as Google requires.
+ * read it, which keeps the markup and the visible answers identical, as
+ * Google requires. Renders nothing for a page with no questions.
  */
-export function FaqSection() {
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: homeFaqs.map(({ question, answer }) => ({
-      "@type": "Question",
-      name: question,
-      acceptedAnswer: { "@type": "Answer", text: answer },
-    })),
-  };
+export function FaqSection({ faqs = homeFaqs }: { faqs?: Faq[] }) {
+  if (!faqs.length) return null;
 
   return (
     <section className="border-b border-border">
@@ -43,7 +37,7 @@ export function FaqSection() {
           </div>
 
           <Accordion type="single" collapsible className="w-full">
-            {homeFaqs.map(({ question, answer }, index) => (
+            {faqs.map(({ question, answer }, index) => (
               <AccordionItem key={question} value={`faq-${index}`}>
                 <AccordionTrigger className="text-left text-base">
                   {question}
@@ -57,13 +51,7 @@ export function FaqSection() {
         </div>
       </div>
 
-      <script
-        type="application/ld+json"
-        // `<` is escaped so a stray "</script>" in an answer cannot end the tag.
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData).replace(/</g, "\u003c"),
-        }}
-      />
+      <JsonLd data={faqPage(faqs)} />
     </section>
   );
 }

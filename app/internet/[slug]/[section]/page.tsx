@@ -49,6 +49,9 @@ import {
   getInternetSectionPage,
   getSectionPages,
 } from "@/lib/internet";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor, type SeoPath } from "@/lib/seo";
+import { staticIpFaqs } from "@/lib/internet";
 
 /**
  * Bespoke opening bands, by `<service>/<section>`. A page listed here renders
@@ -183,12 +186,7 @@ export async function generateMetadata({
 
   if (!found) return {};
 
-  return {
-    // Titled against the parent, so a search result reads
-    // "Plans — Business Broadband" rather than a bare "Plans".
-    title: `${found.section.title}, ${found.service.title}`,
-    description: found.section.intro,
-  };
+  return seoFor(`/internet/${slug}/${section}` as SeoPath);
 }
 
 export default async function InternetSectionRoute({
@@ -206,13 +204,19 @@ export default async function InternetSectionRoute({
   const openers = OPENERS[key];
 
   return (
-    <InternetSectionPage
-      service={found.service}
-      section={found.section}
-      prelude={Prelude ? <Prelude /> : undefined}
-      afterHero={openers ? <InternetOpeners scenes={openers()} /> : undefined}
-      extra={Extra ? <Extra /> : undefined}
-      visual={Visual ? <Visual /> : undefined}
-    />
+    <>
+      <PageSchema
+        path={`/internet/${key}` as SeoPath}
+        faqs={key === "static-ip/add-static-ip" ? staticIpFaqs : undefined}
+      />
+      <InternetSectionPage
+        service={found.service}
+        section={found.section}
+        prelude={Prelude ? <Prelude /> : undefined}
+        afterHero={openers ? <InternetOpeners scenes={openers()} /> : undefined}
+        extra={Extra ? <Extra /> : undefined}
+        visual={Visual ? <Visual /> : undefined}
+      />
+    </>
   );
 }

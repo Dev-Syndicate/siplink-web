@@ -9,6 +9,10 @@ import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { IndustryIllustration } from "@/components/site/industry-illustration";
 import { getIndustryDetail, industryDetails } from "@/lib/industries-detail";
 import { site } from "@/lib/site";
+import { FaqSection } from "@/components/site/faq-section";
+import { PageSchema } from "@/components/site/json-ld";
+import { pageFaqs } from "@/lib/page-faqs";
+import { seoFor, type SeoPath } from "@/lib/seo";
 
 /**
  * Render a paragraph of prose with product mentions turned into inline links.
@@ -91,10 +95,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const industry = getIndustryDetail(slug);
   if (!industry) return {};
-  return {
-    title: `${industry.title}, Industries`,
-    description: industry.intro,
-  };
+  return seoFor(`/industries/${slug}` as SeoPath);
 }
 
 export default async function IndustryDetailPage({
@@ -137,8 +138,11 @@ export default async function IndustryDetailPage({
     { id: "fit", label: "Is it for you" },
   ];
 
+  const path = `/industries/${slug}` as SeoPath;
+
   return (
     <>
+      <PageSchema path={path} />
       {/* ── Hero: full-width, text left / working-scene right, sized to fit
             the viewport. The party chips + breadcrumb keep it distinct from
             the product hero. ──────────────────────────────────────────────── */}
@@ -503,6 +507,8 @@ export default async function IndustryDetailPage({
           </div>
         </section>
       ) : null}
+
+      <FaqSection faqs={pageFaqs[path]} />
 
       {/* ── CTA — the gradient card from the homepage close ──────────────── */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">

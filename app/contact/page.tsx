@@ -22,12 +22,10 @@ import {
 } from "@/components/ui/card";
 import { ContactForm } from "@/components/site/contact-form";
 import { offices, site, supportChannels } from "@/lib/site";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Talk to SipLink about cloud telephony, SIP trunking and call centre solutions. Offices in Chennai, Bangalore and Hyderabad.",
-};
+export const metadata: Metadata = seoFor("/contact");
 
 export default function ContactPage() {
   const operating = offices.filter((o) => o.kind === "operating");
@@ -35,6 +33,7 @@ export default function ContactPage() {
 
   return (
     <>
+      <PageSchema path="/contact" />
       <ContactHero />
 
       {/* Support channels */}

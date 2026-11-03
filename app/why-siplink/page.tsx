@@ -8,16 +8,15 @@ import {
   InfrastructureBand,
 } from "@/components/site/why-siplink-sections";
 import { reliability, site } from "@/lib/site";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Why SipLink — Built for Reliable Business Communication",
-  description:
-    "Discover why growing businesses and enterprises choose SipLink for business voice, cloud PBX, SIP trunking, and unified communications.",
-};
+export const metadata: Metadata = seoFor("/why-siplink");
 
 export default function WhySipLinkPage() {
   return (
     <>
+      <PageSchema path="/why-siplink" />
       <WhySipLinkHero name={site.name} />
 
       {/* How a call actually moves through the platform — the real order

@@ -7,12 +7,10 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IndustryIllustration } from "@/components/site/industry-illustration";
 import { industryDetails } from "@/lib/industries-detail";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Industries",
-  description:
-    "Cloud communication solutions tuned to how each sector works, call centers, healthcare, banking, retail, logistics, government and more.",
-};
+export const metadata: Metadata = seoFor("/industries");
 
 export default function IndustriesPage() {
   // The first industry leads as a feature; the rest fill the register below.
@@ -20,6 +18,7 @@ export default function IndustriesPage() {
 
   return (
     <>
+      <PageSchema path="/industries" />
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative -mt-20 overflow-hidden border-b border-border pt-20 sm:-mt-30 sm:pt-30">
         <div

@@ -23,6 +23,7 @@ import {
 import { homeFaqs, onboardingSteps } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { seoFor } from "@/lib/seo";
+import { PageSchema } from "@/components/site/json-ld";
 
 /**
  * The pricing page. Every plan, price, feature and add-on on it comes from
@@ -107,6 +108,7 @@ export default function PricingPage() {
     // The page marks itself so the shared header can take its look (the
     // `pricing:` variant).
     <div data-page="pricing" className="relative isolate pt-2 sm:pt-3">
+      <PageSchema path="/pricing" faqs={faqs} />
       <PricingPlans />
 
       {/* SIPLINK AI add-ons. Priced by usage, so each card ends in an ask

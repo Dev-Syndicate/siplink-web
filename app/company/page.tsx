@@ -34,12 +34,10 @@ import {
 } from "@/components/ui/card";
 import { companyMissionVision } from "@/lib/company";
 import { site } from "@/lib/site";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Company Hub — SipLink Communications",
-  description:
-    "Explore SipLink Communications: our story, differentiators, verified certifications, partner integrations, careers, and global operating facilities.",
-};
+export const metadata: Metadata = seoFor("/company");
 
 const companySections = [
   {
@@ -165,6 +163,7 @@ const officeLocations = [
 export default function CompanyHubPage() {
   return (
     <>
+      <PageSchema path="/company" />
       {/* 1. Hero Section */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-muted/20 to-background py-16 sm:py-24">
         <div

@@ -9,11 +9,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { networkServices, networkSolutionsHub } from "@/lib/internet";
 import { SiteLayersScene } from "@/components/site/scene-site-layers";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: networkSolutionsHub.title,
-  description: networkSolutionsHub.intro,
-};
+export const metadata: Metadata = seoFor("/internet/network-solutions");
 
 /**
  * The Network Solutions index. It is an index of six services rather than a
@@ -26,6 +25,7 @@ export default function NetworkSolutionsPage() {
 
   return (
     <>
+      <PageSchema path="/internet/network-solutions" />
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <div

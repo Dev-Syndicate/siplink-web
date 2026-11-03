@@ -62,7 +62,9 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="overflow-hidden text-sm data-open:animate-accordion-down data-closed:animate-accordion-up"
+      // Mounted while closed so answers are in the HTML for crawlers and AI tools.
+      forceMount
+      className="overflow-hidden text-sm data-open:animate-accordion-down data-closed:hidden"
       {...props}
     >
       <div

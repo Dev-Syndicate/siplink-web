@@ -21,18 +21,17 @@ import {
 } from "@/components/ui/card";
 import { careerDepartments, careerPillars } from "@/lib/company";
 import { offices, site } from "@/lib/site";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Careers — Build the Future of Business Communication | SipLink",
-  description:
-    "Join SipLink. Explore career opportunities in cloud communications, VoIP engineering, network operations, customer success, and enterprise sales.",
-};
+export const metadata: Metadata = seoFor("/company/careers");
 
 export default function CareersPage() {
   const operatingOffices = offices.filter((o) => o.kind === "operating");
 
   return (
     <>
+      <PageSchema path="/company/careers" />
       <CareersHero name={site.name} />
 
       {/* Why Work With SipLink */}

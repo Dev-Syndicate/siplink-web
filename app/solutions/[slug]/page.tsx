@@ -26,6 +26,7 @@ import {
   solutionRedirects,
 } from "@/lib/solutions";
 import { navHighlights } from "@/lib/site";
+import { seoFor, type SeoPath } from "@/lib/seo";
 
 export function generateStaticParams() {
   return solutionDetails.map(({ slug }) => ({ slug }));
@@ -39,10 +40,7 @@ export async function generateMetadata({
 
   if (!solution) return {};
 
-  return {
-    title: `${solution.title}, Solutions`,
-    description: solution.intro,
-  };
+  return seoFor(`/solutions/${slug}` as SeoPath);
 }
 
 export default async function SolutionDetailPage({

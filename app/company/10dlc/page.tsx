@@ -12,16 +12,15 @@ import {
   TenDlcRegistration,
   TenDlcSolution,
 } from "@/components/site/ten-dlc";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "A2P 10DLC Compliance Guide — Business SMS in the U.S. | SipLink",
-  description:
-    "A practical guide to compliant business SMS messaging in the United States: what A2P 10DLC is, who needs it, registration requirements, consent and opt-in, STOP and HELP, consent records, and industry considerations.",
-};
+export const metadata: Metadata = seoFor("/company/10dlc");
 
 export default function TenDlcPage() {
   return (
     <>
+      <PageSchema path="/company/10dlc" />
       <TenDlcHero />
       <TenDlcOverview />
       <TenDlcRegistration />

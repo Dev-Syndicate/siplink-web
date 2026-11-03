@@ -16,6 +16,7 @@ import {
 import { formatPostDate, getPost, getPosts } from "@/lib/blog";
 import { openGraphDefaults } from "@/lib/seo";
 import { site } from "@/lib/site";
+import { JsonLd } from "@/components/site/json-ld";
 
 export const revalidate = 600;
 
@@ -49,7 +50,7 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
       authors: [post.author],
       images: post.image
         ? [{ url: post.image.url, width: post.image.width, height: post.image.height, alt: post.image.alt }]
-        : undefined,
+        : openGraphDefaults.images,
     },
   };
 }
@@ -87,12 +88,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
-        }}
-      />
+      <JsonLd data={structuredData} />
       <article className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
         <Breadcrumb>
           <BreadcrumbList>

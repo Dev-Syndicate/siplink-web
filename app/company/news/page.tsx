@@ -16,12 +16,10 @@ import { VoiceAiScene, WhatsAppApiScene } from "@/components/site/news-scenes";
 import { TopicRouter, type RouterTopic } from "@/components/site/topic-router";
 import { Button } from "@/components/ui/button";
 import { announcement, site } from "@/lib/site";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "News & Insights — What's Happening at SipLink",
-  description:
-    "Explore business communication insights, cloud telephony trends, VoIP best practices, regulatory compliance updates, and company developments from SipLink.",
-};
+export const metadata: Metadata = seoFor("/company/news");
 
 /**
  * This routes each topic to the real SipLink pages that cover it in depth — the
@@ -66,6 +64,7 @@ const topics: RouterTopic[] = [
 export default function NewsPage() {
   return (
     <>
+      <PageSchema path="/company/news" />
       <NewsHero name={site.name} />
 
       {/* Featured Company Announcement */}

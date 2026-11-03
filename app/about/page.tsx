@@ -25,12 +25,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { companyMissionVision } from "@/lib/company";
 import { reliability, site } from "@/lib/site";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About SipLink — Powering Better Business Communication",
-  description:
-    "SipLink Communications builds business voice — cloud telephony, SIP trunking, and unified communications for growing organizations.",
-};
+export const metadata: Metadata = seoFor("/about");
 
 const offices = [
   {
@@ -78,6 +76,7 @@ const offices = [
 export default function AboutPage() {
   return (
     <>
+      <PageSchema path="/about" />
       {/* 1. Hero Section — Full-height blended image backdrop matching homepage hero */}
       <section className="relative overflow-hidden border-b border-border">
         {/* The photograph is the section's backdrop on the right half, blending into background via scrim */}

@@ -14,6 +14,9 @@ import {
   type InternetService,
 } from "@/lib/internet";
 import { cn } from "@/lib/utils";
+import { FaqSection } from "@/components/site/faq-section";
+import { pageFaqs } from "@/lib/page-faqs";
+import type { SeoPath } from "@/lib/seo";
 
 /**
  * The body every internet service page shares — the three connectivity
@@ -50,6 +53,12 @@ export function InternetServicePage({
    */
   afterHero?: ReactNode;
 }) {
+  const faqs =
+    pageFaqs[
+      (service.parent
+        ? `/internet/network-solutions/${service.slug}`
+        : `/internet/${service.slug}`) as SeoPath
+    ];
   const {
     slug,
     title,
@@ -325,6 +334,8 @@ export function InternetServicePage({
           </div>
         </section>
       ) : null}
+
+      {faqs ? <FaqSection faqs={faqs} /> : null}
 
       <InternetClose
         ctaLabel={cta.label}

@@ -20,16 +20,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { site } from "@/lib/site";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy — SipLink Communications",
-  description:
-    "Learn how SipLink Communications collects, protects, and handles customer data in compliance with telecom regulations and international data protection standards.",
-};
+export const metadata: Metadata = seoFor("/privacy");
 
 export default function PrivacyPolicyPage() {
   return (
     <div className="border-b border-border bg-background py-16 sm:py-24">
+      <PageSchema path="/privacy" />
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
         {/* Header */}
         <div className="border-b border-border pb-8">

@@ -21,6 +21,8 @@ import {
 import { SdWanHero, SdWanSections } from "@/components/site/page-sd-wan";
 import { VpnHero, VpnSections } from "@/components/site/page-vpn";
 import { getInternetService, networkServices } from "@/lib/internet";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor, type SeoPath } from "@/lib/seo";
 
 /**
  * Bespoke opening bands and extra sections, by service slug. A page listed
@@ -57,10 +59,7 @@ export async function generateMetadata({
 
   if (!service || !service.parent) return {};
 
-  return {
-    title: service.title,
-    description: service.intro,
-  };
+  return seoFor(`/internet/network-solutions/${slug}` as SeoPath);
 }
 
 export default async function NetworkServiceRoute({
@@ -77,10 +76,13 @@ export default async function NetworkServiceRoute({
   const Extra = EXTRAS[slug];
 
   return (
-    <InternetServicePage
-      service={service}
-      prelude={Prelude ? <Prelude /> : undefined}
-      extra={Extra ? <Extra /> : undefined}
-    />
+    <>
+      <PageSchema path={`/internet/network-solutions/${slug}` as SeoPath} />
+      <InternetServicePage
+        service={service}
+        prelude={Prelude ? <Prelude /> : undefined}
+        extra={Extra ? <Extra /> : undefined}
+      />
+    </>
   );
 }

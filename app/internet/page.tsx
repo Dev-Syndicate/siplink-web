@@ -31,6 +31,7 @@ import {
 } from "@/lib/internet";
 import { seoFor } from "@/lib/seo";
 import { DeliveryScene } from "@/components/site/scene-delivery";
+import { PageSchema } from "@/components/site/json-ld";
 
 export const metadata: Metadata = seoFor("/internet");
 
@@ -46,6 +47,7 @@ export const metadata: Metadata = seoFor("/internet");
 export default function InternetPage() {
   return (
     <>
+      <PageSchema path="/internet" faqs={internetFaqs} />
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <div

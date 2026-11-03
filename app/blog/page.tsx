@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatPostDate, getPosts } from "@/lib/blog";
 import { seoFor } from "@/lib/seo";
+import { PageSchema } from "@/components/site/json-ld";
 
 export const revalidate = 600;
 
@@ -15,6 +16,7 @@ export default async function BlogPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-10">
+      <PageSchema path="/blog" />
       <div className="max-w-3xl">
         <h1 className="text-4xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl">
           SipLink Blog

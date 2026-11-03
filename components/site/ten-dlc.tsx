@@ -54,6 +54,7 @@ import {
   type LifecycleStep,
 } from "@/lib/ten-dlc";
 import { cn } from "@/lib/utils";
+import { JsonLd } from "@/components/site/json-ld";
 
 /**
  * The A2P 10DLC compliance guide as a page.
@@ -967,13 +968,7 @@ export function TenDlcFaq() {
           </Reveal>
         </div>
 
-        <script
-          type="application/ld+json"
-          // `<` is escaped so a stray "</script>" in an answer cannot end the tag.
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData).replace(/</g, "<"),
-          }}
-        />
+        <JsonLd data={structuredData} />
       </section>
     </MotionConfig>
   );

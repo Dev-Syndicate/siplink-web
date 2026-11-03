@@ -10,6 +10,9 @@ import { PriScene } from "@/components/site/pri-scene";
 import { Button } from "@/components/ui/button";
 import { solutionDetails, type SolutionDetail } from "@/lib/solutions";
 import { cn } from "@/lib/utils";
+import { FaqSection } from "@/components/site/faq-section";
+import { pageFaqs } from "@/lib/page-faqs";
+import type { SeoPath } from "@/lib/seo";
 
 /**
  * The four Migration solutions.
@@ -423,6 +426,8 @@ export function MigrationSolution({ solution }: { solution: SolutionDetail }) {
           </dl>
         )}
       </section>
+
+      <FaqSection faqs={pageFaqs[`/solutions/${slug}` as SeoPath]} />
 
       {/* The result the source document closes each of these four with.
 

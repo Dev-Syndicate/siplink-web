@@ -15,12 +15,14 @@ import {
   platformProof,
 } from "@/lib/product-story";
 import { seoFor } from "@/lib/seo";
+import { PageSchema } from "@/components/site/json-ld";
 
 export const metadata: Metadata = seoFor("/products");
 
 export default function ProductsPage() {
   return (
     <>
+      <PageSchema path="/products" />
       {/* Hero — the thesis: a conversation, not a catalogue */}
       <section className="relative overflow-hidden border-b border-border">
         <div

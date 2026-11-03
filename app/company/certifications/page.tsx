@@ -27,12 +27,10 @@ import {
 } from "@/components/ui/card";
 import { verifiedCertifications } from "@/lib/company";
 import { site } from "@/lib/site";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Certifications & Compliance — Built on Trust | SipLink",
-  description:
-    "Explore SipLink's verified regulatory certifications and compliance standards including DoT, ISO/IEC 27001:2022, SOC 2 Type 2, HIPAA, and GDPR.",
-};
+export const metadata: Metadata = seoFor("/company/certifications");
 
 const securityPrinciples = [
   {
@@ -64,6 +62,7 @@ const securityPrinciples = [
 export default function CertificationsPage() {
   return (
     <>
+      <PageSchema path="/company/certifications" />
       <CertificationsHero name={site.name} />
 
       {/* Every call, under five frameworks — drawn as the path it actually

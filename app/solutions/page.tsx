@@ -18,12 +18,10 @@ import {
   ucaasBenefits,
 } from "@/lib/site";
 import { solutionDetails } from "@/lib/solutions";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Solutions",
-  description:
-    "Hosted PBX, SIP trunking, enhanced call centre and unified communications, cloud voice infrastructure for growing businesses.",
-};
+export const metadata: Metadata = seoFor("/solutions");
 
 /**
  * A port label per core solution, keyed to what each one actually is in the
@@ -46,6 +44,7 @@ const useCases = solutionDetails.filter(
 export default function SolutionsPage() {
   return (
     <>
+      <PageSchema path="/solutions" />
       {/* Hero — a stated thesis beside a live routing panel */}
       <section className="relative overflow-hidden border-b border-border">
         <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:px-10 lg:py-28">

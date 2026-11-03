@@ -6,7 +6,7 @@ import { VoiceProductPage, VOICE_PRODUCT_SLUGS } from "@/components/site/product
 import { CallingProductPage, CALLING_PRODUCT_SLUGS } from "@/components/site/products-calling-pages";
 import { PlatformProductPage, PLATFORM_PRODUCT_SLUGS } from "@/components/site/products-platform-pages";
 import { getProductDetail, productDetails } from "@/lib/products";
-import { seo, seoFor } from "@/lib/seo";
+import { seoFor, type SeoPath } from "@/lib/seo";
 
 export function generateStaticParams() {
   return productDetails.map(({ slug }) => ({ slug }));
@@ -18,9 +18,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = getProductDetail(slug);
   if (!product) return {};
-  const path = `/products/${slug}`;
-  if (path in seo) return seoFor(path as keyof typeof seo);
-  return { title: product.title, description: product.tagline };
+  return seoFor(`/products/${slug}` as SeoPath);
 }
 
 export default async function ProductDetailPage({

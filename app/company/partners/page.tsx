@@ -16,16 +16,15 @@ import {
 } from "@/components/ui/card";
 import { partnerCategories, partnerTracks } from "@/lib/company";
 import { site } from "@/lib/site";
+import { PageSchema } from "@/components/site/json-ld";
+import { seoFor } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Partners — Stronger Together | SipLink Ecosystem",
-  description:
-    "Join the SipLink partner ecosystem. Integrate business voice and cloud telephony with CRM, productivity, and contact center platforms.",
-};
+export const metadata: Metadata = seoFor("/company/partners");
 
 export default function PartnersPage() {
   return (
     <>
+      <PageSchema path="/company/partners" />
       <PartnersHero name={site.name} />
 
       {/* The wired-hub diagram used on the homepage, carrying the same
