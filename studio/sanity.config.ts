@@ -6,7 +6,7 @@ import { post } from "./schemaTypes/post";
 export default defineConfig({
   name: "default",
   title: "SipLink Blog",
-  projectId: "0o8smzes",
+  projectId: "zguqjm6f",
   dataset: "production",
   plugins: [structureTool()],
   schema: { types: [post] },

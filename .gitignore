@@ -50,3 +50,4 @@ next-env.d.ts
 /studio/dist
 /studio/.sanity
 
+/studio/migration/old-images

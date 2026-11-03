@@ -1,6 +1,6 @@
 import type { PortableTextBlock } from "@portabletext/react";
 
-const API = "https://0o8smzes.apicdn.sanity.io/v2025-02-19/data/query/production";
+const API = "https://zguqjm6f.apicdn.sanity.io/v2025-02-19/data/query/production";
 
 /** How long a published change can take to reach the site, in seconds. */
 const REFRESH_SECONDS = 600;
