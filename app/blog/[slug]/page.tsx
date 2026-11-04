@@ -7,7 +7,6 @@ import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
 import { BlogReadingProgress, BlogShare, BlogToc } from "@/components/site/blog-article-tools";
 import { BlogBody } from "@/components/site/blog-body";
 import { BlogCard, CategoryBadge } from "@/components/site/blog-card";
-import { BlogNewsletterForm } from "@/components/site/blog-newsletter";
 import { ClosingCta } from "@/components/site/closing-cta";
 import {
   Breadcrumb,
@@ -230,14 +229,6 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
                     </ul>
                   </div>
                 ) : null}
-
-                <div className="rounded-2xl border border-primary/15 bg-accent/50 p-5">
-                  <p className="font-semibold">Stay ahead of what&rsquo;s next.</p>
-                  <p className="mt-1.5 mb-4 text-sm text-pretty text-muted-foreground">
-                    The latest on business communication and VoIP, straight to your inbox.
-                  </p>
-                  <BlogNewsletterForm tone="quiet" id="sidebar-newsletter" />
-                </div>
               </div>
             </aside>
           </div>
