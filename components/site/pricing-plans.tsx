@@ -340,10 +340,10 @@ function PlanCard({
           size="lg"
           variant={featured ? "default" : "outline"}
           className={cn(
-            "pricing-sheen group/cta relative mt-4 h-11 w-full overflow-hidden rounded-full transition-all duration-300 hover:-translate-y-0.5",
+            "pricing-sheen group/cta relative mt-4 h-11 w-full overflow-hidden rounded-full transition-all duration-300",
             featured
-              ? "bg-gradient-to-r from-brand-to to-brand-from shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
-              : "border-primary/30 bg-card text-primary hover:border-transparent hover:bg-gradient-to-r hover:from-brand-to hover:to-brand-from hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/30",
+              ? "border-0 bg-gradient-to-r from-brand-to to-brand-from shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
+              : "border-primary/30 bg-card text-primary hover:border-0 hover:bg-gradient-to-r hover:from-brand-to hover:to-brand-from hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/30",
           )}
         >
           <Link href="/contact">
@@ -548,7 +548,7 @@ function PaygPlanCard() {
                 <Button
                   asChild
                   size="lg"
-                  className="pricing-sheen group/cta relative h-11 w-full overflow-hidden rounded-full bg-gradient-to-r from-brand-to to-brand-from px-7 shadow-lg shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/40 sm:w-auto"
+                  className="pricing-sheen group/cta relative h-11 w-full overflow-hidden rounded-full border-0 bg-gradient-to-r from-brand-to to-brand-from px-7 shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 sm:w-auto"
                 >
                   <Link href="/contact">
                     Talk to Sales

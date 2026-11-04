@@ -148,7 +148,7 @@ export function PricingHero({
               <Button
                 asChild
                 size="lg"
-                className="pricing-sheen group/cta relative h-13 overflow-hidden rounded-full bg-gradient-to-r from-brand-to to-brand-from px-8 text-base shadow-xl shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-primary/40"
+                className="pricing-sheen group/cta relative h-13 overflow-hidden rounded-full border-0 bg-gradient-to-r from-brand-to to-brand-from px-8 text-base shadow-xl shadow-primary/30 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/40"
               >
                 <Link href="#plans">
                   View plans

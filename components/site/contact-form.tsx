@@ -372,7 +372,7 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
         type="submit"
         disabled={pending}
         aria-disabled={pending}
-        className="pricing-sheen group/send relative mt-5 h-13 w-full overflow-hidden rounded-full bg-gradient-to-r from-brand-to to-brand-from text-base shadow-lg shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/40 focus-visible:ring-4 focus-visible:ring-primary/30 disabled:translate-y-0 disabled:opacity-80"
+        className="pricing-sheen group/send relative mt-5 h-13 w-full overflow-hidden rounded-full border-0 bg-gradient-to-r from-brand-to to-brand-from text-base shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 focus-visible:ring-4 focus-visible:ring-primary/30 disabled:translate-y-0 disabled:opacity-80"
       >
         {pending ? (
           <LoaderCircle className="size-5! animate-spin" aria-hidden />
