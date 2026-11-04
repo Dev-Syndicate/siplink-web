@@ -31,7 +31,8 @@ export const CATEGORY_ICONS: Record<BlogCategory, LucideIcon> = {
 };
 
 /** The category, in the one form it takes on every card. */
-export function CategoryBadge({ category, className }: { category: BlogCategory; className?: string }) {
+export function CategoryBadge({ category, className }: { category: BlogCategory | null; className?: string }) {
+  if (!category) return null;
   const Icon = CATEGORY_ICONS[category];
   return (
     <Badge variant="secondary" className={cn("gap-1 rounded-md bg-accent font-medium text-accent-foreground", className)}>
@@ -84,20 +85,17 @@ export function trackSpotlight(event: PointerEvent<HTMLElement>) {
  * glowing border, and on hover it lifts, the image zooms under a passing sweep
  * of light, and a light follows the pointer. `index` staggers the border lights
  * so neighbours never run in step. `compact` is the plain side-by-side form for
- * the article sidebar; `tall` lets the image take any spare height when a card
- * is stretched beside the lead article.
+ * the article sidebar.
  */
 export function BlogCard({
   post,
   index = 0,
   compact = false,
-  tall = false,
   headingLevel: Heading = "h3",
 }: {
   post: BlogPostSummary;
   index?: number;
   compact?: boolean;
-  tall?: boolean;
   headingLevel?: "h2" | "h3";
 }) {
   if (compact) {
@@ -125,7 +123,7 @@ export function BlogCard({
     );
   }
 
-  const Icon = CATEGORY_ICONS[post.category];
+  const Icon = post.category && CATEGORY_ICONS[post.category];
 
   return (
     <div
@@ -152,7 +150,7 @@ export function BlogCard({
             }}
           />
 
-          <div className={cn("relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-accent", tall && "lg:aspect-auto lg:flex-1")}>
+          <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-accent">
             <Image
               src={post.cover.url}
               alt={post.cover.alt}
@@ -166,10 +164,12 @@ export function BlogCard({
               aria-hidden
               className="absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-card/45 to-transparent transition-transform duration-1000 ease-out group-hover/post:translate-x-[400%]"
             />
-            <Badge className="absolute top-3 left-3 gap-1 rounded-full border border-card/60 bg-card/85 font-medium text-foreground shadow-sm backdrop-blur-md">
-              <Icon className="text-primary" aria-hidden />
-              {post.category}
-            </Badge>
+            {Icon ? (
+              <Badge className="absolute top-3 left-3 gap-1 rounded-full border border-card/60 bg-card/85 font-medium text-foreground shadow-sm backdrop-blur-md">
+                <Icon className="text-primary" aria-hidden />
+                {post.category}
+              </Badge>
+            ) : null}
             <span
               aria-hidden
               className="absolute top-3 right-3 grid size-9 scale-0 place-items-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/40 transition-transform duration-300 ease-out group-hover/post:scale-100 group-hover/post:rotate-12"
@@ -178,7 +178,7 @@ export function BlogCard({
             </span>
           </div>
 
-          <div className={cn("flex min-w-0 flex-col p-5", !tall && "flex-1")}>
+          <div className="flex min-w-0 flex-1 flex-col p-5">
             <Heading className="line-clamp-2 text-lg font-semibold tracking-tight text-balance transition-colors duration-300 group-hover/post:text-primary">
               {post.title}
             </Heading>

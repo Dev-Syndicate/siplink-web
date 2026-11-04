@@ -59,7 +59,7 @@ export const post = defineType({
     defineField({
       name: "category",
       title: "Category",
-      description: "Where this post is filed on the blog page. Left empty, the site picks one from the title and summary.",
+      description: "Shown as a label on this post. Left empty, no category is shown.",
       type: "string",
       group: "content",
       // Keep in step with blogCategories in lib/blog.ts.

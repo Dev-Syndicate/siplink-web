@@ -4,14 +4,13 @@ import { useEffect, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { MotionConfig, motion, useReducedMotion } from "motion/react";
-import { ArrowDown, LayoutGrid, Sparkles } from "lucide-react";
+import { ArrowDown, Sparkles } from "lucide-react";
 
 import { CategoryBadge, PostMeta } from "@/components/site/blog-card";
 import { PricingAtmosphere } from "@/components/site/pricing-atmosphere";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
-import { NumberTicker } from "@/components/ui/number-ticker";
-import { blogCategories, formatPostDate, type BlogPostSummary } from "@/lib/blog";
+import { formatPostDate, type BlogPostSummary } from "@/lib/blog";
 import { cn } from "@/lib/utils";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -28,23 +27,13 @@ const SEATS = [
   { x: "-13%", y: -12, rotate: -9, scale: 0.88, opacity: 0.65, zIndex: 1 },
 ];
 
-/** Bar heights for the little voice waveform, as a share of its height. */
-const WAVE = [0.4, 0.7, 1, 0.55, 0.85, 0.45, 0.75, 0.35, 0.9, 0.5];
-
 /**
  * The top of the blog: the masthead on the left over the pricing page's moving
  * rings and lights, and on the right a deck of the newest articles that turns
- * over by itself. Everything shown is real: the deck, the date and the counts
- * all come from the posts. Motion stops under reduced motion.
+ * over by itself. Everything shown is real: the deck and the date come from
+ * the posts. Motion stops under reduced motion.
  */
 export function BlogHero({ posts }: { posts: BlogPostSummary[] }) {
-  const minutes = posts.reduce((total, post) => total + post.minutes, 0);
-  const stats = [
-    { value: posts.length, label: posts.length === 1 ? "guide" : "guides" },
-    { value: blogCategories.length, label: "topics" },
-    { value: minutes, label: "minutes of reading" },
-  ];
-
   return (
     <MotionConfig reducedMotion="user">
       <section className="relative isolate overflow-hidden">
@@ -96,45 +85,14 @@ export function BlogHero({ posts }: { posts: BlogPostSummary[] }) {
               <Button
                 asChild
                 size="lg"
-                className="pricing-sheen group/cta relative h-12 overflow-hidden rounded-full bg-gradient-to-r from-brand-to to-brand-from px-7 shadow-lg shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/40"
+                className="pricing-sheen group/cta relative h-12 overflow-hidden rounded-full border-0 bg-gradient-to-r from-brand-to to-brand-from px-7 shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40"
               >
                 <Link href="#articles">
                   Start reading
                   <ArrowDown className="transition-transform duration-300 group-hover/cta:translate-y-0.5" aria-hidden />
                 </Link>
               </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="group/cta h-12 rounded-full border-primary/20 bg-card/80 px-7 backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent hover:text-primary"
-              >
-                <Link href="#topics">
-                  Browse topics
-                  <LayoutGrid className="transition-transform duration-300 group-hover/cta:rotate-12" aria-hidden />
-                </Link>
-              </Button>
             </motion.div>
-
-            {/* The figures count up; screen readers get them once, whole. */}
-            <motion.dl
-              variants={rise}
-              transition={{ duration: 0.7, ease }}
-              className="mx-auto mt-10 grid max-w-md grid-cols-3 gap-3 lg:mx-0"
-            >
-              {stats.map(({ value, label }) => (
-                <div
-                  key={label}
-                  className="rounded-2xl border border-primary/10 bg-card/70 px-3 py-3 text-left shadow-sm shadow-primary/5 backdrop-blur"
-                >
-                  <dd className="text-2xl font-semibold tracking-tight sm:text-3xl">
-                    <span className="sr-only">{value}</span>
-                    <NumberTicker aria-hidden value={value} delay={0.5} className="tracking-tight" />
-                  </dd>
-                  <dt className="mt-0.5 text-xs leading-tight text-muted-foreground">{label}</dt>
-                </div>
-              ))}
-            </motion.dl>
           </motion.div>
 
           {posts.length > 0 ? <ArticleDeck posts={posts.slice(0, 3)} /> : null}
@@ -247,25 +205,7 @@ function ArticleDeck({ posts }: { posts: BlogPostSummary[] }) {
         </div>
       ) : null}
 
-      {/* Glass notes floating by the deck, on roomier screens. */}
-      <Note className="-top-1 -left-2 xl:-left-10" delay={0.8} bob={{ duration: 6, y: -10 }}>
-        <span aria-hidden className="flex h-7 w-24 items-center gap-0.5">
-          {WAVE.map((height, i) => (
-            <span
-              key={i}
-              className="pricing-wave flex-1 rounded-full bg-gradient-to-t from-brand-to to-brand-from"
-              style={
-                {
-                  height: `${height * 100}%`,
-                  "--wave-delay": `${-i * 0.14}s`,
-                  "--wave-duration": `${0.9 + (i % 3) * 0.25}s`,
-                } as CSSProperties
-              }
-            />
-          ))}
-        </span>
-        <p className="mt-1.5 text-xs font-medium">Voice, explained</p>
-      </Note>
+      {/* A glass note floating by the deck, on roomier screens. */}
       <Note className="right-0 bottom-20 xl:-right-8" delay={1} bob={{ duration: 7, y: 10, delay: -2 }}>
         <span className="flex items-center gap-2.5">
           <span className="relative grid size-8 place-items-center">

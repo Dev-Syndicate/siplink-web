@@ -16,14 +16,14 @@ export const metadata: Metadata = seoFor("/blog");
 
 /**
  * The blog: the hero with its deck of articles, a band of topics, then the
- * articles and topics (see BlogExplorer), and the site's closing ask. Everything
+ * articles (see BlogExplorer), and the site's closing ask. Everything
  * comes from Sanity through lib/blog.ts.
  */
 export default async function BlogPage() {
   const posts = await getPosts();
 
   return (
-    <div className="relative isolate overflow-hidden">
+    <div className="relative isolate overflow-clip">
       <PageSchema path="/blog" />
 
       <BlogHero posts={posts} />

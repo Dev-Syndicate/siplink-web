@@ -7,7 +7,7 @@ const REFRESH_SECONDS = 600;
 
 export type BlogImage = { url: string; alt: string; width: number; height: number };
 
-/** The filters on the blog page. Keep in step with studio/schemaTypes/post.ts. */
+/** The categories an editor can pick. Keep in step with studio/schemaTypes/post.ts. */
 export const blogCategories = [
   "VoIP",
   "SIP Trunking",
@@ -31,14 +31,14 @@ export type BlogPostSummary = {
   image: BlogImage | null;
   /** The image shown on the site: the uploaded one, or a fallback. */
   cover: BlogImage;
-  category: BlogCategory;
+  /** Only what an editor set in Sanity; never guessed. */
+  category: BlogCategory | null;
   /** Estimated reading time, from the length of the body. */
   minutes: number;
 };
 
-/** A summary as the API returns it, before its category and time are settled. */
-type RawSummary = Omit<BlogPostSummary, "category" | "cover" | "minutes"> & {
-  category: BlogCategory | null;
+/** A summary as the API returns it, before its cover and time are settled. */
+type RawSummary = Omit<BlogPostSummary, "cover" | "minutes"> & {
   characters: number | null;
 };
 
@@ -61,20 +61,6 @@ const SUMMARY = `
   category,
   "characters": length(pt::text(body)),
   "image": select(defined(mainImage.asset) => mainImage${IMAGE})`;
-
-/**
- * Posts written before the Category field existed have none, so they are
- * sorted by what they talk about until an editor picks one. First match wins:
- * the narrow topics come before the broad ones.
- */
-const CATEGORY_HINTS: [RegExp, BlogCategory][] = [
-  [/\b(cyber|security|encrypt|fraud|hipaa)/i, "Cybersecurity"],
-  [/\bsip\b|trunk/i, "SIP Trunking"],
-  [/\bpbx\b|auto.?attendant|\bivr\b/i, "Cloud PBX"],
-  [/call cent|contact cent|dialer/i, "Call Center Solutions"],
-  [/\bvoip\b|ip-enabled|voice over/i, "VoIP"],
-  [/\b5g\b|trend|future of/i, "Industry Insights"],
-];
 
 /** For a post published without an image, so no card is left empty. */
 const FALLBACK_COVERS: BlogImage[] = [
@@ -99,14 +85,9 @@ function fallbackCover(slug: string): BlogImage {
 }
 
 function settle({ characters, ...post }: RawSummary): BlogPostSummary {
-  const text = `${post.title} ${post.excerpt}`;
   return {
     ...post,
     cover: post.image ?? fallbackCover(post.slug),
-    category:
-      post.category ??
-      CATEGORY_HINTS.find(([hint]) => hint.test(text))?.[1] ??
-      "Business Communication",
     // About 5 characters a word, 200 words a minute.
     minutes: Math.max(1, Math.round((characters ?? 0) / 1000)),
   };
