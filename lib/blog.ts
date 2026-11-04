@@ -7,6 +7,19 @@ const REFRESH_SECONDS = 600;
 
 export type BlogImage = { url: string; alt: string; width: number; height: number };
 
+/** The filters on the blog page. Keep in step with studio/schemaTypes/post.ts. */
+export const blogCategories = [
+  "VoIP",
+  "SIP Trunking",
+  "Cloud PBX",
+  "Business Communication",
+  "Call Center Solutions",
+  "Cybersecurity",
+  "Industry Insights",
+] as const;
+
+export type BlogCategory = (typeof blogCategories)[number];
+
 export type BlogPostSummary = {
   title: string;
   slug: string;
@@ -14,7 +27,19 @@ export type BlogPostSummary = {
   publishedAt: string;
   updatedAt: string;
   noIndex: boolean | null;
+  /** The image uploaded in Sanity; share cards and structured data use it. */
   image: BlogImage | null;
+  /** The image shown on the site. See COVERS. */
+  cover: BlogImage;
+  category: BlogCategory;
+  /** Estimated reading time, from the length of the body. */
+  minutes: number;
+};
+
+/** A summary as the API returns it, before its category and time are settled. */
+type RawSummary = Omit<BlogPostSummary, "category" | "cover" | "minutes"> & {
+  category: BlogCategory | null;
+  characters: number | null;
 };
 
 export type BlogPost = BlogPostSummary & {
@@ -33,7 +58,63 @@ const SUMMARY = `
   publishedAt,
   "updatedAt": coalesce(updatedAt, publishedAt),
   noIndex,
+  category,
+  "characters": length(pt::text(body)),
   "image": select(defined(mainImage.asset) => mainImage${IMAGE})`;
+
+/**
+ * Posts written before the Category field existed have none, so they are
+ * sorted by what they talk about until an editor picks one. First match wins:
+ * the narrow topics come before the broad ones.
+ */
+const CATEGORY_HINTS: [RegExp, BlogCategory][] = [
+  [/\b(cyber|security|encrypt|fraud|hipaa)/i, "Cybersecurity"],
+  [/\bsip\b|trunk/i, "SIP Trunking"],
+  [/\bpbx\b|auto.?attendant|\bivr\b/i, "Cloud PBX"],
+  [/call cent|contact cent|dialer/i, "Call Center Solutions"],
+  [/\bvoip\b|ip-enabled|voice over/i, "VoIP"],
+  [/\b5g\b|trend|future of/i, "Industry Insights"],
+];
+
+/**
+ * TEMPORARY: local covers in place of the Sanity images, which next/image
+ * refuses on networks where cdn.sanity.io resolves to a NAT64 address ("resolved
+ * to private IP"). To go back, return post.image from coverFor.
+ */
+const COVERS: BlogImage[] = [
+  {
+    url: "/images/blog/blog_1.jpg",
+    alt: "Hands typing on a laptop on a wooden desk, beside glasses and an open notebook",
+    width: 910,
+    height: 360,
+  },
+  {
+    url: "/images/blog/blog_2.jpg",
+    alt: "A laptop showing a blog page on a desk with notebooks, pens and a mug",
+    width: 192,
+    height: 128,
+  },
+];
+
+/** Chosen from the slug, so a post has the same cover on every page. */
+function coverFor(slug: string): BlogImage {
+  const sum = [...slug].reduce((total, character) => total + character.charCodeAt(0), 0);
+  return COVERS[sum % COVERS.length];
+}
+
+function settle({ characters, ...post }: RawSummary): BlogPostSummary {
+  const text = `${post.title} ${post.excerpt}`;
+  return {
+    ...post,
+    cover: coverFor(post.slug),
+    category:
+      post.category ??
+      CATEGORY_HINTS.find(([hint]) => hint.test(text))?.[1] ??
+      "Business Communication",
+    // About 5 characters a word, 200 words a minute.
+    minutes: Math.max(1, Math.round((characters ?? 0) / 1000)),
+  };
+}
 
 /** Published posts only: the API hides drafts from requests without a token. */
 async function query<T>(groq: string, params: Record<string, string> = {}): Promise<T> {
@@ -48,14 +129,15 @@ async function query<T>(groq: string, params: Record<string, string> = {}): Prom
   return (await response.json()).result;
 }
 
-export function getPosts() {
-  return query<BlogPostSummary[]>(
+export async function getPosts() {
+  const posts = await query<RawSummary[]>(
     `*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {${SUMMARY}}`,
   );
+  return posts.map(settle);
 }
 
-export function getPost(slug: string) {
-  return query<BlogPost | null>(
+export async function getPost(slug: string): Promise<BlogPost | null> {
+  const post = await query<(RawSummary & Omit<BlogPost, keyof BlogPostSummary>) | null>(
     `*[_type == "post" && slug.current == $slug][0] {
       ${SUMMARY},
       author,
@@ -65,6 +147,32 @@ export function getPost(slug: string) {
     }`,
     { slug },
   );
+  if (!post) return null;
+  const { author, seoTitle, seoDescription, body } = post;
+  return { ...settle(post), author, seoTitle, seoDescription, body };
+}
+
+export type BlogHeading = { key: string; id: string; text: string; level: 2 | 3 };
+
+/** The post's h2s and h3s with stable anchors, for the table of contents. */
+export function blogHeadings(body: PortableTextBlock[]): BlogHeading[] {
+  const used = new Map<string, number>();
+  const headings: BlogHeading[] = [];
+  for (const block of body) {
+    if (block._type !== "block" || (block.style !== "h2" && block.style !== "h3")) continue;
+    const text = (block.children as { text?: string }[]).map((child) => child.text ?? "").join("").trim();
+    if (!text) continue;
+    const base = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
+    const seen = used.get(base) ?? 0;
+    used.set(base, seen + 1);
+    headings.push({
+      key: block._key ?? base,
+      id: seen ? `${base}-${seen + 1}` : base,
+      text,
+      level: block.style === "h2" ? 2 : 3,
+    });
+  }
+  return headings;
 }
 
 export function formatPostDate(date: string) {

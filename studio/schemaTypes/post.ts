@@ -57,6 +57,25 @@ export const post = defineType({
       validation: (rule) => rule.required().assetRequired().custom(checkImage),
     }),
     defineField({
+      name: "category",
+      title: "Category",
+      description: "Where this post is filed on the blog page. Left empty, the site picks one from the title and summary.",
+      type: "string",
+      group: "content",
+      // Keep in step with blogCategories in lib/blog.ts.
+      options: {
+        list: [
+          "VoIP",
+          "SIP Trunking",
+          "Cloud PBX",
+          "Business Communication",
+          "Call Center Solutions",
+          "Cybersecurity",
+          "Industry Insights",
+        ],
+      },
+    }),
+    defineField({
       name: "author",
       title: "Author",
       type: "string",

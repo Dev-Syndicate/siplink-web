@@ -1,65 +1,70 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import { Radio } from "lucide-react";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatPostDate, getPosts } from "@/lib/blog";
-import { seoFor } from "@/lib/seo";
+import { BlogExplorer } from "@/components/site/blog-explorer";
+import { BlogHero } from "@/components/site/blog-hero";
+import { CtaPanel } from "@/components/site/cta-panel";
 import { PageSchema } from "@/components/site/json-ld";
+import { RevealGroup } from "@/components/site/reveal-group";
+import { Marquee } from "@/components/ui/marquee";
+import { blogCategories, getPosts } from "@/lib/blog";
+import { seoFor } from "@/lib/seo";
 
 export const revalidate = 600;
 
 export const metadata: Metadata = seoFor("/blog");
 
+/**
+ * The blog: the hero with its deck of articles, a band of topics, then the
+ * articles and topics (see BlogExplorer), and the site's closing ask. Everything
+ * comes from Sanity through lib/blog.ts.
+ */
 export default async function BlogPage() {
   const posts = await getPosts();
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-10">
+    <div className="relative isolate overflow-hidden">
       <PageSchema path="/blog" />
-      <div className="max-w-3xl">
-        <h1 className="text-4xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl">
-          SipLink Blog
-        </h1>
-        <p className="mt-4 text-lg text-pretty text-muted-foreground">
-          Practical guides to business calling, internet and cloud communication.
-        </p>
+
+      <BlogHero posts={posts} />
+
+      {/* A band of what the blog covers, running under the hero. */}
+      <div aria-hidden className="relative overflow-hidden bg-gradient-to-r from-brand-to via-primary to-brand-from py-1 text-primary-foreground">
+        <span className="pricing-dots pointer-events-none absolute inset-0 text-primary-foreground/20" />
+        <Marquee pauseOnHover repeat={6} className="[--duration:45s] [--gap:2.5rem]">
+          {blogCategories.map((name) => (
+            <span key={name} className="inline-flex items-center gap-2.5 text-sm font-medium whitespace-nowrap">
+              <Radio className="size-4 text-primary-foreground/80" />
+              {name}
+            </span>
+          ))}
+        </Marquee>
       </div>
 
-      {posts.length === 0 ? (
-        <p className="mt-12 text-muted-foreground">New articles are on the way. Please check back soon.</p>
-      ) : (
-        <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post, index) => (
-            <li key={post.slug}>
-              <Link href={`/blog/${post.slug}`} className="group block h-full rounded-xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
-                <Card className="h-full">
-                  {post.image && (
-                    <Image
-                      src={post.image.url}
-                      alt={post.image.alt}
-                      width={post.image.width}
-                      height={post.image.height}
-                      sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
-                      priority={index === 0}
-                      className="aspect-video w-full object-cover"
-                    />
-                  )}
-                  <CardHeader>
-                    <CardTitle className="text-lg font-semibold group-hover:text-primary">
-                      <h2>{post.title}</h2>
-                    </CardTitle>
-                    <CardDescription>
-                      <time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt)}</time>
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-muted-foreground">{post.excerpt}</CardContent>
-                </Card>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="relative mx-auto max-w-7xl px-5 pt-16 pb-20 sm:px-8 lg:px-10 lg:pt-24">
+        {/* Soft lights drifting down the page behind the articles. */}
+        <span aria-hidden className="pricing-drift pointer-events-none absolute top-20 -left-32 -z-10 size-[30rem] rounded-full bg-brand-from/15 blur-3xl" />
+        <span aria-hidden className="pricing-drift pointer-events-none absolute top-[40%] -right-40 -z-10 size-[34rem] rounded-full bg-primary/10 blur-3xl [--drift-delay:-8s]" />
+
+        {posts.length === 0 ? (
+          <p className="rounded-3xl border border-dashed border-primary/25 bg-card/70 px-6 py-16 text-center text-muted-foreground">
+            New articles are on the way. Please check back soon.
+          </p>
+        ) : (
+          <BlogExplorer posts={posts} />
+        )}
+
+        <RevealGroup className="mt-20 lg:mt-28">
+          <div className="reveal-item">
+            <CtaPanel
+              heading="Ready to Upgrade Your Business Communications?"
+              body="Replace outdated PBX systems, improve call handling and give your team one reliable communications platform."
+              action={{ label: "Book a Free Consultation", href: "/contact" }}
+              note="No obligation · Free consultation · Migration guidance included"
+            />
+          </div>
+        </RevealGroup>
+      </div>
     </div>
   );
 }
