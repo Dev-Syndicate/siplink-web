@@ -29,7 +29,7 @@ export type BlogPostSummary = {
   noIndex: boolean | null;
   /** The image uploaded in Sanity; share cards and structured data use it. */
   image: BlogImage | null;
-  /** The image shown on the site. See COVERS. */
+  /** The image shown on the site: the uploaded one, or a fallback. */
   cover: BlogImage;
   category: BlogCategory;
   /** Estimated reading time, from the length of the body. */
@@ -76,12 +76,8 @@ const CATEGORY_HINTS: [RegExp, BlogCategory][] = [
   [/\b5g\b|trend|future of/i, "Industry Insights"],
 ];
 
-/**
- * TEMPORARY: local covers in place of the Sanity images, which next/image
- * refuses on networks where cdn.sanity.io resolves to a NAT64 address ("resolved
- * to private IP"). To go back, return post.image from coverFor.
- */
-const COVERS: BlogImage[] = [
+/** For a post published without an image, so no card is left empty. */
+const FALLBACK_COVERS: BlogImage[] = [
   {
     url: "/images/blog/blog_1.jpg",
     alt: "Hands typing on a laptop on a wooden desk, beside glasses and an open notebook",
@@ -97,16 +93,16 @@ const COVERS: BlogImage[] = [
 ];
 
 /** Chosen from the slug, so a post has the same cover on every page. */
-function coverFor(slug: string): BlogImage {
+function fallbackCover(slug: string): BlogImage {
   const sum = [...slug].reduce((total, character) => total + character.charCodeAt(0), 0);
-  return COVERS[sum % COVERS.length];
+  return FALLBACK_COVERS[sum % FALLBACK_COVERS.length];
 }
 
 function settle({ characters, ...post }: RawSummary): BlogPostSummary {
   const text = `${post.title} ${post.excerpt}`;
   return {
     ...post,
-    cover: coverFor(post.slug),
+    cover: post.image ?? fallbackCover(post.slug),
     category:
       post.category ??
       CATEGORY_HINTS.find(([hint]) => hint.test(text))?.[1] ??

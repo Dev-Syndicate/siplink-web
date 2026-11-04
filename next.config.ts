@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
     // Keep defaults for ordinary images, 90 for UI mocks, and 95 for the
     // large product artwork so glass edges and fine ridges retain detail.
     qualities: [75, 90, 95],
+    // Some networks resolve cdn.sanity.io to a NAT64 address, which the
+    // optimizer refuses as private ("resolved to private IP"). Local only.
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === "development",
     remotePatterns: [
       // YouTube thumbnail for the explainer video facade.
       { protocol: "https", hostname: "i.ytimg.com" },
