@@ -58,9 +58,11 @@ export async function submitEnquiry(
     email: text(data, "email"),
     company: text(data, "company"),
     phone: text(data, "phone"),
+    country: text(data, "country"),
+    users: text(data, "users"),
     services: data.getAll("services").filter((s): s is string => typeof s === "string"),
-    lines: text(data, "lines"),
     message: text(data, "message"),
+    consent: text(data, "consent") === "yes",
   };
 
   const errors = validateEnquiry(fields);

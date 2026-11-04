@@ -6,30 +6,49 @@
 
 /** What visitors can ask about, from SipLink's own product lines. */
 export const enquiryServices = [
-  "Business phone system",
-  "SIP trunking",
-  "Call center",
-  "Numbers & porting",
+  "Business CloudPBX",
+  "USA Unlimited Calling",
+  "SIP Trunking",
+  "International Numbers & Porting",
+  "Contact Center Solutions",
   "AI Voice Assistant",
   "Voice, SMS & WhatsApp APIs",
-  "Business internet",
+  "Microsoft Teams Integration",
+  "Business Internet",
+  "Other",
+] as const;
+
+/** Team size. Published plans start at 10 lines, but smaller teams still ask. */
+export const enquiryUserCounts = [
+  "Under 10 users",
+  "10–25 users",
+  "26–50 users",
+  "51–100 users",
+  "More than 100 users",
   "Not sure yet",
 ] as const;
 
-/** Team size, in lines; published plans start at 10. */
-export const enquiryLineCounts = [
-  "10–25 lines",
-  "26–50 lines",
-  "51–100 lines",
-  "More than 100 lines",
-  "Not sure yet",
+/** Where SipLink's customers mostly are, then a way out for everyone else. */
+export const enquiryCountries = [
+  "India",
+  "United States",
+  "Canada",
+  "United Kingdom",
+  "United Arab Emirates",
+  "Saudi Arabia",
+  "Qatar",
+  "Singapore",
+  "Malaysia",
+  "Australia",
+  "Germany",
+  "South Africa",
+  "Other",
 ] as const;
 
 export const enquiryLimits = {
   name: 100,
   company: 120,
   phone: 30,
-  messageMin: 10,
   message: 2000,
 } as const;
 
@@ -38,9 +57,11 @@ export type EnquiryFields = {
   email: string;
   company: string;
   phone: string;
+  country: string;
+  users: string;
   services: string[];
-  lines: string;
   message: string;
+  consent: boolean;
 };
 
 export type EnquiryErrors = Partial<Record<keyof EnquiryFields, string>>;
@@ -48,13 +69,15 @@ export type EnquiryErrors = Partial<Record<keyof EnquiryFields, string>>;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE = /^\+?[\d\s().-]{6,}$/;
 
+const oneOf = (options: readonly string[], value: string) => options.includes(value);
+
 /** Every problem with an enquiry, by field; empty when it is fine to send. */
 export function validateEnquiry(fields: EnquiryFields): EnquiryErrors {
   const errors: EnquiryErrors = {};
   const name = fields.name.trim();
   const email = fields.email.trim();
+  const company = fields.company.trim();
   const phone = fields.phone.trim();
-  const message = fields.message.trim();
 
   if (!name) errors.name = "Please tell us your name.";
   else if (name.length > enquiryLimits.name) errors.name = "That name is a little long.";
@@ -62,44 +85,39 @@ export function validateEnquiry(fields: EnquiryFields): EnquiryErrors {
   if (!email) errors.email = "We need an email address to reply to.";
   else if (!EMAIL.test(email)) errors.email = "That email address doesn't look right.";
 
-  if (fields.company.trim().length > enquiryLimits.company)
-    errors.company = "That company name is a little long.";
+  if (!company) errors.company = "Please tell us your company's name.";
+  else if (company.length > enquiryLimits.company) errors.company = "That company name is a little long.";
 
-  if (phone && (!PHONE.test(phone) || phone.length > enquiryLimits.phone))
+  if (!phone) errors.phone = "Please add a number we can reach you on.";
+  else if (!PHONE.test(phone) || phone.length > enquiryLimits.phone)
     errors.phone = "That phone number doesn't look right.";
 
-  const services = fields.services.filter((s) =>
-    (enquiryServices as readonly string[]).includes(s),
-  );
-  if (services.length === 0 || services.length !== fields.services.length)
-    errors.services = "Pick at least one thing you need.";
+  if (!oneOf(enquiryCountries, fields.country)) errors.country = "Please choose your country.";
 
-  if (fields.lines && !(enquiryLineCounts as readonly string[]).includes(fields.lines))
-    errors.lines = "Please pick one of the options.";
+  if (!oneOf(enquiryUserCounts, fields.users)) errors.users = "Please choose a team size.";
 
-  if (!message) errors.message = "Tell us a little about what you need.";
-  else if (message.length < enquiryLimits.messageMin)
-    errors.message = "A few more words will help us reply properly.";
-  else if (message.length > enquiryLimits.message)
+  if (fields.services.length === 0 || !fields.services.every((service) => oneOf(enquiryServices, service)))
+    errors.services = "Pick at least one thing you're looking for.";
+
+  if (fields.message.trim().length > enquiryLimits.message)
     errors.message = `Please keep it under ${enquiryLimits.message} characters.`;
+
+  if (!fields.consent) errors.consent = "Please agree so we can reply to you.";
 
   return errors;
 }
 
 /** The enquiry as plain text, for an email body or a mailto: fallback. */
 export function enquiryText(fields: EnquiryFields): string {
-  const company = fields.company.trim();
-  const phone = fields.phone.trim();
+  const message = fields.message.trim();
   return [
     `Name: ${fields.name.trim()}`,
     `Email: ${fields.email.trim()}`,
-    company ? `Company: ${company}` : null,
-    phone ? `Phone: ${phone}` : null,
-    `Interested in: ${fields.services.join(", ")}`,
-    fields.lines ? `Team size: ${fields.lines}` : null,
-    "",
-    fields.message.trim(),
-  ]
-    .filter((line) => line !== null)
-    .join("\n");
+    `Company: ${fields.company.trim()}`,
+    `Phone: ${fields.phone.trim()}`,
+    `Country: ${fields.country}`,
+    `Team size: ${fields.users}`,
+    `Looking for: ${fields.services.join(", ")}`,
+    ...(message ? ["", message] : []),
+  ].join("\n");
 }
