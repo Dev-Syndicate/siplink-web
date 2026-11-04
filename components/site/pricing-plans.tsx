@@ -3,13 +3,13 @@
 import { useState, type CSSProperties, type PointerEvent } from "react";
 import Link from "next/link";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowRight, PackagePlus, Sparkles } from "lucide-react";
+import { ArrowRight, PackagePlus, Sparkles, Wallet } from "lucide-react";
 
 import { PricingAtmosphere } from "@/components/site/pricing-atmosphere";
 import { PricingHero, type Currency } from "@/components/site/pricing-hero";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { callingAllowance, plans, pricingDisclaimer, type Plan } from "@/lib/pricing";
+import { callingAllowance, paygPlan, plans, pricingDisclaimer, type Plan } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -20,12 +20,11 @@ const addOnPlan = plans.find((plan) => plan.addOns);
 
 /**
  * The top of the pricing page: a framed stage, washed in blush, that holds
- * the hero, the currency switch, all three plans and the Enterprise Plus
- * add-ons.
+ * the hero, the currency switch, the three per-line plans, the prepaid
+ * Pay-As-You-Go plan and the Enterprise Plus add-ons.
  *
  * Every plan shows its whole feature list on its own card; nothing is hidden
- * behind a toggle. Content comes only from lib/pricing.ts, which mirrors
- * docs/Document 3.pdf.
+ * behind a toggle. Content comes only from lib/pricing.ts.
  */
 export function PricingPlans() {
   const [currency, setCurrency] = useState<Currency>("inr");
@@ -53,6 +52,8 @@ export function PricingPlans() {
               />
             ))}
           </div>
+
+          <PaygPlanCard />
 
           {addOnPlan ? <AddOns plan={addOnPlan} /> : null}
 
@@ -400,6 +401,165 @@ function PlanCard({
           )}
         >
           {card}
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+/**
+ * The prepaid plan, across the full width under the per-line plans. It has no
+ * price to show, so the head carries the promise and the body explains how the
+ * money moves: a balance that steps down as calls are made, then tops back up.
+ * The meter is an illustration and carries no figures.
+ */
+function PaygPlanCard() {
+  const { name, headline, description, icon: Icon, featuresHeading, features, vault, note } = paygPlan;
+
+  return (
+    <motion.article
+      aria-label={`${name} plan`}
+      className="group/tier relative mt-10 lg:mt-12"
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.7, ease }}
+    >
+      <div
+        className="relative transition-transform duration-500 ease-out group-hover/tier:-translate-y-1"
+        style={{ "--glow-delay": "-9s" } as CSSProperties}
+      >
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-16 -bottom-5 -z-10 h-14 rounded-full bg-primary/25 blur-2xl transition-all duration-500 group-hover/tier:inset-x-8 group-hover/tier:-bottom-8"
+        />
+        <span
+          aria-hidden
+          className="pricing-glow-border pointer-events-none absolute -inset-1 -z-10 rounded-[2rem] opacity-60 blur-lg transition-opacity duration-500 group-hover/tier:opacity-100"
+        />
+        <div className="pricing-glow-border pricing-elevate relative rounded-[1.85rem] p-px">
+          <Card className="relative grid gap-0 overflow-hidden rounded-[1.75rem] border-0 bg-card py-0 ring-0 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+            {/* The head. */}
+            <div className="relative flex flex-col overflow-hidden bg-gradient-to-br from-brand-to via-primary to-brand-from px-6 py-7 text-primary-foreground sm:px-8 sm:py-8">
+              <span aria-hidden className="pricing-dots pointer-events-none absolute inset-0 text-primary-foreground/25" />
+              <span aria-hidden className="pricing-band-sheen pointer-events-none absolute inset-0" />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -top-16 -left-10 size-48 rounded-full bg-primary-foreground/20 blur-3xl"
+              />
+              <Icon
+                aria-hidden
+                strokeWidth={1}
+                className="pointer-events-none absolute -right-14 -bottom-16 size-72 text-primary-foreground/15 transition-transform duration-700 ease-out group-hover/tier:rotate-12"
+              />
+
+              <div className="relative flex flex-1 flex-col">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-mono text-[10px] tracking-widest text-primary-foreground/80 uppercase">
+                    Plan {String(plans.length + 1).padStart(2, "0")}
+                  </span>
+                  <span className="rounded-full bg-primary-foreground px-2.5 py-1 font-mono text-[10px] font-semibold tracking-widest text-primary uppercase shadow-md shadow-primary/30">
+                    Prepaid
+                  </span>
+                </div>
+
+                <div className="mt-5 flex items-center gap-3.5">
+                  <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-primary-foreground/15 ring-1 ring-primary-foreground/35 backdrop-blur-sm">
+                    <Icon className="size-5" aria-hidden />
+                  </span>
+                  <h2 className="min-w-0 text-xl font-semibold tracking-tight text-balance">{name}</h2>
+                </div>
+
+                <p className="font-heading mt-7 text-3xl font-semibold tracking-tight text-balance xl:text-4xl">
+                  {headline}
+                </p>
+                <p className="mt-4 max-w-xl text-sm text-pretty text-primary-foreground/85 sm:text-base">
+                  {description}
+                </p>
+              </div>
+            </div>
+
+            {/* The body. */}
+            <div className="flex min-w-0 flex-col">
+              <div className="flex-1 px-6 pt-6 pb-7 sm:px-8 sm:pt-7">
+                <div className="flex items-center gap-3">
+                  <p className="text-[11px] font-semibold tracking-wider whitespace-nowrap text-foreground/75 uppercase">
+                    {featuresHeading}
+                  </p>
+                  <span aria-hidden className="h-px flex-1 bg-gradient-to-r from-primary/25 to-transparent" />
+                  <span className="grid size-6 place-items-center rounded-full bg-accent font-mono text-[10px] text-accent-foreground tabular-nums">
+                    {features.length}
+                  </span>
+                </div>
+
+                <ul className="mt-5 grid gap-x-6 gap-y-3.5 sm:grid-cols-2">
+                  {features.map(({ title, icon: FeatureIcon }) => (
+                    <li key={title} className="group/item flex items-center gap-3">
+                      <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-accent text-primary ring-1 ring-primary/10 transition-all duration-300 group-hover/item:scale-110 group-hover/item:bg-gradient-to-br group-hover/item:from-brand-to group-hover/item:to-brand-from group-hover/item:text-primary-foreground group-hover/item:shadow-md group-hover/item:shadow-primary/30">
+                        <FeatureIcon className="size-3.5" aria-hidden />
+                      </span>
+                      <span className="min-w-0 text-sm leading-snug font-medium">{title}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* How the vault is charged. */}
+                <div className="mt-6 rounded-2xl bg-gradient-to-br from-accent to-accent/40 p-4 ring-1 ring-primary/15 sm:p-5">
+                  <div className="flex items-start gap-3">
+                    <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-to to-brand-from text-primary-foreground shadow-md shadow-primary/25">
+                      <Wallet className="size-5" aria-hidden />
+                    </span>
+                    <div className="min-w-0">
+                      <h3 className="text-sm font-semibold">{vault.title}</h3>
+                      <p className="mt-0.5 text-sm text-pretty text-muted-foreground">{vault.body}</p>
+                    </div>
+                  </div>
+
+                  <div aria-hidden className="mt-4 h-2 overflow-hidden rounded-full bg-primary/12">
+                    <motion.span
+                      className="block h-full origin-left rounded-full bg-gradient-to-r from-brand-to to-brand-from"
+                      animate={{ scaleX: [1, 1, 0.76, 0.76, 0.52, 0.52, 0.3, 0.3, 1] }}
+                      transition={{
+                        duration: 12,
+                        ease: "easeInOut",
+                        repeat: Infinity,
+                        times: [0, 0.12, 0.2, 0.36, 0.44, 0.6, 0.68, 0.88, 1],
+                      }}
+                    />
+                  </div>
+
+                  <ol className="relative mt-4 grid gap-3 sm:grid-cols-3 sm:gap-4">
+                    {vault.steps.map(({ title, detail, icon: StepIcon }) => (
+                      <li key={title} className="flex min-w-0 items-center gap-2.5">
+                        <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-card text-primary shadow-sm ring-1 ring-primary/15">
+                          <StepIcon className="size-4" aria-hidden />
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-xs leading-snug font-semibold">{title}</span>
+                          <span className="block text-[11px] leading-snug text-muted-foreground">{detail}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </div>
+
+              {/* The foot. */}
+              <div className="mt-auto flex flex-col gap-4 border-t border-border/70 bg-gradient-to-b from-card to-accent/50 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+                <p className="text-xs text-pretty text-muted-foreground">{note}</p>
+                <Button
+                  asChild
+                  size="lg"
+                  className="pricing-sheen group/cta relative h-11 w-full overflow-hidden rounded-full bg-gradient-to-r from-brand-to to-brand-from px-7 shadow-lg shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/40 sm:w-auto"
+                >
+                  <Link href="/contact">
+                    Talk to Sales
+                    <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
     </motion.article>

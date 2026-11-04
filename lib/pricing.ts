@@ -6,8 +6,11 @@ import {
   ChartColumnIncreasing,
   ChartPie,
   CircleCheck,
+  CircleMinus,
   Cloud,
+  Earth,
   FileText,
+  Gauge,
   Globe,
   Grid2x2Check,
   Hash,
@@ -19,14 +22,18 @@ import {
   MonitorSmartphone,
   Phone,
   PhoneCall,
+  PhoneOutgoing,
   Printer,
   Puzzle,
   Rocket,
   Route,
   ShieldCheck,
   Spline,
+  Tags,
+  UserCog,
   Users,
   Voicemail,
+  Wallet,
   type LucideIcon,
 } from "lucide-react";
 
@@ -36,6 +43,9 @@ import {
  * in it.
  *
  * USD figures are the document's INR-to-USD conversion note (page 10).
+ *
+ * The exceptions come from the company's own later briefs: `paygPlan`, and the
+ * Core and Business Pro prices, which replace the document's.
  */
 
 export type Feature = { title: string; detail: string; icon: LucideIcon };
@@ -64,8 +74,8 @@ export const plans: Plan[] = [
     name: "Core",
     tagline: "Essential Business Calling",
     icon: Rocket,
-    inr: "₹999",
-    usd: "$10.99",
+    inr: "₹1,199",
+    usd: "$12.99",
     summary:
       "Essential calling, CloudPBX, business phone number, softphone access and call management.",
     description:
@@ -87,8 +97,8 @@ export const plans: Plan[] = [
     name: "Business Pro",
     tagline: "Advanced Team Communication",
     icon: ChartColumnIncreasing,
-    inr: "₹1,799",
-    usd: "$19.04",
+    inr: "₹1,699",
+    usd: "$17.99",
     summary:
       "Advanced CloudPBX, IVR, call queues, recording, analytics, voicemail and CRM integration support.",
     description:
@@ -148,6 +158,36 @@ export const plans: Plan[] = [
     note: "Taxes extra, as applicable. Optional add-ons and usage-based charges may apply.",
   },
 ];
+
+/**
+ * Prepaid, so it has no per-line price: what a call costs depends on where it
+ * goes, and is deducted from the customer's vault. Kept apart from `plans`,
+ * whose prices the hero charts. Add rates here only once they are confirmed.
+ */
+export const paygPlan = {
+  name: "Global Pay-As-You-Go SIP Trunk",
+  headline: "Global Calling. Flexible Pay-As-You-Go Pricing.",
+  description:
+    "Connect internationally with a flexible prepaid SIP Trunk designed for businesses that want greater control over their calling costs.",
+  icon: Earth,
+  featuresHeading: "Features & Capabilities",
+  features: [
+    { title: "Destination-based calling rates", icon: Tags },
+    { title: "International calling destinations", icon: Globe },
+    { title: "Flexible user and extension provisioning", icon: UserCog },
+    { title: "Usage-based cost control", icon: Gauge },
+  ],
+  vault: {
+    title: "Paid from your vault",
+    body: "The amount is deducted from your vault based on the calling country and calling destination.",
+    steps: [
+      { title: "Prepaid vault", detail: "Your calling balance", icon: Wallet },
+      { title: "Place a call", detail: "To a country and destination", icon: PhoneOutgoing },
+      { title: "Amount deducted", detail: "Based on where you called", icon: CircleMinus },
+    ],
+  },
+  note: "Taxes extra, as applicable.",
+};
 
 /** The closing statement from the Enterprise Plus card. */
 export const enterpriseReady = {

@@ -30,7 +30,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 const priceOf = (plan: Plan, currency: Currency) =>
   currency === "inr" ? plan.inr : plan.usd;
 
-/** "₹1,799" → 1799, for sizing the chart's bars. */
+/** "₹1,699" → 1699, for sizing the chart's bars. */
 const amountOf = (plan: Plan) => Number(plan.inr.replace(/[^\d.]/g, ""));
 
 /** The three facts beside the asks; each is stated elsewhere on the site. */
