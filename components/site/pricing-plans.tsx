@@ -410,8 +410,8 @@ function PlanCard({
 /**
  * The prepaid plan, across the full width under the per-line plans. It has no
  * price to show, so the head carries the promise and the body explains how the
- * money moves: a balance that steps down as calls are made, then tops back up.
- * The meter is an illustration and carries no figures.
+ * money moves: fund the vault, call, pay for that call. The steps light up in
+ * turn, in that order.
  */
 function PaygPlanCard() {
   const { name, headline, description, icon: Icon, featuresHeading, features, vault, note } = paygPlan;
@@ -515,25 +515,23 @@ function PaygPlanCard() {
                     </div>
                   </div>
 
-                  <div aria-hidden className="mt-4 h-2 overflow-hidden rounded-full bg-primary/12">
-                    <motion.span
-                      className="block h-full origin-left rounded-full bg-gradient-to-r from-brand-to to-brand-from"
-                      animate={{ scaleX: [1, 1, 0.76, 0.76, 0.52, 0.52, 0.3, 0.3, 1] }}
-                      transition={{
-                        duration: 12,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                        times: [0, 0.12, 0.2, 0.36, 0.44, 0.6, 0.68, 0.88, 1],
-                      }}
-                    />
-                  </div>
-
                   <ol className="relative mt-4 grid gap-3 sm:grid-cols-3 sm:gap-4">
-                    {vault.steps.map(({ title, detail, icon: StepIcon }) => (
+                    {vault.steps.map(({ title, detail, icon: StepIcon }, index) => (
                       <li key={title} className="flex min-w-0 items-center gap-2.5">
-                        <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-card text-primary shadow-sm ring-1 ring-primary/15">
+                        {/* Transform only, so MotionConfig holds it still for reduced motion. */}
+                        <motion.span
+                          className="grid size-8 shrink-0 place-items-center rounded-lg bg-card text-primary shadow-sm ring-1 ring-primary/15"
+                          animate={{ y: [0, -4, 0], scale: [1, 1.18, 1] }}
+                          transition={{
+                            duration: 1.2,
+                            ease: "easeInOut",
+                            delay: index * 2,
+                            repeat: Infinity,
+                            repeatDelay: 4.8,
+                          }}
+                        >
                           <StepIcon className="size-4" aria-hidden />
-                        </span>
+                        </motion.span>
                         <span className="min-w-0">
                           <span className="block text-xs leading-snug font-semibold">{title}</span>
                           <span className="block text-[11px] leading-snug text-muted-foreground">{detail}</span>

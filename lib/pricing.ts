@@ -178,12 +178,12 @@ export const paygPlan = {
     { title: "Usage-based cost control", icon: Gauge },
   ],
   vault: {
-    title: "Paid from your vault",
-    body: "The amount is deducted from your vault based on the calling country and calling destination.",
+    title: "Pay only for what you use",
+    body: "No plan limits to hit. Each call is paid from your prepaid vault at the rate for where you called, so your spend follows your actual usage.",
     steps: [
-      { title: "Prepaid vault", detail: "Your calling balance", icon: Wallet },
-      { title: "Place a call", detail: "To a country and destination", icon: PhoneOutgoing },
-      { title: "Amount deducted", detail: "Based on where you called", icon: CircleMinus },
+      { title: "Fund your vault", detail: "Your prepaid calling balance", icon: Wallet },
+      { title: "Call without plan limits", detail: "Any supported destination", icon: PhoneOutgoing },
+      { title: "Pay for that call only", detail: "Based on where you called", icon: CircleMinus },
     ],
   },
   note: "Taxes extra, as applicable.",
