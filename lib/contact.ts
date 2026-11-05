@@ -81,7 +81,8 @@ export function validateEnquiry(fields: EnquiryFields): EnquiryErrors {
   if (!name) errors.name = "Please tell us your name.";
   else if (name.length > enquiryLimits.name) errors.name = "That name is a little long.";
 
-  if (email && !EMAIL.test(email)) errors.email = "That email address doesn't look right.";
+  if (!email) errors.email = "We need an email address to reply to.";
+  else if (!EMAIL.test(email)) errors.email = "That email address doesn't look right.";
 
   if (company.length > enquiryLimits.company) errors.company = "That company name is a little long.";
 
@@ -107,11 +108,10 @@ export function validateEnquiry(fields: EnquiryFields): EnquiryErrors {
 /** The enquiry as plain text, for an email body or a mailto: fallback. */
 export function enquiryText(fields: EnquiryFields): string {
   const message = fields.message.trim();
-  const email = fields.email.trim();
   const company = fields.company.trim();
   return [
     `Name: ${fields.name.trim()}`,
-    ...(email ? [`Email: ${email}`] : []),
+    `Email: ${fields.email.trim()}`,
     ...(company ? [`Company: ${company}`] : []),
     `Phone: ${fields.phone.trim()}`,
     `Country: ${fields.country}`,

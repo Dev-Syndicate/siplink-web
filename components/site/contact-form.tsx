@@ -72,7 +72,7 @@ type EnquiryState =
   | { status: "idle" | "sending" | "failed" }
   | { status: "sent"; name: string; email: string };
 
-/** Emails the enquiry to the team. `email`, when given, is also what a reply goes to. Empty optional fields are left out. */
+/** Emails the enquiry to the team. `email` is also what a reply goes to. Empty optional fields are left out. */
 async function sendEnquiry(fields: EnquiryFields): Promise<boolean> {
   const name = fields.name.trim();
   const response = await fetch("https://api.web3forms.com/submit", {
@@ -83,7 +83,7 @@ async function sendEnquiry(fields: EnquiryFields): Promise<boolean> {
       subject: `Website enquiry: ${fields.services.join(", ")} — ${name}`,
       from_name: "SipLink website",
       name,
-      email: fields.email.trim() || undefined,
+      email: fields.email.trim(),
       Company: fields.company.trim() || undefined,
       Phone: fields.phone.trim(),
       Country: fields.country,
@@ -219,8 +219,7 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
         />
         <TextField
           id="email"
-          label="Work email"
-          optional
+          label="Email"
           icon={Mail}
           error={errors.email}
           type="email"
