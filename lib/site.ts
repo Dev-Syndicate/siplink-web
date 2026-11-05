@@ -448,8 +448,8 @@ export type Office = {
 
 /**
  * Addresses from the live contact page. The US address is a registered-agent
- * address carrying an Indian phone number, so it is presented as the US
- * registered entity rather than a head office. See details-content.md §20.4.
+ * address, so it is presented as the US registered entity rather than a head
+ * office. See details-content.md §20.4.
  */
 export const offices: Office[] = [
   {
