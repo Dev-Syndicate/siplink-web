@@ -153,14 +153,14 @@ function ArticleDeck({ posts }: { posts: BlogPostSummary[] }) {
                   tabIndex={front ? undefined : -1}
                   className="group/deck block h-full rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
                 >
-                  <div className="relative aspect-[16/9] overflow-hidden bg-accent">
+                  <div className="relative aspect-[12/5] overflow-hidden bg-accent">
                     <Image
                       src={post.cover.url}
                       alt={front ? post.cover.alt : ""}
                       fill
                       priority={index === 0}
                       sizes="(min-width: 1024px) 40vw, 100vw"
-                      className="object-cover transition-transform duration-1000 ease-out group-hover/deck:scale-105"
+                      className="object-cover"
                     />
                     <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent" />
                   </div>
