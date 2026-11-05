@@ -162,7 +162,7 @@ export function AutoplayVideo({
 
       {/* The cover: over the player until it is clear of YouTube's chrome. */}
       <Image
-        src={`https://i.ytimg.com/vi/${id}/sddefault.jpg`}
+        src={`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`}
         alt=""
         fill
         unoptimized
