@@ -81,7 +81,7 @@ export function ContactEnquiry() {
                   {/* The tag sits above the form, in the panel's corner. */}
                   <span className="absolute top-6 right-7 hidden items-center gap-1.5 rounded-full bg-primary-foreground px-3.5 py-1.5 font-mono text-[11px] font-semibold tracking-widest text-primary uppercase shadow-md shadow-primary/30 lg:inline-flex">
                     <Send className="size-3.5" aria-hidden />
-                    Enquiry / 01
+                    Enquiry
                   </span>
 
                   <div className="relative h-full rounded-[1.9rem] bg-card p-5 shadow-2xl shadow-primary/20 sm:p-7 lg:rounded-t-[2rem] lg:rounded-b-none lg:rounded-bl-[2rem]">

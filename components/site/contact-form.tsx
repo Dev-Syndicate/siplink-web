@@ -72,7 +72,7 @@ type EnquiryState =
   | { status: "idle" | "sending" | "failed" }
   | { status: "sent"; name: string; email: string };
 
-/** Emails the enquiry to the team. `email` is also what a reply goes to. */
+/** Emails the enquiry to the team. `email`, when given, is also what a reply goes to. Empty optional fields are left out. */
 async function sendEnquiry(fields: EnquiryFields): Promise<boolean> {
   const name = fields.name.trim();
   const response = await fetch("https://api.web3forms.com/submit", {
@@ -83,13 +83,13 @@ async function sendEnquiry(fields: EnquiryFields): Promise<boolean> {
       subject: `Website enquiry: ${fields.services.join(", ")} — ${name}`,
       from_name: "SipLink website",
       name,
-      email: fields.email.trim(),
-      Company: fields.company.trim(),
+      email: fields.email.trim() || undefined,
+      Company: fields.company.trim() || undefined,
       Phone: fields.phone.trim(),
       Country: fields.country,
-      "Team size": fields.users,
+      "Team size": fields.users || undefined,
       "Looking for": fields.services.join(", "),
-      Message: fields.message.trim(),
+      Message: fields.message.trim() || undefined,
     }),
     signal: AbortSignal.timeout(15_000),
   });
@@ -220,6 +220,7 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
         <TextField
           id="email"
           label="Work email"
+          optional
           icon={Mail}
           error={errors.email}
           type="email"
@@ -231,6 +232,7 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
         <TextField
           id="company"
           label="Company name"
+          optional
           icon={Building2}
           error={errors.company}
           autoComplete="organization"
@@ -262,6 +264,7 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
         <SelectField
           id="users"
           label="Number of users"
+          optional
           icon={Users}
           error={errors.users}
           value={fields.users}
@@ -411,12 +414,14 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
 function TextField({
   id,
   label,
+  optional,
   icon: Icon,
   error,
   ...input
 }: {
   id: string;
   label: string;
+  optional?: boolean;
   icon: LucideIcon;
   error?: string;
 } & ComponentProps<typeof Input>) {
@@ -424,7 +429,7 @@ function TextField({
     <div>
       <div className="group/field relative">
         <Label htmlFor={id} className="sr-only">
-          {label} (required)
+          {label} ({optional ? "optional" : "required"})
         </Label>
         <Icon
           className="pointer-events-none absolute top-1/2 left-3.5 z-10 size-4.5 -translate-y-1/2 text-foreground/60 transition-colors duration-300 group-focus-within/field:text-primary"
@@ -434,7 +439,7 @@ function TextField({
         <Input
           id={id}
           data-field={id}
-          placeholder={`${label} *`}
+          placeholder={optional ? `${label} (optional)` : `${label} *`}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${id}-error` : undefined}
           className={box}
@@ -449,6 +454,7 @@ function TextField({
 function SelectField({
   id,
   label,
+  optional,
   icon: Icon,
   error,
   value,
@@ -457,6 +463,7 @@ function SelectField({
 }: {
   id: string;
   label: string;
+  optional?: boolean;
   icon: LucideIcon;
   error?: string;
   value: string;
@@ -467,7 +474,7 @@ function SelectField({
     <div>
       <div className="group/field relative">
         <Label htmlFor={id} className="sr-only">
-          {label} (required)
+          {label} ({optional ? "optional" : "required"})
         </Label>
         <Icon
           className="pointer-events-none absolute top-1/2 left-3.5 z-10 size-4.5 -translate-y-1/2 text-foreground/60 transition-colors duration-300 group-focus-within/field:text-primary"
@@ -482,7 +489,7 @@ function SelectField({
             aria-describedby={error ? `${id}-error` : undefined}
             className={cn(box, "h-12! data-placeholder:text-muted-foreground")}
           >
-            <SelectValue placeholder={`${label} *`} />
+            <SelectValue placeholder={optional ? `${label} (optional)` : `${label} *`} />
           </SelectTrigger>
           <SelectContent>
             {options.map((option) => (

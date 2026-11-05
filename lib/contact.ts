@@ -81,11 +81,9 @@ export function validateEnquiry(fields: EnquiryFields): EnquiryErrors {
   if (!name) errors.name = "Please tell us your name.";
   else if (name.length > enquiryLimits.name) errors.name = "That name is a little long.";
 
-  if (!email) errors.email = "We need an email address to reply to.";
-  else if (!EMAIL.test(email)) errors.email = "That email address doesn't look right.";
+  if (email && !EMAIL.test(email)) errors.email = "That email address doesn't look right.";
 
-  if (!company) errors.company = "Please tell us your company's name.";
-  else if (company.length > enquiryLimits.company) errors.company = "That company name is a little long.";
+  if (company.length > enquiryLimits.company) errors.company = "That company name is a little long.";
 
   if (!phone) errors.phone = "Please add a number we can reach you on.";
   else if (!PHONE.test(phone) || phone.length > enquiryLimits.phone)
@@ -93,7 +91,7 @@ export function validateEnquiry(fields: EnquiryFields): EnquiryErrors {
 
   if (!oneOf(enquiryCountries, fields.country)) errors.country = "Please choose your country.";
 
-  if (!oneOf(enquiryUserCounts, fields.users)) errors.users = "Please choose a team size.";
+  if (fields.users && !oneOf(enquiryUserCounts, fields.users)) errors.users = "Please choose a team size.";
 
   if (fields.services.length === 0 || !fields.services.every((service) => oneOf(enquiryServices, service)))
     errors.services = "Pick at least one thing you're looking for.";
@@ -109,13 +107,15 @@ export function validateEnquiry(fields: EnquiryFields): EnquiryErrors {
 /** The enquiry as plain text, for an email body or a mailto: fallback. */
 export function enquiryText(fields: EnquiryFields): string {
   const message = fields.message.trim();
+  const email = fields.email.trim();
+  const company = fields.company.trim();
   return [
     `Name: ${fields.name.trim()}`,
-    `Email: ${fields.email.trim()}`,
-    `Company: ${fields.company.trim()}`,
+    ...(email ? [`Email: ${email}`] : []),
+    ...(company ? [`Company: ${company}`] : []),
     `Phone: ${fields.phone.trim()}`,
     `Country: ${fields.country}`,
-    `Team size: ${fields.users}`,
+    ...(fields.users ? [`Team size: ${fields.users}`] : []),
     `Looking for: ${fields.services.join(", ")}`,
     ...(message ? ["", message] : []),
   ].join("\n");
