@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Caveat, Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
+import { ChatLauncher } from "@/components/site/chat-launcher";
 
 import { JsonLd } from "@/components/site/json-ld";
 import { SiteFooter } from "@/components/site/site-footer";
@@ -106,11 +106,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main className="flex-1 pt-20 sm:pt-30">{children}</main>
         <SiteFooter />
         {/* tawk.to chat. Loaded last so it never holds up the page. */}
-        <Script
-          src="https://embed.tawk.to/5f86f9ada2eb1124c0bce350/1k6ed0su8"
-          strategy="lazyOnload"
-          crossOrigin="anonymous"
-        />
+        <ChatLauncher />
       </body>
     </html>
   );
