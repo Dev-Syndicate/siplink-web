@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  startTransition,
-  useActionState,
   useEffect,
   useRef,
   useState,
@@ -37,7 +35,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { submitEnquiry, type EnquiryState } from "@/app/contact/actions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -64,6 +61,43 @@ import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+
+/** Public by design, and only able to send to support@siplink.in. Web3Forms rejects server-side calls on the free plan, so this runs in the browser. */
+const WEB3FORMS_ACCESS_KEY = "05860680-81ce-4d6a-ade4-ad53d67c7b86";
+
+/** Faster than this from opening the page to sending is not a person. */
+const MIN_FILL_MS = 3000;
+
+type EnquiryState =
+  | { status: "idle" | "sending" | "failed" }
+  | { status: "sent"; name: string; email: string };
+
+/** Emails the enquiry to the team. `email` is also what a reply goes to. */
+async function sendEnquiry(fields: EnquiryFields): Promise<boolean> {
+  const name = fields.name.trim();
+  const response = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: `Website enquiry: ${fields.services.join(", ")} — ${name}`,
+      from_name: "SipLink website",
+      name,
+      email: fields.email.trim(),
+      Company: fields.company.trim(),
+      Phone: fields.phone.trim(),
+      Country: fields.country,
+      "Team size": fields.users,
+      "Looking for": fields.services.join(", "),
+      Message: fields.message.trim(),
+    }),
+    signal: AbortSignal.timeout(15_000),
+  });
+  // A refusal can still arrive as HTTP 200, so only `success` proves delivery.
+  const result: { success?: boolean; message?: string } = await response.json();
+  if (!result.success) console.error("Contact form: Web3Forms refused the enquiry", result.message);
+  return result.success === true;
+}
 
 const EMPTY: EnquiryFields = {
   name: "",
@@ -109,9 +143,8 @@ export function ContactForm() {
 function EnquiryForm({ onReset }: { onReset: () => void }) {
   const [fields, setFields] = useState<EnquiryFields>(EMPTY);
   const [checked, setChecked] = useState(false);
-  const [state, dispatch, pending] = useActionState<EnquiryState, FormData>(submitEnquiry, {
-    status: "idle",
-  });
+  const [state, setState] = useState<EnquiryState>({ status: "idle" });
+  const pending = state.status === "sending";
   const startedAt = useRef(0);
   const honeypot = useRef<HTMLInputElement>(null);
   const form = useRef<HTMLFormElement>(null);
@@ -121,14 +154,12 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
   }, []);
 
   // Errors appear once someone has tried to send, then follow their edits.
-  const live = validateEnquiry(fields);
-  const fromServer = state.status === "invalid" ? state.errors : {};
-  const errors = checked ? (Object.keys(live).length > 0 ? live : fromServer) : {};
+  const errors = checked ? validateEnquiry(fields) : {};
 
   const set = <K extends keyof EnquiryFields>(key: K, value: EnquiryFields[K]) =>
     setFields((current) => ({ ...current, [key]: value }));
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (pending) return;
     setChecked(true);
@@ -140,15 +171,25 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
       return;
     }
 
-    const data = new FormData();
-    for (const key of ["name", "email", "company", "phone", "country", "users", "message"] as const) {
-      data.set(key, fields[key]);
+    // Bots fill the hidden field, or send faster than anyone types. Answer as
+    // if it worked, so they learn nothing.
+    if (honeypot.current?.value || Date.now() - startedAt.current < MIN_FILL_MS) {
+      setState({ status: "sent", name: "", email: "" });
+      return;
     }
-    for (const service of fields.services) data.append("services", service);
-    data.set("consent", fields.consent ? "yes" : "");
-    data.set("website", honeypot.current?.value ?? "");
-    data.set("startedAt", String(startedAt.current));
-    startTransition(() => dispatch(data));
+
+    setState({ status: "sending" });
+    try {
+      const sent = await sendEnquiry(fields);
+      setState(
+        sent
+          ? { status: "sent", name: fields.name.trim(), email: fields.email.trim() }
+          : { status: "failed" },
+      );
+    } catch (error) {
+      console.error("Contact form: delivery failed", error);
+      setState({ status: "failed" });
+    }
   };
 
   if (state.status === "sent") return <Sent name={state.name} email={state.email} onReset={onReset} />;
@@ -332,33 +373,10 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
       {/* Status: problems sending, read out as they appear. */}
       <div id="enquiry-status" role="status" aria-live="polite">
         <AnimatePresence initial={false}>
-          {state.status === "unconfigured" ? (
-            <Notice key="unconfigured">
-              Our form can&rsquo;t reach the team just yet, so nothing was sent. Your details are
-              still here: send them by email instead and we&rsquo;ll pick it up.
-              <a
-                href={mailto}
-                className="mt-3 inline-flex items-center gap-2 font-semibold text-primary underline-offset-4 hover:underline"
-              >
-                <Mail className="size-4" aria-hidden />
-                Email your enquiry to {site.email}
-              </a>
-            </Notice>
-          ) : null}
           {state.status === "failed" ? (
             <Notice key="failed">
               Something went wrong sending your enquiry, and nothing was sent. Your details are still
               here; please try again in a moment, or email us at{" "}
-              <a href={mailto} className="font-semibold text-primary underline-offset-4 hover:underline">
-                {site.email}
-              </a>
-              .
-            </Notice>
-          ) : null}
-          {state.status === "limited" ? (
-            <Notice key="limited">
-              We&rsquo;ve had several enquiries from you in a short time. Please wait a few minutes
-              before sending another, or email us at{" "}
               <a href={mailto} className="font-semibold text-primary underline-offset-4 hover:underline">
                 {site.email}
               </a>

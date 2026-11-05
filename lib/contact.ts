@@ -1,7 +1,6 @@
 /**
- * The contact form's fields, options and rules, shared by the form (to show
- * errors as visitors type) and the server action (which re-checks everything,
- * since anything from the browser can be forged).
+ * The contact form's fields, options and rules. These checks run in the
+ * browser, so they help real visitors but cannot stop forged submissions.
  */
 
 /** What visitors can ask about, from SipLink's own product lines. */

@@ -51,3 +51,4 @@ next-env.d.ts
 /studio/.sanity
 
 /studio/migration/old-images
+/studio/migration/new-images
