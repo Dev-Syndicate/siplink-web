@@ -42,6 +42,9 @@
    page owning the header. The page marks its root with data-page. */
 @custom-variant pricing (&:where(html:has([data-page="pricing"]) *));
 
+/* A laptop-height window: the home hero tightens so it all fits on one screen. */
+@custom-variant short (@media (min-width: 64rem) and (max-height: 760px));
+
 @theme inline {
   --color-brand-from: var(--brand-from);
   --color-brand-to: var(--brand-to);

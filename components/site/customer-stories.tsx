@@ -64,8 +64,8 @@ export function CustomerStories() {
           </Badge>
           <BicolorHeading
             as="h2"
-            lead="Real stories from"
-            accent="real businesses"
+            lead="Trusted by Businesses"
+            accent="That Depend on Every Call"
             className="font-heading mt-6 text-4xl font-semibold tracking-tight sm:text-6xl"
           />
           <p className="mx-auto mt-6 max-w-2xl text-lg text-pretty text-muted-foreground">
