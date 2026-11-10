@@ -188,7 +188,7 @@ export default function Home() {
               </p>
               <p className="mt-3 max-w-xl text-base text-pretty text-muted-foreground lg:text-lg short:mt-2 short:text-base">
                 Keep your existing numbers, connect your teams and automate
-                customer interactions—with expert support every step of the way.
+                customer interactions, with expert support every step of the way.
               </p>
 
               <div className="mt-7 flex flex-wrap items-center gap-4 short:mt-5">
