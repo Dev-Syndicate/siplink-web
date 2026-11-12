@@ -31,7 +31,7 @@ export function SipTrunkingPage({ product }: { product: ProductDetail }) {
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-20">
             <div>
               <Badge variant="outline">How it works</Badge>
-              <h2 className="mt-5 max-w-lg text-3xl font-semibold tracking-tight text-balance sm:text-4xl">The PBX stays.<br />The physical lines move on.</h2>
+              <h2 className="mt-5 max-w-lg text-3xl font-semibold tracking-tight text-balance sm:text-4xl">How SIP trunking replaces your physical phone lines</h2>
               <p className="mt-6 max-w-lg leading-relaxed text-muted-foreground">{product.explainer?.definition}</p>
             </div>
             <ol className="space-y-0">
@@ -50,7 +50,7 @@ export function SipTrunkingPage({ product }: { product: ProductDetail }) {
 
       <section className="border-b border-border bg-muted/40">
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-24">
-          <div className="mb-10 max-w-2xl"><h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">More control over every call.</h2><p className="mt-4 text-muted-foreground">The connection, routing and protection your voice network needs, brought together in one trunk configuration.</p></div>
+          <div className="mb-10 max-w-2xl"><h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">What your SIP trunk connects, routes and protects.</h2><p className="mt-4 text-muted-foreground">The connection, routing and protection your voice network needs, brought together in one trunk configuration.</p></div>
           <div className="grid gap-6 lg:grid-cols-3">
             {capabilityGroups.map(({ title, description, indexes, icon: Icon }) => (
               <Card key={title} className="gap-6 py-6 shadow-none">
@@ -69,7 +69,7 @@ export function SipTrunkingPage({ product }: { product: ProductDetail }) {
 
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-2 lg:gap-20 lg:px-10 lg:py-24">
-          <div><h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Built around the way<br />your business calls.</h2><p className="mt-5 max-w-lg text-muted-foreground">From an existing office PBX to a growing estate, the trunk is designed around your equipment, locations and calling patterns.</p>
+          <div><h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Who this SIP trunk is built for</h2><p className="mt-5 max-w-lg text-muted-foreground">From an existing office PBX to a growing estate, the trunk is designed around your equipment, locations and calling patterns.</p>
             <dl className="mt-8">{product.audiences?.map(({ situation, fit }) => <div key={situation} className="border-t border-border py-5"><dt className="text-lg font-medium">{situation}</dt><dd className="mt-2 text-sm leading-relaxed text-muted-foreground">{fit}</dd></div>)}</dl>
           </div>
           <Card className="self-start bg-accent/40 py-8 shadow-none lg:mt-2"><CardHeader><Badge variant="outline" className="mb-4 w-fit">Technical overview</Badge><CardTitle className="text-2xl">What sits behind your connection</CardTitle></CardHeader><CardContent><dl>{product.specs?.map(({ label, value }) => <div key={label} className="grid gap-2 border-b border-border py-4 last:border-0 sm:grid-cols-[7rem_1fr]"><dt className="font-medium">{label}</dt><dd className="text-sm leading-relaxed text-muted-foreground">{value}</dd></div>)}</dl></CardContent></Card>
@@ -78,7 +78,7 @@ export function SipTrunkingPage({ product }: { product: ProductDetail }) {
 
       <section className="border-b border-border bg-muted/40">
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-24">
-          <div className="grid gap-6 lg:grid-cols-2"><h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">A planned move from PRI.<br />A familiar working day.</h2><p className="max-w-xl leading-relaxed text-muted-foreground">{product.migration?.intro}</p></div>
+          <div className="grid gap-6 lg:grid-cols-2"><h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">How you move from PRI to SIP trunking</h2><p className="max-w-xl leading-relaxed text-muted-foreground">{product.migration?.intro}</p></div>
           <ol className="relative mx-auto mt-14 max-w-5xl space-y-6">
             {product.migration?.steps.map(({ title, body }, index) => {
               const Icon = migrationIcons[index];

@@ -46,7 +46,7 @@ export const conversationStages: ConversationStage[] = [
     id: "reach",
     label: "Reaches you",
     question: "Can customers get through?",
-    heading: "Every conversation starts with a number that works",
+    heading: "Give customers a number that always gets through",
     body: "Local presence where your customers are, toll-free where cost would stop them calling, and the numbers you already advertise, kept exactly as they are.",
     icon: PhoneIncoming,
     products: [
@@ -81,7 +81,7 @@ export const conversationStages: ConversationStage[] = [
     id: "route",
     label: "Gets routed",
     question: "Does it reach the right person?",
-    heading: "The difference between answered and resolved",
+    heading: "Get every caller to the right person, faster",
     body: "Callers who land in the wrong place repeat themselves, get transferred, and form an opinion before anyone helps them. Routing decides which experience they get.",
     icon: Workflow,
     products: [
@@ -116,7 +116,7 @@ export const conversationStages: ConversationStage[] = [
     id: "handle",
     label: "Is handled",
     question: "Can your team cope with the volume?",
-    heading: "Where the work actually happens",
+    heading: "Give your team the tools to handle the volume",
     body: "Agents need the tools to move faster and supervisors need to see what is happening while it happens, not in a report the following week.",
     icon: Headset,
     products: [
@@ -146,7 +146,7 @@ export const conversationStages: ConversationStage[] = [
     id: "understand",
     label: "Is understood",
     question: "Do you know what was said?",
-    heading: "Conversations become something you can act on",
+    heading: "Turn every call into something you can act on",
     body: "Most businesses know how many calls they took. Far fewer know what was discussed, which questions keep recurring, or where customers give up.",
     icon: Sparkles,
     products: [
@@ -176,7 +176,7 @@ export const conversationStages: ConversationStage[] = [
 
 /** Developer-facing products sit outside the call lifecycle. */
 export const buildYourOwn = {
-  heading: "Or build the conversation into your own product",
+  heading: "Add calling and messaging to your own product",
   body: "When communication belongs inside your application rather than beside it, the same network is available as an API.",
   products: [
     {
