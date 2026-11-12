@@ -163,7 +163,7 @@ export default function SolutionsPage() {
                 The signal path
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-                Four building blocks, one deployment
+                The four core solutions, explained
               </h2>
             </div>
             <p className="max-w-sm text-sm text-pretty text-muted-foreground">

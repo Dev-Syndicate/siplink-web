@@ -106,7 +106,7 @@ export function BenefitsSections() {
               Three places, one line
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The week does not stay at the office
+              The same connection, in the office, on the move and at home
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Monday is the floor arriving at once. Wednesday is a call taken
@@ -130,7 +130,7 @@ export function BenefitsSections() {
               Who feels it
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Four people, four different reliefs
+              What four different roles each notice about the connection
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Connectivity is bought by one person and lived with by everyone
@@ -197,7 +197,7 @@ export function BenefitsSections() {
               Saturday, 02:00
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The benefit you are asleep for
+              Faults get caught overnight, before they reach a customer
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               The last item on the list above is the hardest one to show,

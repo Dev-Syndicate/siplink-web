@@ -34,9 +34,9 @@ export function MultiLocationHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            One office is a task.
+            One network design,
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              Fifty is a structure.
+              across every location.
             </span>
           </h1>
 

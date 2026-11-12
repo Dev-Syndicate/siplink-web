@@ -255,7 +255,7 @@ export function DedicatedBandwidthSections() {
               End to end
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Uncontended at your wall is not the same as uncontended
+              The dedicated capacity has to hold for the whole route
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               A service can be yours alone on the last stretch and heavily

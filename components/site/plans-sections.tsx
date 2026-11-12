@@ -145,7 +145,7 @@ export function PlansSections() {
               Up and down
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The half of the line nobody is sold on
+              Upload speed matters as much as download
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               A connection is advertised on the direction things come in.

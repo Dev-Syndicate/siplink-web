@@ -208,11 +208,11 @@ const useCase: SolutionDetail[] = [
     intro:
       "Give remote and hybrid teams the same professional communication experience from the office, home or anywhere else, without losing control of your business communications.",
     challenge: {
-      heading: "Distributed teams shouldn't sound distributed",
+      heading: "Remote teams miss calls and lose a consistent business identity",
       body: "When employees work from everywhere, calls get missed, personal numbers creep in, and customers start to feel like they're dealing with a scattered team rather than one business.",
     },
     handling: {
-      heading: "One business identity, any location",
+      heading: "Everyone stays reachable on the same business number",
       body: [
         "Employees stay reachable through their business numbers and connected tools whether they're at a desk, at home or on the move.",
         "Calls route between team members, departments and locations, so the person a customer needs is always one hop away, no matter where they're sitting.",
@@ -274,7 +274,7 @@ const useCase: SolutionDetail[] = [
       "Companies replacing personal phones for work calls",
     ],
     scenario: {
-      heading: "A call to someone who isn’t at a desk",
+      heading: "How a call reaches a remote employee",
       lead: "The caller does one thing, dial the business number. Everything after that is the platform’s job.",
       steps: [
         {
@@ -293,7 +293,7 @@ const useCase: SolutionDetail[] = [
     },
     builtFrom: ["cloud-pbx", "webrtc-sdk", "virtual-numbers", "call-analytics"],
     gain: {
-      heading: "Flexible working, without the trade-off",
+      heading: "Remote work, with one consistent business identity",
       body: "Support employees working anywhere while keeping one consistent, professional voice for every customer who calls.",
     },
   },
@@ -307,11 +307,11 @@ const useCase: SolutionDetail[] = [
     intro:
       "Give support teams a structured communication environment that gets each caller to the right person quickly and keeps managers in the picture.",
     challenge: {
-      heading: "A missed call is a missed customer",
+      heading: "Unstructured call handling loses customers",
       body: "Without structure, calls land on whoever's free, queues form invisibly, and no one can see where conversations are being dropped or delayed.",
     },
     handling: {
-      heading: "Route it right, then see it clearly",
+      heading: "Route calls to the right agent and track every one",
       body: [
         "Calls are directed to the right department or the next available agent, so customers spend less time being transferred around.",
         "Teams handle conversations from one place and keep visibility into what's happening, which brings missed calls and response times down.",
@@ -378,7 +378,7 @@ const useCase: SolutionDetail[] = [
       "Businesses tracking service quality",
     ],
     scenario: {
-      heading: "One caller, from ring to resolution",
+      heading: "How a support call moves from ring to resolution",
       lead: "The shape of a support call when the routing is set up properly, nobody hears a busy tone and nothing goes uncounted.",
       steps: [
         {
@@ -411,11 +411,11 @@ const useCase: SolutionDetail[] = [
     intro:
       "Give sales a communication environment built around reaching, engaging and following up with customers efficiently, with less manual work between calls.",
     challenge: {
-      heading: "Reps should be selling, not dialling",
+      heading: "Manual dialling and logging eats selling time",
       body: "Time spent manually dialling, logging calls and hunting for context is time not spent building relationships and moving deals forward.",
     },
     handling: {
-      heading: "Streamline the calling, keep the context",
+      heading: "Automate the dialling and keep every call's context",
       body: [
         "Representatives call through professional business numbers, and outbound calling is streamlined so more time goes to real conversations.",
         "Teams gain visibility into their customer conversations and stay organised, so follow-ups don't slip through the cracks.",
@@ -576,7 +576,7 @@ const useCase: SolutionDetail[] = [
       "Organisations wanting one platform to manage",
     ],
     scenario: {
-      heading: "What stops being separate",
+      heading: "What comes together on one platform",
       lead: "Nothing here is a new habit for your employees. It is the same work, with fewer systems underneath it.",
       steps: [
         {
@@ -694,7 +694,7 @@ const useCase: SolutionDetail[] = [
     intro:
       "Give a business with multiple branches one connected communication environment, while letting each location work the way it needs to.",
     challenge: {
-      heading: "Every branch is its own island",
+      heading: "Separate phone systems per branch block visibility",
       body: "Independent phone setups per branch make it hard to keep standards consistent, transfer calls between sites, or see what's happening across the business.",
     },
     handling: {
@@ -1095,7 +1095,7 @@ const migration: SolutionDetail[] = [
       body: "Legacy PBX systems need dedicated hardware, maintenance, upgrades and physical infrastructure, and adapting them to new ways of working is slow and expensive.",
     },
     handling: {
-      heading: "Map what matters, modernise the rest",
+      heading: "Map your existing setup, then modernise it",
       body: [
         "We review your users, extensions, numbers, departments, call flows and routing, then map those requirements into the new environment so people keep communicating with minimal disruption.",
         "The migration is also a chance to modernise, introducing cloud calling, remote connectivity, IVR, queues, recording and analytics where they add value.",

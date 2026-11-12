@@ -146,7 +146,7 @@ export function ManagedRouterFirewallSections() {
               The difference
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Same hardware. Different outcome.
+              What changes when the router and firewall are managed
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Managed does not mean better equipment. It means the equipment
@@ -194,7 +194,7 @@ export function ManagedRouterFirewallSections() {
               Four verdicts
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The same four layers, judging four different arrivals
+              How the firewall's four layers check incoming traffic
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               A list of layers makes them sound like a queue a packet joins. They are not. Each one answers a different question, and two of the four arrivals below never get past the one that asks it.

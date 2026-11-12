@@ -332,7 +332,7 @@ export function FeaturesSections() {
               The hour it has to survive
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              A meeting, a call, and a backup that wants the whole line
+              Voice calls stay clear even while a backup runs
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               This is the second of the four above, happening. The backup
@@ -379,7 +379,7 @@ export function FeaturesSections() {
               Add to the line
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The connection is the start of it
+              Security and network services add onto the same connection
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Each of these can be delivered on the same service and supported

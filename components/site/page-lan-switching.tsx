@@ -90,7 +90,7 @@ export function LanSwitchingSections() {
               Segmentation
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Four lanes on the same cable
+              VLANs keep voice, data, wireless and devices separate
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               VLANs keep voice, data, wireless and devices apart, so one noisy

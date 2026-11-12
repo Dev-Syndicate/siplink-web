@@ -64,9 +64,9 @@ export function BenefitsHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            The best outcome is
+            A business connection
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              that nobody mentions it.
+              your team never has to think about.
             </span>
           </h1>
 

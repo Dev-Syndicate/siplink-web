@@ -115,7 +115,7 @@ export default function InternetPage() {
                 The portfolio
               </span>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                Everything between your desk and the internet
+                Connectivity and network services, covered end to end
               </h2>
             </ScrollReveal>
 
@@ -173,7 +173,7 @@ export default function InternetPage() {
               Choose your connectivity
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Start with the line, then add what runs on it
+              Choose your connectivity, then add the network services you need
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               These are not three unrelated products. Pick the connectivity
@@ -260,7 +260,7 @@ export default function InternetPage() {
               Build your complete network
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              We are not selling you a connection
+              Connectivity, security and network infrastructure, as one design
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               We can combine connectivity, security and network infrastructure
@@ -436,7 +436,7 @@ export default function InternetPage() {
               The same five steps, moving
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              What the weeks between order and live actually contain
+              What happens between placing an order and going live
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Five boxes on a page read as five boxes. Watch the rail instead:

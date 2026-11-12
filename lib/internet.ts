@@ -866,7 +866,7 @@ const dedicatedInternet: InternetService = {
       slug: "dedicated-bandwidth",
       title: "Dedicated Bandwidth",
       eyebrow: "Dedicated bandwidth",
-      heading: "Bandwidth provisioned for you, not shared with the street",
+      heading: "Bandwidth provisioned for your business, not shared with other customers",
       tagline:
         "What you buy at five in the morning is what you have at five in the evening.",
       intro:
@@ -917,7 +917,7 @@ const dedicatedInternet: InternetService = {
         "Business-critical SaaS",
       ],
       closing: {
-        heading: "The test is simple",
+        heading: "How to decide if you need dedicated bandwidth",
         body: "If an hour of degraded throughput would cost you money, meetings or customers, the capacity should not be shared. If it would merely be irritating, business internet leased line is the honest answer and we will say so.",
       },
     },
@@ -1037,7 +1037,7 @@ const dedicatedInternet: InternetService = {
       title: "Enterprise Connectivity",
       eyebrow: "Enterprise connectivity",
       heading: "Internet designed around your business",
-      tagline: "Not a bigger plan, a different question.",
+      tagline: "A design built around your requirements, not a bigger version of a standard plan.",
       intro:
         "Enterprise connectivity is not simply a higher bandwidth tier. It is a design problem, and the answer changes with every one of the inputs below.",
       scene: "enterprise",
