@@ -16,13 +16,13 @@ const emphasis: Record<string, string> = {
   "toll-free-numbers": "for customers to call.",
   "virtual-numbers": "Your team has freedom.",
   "number-porting": "Keep your number.",
-  "call-center": "and every agent together.",
-  "predictive-dialer": "conversation moving.",
-  ivr: "a clear way forward.",
-  "call-recording": "Find the detail.",
-  "call-analytics": "behind your calls.",
-  "call-queue": "A plan for every call.",
-  "ai-voice-assistant": "not a menu.",
+  "call-center": "calling from one system.",
+  "predictive-dialer": "spend less time waiting.",
+  ivr: "the right department themselves.",
+  "call-recording": "control who can access it.",
+  "call-analytics": "not just how many.",
+  "call-queue": "instead of a busy signal.",
+  "ai-voice-assistant": "with an AI voice assistant.",
   "voice-api": "inside your product.",
   "sms-api": "The message follows.",
   "whatsapp-api": "on WhatsApp.",
@@ -76,7 +76,7 @@ export function ProductHero({ product, headline, action, secondaryLabel, seconda
           <p className="mt-7 max-w-2xl text-lg leading-relaxed text-pretty text-muted-foreground xl:text-xl">{description ?? product.intro}</p>
           <div className="mt-9 flex flex-wrap gap-4"><Button asChild size="lg" className="max-w-full whitespace-normal text-left"><Link href="/contact">{action}<ArrowRight aria-hidden /></Link></Button><Button asChild size="lg" variant="outline"><Link href={secondaryHref}>{secondaryLabel}</Link></Button></div>
         </div>
-        <ul aria-label={`${product.title} capabilities`} className={cn("flex max-w-3xl flex-wrap gap-2", scene ? "mt-2" : "mt-auto")}>{product.features.slice(0,3).map(({title}) => <li key={title}><Badge variant="outline" className="h-auto rounded-full bg-background/80 px-3 py-2 text-sm font-normal backdrop-blur-sm">{title}</Badge></li>)}</ul>
+        <ul aria-label={`${product.title} capabilities`} className="mt-2 flex max-w-3xl flex-wrap gap-2">{product.features.slice(0,3).map(({title}) => <li key={title}><Badge variant="outline" className="h-auto rounded-full bg-background/80 px-3 py-2 text-sm font-normal backdrop-blur-sm">{title}</Badge></li>)}</ul>
       </div>
       {scene && <figure data-hero-scene className="relative min-w-0">
         {scene}

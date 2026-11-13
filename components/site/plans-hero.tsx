@@ -30,9 +30,9 @@ import { Button } from "@/components/ui/button";
 
 /** The floating chips, ordered to climb with the plinths behind them. */
 const inputs = [
-  { label: "Users", detail: "at once, not on paper", top: "18%", delay: 0 },
-  { label: "Applications", detail: "what they actually run", top: "38%", delay: 0.8 },
-  { label: "Upload", detail: "the half that gets missed", top: "58%", delay: 1.6 },
+  { label: "Users", detail: "active at peak hours", top: "18%", delay: 0 },
+  { label: "Applications", detail: "the tools your team relies on", top: "38%", delay: 0.8 },
+  { label: "Upload", detail: "often overlooked, always sized", top: "58%", delay: 1.6 },
   { label: "Voice", detail: "sized and prioritised", top: "78%", delay: 2.4 },
 ];
 
@@ -79,15 +79,16 @@ export function PlansHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            Start where you are.
+            The right plan for today.
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              Step up when you grow.
+              Room to scale tomorrow.
             </span>
           </h1>
 
           <p className="mt-7 max-w-xl text-lg text-pretty text-muted-foreground">
-            There is no standard office, so we do not sell a standard plan.
-            Your connection is built from what the business actually runs, and changed when that changes, rather than at renewal.
+            Every office runs differently, so we never sell a one-size-fits-all
+            plan. Your connection is sized around the work your business runs,
+            and adjusted as that work changes, not just at renewal.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">

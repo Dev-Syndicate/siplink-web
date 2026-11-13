@@ -72,7 +72,7 @@ const OPENERS: Record<string, () => [InternetOpener, InternetOpener]> = {
   "business-broadband": () => [
     {
       eyebrow: "A floor at eleven",
-      heading: "Five different jobs, one line, nobody waiting",
+      heading: "One connection, running everything your office does at once",
       lede: "This is what a business connection is actually for. A client call, the CRM, a job going out to a customer, a card payment and somebody on the phone three rooms away, all at the same moment, none of them aware of each other.",
       scene: (
         <BroadbandFloorScene label="An office floor at eleven in the morning: a video call with a client, cloud applications loading, files uploading to a customer, a card payment at the front desk and a colleague on the business number over Wi-Fi, all carried by one connection." />
@@ -80,7 +80,7 @@ const OPENERS: Record<string, () => [InternetOpener, InternetOpener]> = {
     },
     {
       eyebrow: "What turns up",
-      heading: "The cupboard, and what is in it",
+      heading: "The equipment that arrives and where it goes",
       lede: "Nobody asks this in a sales meeting and everybody wants to know it. Here is what physically arrives, where each piece goes, and which of it is optional rather than quietly included.",
       scene: (
         <BroadbandKitScene label="The equipment a business internet leased line service puts in a building: fibre into the premises, a managed router and firewall on the wall, LAN switching in the cabinet, access points in the ceiling, and a static IP that sits on the service rather than on any hardware." />
@@ -108,7 +108,7 @@ function ServiceStackSection({ slug, title }: { slug: string; title: string }) {
             Where this sits
           </span>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            The connection is the layer everything else runs on
+            Security and network infrastructure build on this connection
           </h2>
           <p className="mt-4 text-pretty text-muted-foreground">
             {title} is the base of a design rather than the whole of one.

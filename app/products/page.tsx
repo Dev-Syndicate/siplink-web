@@ -1,7 +1,7 @@
 import { ClosingCta } from "@/components/site/closing-cta";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { ConversationFlow } from "@/components/site/conversation-flow";
 import { ProductsHeroVisual } from "@/components/site/products-hero-visual";
@@ -37,8 +37,8 @@ export default function ProductsPage() {
               </Badge>
 
               <h1 className="font-heading mt-6 text-5xl leading-[1.05] font-semibold tracking-tight text-balance sm:text-6xl lg:text-5xl xl:text-6xl">
-                Every customer conversation,{" "}
-                <span className="text-primary">from hello to insight</span>
+                One platform for{" "}
+                <span className="text-primary">every call your business takes</span>
               </h1>
 
               <p className="mt-8 max-w-2xl text-lg text-pretty text-muted-foreground lg:text-xl">
@@ -88,7 +88,7 @@ export default function ProductsPage() {
               The life of a conversation
             </span>
             <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Find your problem, not our product list
+              Find the product that solves what you&rsquo;re dealing with
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Most communication problems sit at one of four moments. Choose the
@@ -110,7 +110,7 @@ export default function ProductsPage() {
               Who we serve
             </span>
             <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The same platform, shaped by your sector
+              Built for how your industry actually works
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               A billing team and a logistics dispatcher need very different
@@ -165,7 +165,7 @@ export default function ProductsPage() {
                 Intelligence
               </span>
               <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                Knowing what was said, not just that someone called
+                Know what your customers actually said
               </h2>
               <p className="mt-4 text-pretty text-background/70">
                 Transcription, summaries and automation turn conversations into
@@ -218,7 +218,7 @@ export default function ProductsPage() {
               Built for
             </span>
             <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              From a first shared line to a global estate
+              Sized for your business today, ready for what&rsquo;s next
             </h2>
           </div>
 
@@ -288,9 +288,8 @@ export default function ProductsPage() {
       </section>
 
       {/* Close */}
-      <ClosingCta heading="Tell us how your customers reach you today" body="We will map it to a configuration, plan the migration and port your existing numbers, before you commit to anything." secondary={{ label: "View pricing", href: "/pricing" }}>
-        <ul className="flex flex-wrap gap-x-6 gap-y-3">{["No obligation", "Talk to an engineer", "Migration planned with you"].map(item => <li key={item} className="flex items-center gap-2 text-sm text-primary-foreground/85"><Check className="size-4 shrink-0" aria-hidden />{item}</li>)}</ul>
-        <p className="max-w-2xl text-xs leading-relaxed text-primary-foreground/75">* Port availability figure as stated in current service documentation. Certifications and availability commitments are subject to scope and confirmation.</p>
+      <ClosingCta heading="Tell us how your customers reach you today" body="We will map it to a configuration, plan the migration and port your existing numbers, before you commit to anything." secondary={{ label: "View pricing", href: "/pricing" }} assurances={["No obligation", "Talk to an engineer", "Migration planned with you"]}>
+        <p className="max-w-2xl text-center text-xs leading-relaxed text-primary-foreground/70">* Port availability figure as stated in current service documentation. Certifications and availability commitments are subject to scope and confirmation.</p>
       </ClosingCta>
     </>
   );

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PhoneCall } from "lucide-react";
 
+import { CtaSignal } from "@/components/site/cta-signal";
 import { Button } from "@/components/ui/button";
 import { site } from "@/lib/site";
 
@@ -52,6 +53,8 @@ export function CtaPanel({
         aria-hidden
         className="pointer-events-none absolute -top-32 -right-24 -z-10 size-[520px] rounded-full bg-white/10 blur-3xl"
       />
+
+      <CtaSignal />
 
       {eyebrow ? (
         <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 font-mono text-[11px] font-semibold tracking-widest uppercase">

@@ -517,7 +517,7 @@ export function FeatureCards() {
               Features
             </span>
             <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              What you can actually do with it
+              Everything Your Business Phone System Can Do
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               A phone system is really the sum of what happens to a call once

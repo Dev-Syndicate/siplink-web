@@ -30,16 +30,16 @@ export function BusinessWifiHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            One access point
+            Wi-Fi designed
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              is not a network.
+              for your whole workplace.
             </span>
           </h1>
 
           <p className="mt-7 max-w-lg text-lg text-pretty text-muted-foreground">
-            However fast the line behind it is. Coverage is decided by walls,
-            glass, racking and how many devices are in a room at once, none of
-            which appear on a floor plan.
+            A single access point cannot cover a workplace, however fast the
+            line behind it. We design coverage around your walls, glass,
+            racking and the number of devices in each room.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -84,14 +84,14 @@ export function BusinessWifiSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Before a quote
+              Our approach
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              A survey, then a design, then a price
+              Survey first, then design, then a quote
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              In that order. A Wi-Fi quote given without walking the floor is a
-              guess with a number attached to it.
+              Every Wi-Fi quote starts with a walk of your floor, so the price
+              reflects your building rather than a guess.
             </p>
           </ScrollReveal>
 
@@ -124,14 +124,14 @@ export function BusinessWifiSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Symptoms
+              Common Wi-Fi problems
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Four complaints, and what is behind them
+              Four common Wi-Fi complaints, and how we fix them
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              If one of these sounds like your office, the cause is almost
-              always design rather than equipment, which is the good news.
+              If any of these sound familiar, the cause is usually design
+              rather than equipment, which means it can be fixed.
             </p>
           </ScrollReveal>
 
@@ -165,7 +165,7 @@ export function BusinessWifiSections() {
 
                 <div className="relative mt-6 border-t border-border pt-5">
                   <p className="font-mono text-[10px] tracking-[0.18em] text-primary uppercase">
-                    What it usually is
+                    The usual cause
                   </p>
                   <p className="mt-2 text-pretty text-muted-foreground">
                     {cause}
@@ -182,13 +182,13 @@ export function BusinessWifiSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Walk it first
+              Coverage planning
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Coverage is a question about a building, not a box
+              Coverage designed around your building
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Every failure above happens somewhere specific, the far room, the room that fills up, the corridor between two access points. Here is the same floor as a plan, with a call that survives the walk across it.
+              Each of these problems happens somewhere specific: the far room, the room that fills up, the corridor between two access points. Here is the same floor as a plan, with a call that stays connected all the way across it.
             </p>
           </ScrollReveal>
 

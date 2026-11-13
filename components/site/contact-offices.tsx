@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { ArrowUpRight, Phone, MapPin } from "lucide-react";
+import { ArrowUpRight, Earth, Phone, MapPin } from "lucide-react";
 
 import { GlowCard } from "@/components/site/glow-card";
 import { OfficeClock } from "@/components/site/office-clock";
@@ -12,6 +12,8 @@ const REGIONS: Record<Office["kind"], { code: string; tag: string; timeZone: str
   operating: { code: "IN", tag: "India", timeZone: "Asia/Kolkata", zone: "IST" },
   registered: { code: "US", tag: "US registered entity", timeZone: "America/Denver", zone: "MT" },
 };
+
+const SERVED = ["US", "Canada", "UK", "Australia"];
 
 const COUNTS = [
   { value: offices.filter((office) => office.kind === "operating").length, label: "offices in India" },
@@ -70,6 +72,41 @@ export function ContactOffices() {
               <OfficeCard key={office.city} office={office} index={i} />
             ))}
           </ul>
+        </div>
+
+        {/* Where customers are, as opposed to where the offices are. */}
+        <div
+          className="reveal-item relative mt-12 overflow-hidden rounded-[1.75rem] border border-primary/15 bg-card/85 p-6 shadow-lg shadow-primary/5 backdrop-blur sm:p-7 lg:mt-14"
+          style={{ "--reveal-index": offices.length + 1 } as CSSProperties}
+        >
+          <span aria-hidden className="pricing-dots pointer-events-none absolute inset-0 text-primary/10" />
+          <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+            <div className="flex items-center gap-4">
+              <span className="relative grid size-14 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-to to-brand-from text-primary-foreground shadow-lg shadow-primary/30">
+                <span aria-hidden className="pricing-orbit absolute -inset-1.5 rounded-full border border-dashed border-primary/40 [--orbit-duration:24s]" />
+                <Earth className="size-6" aria-hidden />
+              </span>
+              <div>
+                <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">Serving customers worldwide</h3>
+                <p className="mt-0.5 text-sm text-muted-foreground">Wherever you are, talk to us.</p>
+              </div>
+            </div>
+
+            <ul className="flex flex-wrap gap-2.5">
+              {SERVED.map((place) => (
+                <li
+                  key={place}
+                  className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-accent/60 px-4 py-2 text-sm font-semibold text-accent-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md hover:shadow-primary/15"
+                >
+                  <span aria-hidden className="size-1.5 rounded-full bg-primary" />
+                  {place}
+                </li>
+              ))}
+              <li className="inline-flex items-center rounded-full border border-dashed border-primary/35 px-4 py-2 text-sm font-medium text-primary">
+                and other global regions
+              </li>
+            </ul>
+          </div>
         </div>
       </RevealGroup>
     </section>

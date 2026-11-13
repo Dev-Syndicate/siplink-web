@@ -47,9 +47,9 @@ export function EnterpriseConnectivityHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            Bandwidth is the
+            Internet connectivity
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              last question.
+              designed around your network.
             </span>
           </h1>
 
@@ -213,7 +213,7 @@ export function EnterpriseConnectivitySections() {
               In order
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              A design, assembling itself
+              The order your network design gets built in
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               This is the order the questions are actually asked in. What you run, then where you are, then what it has to survive, then where it is going. The bandwidth dial stays dark until every one of those has an answer.

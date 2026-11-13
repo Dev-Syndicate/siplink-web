@@ -37,9 +37,9 @@ export function SdWanHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            Three links is not
+            SD-WAN picks the best path,
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              the same as a choice.
+              automatically.
             </span>
           </h1>
 
@@ -207,7 +207,7 @@ export function SdWanSections() {
               What changes
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Opening the tenth branch
+              What changes as you add more branch sites
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               The case for SD-WAN is rarely a single site. It is what happens

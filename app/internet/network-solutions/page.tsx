@@ -157,7 +157,7 @@ export default function NetworkSolutionsPage() {
               One site, six places
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              These are not six separate purchases
+              Six services, each with a place in one network design
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Six cards make them look like six decisions. They are six places
@@ -181,7 +181,7 @@ export default function NetworkSolutionsPage() {
                 Across every service
               </span>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance">
-                Two things that are never a separate line item
+                Monitoring and accountability built into every service
               </h2>
             </ScrollReveal>
 

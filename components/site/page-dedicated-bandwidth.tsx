@@ -56,16 +56,16 @@ export function DedicatedBandwidthHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            Nobody else is
+            Bandwidth reserved
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              on your line.
+              for your business alone.
             </span>
           </h1>
 
           <p className="mt-7 max-w-lg text-lg text-pretty text-muted-foreground">
-            Contended services are sold on a peak figure and delivered on an
-            average one. Dedicated capacity removes the variable: what you buy
-            at five in the morning is what you have at five in the evening.
+            Shared services are sold on a peak figure and delivered on an
+            average one. Dedicated capacity gives you the same performance at
+            five in the evening as at five in the morning.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -155,15 +155,15 @@ export function DedicatedBandwidthSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Contention
+              Shared vs dedicated
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              What &ldquo;up to&rdquo; actually means
+              Why &ldquo;up to&rdquo; speeds fall short when you need them
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              A contended service quotes the best case. The rest of the segment
-              decides what you get, and they all arrive at roughly the hours you
-              are busiest.
+              A shared service quotes the best case. What you actually receive
+              depends on everyone else on the segment, and they tend to be
+              busiest at the same hours you are.
             </p>
           </ScrollReveal>
 
@@ -231,9 +231,9 @@ export function DedicatedBandwidthSections() {
               </div>
 
               <p className="mt-8 text-sm text-pretty text-muted-foreground">
-                Capacity is provisioned against your requirement and delivered to
-                a committed rate. The bar does not move, which is the entire
-                thing you are buying.
+                Capacity is provisioned against your requirement and delivered
+                at a committed rate. The bar does not move, and that
+                consistency is exactly what you are paying for.
               </p>
 
               <Button asChild className="mt-8">
@@ -255,13 +255,13 @@ export function DedicatedBandwidthSections() {
               End to end
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Uncontended at your wall is not the same as uncontended
+              Dedicated capacity, end to end
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              A service can be yours alone on the last stretch and heavily
-              shared three hops later, and no speed figure will tell you
-              which you bought. Follow the circuit out of the building and
-              watch the band: it is the same width the whole way.
+              Some services are dedicated only on the last stretch and heavily
+              shared beyond it, and a speed figure will not tell you which.
+              Follow the circuit out of the building: the capacity stays the
+              same width the whole way.
             </p>
           </ScrollReveal>
 

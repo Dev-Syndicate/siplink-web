@@ -2527,7 +2527,7 @@ export const aiDemo = {
 } as const;
 
 /**
- * "What changes on Monday" — the migration story told as a before/after,
+ * "Your Migration, Without the Disruption" — the story told as a before/after,
  * because the real buying objection is disruption, not features.
  */
 export const switchingStory: {

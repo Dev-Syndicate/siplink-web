@@ -35,14 +35,14 @@ export function PlansSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Four shapes
+              Office profiles
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Which of these is your office?
+              Find the profile that matches your office
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Most businesses we quote for are a version of one of these. None
-              of them is a plan, they are the questions a plan comes out of.
+              Most businesses we work with match one of these profiles. Each is
+              a starting point for the conversation, not a fixed package.
             </p>
           </ScrollReveal>
 
@@ -116,15 +116,15 @@ export function PlansSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              One line
+              Shared connection
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Everything the office does goes down the same line
+              One connection carrying your entire workday
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Laptops, calls, meetings, card terminals, cameras and the backup
-              that runs after everyone leaves. None of them asks first, and
-              none of them waits its turn. Watch them arrive.
+              Laptops, calls, meetings, card terminals, cameras and the
+              overnight backup all share the same line, often at the same
+              moment. See how the load builds through the day.
             </p>
           </ScrollReveal>
 
@@ -142,16 +142,16 @@ export function PlansSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Up and down
+              Upload and download
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The half of the line nobody is sold on
+              Upload speed matters as much as download
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              A connection is advertised on the direction things come in.
-              Almost everything a business complains about happens in the
-              other one, the meeting, the file that will not send, the backup
-              that is still running at nine. Growth shows up there first.
+              Connections are usually advertised on download speed, but most
+              everyday frustrations happen on the upload side: choppy meetings,
+              slow file transfers, backups still running at nine. It is also
+              where growth shows up first.
             </p>
           </ScrollReveal>
 
@@ -167,15 +167,16 @@ export function PlansSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              The honest version
+              Choosing the right service
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              When internet leased line is right, and when it is not
+              Leased line or dedicated internet: finding the right fit
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              A bigger internet leased line plan is not always the answer to an internet leased line
-              problem. If your situation is on the right, we would rather tell
-              you now than sell you the upgrade twice.
+              A bigger plan is not always the answer. If your needs match the
+              list on the right, dedicated internet will serve you better, and
+              we will tell you that upfront rather than sell you an upgrade
+              that falls short.
             </p>
           </ScrollReveal>
 
@@ -209,8 +210,8 @@ export function PlansSections() {
               </ul>
 
               <p className="mt-8 text-sm text-muted-foreground/70">
-                Stay where you are. Add static IP, a managed router or Wi-Fi if
-                you need them.
+                Keep your current service, and add static IP, a managed router
+                or Wi-Fi as you need them.
               </p>
             </ScrollReveal>
 

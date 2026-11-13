@@ -42,9 +42,9 @@ export function AddStaticIpHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            A change to your service,
+            Add a static IP
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              not a new installation.
+              without a new installation.
             </span>
           </h1>
 
@@ -88,14 +88,14 @@ export function AddStaticIpSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              How many
+              Choosing your setup
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              One address, or a block?
+              Choose a single address or a routed block
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              This is the only real decision in the request, and it is decided
-              by what has to be reachable rather than by a number you pick.
+              This is the main decision in your request, and it depends on
+              what needs to be reachable rather than on a number you pick.
             </p>
           </ScrollReveal>
 
@@ -164,14 +164,14 @@ export function AddStaticIpSections() {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-16">
             <ScrollReveal>
               <span className="font-mono text-xs tracking-widest text-primary uppercase">
-                Before you ask
+                Preparation
               </span>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                Five things worth having ready
+                Five details to have ready
               </h2>
               <p className="mt-4 text-pretty text-muted-foreground">
-                None of these is required to start a conversation. Having them
-                is simply the difference between one exchange and four.
+                None of these is required to get started, but having them
+                ready makes your request faster and simpler.
               </p>
 
               <Button asChild className="mt-8">
@@ -213,10 +213,10 @@ export function AddStaticIpSections() {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-16">
             <ScrollReveal>
               <span className="font-mono text-xs tracking-widest text-primary uppercase">
-                Questions
+                FAQs
               </span>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                The ones we are actually asked
+                Static IP questions, answered
               </h2>
             </ScrollReveal>
 
@@ -243,13 +243,13 @@ export function AddStaticIpSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              How the request runs
+              The process
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Five answers, then an address
+              From request to a working static IP, in five steps
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              People expect to ask for an address and be handed one. What actually decides it is what needs it, who configures it and which service it is for, so the request completes in that order, and the address arrives at the end of it.
+              A static IP is assigned once we know what needs it, who configures it and which service it is for. Your request moves through those steps in order, and the address arrives at the end.
             </p>
           </ScrollReveal>
 

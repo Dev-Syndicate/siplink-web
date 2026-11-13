@@ -101,7 +101,7 @@ export function WhatIsStaticIpSections() {
               How it breaks
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Forty-one days, and nobody did anything wrong
+              How a changing IP address quietly breaks a connection
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               This is the failure a dynamic address causes. It is worth reading
@@ -219,7 +219,7 @@ export function WhatIsStaticIpSections() {
               Two kinds of address
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The one on your laptop is not the one that matters
+              Your private network address is not your public one
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Almost everyone has seen a 192.168 address and assumed it was theirs on the internet. It is not, it exists only inside the building. Watch where the two part company, and what each one is actually attached to.

@@ -45,15 +45,14 @@ export function BenefitsSections() {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-16">
             <ScrollReveal>
               <span className="font-mono text-xs tracking-widest text-primary uppercase">
-                An ordinary week
+                Benefits in practice
               </span>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                Six benefits, placed in a real week
+                Six benefits across a typical working week
               </h2>
               <p className="mt-4 text-pretty text-muted-foreground">
-                Anyone can write &ldquo;reliable connectivity&rdquo; on a page.
-                These are the moments that phrase is supposed to mean, one for
-                each day, in the order they tend to happen.
+                Here is what reliable connectivity looks like day to day, with
+                one moment for each day of the working week.
               </p>
 
               <div className="mt-8 flex items-center gap-2.5 rounded-xl border border-border bg-background p-4">
@@ -103,16 +102,15 @@ export function BenefitsSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Three places, one line
+              Work from anywhere
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The week does not stay at the office
+              One connection for the office, on the move and at home
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Monday is the floor arriving at once. Wednesday is a call taken
-              somewhere else entirely. Thursday is somebody starting before
-              seven from a kitchen table. The connection underneath all three
-              is the same one.
+              Whether your team is in the office, taking a call on the road or
+              starting early from home, they reach the same systems through
+              the same reliable connection.
             </p>
           </ScrollReveal>
 
@@ -127,15 +125,14 @@ export function BenefitsSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Who feels it
+              Across your team
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Four people, four different reliefs
+              How each role in your business benefits
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Connectivity is bought by one person and lived with by everyone
-              else. These are the four who notice a change, and the thing each
-              of them actually notices.
+              Connectivity is chosen by one person but used by everyone. Here
+              is what improves for four key roles in your business.
             </p>
           </ScrollReveal>
 
@@ -175,9 +172,9 @@ export function BenefitsSections() {
             className="mt-12 flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-muted/30 p-7"
           >
             <p className="max-w-xl text-pretty text-muted-foreground">
-              If an hour of degraded performance would cost you more than
-              patience, the honest answer is dedicated internet rather than a
-              larger internet leased line plan.
+              If an hour of degraded performance would cost your business more
+              than patience, dedicated internet is a better fit than a larger
+              internet leased line plan.
             </p>
             <Button asChild variant="outline" className="ml-auto">
               <Link href="/internet/dedicated-internet">
@@ -194,15 +191,15 @@ export function BenefitsSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Saturday, 02:00
+              Proactive monitoring
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The benefit you are asleep for
+              Faults caught overnight, before your customers notice
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              The last item on the list above is the hardest one to show,
-              because what it describes is something that did not happen: the
-              call from a customer telling you your office is offline.
+              Our network operations centre watches your connection around the
+              clock, so issues are found and fixed before a customer ever
+              calls to say your office is offline.
             </p>
           </ScrollReveal>
 

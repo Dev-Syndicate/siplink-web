@@ -30,9 +30,9 @@ export function VpnHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            Several networks,
+            One network,
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              or one with doors.
+              with controlled ways in.
             </span>
           </h1>
 
@@ -201,7 +201,7 @@ export function VpnSections() {
               Both shapes, one office
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              These are not alternatives
+              Site-to-site and remote access usually run together
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Site-to-site and remote access read as a choice when they sit side by side. Most estates end up with both, doing different jobs, and with the limit that neither of them is a firewall.

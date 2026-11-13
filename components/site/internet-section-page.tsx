@@ -34,6 +34,9 @@ export function InternetSectionPage({
   afterHero,
   extra,
   visual,
+  interlude,
+  listFirst,
+  centerBody,
 }: {
   service: InternetService;
   section: SectionPage;
@@ -62,6 +65,11 @@ export function InternetSectionPage({
    * panel below is skipped rather than wrapped around it.
    */
   visual?: ReactNode;
+  /** A block placed in the body after the points and list, before the steps. */
+  interlude?: ReactNode;
+  /** Body arrangement options, passed to SectionContent. */
+  listFirst?: boolean;
+  centerBody?: boolean;
 }) {
   const { title, heading, tagline, intro, eyebrow, scene } = section;
   const siblings = getSectionPages(service);
@@ -217,40 +225,15 @@ export function InternetSectionPage({
 
       {afterHero}
 
-      {/* Sibling rail — every section of this service, current one marked. */}
-      <section className="border-b border-border bg-muted/30">
-        <nav
-          aria-label={`${service.title} sections`}
-          className="mx-auto max-w-7xl px-6 py-5 lg:px-10"
-        >
-          <ul className="flex flex-wrap gap-2">
-            {siblings.map((item) => {
-              const current = item.slug === section.slug;
-              return (
-                <li key={item.slug}>
-                  <Link
-                    href={`${servicePath}/${item.slug}`}
-                    aria-current={current ? "page" : undefined}
-                    className={cn(
-                      "inline-flex items-center rounded-full border px-3.5 py-1.5 text-sm transition-colors focus-visible:outline-none",
-                      current
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border hover:border-primary hover:bg-primary/5 hover:text-primary focus-visible:border-primary",
-                    )}
-                  >
-                    {item.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      </section>
-
       {/* Body */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
-          <SectionContent section={section} />
+          <SectionContent
+            section={section}
+            interlude={interlude}
+            listFirst={listFirst}
+            centerBody={centerBody}
+          />
         </div>
       </section>
 
@@ -262,4 +245,5 @@ export function InternetSectionPage({
       />
     </>
   );
+
 }

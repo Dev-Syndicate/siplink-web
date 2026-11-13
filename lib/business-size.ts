@@ -421,7 +421,7 @@ export const businessSizes: SizeContent[] = [
     slug: "small-business",
     label: "Small Business",
     short: "Small Business",
-    headline: "Every call finds someone.",
+    headline: "A phone system simple enough to run yourself.",
     standfirst:
       "If the desk is busy the call rings the next phone, and the next. You set that order once in a browser, there is no system to run and nobody to ring about it.",
     faqs: [
@@ -451,7 +451,7 @@ export const businessSizes: SizeContent[] = [
     slug: "mid-market",
     label: "Mid-Market",
     short: "Mid-Market",
-    headline: "Know who is waiting, and why.",
+    headline: "See every caller waiting, and which team they need.",
     standfirst:
       "Routing puts each caller with the team that can help them. The reports afterwards tell you where to put your people next, across every department and site, on one platform.",
     visual: "queue",
@@ -485,7 +485,7 @@ export const businessSizes: SizeContent[] = [
     slug: "enterprise",
     label: "Enterprise",
     short: "Enterprise",
-    headline: "Keep what you run. Connect all of it.",
+    headline: "Connect every system you already run into one estate.",
     standfirst:
       "Teams, PBX platforms, SIP trunks, CRM and contact centres across every site, joined into one environment you can see and manage. Nothing is switched off to get there.",
     visual: "stack",

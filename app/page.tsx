@@ -152,7 +152,7 @@ export default function Home() {
         {/* The only section on the page that does not sit on the shared
             `max-w-7xl` grid: its inset and its height both come from
             `.hero-frame` in globals.css, where the reasoning lives. */}
-        <div className="hero-frame relative mx-auto flex w-full flex-col justify-center py-12 lg:py-16">
+        <div className="hero-frame relative mx-auto flex w-full flex-col justify-center py-12 lg:py-16 short:py-7">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:items-center lg:gap-12 xl:gap-16">
             <div>
               {/* AI named in the first thing read, not left to the subcopy.
@@ -160,7 +160,7 @@ export default function Home() {
                   call handled sells it better than a feature list. */}
               <Link
                 href="#ai"
-                className="group mb-6 inline-flex items-center gap-2.5 rounded-full border border-primary/20 bg-background/80 py-1 pr-3.5 pl-1 text-sm shadow-xs backdrop-blur-md transition-colors hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                className="group mb-6 short:mb-3.5 inline-flex items-center gap-2.5 rounded-full border border-primary/20 bg-background/80 py-1 pr-3.5 pl-1 text-sm shadow-xs backdrop-blur-md transition-colors hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               >
                 <AiMark />
                 <span className="font-medium">Business communications, simplified</span>
@@ -182,13 +182,16 @@ export default function Home() {
                 </span>
               </h1>
 
-              <p className="mt-5 max-w-xl text-base text-pretty text-muted-foreground lg:text-lg">
-                Bring business calling, contact centre, team communication and
-                AI-powered voice into one reliable platform—with expert support
-                from migration to day-to-day operations.
+              <p className="mt-5 max-w-xl text-base text-pretty text-muted-foreground lg:text-lg short:mt-3.5 short:text-base">
+                One powerful platform for business calling, cloud PBX, SIP
+                trunking, contact centres and AI-powered communications.
+              </p>
+              <p className="mt-3 max-w-xl text-base text-pretty text-muted-foreground lg:text-lg short:mt-2 short:text-base">
+                Keep your existing numbers, connect your teams and automate
+                customer interactions, with expert support every step of the way.
               </p>
 
-              <div className="mt-7 flex flex-wrap items-center gap-4">
+              <div className="mt-7 flex flex-wrap items-center gap-4 short:mt-5">
                 <Button asChild size="lg">
                   <Link href="/contact">Book a Free Consultation</Link>
                 </Button>
@@ -203,7 +206,7 @@ export default function Home() {
                 </Button>
               </div>
 
-              <ul className="mt-8 grid max-w-xl gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
+              <ul className="mt-8 grid max-w-xl gap-x-6 gap-y-3 text-sm sm:grid-cols-2 short:mt-4 short:gap-y-1.5">
                 {heroSupportPoints.map((point) => (
                   <li key={point} className="flex items-center gap-2.5">
                     <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -361,7 +364,7 @@ export default function Home() {
       <AiConsole />
 
       {/* ---------------------------------------------------------------
-          What does your business need? The product chooser. Visitors who do
+          Find the right solution: the product chooser. Visitors who do
           not speak telecom pick the situation closest to theirs, not a
           product name. Laid out as a bento — see `pillarLayout`.
          --------------------------------------------------------------- */}
@@ -376,7 +379,7 @@ export default function Home() {
               Solutions
             </span>
             <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              What Does Your Business Need?
+              Find the Right Communication Solution
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               Pick the situation closest to yours and we will show you the right
@@ -593,7 +596,7 @@ export default function Home() {
               The {site.name} advantage
             </span>
             <h2 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-5xl">
-              More than just a <span className="text-primary">provider.</span>
+              Your Communication Partner, <span className="text-primary">Not Just Your Provider</span>
             </h2>
             <p className="mt-5 text-pretty text-muted-foreground">
               Get dedicated support, seamless migration, and a complete

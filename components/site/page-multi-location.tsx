@@ -34,9 +34,9 @@ export function MultiLocationHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            One office is a task.
+            One network design,
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              Fifty is a structure.
+              across every location.
             </span>
           </h1>
 
@@ -174,10 +174,10 @@ export function MultiLocationSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Sizing
+              Site sizing
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              A branch is not a small head office
+              Each location sized for the work it does
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               The most common mistake in a multi-site estate is giving every
@@ -221,15 +221,15 @@ export function MultiLocationSections() {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-16">
             <ScrollReveal>
               <span className="font-mono text-xs tracking-widest text-primary uppercase">
-                Thresholds
+                Scaling your network
               </span>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                What changes at 5, 20 and 50
+                How your network evolves at 5, 20 and 50 sites
               </h2>
               <p className="mt-4 text-pretty text-muted-foreground">
-                Nothing about a network breaks at a specific number. But the
-                approach that works comfortably at one scale quietly stops
-                working at the next, and these are roughly where.
+                No network breaks at an exact number of sites, but the
+                approach that works at one scale starts to struggle at the
+                next. These are the typical turning points.
               </p>
 
               <Button asChild className="mt-8">
@@ -279,10 +279,10 @@ export function MultiLocationSections() {
               As it grows
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The tenth site should be the same work as the second
+              Add your tenth site as easily as your second
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Watch the estate multiply through the four thresholds above, and watch what does not multiply with it: one platform, one view and one escalation path, whatever the count on the left says.
+              As your network grows through each stage, the essentials stay the same: one platform, one view and one escalation path, however many sites you add.
             </p>
           </ScrollReveal>
 

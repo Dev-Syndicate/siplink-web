@@ -34,9 +34,9 @@ export function BusinessUsesHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            Something out there
+            A fixed address,
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              has to recognise you.
+              for whatever has to find you.
             </span>
           </h1>
 
@@ -167,7 +167,7 @@ export function BusinessUsesSections() {
               All pointing one way
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Six things that have to be told where you are
+              Six systems that need your fixed address configured in
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
               A static IP is the rare thing whose whole value is in the inbound direction. Every wire here points at the same address, and every one of them had it typed into a configuration somewhere else.

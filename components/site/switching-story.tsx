@@ -93,7 +93,7 @@ export function SwitchingStory() {
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-heading text-3xl font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
-            What actually changes on Monday
+            Your Migration, Without the Disruption
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-pretty text-background/70">
             Switching phone systems sounds like a project. In practice we port
