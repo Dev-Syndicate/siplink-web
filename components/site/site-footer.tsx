@@ -260,19 +260,19 @@ export function SiteFooter() {
 
       {/* Credentials, in one row above the bottom bar. */}
       <div className="mt-14 mb-2 px-6 lg:px-10 2xl:px-16">
-        <ul className="flex flex-wrap items-center gap-x-6 gap-y-4 sm:gap-x-10">
+        <ul className="flex items-center justify-between gap-x-3 sm:flex-wrap sm:justify-start sm:gap-x-10 sm:gap-y-4">
           {CERTIFICATIONS.map(({ src, label }) => (
-            <li key={label} className="group">
+            <li key={label} className="group min-w-0">
               {/* The trust strip's shine on hover. Multiply drops the marks'
                   white backgrounds into the footer, and the shine with them
                   wherever it crosses white, so it only shows on the mark. */}
-              <span className="grid h-10 place-items-center sm:h-12">
-                <span className="trust-shine relative block overflow-hidden mix-blend-multiply">
+              <span className="grid h-9 place-items-center sm:h-12">
+                <span className="trust-shine relative block max-w-full overflow-hidden mix-blend-multiply">
                   <Image
                     src={src}
                     alt={label}
                     sizes="96px"
-                    className="h-10 w-auto max-w-full object-contain sm:h-12"
+                    className="h-9 w-auto max-w-full object-contain sm:h-12"
                   />
                 </span>
               </span>
