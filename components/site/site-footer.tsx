@@ -62,8 +62,8 @@ const SHOWN: Record<string, Set<string>> = {
  * and wording, as a plain row of marks; each name is the mark's alt text.
  */
 const CERTIFICATIONS = [
-  { src: isoLogo, label: "ISO Certified" },
   { src: dotLogo, label: "DoT Licensed" },
+  { src: isoLogo, label: "ISO Certified" },
   { src: soc2Logo, label: "SOC 2 Type 2" },
   { src: hipaaLogo, label: "HIPAA-Aligned" },
   { src: gdprLogo, label: "GDPR Compliant" },

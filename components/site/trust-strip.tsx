@@ -34,7 +34,6 @@ type TrustPoint = {
 };
 
 const trustPoints: TrustPoint[] = [
-  { label: "ISO Certified", logo: isoLogo, motion: "trust-shine" },
   {
     label: "DoT Licensed",
     logo: dotLogo,
@@ -42,6 +41,7 @@ const trustPoints: TrustPoint[] = [
     silhouette: dotFull,
     motion: "trust-shine trust-broadcast",
   },
+  { label: "ISO Certified", logo: isoLogo, motion: "trust-shine" },
   { label: "SOC 2 Type 2", logo: soc2Logo, motion: "trust-shine" },
   { label: "HIPAA-Aligned", logo: hipaaLogo, motion: "trust-shine" },
   { label: "GDPR Compliant", logo: gdprLogo, motion: "trust-shine" },
