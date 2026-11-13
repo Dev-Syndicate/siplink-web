@@ -366,7 +366,7 @@ export const industryDetails: IndustryDetail[] = [
   },
   {
     slug: "healthcare",
-    title: "Healthcare",
+    title: "Healthcare & Billing RCM",
     icon: HeartPulse,
     tagline: "Communication designed for healthcare workflows.",
     intro:
