@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 export function InternetOpeners({
   scenes,
 }: {
-  scenes: [InternetOpener, InternetOpener];
+  scenes: InternetOpener[];
 }) {
   return (
     <>
@@ -55,6 +55,30 @@ export function InternetOpeners({
           </div>
         </section>
       ))}
+    </>
+  );
+}
+
+/**
+ * An opener placed inside a page's body rather than as a band of its own:
+ * the same eyebrow, heading and lede, centred over the scene.
+ */
+export function InternetInterlude({ opener }: { opener: InternetOpener }) {
+  return (
+    <>
+      <ScrollReveal className="mx-auto max-w-2xl text-center">
+        <span className="font-mono text-xs tracking-widest text-primary uppercase">
+          {opener.eyebrow}
+        </span>
+        <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+          {opener.heading}
+        </h2>
+        <p className="mt-4 text-pretty text-muted-foreground">{opener.lede}</p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={120} className="mt-12 lg:mt-14">
+        {opener.scene}
+      </ScrollReveal>
     </>
   );
 }

@@ -172,14 +172,15 @@ export function SymmetricalSpeedsSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Which way it goes
+              Upload-heavy workloads
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Five of these six travel upward
+              Most business traffic travels upward
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Only the last one is what a consumer connection is built for. Every
-              other item here is bounded by the half of the line nobody checks.
+              A consumer connection is built for only the last of these. Every
+              other workload depends on upload capacity, the half of the line
+              that rarely gets checked.
             </p>
           </ScrollReveal>
 
@@ -245,13 +246,13 @@ export function SymmetricalSpeedsSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              The mirror
+              Symmetrical in practice
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The same line, read from both ends
+              Equal performance in both directions
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Six kinds of business traffic, each taking its turn. Watch which way each one actually travels, and the two meters either side of the middle, on a symmetrical service they read the same whichever flow is running.
+              Six kinds of business traffic, each taking its turn. See which way each one travels: on a symmetrical service, the meters on both sides read the same whichever flow is running.
             </p>
           </ScrollReveal>
 

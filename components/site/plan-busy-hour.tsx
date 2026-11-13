@@ -83,15 +83,15 @@ export function PlanBusyHour() {
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
         <div className="max-w-2xl">
           <span className="font-mono text-xs tracking-widest text-primary uppercase">
-            The busy hour
+            Peak demand
           </span>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            A working day is not a flat line
+            Sized for your busiest hour, not your quietest
           </h2>
           <p className="mt-4 text-pretty text-muted-foreground">
-            This is the same office across one day. Watch which applications
-            are live at each hour, the connection has to carry the worst of
-            it, not the average of it.
+            The same office across one working day. See which applications
+            are live at each hour: your connection has to handle the peak,
+            not the average.
           </p>
         </div>
 

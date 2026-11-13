@@ -662,15 +662,15 @@ const businessBroadband: InternetService = {
       slug: "plans",
       title: "Plans",
       eyebrow: "Plans",
-      heading: "Sized against how you actually work",
-      tagline: "There is no standard office, so there is no standard plan.",
+      heading: "Business internet plans built around your workload",
+      tagline: "Every office works differently, so every plan is sized to fit.",
       intro:
-        "Rather than publishing a speed tier and hoping it fits, we size a business internet leased line connection against what actually runs on it, how many people, which applications, and how much of the traffic travels upward.",
+        "Instead of offering fixed speed tiers, we size each business internet leased line around what runs on it: how many people use it, which applications they depend on, and how much of the traffic travels upward.",
       body: [
         "Most connections that disappoint were not undersized on paper. They were sized on headcount alone, and nobody asked what those people would be doing: a twelve-person design studio pushing renders to the cloud is a heavier load than a forty-person office reading email.",
-        "So the conversation starts with the work, not the number. The nine factors below are what we actually ask about.",
+        "That is why every recommendation starts with how your team works. These nine factors shape the plan we propose.",
       ],
-      listCaption: "A plan is chosen on",
+      listCaption: "Every plan is sized on",
       list: [
         "Number of users",
         "Internet usage",
@@ -684,25 +684,25 @@ const businessBroadband: InternetService = {
       ],
       points: [
         {
-          title: "Concurrency, not headcount",
+          title: "Sized on peak usage, not headcount",
           description:
             "What matters is how many people are using the connection at once, at the busiest hour of the day, not how many desks there are.",
           icon: Users,
         },
         {
-          title: "The upward half",
+          title: "Upload capacity that keeps pace",
           description:
             "Cloud backup, file sync, video calls and VoIP all travel outward. An office that uploads heavily needs a plan chosen on its upload, not its download.",
           icon: TrendingUp,
         },
         {
-          title: "Voice gets counted separately",
+          title: "Dedicated sizing for voice",
           description:
             "Calls are not large, but they are unforgiving about timing. Where SipLink voice runs over the same line, we size and prioritise for it explicitly.",
           icon: PhoneCall,
         },
         {
-          title: "Headroom for the next year",
+          title: "Room to grow built in",
           description:
             "A plan sized exactly to today is a plan you outgrow. We leave room for the hires and applications you already know are coming.",
           icon: Expand,
@@ -710,16 +710,16 @@ const businessBroadband: InternetService = {
       ],
       steps: [
         {
-          title: "Tell us the work",
+          title: "Share how your team works",
           body: "How many people, what they run, and which applications would hurt most if they slowed down.",
         },
         {
-          title: "We check the address",
+          title: "We confirm availability at your site",
           body: "What is deliverable at your location, and on what timescale. Feasibility comes before a quote, not after it.",
         },
         {
-          title: "We size and quote",
-          body: "A plan matched to the work, with static IP, a managed router or Wi-Fi added only where you actually need them.",
+          title: "Receive a plan sized to fit",
+          body: "A plan matched to your workload, with static IP, a managed router or Wi-Fi added only where you need them.",
         },
       ],
     },
@@ -727,13 +727,13 @@ const businessBroadband: InternetService = {
       slug: "features",
       title: "Features",
       eyebrow: "Features",
-      heading: "Business-ready connectivity",
-      tagline: "Judged by what still works at eleven o'clock on a Monday.",
+      heading: "Business-ready connectivity for every application",
+      tagline: "Built to perform through your busiest hours, not just the quiet ones.",
       intro:
-        "A business connection is not a faster consumer one. It is judged on what keeps running during the busiest hour of the week, and on what can be added to it when the business needs something a household never would.",
+        "A business connection is more than a faster consumer one. It is designed to keep running through the busiest hour of the week, and to support the services a business adds as it grows.",
       scene: "applications",
       body: [
-        "These are the applications business internet leased line is expected to carry, all of them at the same time, on the same line, without one of them starving the others.",
+        "Business internet leased line carries all of these applications at the same time, on the same line, without one slowing down the others.",
       ],
       listCaption: "Supports",
       list: [
@@ -775,13 +775,13 @@ const businessBroadband: InternetService = {
       slug: "business-benefits",
       title: "Business Benefits",
       eyebrow: "Benefits",
-      heading: "Built for everyday business",
-      tagline: "What changes when the office line is a business one.",
+      heading: "Business benefits you notice every day",
+      tagline: "Reliable connectivity that supports how your team works.",
       intro:
-        "The difference between a business connection and a consumer one shows up in ordinary weeks rather than exceptional ones, in whether the Monday video call holds, whether the CRM is quick at four in the afternoon, and in who answers when it is not.",
+        "The difference between a business connection and a consumer one shows up in everyday work: video calls that hold, cloud applications that stay responsive at four in the afternoon, and a support team that answers when you need it.",
       scene: "workday",
       body: [
-        "None of these are dramatic on their own. Together they are the difference between connectivity you think about and connectivity you do not.",
+        "Each benefit is simple on its own. Together, they give you connectivity your team can rely on without a second thought.",
       ],
       points: [
         {
@@ -822,8 +822,8 @@ const businessBroadband: InternetService = {
         },
       ],
       closing: {
-        heading: "When internet leased line stops being enough",
-        body: "If an hour of degraded performance would cost you real money, the honest answer is dedicated internet rather than a larger internet leased line plan. We will say so rather than sell you the upgrade.",
+        heading: "When to consider dedicated internet",
+        body: "If an hour of degraded performance would cost your business real money, dedicated internet is a better fit than a larger internet leased line plan, and we will recommend it upfront.",
       },
     },
   ],
@@ -926,7 +926,7 @@ const dedicatedInternet: InternetService = {
       title: "Symmetrical Speeds",
       eyebrow: "Symmetrical speeds",
       heading: "Equal upload and download performance",
-      tagline: "Businesses do not only download.",
+      tagline: "Built for businesses that send as much as they receive.",
       intro:
         "Consumer connections are built on the assumption that data flows inward. Business traffic does not behave that way, and a connection tuned for consumption starves exactly the traffic an organisation depends on.",
       scene: "symmetry",
@@ -1250,7 +1250,7 @@ const staticIp: InternetService = {
       slug: "add-static-ip",
       title: "Add Static IP",
       eyebrow: "Add static IP",
-      heading: "Need a static IP for your business?",
+      heading: "Add a static IP to your business connection",
       tagline: "Added to an eligible service, usually without changing the line.",
       intro:
         "Static IP can be added to an eligible SipLink internet service for applications that require consistent public addressing. Tell us what needs to reach what, and we will confirm whether your service supports it.",
@@ -1307,7 +1307,7 @@ const managedRouterFirewall: InternetService = {
   eyebrow: "Network solutions",
   tagline: "Secure and simplify your business network.",
   intro:
-    "Your internet connection needs the right equipment and the right policies behind it. A circuit with no considered rules in front of it is a circuit anyone can walk into.",
+    "Your internet connection needs the right equipment and the right policies behind it. Without well-planned rules in front of it, a connection is open to anyone who comes looking.",
   lede: [
     "SipLink can provide managed router and firewall solutions designed to help businesses control traffic, secure network access and keep connectivity reliable, without making it your team's second job.",
   ],
@@ -1324,7 +1324,7 @@ const managedRouterFirewall: InternetService = {
     {
       slug: "capabilities",
       eyebrow: "Capabilities",
-      heading: "What managed covers",
+      heading: "What a managed service covers",
       body: [
         "Scope depends on the solution selected. These are the areas a managed router and firewall service can take on.",
       ],
@@ -1347,7 +1347,7 @@ const managedRouterFirewall: InternetService = {
     {
       slug: "why-managed",
       eyebrow: "Why managed",
-      heading: "Because the person who configured it has left",
+      heading: "Network security that never depends on one person",
       body: [
         "Network equipment tends to be set up once, by whoever was available, and then left alone until it fails. The configuration lives in one person's memory and the firmware quietly ages.",
         "Having equipment managed as part of a broader connectivity service means policy, monitoring and change control belong to a team whose job it is, and the rules are documented rather than remembered.",
@@ -1781,7 +1781,7 @@ const multiLocation: InternetService = {
     {
       slug: "use-cases",
       eyebrow: "Use cases",
-      heading: "What it looks like by sector",
+      heading: "Multi-location networking by industry",
       points: [
         {
           title: "Retail",
@@ -1962,7 +1962,7 @@ export const planProfiles: {
   icon: LucideIcon;
 }[] = [
   {
-    title: "The small team",
+    title: "Small teams",
     people: "5–15 people, one office",
     situation:
       "Everything is in the cloud, nothing is hosted on site, and the connection is only noticed when a call breaks up.",
@@ -1972,7 +1972,7 @@ export const planProfiles: {
     icon: Users,
   },
   {
-    title: "The growing office",
+    title: "Growing offices",
     people: "15–50 people, hiring",
     situation:
       "A plan that fitted last year is now the thing everyone complains about on Monday mornings.",
@@ -1982,7 +1982,7 @@ export const planProfiles: {
     icon: TrendingUp,
   },
   {
-    title: "The branch",
+    title: "Branch offices",
     people: "A site reporting to head office",
     situation:
       "Most of what matters lives somewhere else, and the site needs a dependable path back to it rather than raw speed.",
@@ -1992,7 +1992,7 @@ export const planProfiles: {
     icon: Building2,
   },
   {
-    title: "The customer-facing floor",
+    title: "Customer-facing locations",
     people: "Retail, clinics, hospitality",
     situation:
       "Staff, customers, payment terminals and cameras all share one connection, and the guests are the ones on the phone about it.",
@@ -2055,7 +2055,7 @@ export const planDay: {
  */
 export const planStepUp = {
   stay: {
-    heading: "Business internet leased line is the right answer when",
+    heading: "Business internet leased line is the right fit when",
     points: [
       "Your applications are cloud services rather than systems you host",
       "A slow hour would be irritating rather than expensive",
@@ -2065,7 +2065,7 @@ export const planStepUp = {
     ],
   },
   move: {
-    heading: "It is time for dedicated internet when",
+    heading: "Dedicated internet is the better fit when",
     points: [
       "An hour of degraded throughput costs you money, meetings or customers",
       "You need restoration targets and escalation in writing, not best effort",
@@ -2096,7 +2096,7 @@ export const broadbandFeatureCards: {
 }[] = [
   {
     diagram: "converge",
-    title: "Everything at once, not in turn",
+    title: "Every application, all at once",
     description:
       "Mail, cloud applications, calls, card terminals and backups do not politely queue. A business line is judged on the hour when all of them are running together.",
     detail: [
@@ -2106,7 +2106,7 @@ export const broadbandFeatureCards: {
   },
   {
     diagram: "priority",
-    title: "Voice that holds its place",
+    title: "Clear voice, even under load",
     description:
       "Calls are small but unforgiving about timing. Where SipLink voice runs over the same line, it is sized and prioritised explicitly, so a backup job cannot push a conversation off it.",
     detail: [
@@ -2116,7 +2116,7 @@ export const broadbandFeatureCards: {
   },
   {
     diagram: "headroom",
-    title: "Room to grow into",
+    title: "Capacity that grows with you",
     description:
       "A plan sized exactly to today is one you outgrow by the next quarter. We review bandwidth with you as users, applications and locations increase.",
     detail: [
@@ -2126,7 +2126,7 @@ export const broadbandFeatureCards: {
   },
   {
     diagram: "onehand",
-    title: "One team for the line and the kit",
+    title: "One team for the line and the equipment",
     description:
       "A managed router, business Wi-Fi and the LAN behind it can be delivered and supported alongside the circuit, so a fault is diagnosed once rather than argued between suppliers.",
     detail: [
@@ -2653,7 +2653,7 @@ export const firewallLayers: {
   },
   {
     layer: "04",
-    title: "Watched and recorded",
+    title: "Monitoring and logging",
     body: "Monitoring, configuration backup and change control, so a rule added on a Friday can be explained on the Monday.",
     icon: Activity,
   },
@@ -2915,7 +2915,7 @@ export const siteTiers: {
     tier: "Branch",
     profile: "A handful of people, one job",
     typical:
-      "Sized for what it actually does rather than given a smaller copy of head office. Most multi-site estates are mostly this.",
+      "Sized for the work it does rather than given a smaller copy of head office. Most multi-site estates are mostly this.",
     icon: Store,
   },
   {
