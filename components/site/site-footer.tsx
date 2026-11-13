@@ -62,11 +62,11 @@ const SHOWN: Record<string, Set<string>> = {
  * and wording, as a plain row of marks; each name is the mark's alt text.
  */
 const CERTIFICATIONS = [
-  { src: hipaaLogo, label: "HIPAA-Aligned" },
-  { src: dotLogo, label: "DoT Licensed" },
-  { src: gdprLogo, label: "GDPR Compliant" },
   { src: isoLogo, label: "ISO Certified" },
+  { src: dotLogo, label: "DoT Licensed" },
   { src: soc2Logo, label: "SOC 2 Type 2" },
+  { src: hipaaLogo, label: "HIPAA-Aligned" },
+  { src: gdprLogo, label: "GDPR Compliant" },
 ];
 
 /** Links flagged with a small star, as the design marks them. */
@@ -262,15 +262,19 @@ export function SiteFooter() {
       <div className="mt-14 mb-2 px-6 lg:px-10 2xl:px-16">
         <ul className="flex flex-wrap items-center gap-x-6 gap-y-4 sm:gap-x-10">
           {CERTIFICATIONS.map(({ src, label }) => (
-            <li key={label} className="group/cert">
-              {/* Multiply drops the marks' white backgrounds into the footer. */}
-              <span className="grid h-10 place-items-center overflow-hidden sm:h-12">
-                <Image
-                  src={src}
-                  alt={label}
-                  sizes="96px"
-                  className="h-10 w-auto max-w-full object-contain mix-blend-multiply sm:h-12 transition-transform duration-300 group-hover/cert:-translate-y-0.5"
-                />
+            <li key={label} className="group">
+              {/* The trust strip's shine on hover. Multiply drops the marks'
+                  white backgrounds into the footer, and the shine with them
+                  wherever it crosses white, so it only shows on the mark. */}
+              <span className="grid h-10 place-items-center sm:h-12">
+                <span className="trust-shine relative block overflow-hidden mix-blend-multiply">
+                  <Image
+                    src={src}
+                    alt={label}
+                    sizes="96px"
+                    className="h-10 w-auto max-w-full object-contain sm:h-12"
+                  />
+                </span>
               </span>
             </li>
           ))}

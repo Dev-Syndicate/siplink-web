@@ -26,7 +26,6 @@ import {
   Printer,
   Puzzle,
   Rocket,
-  Route,
   ShieldCheck,
   Spline,
   Tags,
@@ -45,7 +44,8 @@ import {
  * USD figures are the document's INR-to-USD conversion note (page 10).
  *
  * The exceptions come from the company's own later briefs: `paygPlan`, and the
- * Core and Business Pro prices, which replace the document's.
+ * Core and Business Pro prices, which replace the document's, and the
+ * Enterprise Plus list, which leaves out what Business Pro already includes.
  */
 
 export type Feature = { title: string; detail: string; icon: LucideIcon };
@@ -129,24 +129,15 @@ export const plans: Plan[] = [
       "Advanced CloudPBX, IVR and smart routing, call monitoring, AI transcription, AI Voice Assistant, Teams/SBC integration and CRM, ATS and API integration options.",
     description:
       "Advanced business communication designed for growing teams and enterprises that need intelligent call management, seamless integrations, and centralized communications.",
-    featuresHeading: "Features & Capabilities",
+    featuresHeading: "Everything in Business Pro, plus",
     features: [
-      { title: "Business Voice Calling", detail: "Inbound and outbound calling with supported business numbers and calling plans.", icon: PhoneCall },
-      { title: "CloudPBX & Virtual Phone System", detail: "Cloud-based business telephony with centralized user and extension management.", icon: Cloud },
-      { title: "IVR & Auto-Attendant", detail: "Professional greetings, interactive menus, and automated call distribution.", icon: Grid2x2Check },
-      { title: "Smart Call Routing & Queues", detail: "Route calls to the right teams, extensions, or agents.", icon: Route },
       { title: "Call Monitoring & Supervision", detail: "Whisper, Barge-In, and Spy features where supported.", icon: Headphones },
-      { title: "Call Recording", detail: "Record calls for review, training, and quality monitoring.", icon: Mic },
-      { title: "CDR, Analytics & Reporting", detail: "Access call-detail records and reporting tools to monitor communication activity.", icon: ChartColumnIncreasing },
       { title: "AI Voice Assistant", detail: "AI-powered voice interaction capabilities, subject to feature availability.", icon: AudioLines },
       { title: "AI Call Transcription", detail: "Convert supported call recordings into text for review and documentation.", icon: AudioLines },
-      { title: "Web & Mobile Softphone", detail: "Access business calling through supported web, desktop, Android, and iOS applications.", icon: MonitorSmartphone },
       { title: "Microsoft Teams & SBC Integration", detail: "Connect business telephony with compatible Teams and Session Border Controller environments.", icon: Users },
       { title: "CRM, ATS & Custom API Integration", detail: "Integrate supported business applications and communication workflows.", icon: Puzzle },
-      { title: "Business SMS & Messaging", detail: "Messaging capabilities subject to number eligibility, registration, and usage terms.", icon: MessageCircle },
       { title: "Branded Caller Name (CNAM)", detail: "Registered business-name display on supported outbound calls, subject to provider approval.", icon: CircleCheck },
       { title: "DID Numbers & Number Porting", detail: "Additional business numbers, preferred area codes, and porting assistance.", icon: Globe },
-      { title: "Technical Support", detail: "Technical assistance and account support based on your service agreement.", icon: Headphones },
     ],
     addOns: [
       { title: "10DLC Campaign Registration", detail: "Business messaging registration and compliance.", icon: MessageCircle },

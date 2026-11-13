@@ -8,7 +8,7 @@ import { AppsShowcase } from "@/components/site/apps-showcase";
 import { AiMark } from "@/components/site/ai-mark";
 import { AdvantageTable } from "@/components/site/advantage-table";
 import { CtaPanel } from "@/components/site/cta-panel";
-import { CustomerStories } from "@/components/site/customer-stories";
+import { CustomerGlobe } from "@/components/site/customer-globe";
 import { FeatureCards } from "@/components/site/feature-cards";
 import { FaqSection } from "@/components/site/faq-section";
 import { HowItWorks } from "@/components/site/how-it-works";
@@ -643,7 +643,7 @@ export default function Home() {
           and their own tools, so the objection left is whether anyone else
           actually went through with it. The wall of names answers that, and
           it is the last thing read before the closing ask. */}
-      <CustomerStories />
+      <CustomerGlobe />
 
       <HowItWorks />
 

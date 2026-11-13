@@ -13,8 +13,10 @@ import { seoFor } from "@/lib/seo";
 export const metadata: Metadata = seoFor("/industries");
 
 export default function IndustriesPage() {
-  // The first industry leads as a feature; the rest fill the register below.
-  const [featured, ...rest] = industryDetails;
+  // Healthcare leads as a feature and the rest fill the register below. Call
+  // Centers is left off this page; its own page still exists.
+  const featured = industryDetails.find((industry) => industry.slug === "healthcare")!;
+  const rest = industryDetails.filter((industry) => industry !== featured && industry.slug !== "call-centers");
 
   return (
     <>
@@ -66,7 +68,7 @@ export default function IndustriesPage() {
         <div className="flex items-end justify-between gap-4">
           <div className="max-w-xl">
             <p className="font-mono text-xs tracking-[0.2em] text-primary uppercase">
-              {industryDetails.length} sectors served
+              {rest.length + 1} sectors served
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
               Find your industry
@@ -88,7 +90,7 @@ export default function IndustriesPage() {
                 <featured.icon className="size-6" aria-hidden />
               </span>
               <span className="rounded-full border border-primary/30 bg-background px-2.5 py-1 font-mono text-[10px] font-semibold tracking-widest text-primary uppercase">
-                Most deployed
+                HIPAA-Aligned
               </span>
             </div>
             <h3 className="mt-6 text-2xl font-semibold tracking-tight sm:text-3xl">

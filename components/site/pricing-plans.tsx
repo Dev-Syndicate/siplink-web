@@ -39,7 +39,7 @@ export function PricingPlans() {
         <div id="plans" className="mx-auto max-w-[88rem] scroll-mt-32 px-4 pt-14 pb-16 lg:pt-20 sm:px-6 lg:px-10 lg:pb-24">
           {/* Core and Business Pro pair up on a tablet with Enterprise Plus
               below them; on a wide screen Enterprise Plus takes the widest
-              column so its sixteen features run in two columns and its card
+              column so its features run in two columns and its card
               stays near the others' height. */}
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.8fr)] xl:gap-5 2xl:gap-6">
             {plans.map((plan, index) => (

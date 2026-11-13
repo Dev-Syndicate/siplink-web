@@ -383,7 +383,7 @@ export function AppsShowcase() {
             {FEATURES.map(({ label, icon: Icon }) => (
               <li
                 key={label}
-                className="flex items-center gap-3 sm:flex-col sm:items-start sm:gap-2.5 sm:border-l sm:border-border sm:px-7 sm:first:border-l-0 sm:first:pl-0"
+                className="flex items-center gap-3 sm:flex-col sm:items-center sm:gap-2.5 sm:border-l sm:border-border sm:px-7 sm:first:border-l-0 sm:first:pl-0"
               >
                 <span className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
                   <Icon className="size-5" aria-hidden />
