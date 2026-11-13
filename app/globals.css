@@ -412,6 +412,42 @@
 }
 
 @layer components {
+  /* The CTA signal motif: glass tiles swaying as if caught in a breeze, each
+     on its own path so the cluster never moves in lockstep.
+     `--sway-duration`, `--sway-delay`, `--sway-x`, `--sway-y` and
+     `--sway-rotate` vary per tile. Four uneven keyframe stops (rather than a
+     single out-and-back) give the path a drifting, non-mechanical feel, with
+     real travel distance so the motion reads clearly at a glance. */
+  .cta-signal-tile {
+    animation: cta-tile-sway var(--sway-duration, 7s) ease-in-out infinite;
+    animation-delay: var(--sway-delay, 0s);
+  }
+
+  @keyframes cta-tile-sway {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    30% {
+      transform: translate(var(--sway-x, 28px), calc(var(--sway-y, 18px) * -1))
+        rotate(var(--sway-rotate, 6deg));
+    }
+    65% {
+      transform: translate(calc(var(--sway-x, 28px) * -0.6), var(--sway-y, 18px))
+        rotate(calc(var(--sway-rotate, 6deg) * -0.7));
+    }
+    100% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-signal-tile {
+      animation: none;
+    }
+  }
+}
+
+@layer components {
   /* Pricing page atmosphere: lights that drift on long, independent
      paths, and a ribbon of light that sways. Transforms and opacity only. */
   @media (prefers-reduced-motion: no-preference) {

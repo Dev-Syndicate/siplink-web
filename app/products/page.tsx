@@ -1,7 +1,7 @@
 import { ClosingCta } from "@/components/site/closing-cta";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { ConversationFlow } from "@/components/site/conversation-flow";
 import { ProductsHeroVisual } from "@/components/site/products-hero-visual";
@@ -288,9 +288,8 @@ export default function ProductsPage() {
       </section>
 
       {/* Close */}
-      <ClosingCta heading="Tell us how your customers reach you today" body="We will map it to a configuration, plan the migration and port your existing numbers, before you commit to anything." secondary={{ label: "View pricing", href: "/pricing" }}>
-        <ul className="flex flex-wrap gap-x-6 gap-y-3">{["No obligation", "Talk to an engineer", "Migration planned with you"].map(item => <li key={item} className="flex items-center gap-2 text-sm text-primary-foreground/85"><Check className="size-4 shrink-0" aria-hidden />{item}</li>)}</ul>
-        <p className="max-w-2xl text-xs leading-relaxed text-primary-foreground/75">* Port availability figure as stated in current service documentation. Certifications and availability commitments are subject to scope and confirmation.</p>
+      <ClosingCta heading="Tell us how your customers reach you today" body="We will map it to a configuration, plan the migration and port your existing numbers, before you commit to anything." secondary={{ label: "View pricing", href: "/pricing" }} assurances={["No obligation", "Talk to an engineer", "Migration planned with you"]}>
+        <p className="max-w-2xl text-center text-xs leading-relaxed text-primary-foreground/70">* Port availability figure as stated in current service documentation. Certifications and availability commitments are subject to scope and confirmation.</p>
       </ClosingCta>
     </>
   );

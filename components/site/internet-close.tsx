@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Check, PhoneCall } from "lucide-react";
 
+import { CtaSignal } from "@/components/site/cta-signal";
 import { ScrollReveal } from "@/components/site/scroll-reveal";
 import { Button } from "@/components/ui/button";
 import { site } from "@/lib/site";
@@ -55,6 +56,10 @@ export function InternetClose({
           aria-hidden
           className="pointer-events-none absolute -top-32 -right-24 -z-10 size-[520px] rounded-full bg-white/10 blur-3xl"
         />
+
+        {/* Compact: this card runs a checklist below the buttons, so the
+            motif has less clear height to sit in than the other panels. */}
+        <CtaSignal compact />
 
         <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 font-mono text-[11px] font-semibold tracking-widest uppercase">
           <span className="size-1.5 rounded-full bg-current" aria-hidden />
