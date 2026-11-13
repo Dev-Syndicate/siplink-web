@@ -233,7 +233,6 @@ export default async function InternetSectionRoute({
         interlude={interlude ? <InternetInterlude opener={interlude()} /> : undefined}
         listFirst={LIST_FIRST.has(key)}
         centerBody={LIST_FIRST.has(key)}
-        railInBody={LIST_FIRST.has(key)}
       />
     </>
   );
