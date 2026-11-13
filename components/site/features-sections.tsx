@@ -258,15 +258,15 @@ export function FeaturesSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              What makes it a business line
+              Business-grade by design
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Four things a consumer connection will not do
+              Four capabilities that set a business line apart
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Not speed. Speed is the easy part, and the part every provider
-              quotes. These are the four that decide how the line behaves on a
-              working Monday.
+              Speed is only part of the story, and it is the part every
+              provider quotes. These four capabilities decide how your line
+              performs on a busy working day.
             </p>
           </ScrollReveal>
 
@@ -329,16 +329,15 @@ export function FeaturesSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              The hour it has to survive
+              Voice priority
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
               Voice calls stay clear even while a backup runs
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              This is the second of the four above, happening. The backup
-              starts, takes everything the line has left, and finishes. Watch
-              the lane underneath the conversation, and the timer on it,
-              which never restarts.
+              Here is voice priority in action. A backup starts, uses all the
+              spare capacity on the line and finishes, while the call carries
+              on without a single interruption.
             </p>
           </ScrollReveal>
 
@@ -353,15 +352,15 @@ export function FeaturesSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              A year later
+              Built to scale
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The office changes first. The plan follows it.
+              A connection that grows with your office
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              People join, a second room opens, and the kit on the wall grows
-              with them. A plan sized only for the first of those is one you
-              are arguing about by the third.
+              As people join, rooms open and equipment is added, your
+              connection is reviewed and scaled alongside them, so your plan
+              never falls behind the business.
             </p>
           </ScrollReveal>
 
@@ -376,15 +375,15 @@ export function FeaturesSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Add to the line
+              Add-on services
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Security and network services add onto the same connection
+              Add security and network services to the same connection
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Each of these can be delivered on the same service and supported
-              by the same team. Most businesses take one or two; nobody needs
-              all four on day one.
+              Each service is delivered on the same connection and supported
+              by the same team. Start with what you need today and add more as
+              you grow.
             </p>
           </ScrollReveal>
 

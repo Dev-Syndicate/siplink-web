@@ -32,16 +32,16 @@ export function ManagedRouterFirewallHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            The person who set it up
+            Your network, secured
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              has left the company.
+              and managed for you.
             </span>
           </h1>
 
           <p className="mt-7 max-w-lg text-lg text-pretty text-muted-foreground">
-            That is the real state of most business networks. The rules live in
-            one person&rsquo;s memory, the firmware ages quietly, and nobody
-            finds out until the day it matters.
+            In many businesses, firewall rules live in one person&rsquo;s
+            memory and firmware ages quietly. A managed service keeps your
+            router and firewall documented, maintained and monitored.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -86,15 +86,15 @@ export function ManagedRouterFirewallSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              What gets configured
+              Security policy
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              A policy is four decisions, not one
+              Four layers of a well-built security policy
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Most networks have made the first one and drifted through the
-              other three. They are worked through in this order because each
-              depends on the one above it.
+              Most networks get the first layer right and leave the other
+              three to drift. We work through all four in order, because each
+              one builds on the layer before it.
             </p>
           </ScrollReveal>
 
@@ -143,15 +143,15 @@ export function ManagedRouterFirewallSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              The difference
+              Managed vs unmanaged
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              What changes when the router and firewall are managed
+              The difference a managed router and firewall makes
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Managed does not mean better equipment. It means the equipment
-              belongs to a process instead of to whoever was available on the
-              day it was installed.
+              Managed is not about better equipment. It means your equipment
+              runs under a defined process instead of being left to whoever
+              installed it.
             </p>
           </ScrollReveal>
 
@@ -191,13 +191,13 @@ export function ManagedRouterFirewallSections() {
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
           <ScrollReveal className="max-w-2xl">
             <span className="font-mono text-xs tracking-widest text-primary uppercase">
-              Four verdicts
+              Firewall in action
             </span>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              How the firewall's four layers check incoming traffic
+              How the firewall&rsquo;s four layers check incoming traffic
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              A list of layers makes them sound like a queue a packet joins. They are not. Each one answers a different question, and two of the four arrivals below never get past the one that asks it.
+              Each layer answers a different question about incoming traffic. See how four arrivals are checked, and why two of them never get through.
             </p>
           </ScrollReveal>
 

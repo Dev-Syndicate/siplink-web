@@ -62,17 +62,17 @@ export function FeaturesHero() {
           </Badge>
 
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            One line.
+            One connection.
             <span className="bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
               {" "}
-              Everything you run on it.
+              Every application your business runs.
             </span>
           </h1>
 
           <p className="mt-7 text-lg text-pretty text-muted-foreground">
-            A business connection is not a faster consumer one. It is judged on
-            what keeps working during the busiest hour of the week, and on
-            what can be added to it when a household never would.
+            Every application your team relies on, carried on one line that
+            keeps working through the busiest hour of the week, with security
+            and network services added as you need them.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">

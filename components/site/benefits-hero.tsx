@@ -21,17 +21,17 @@ import { Button } from "@/components/ui/button";
 const outcomes = [
   {
     step: "01",
-    title: "It stops being a topic",
-    body: "No standing item in the Monday meeting.",
+    title: "Fewer internet complaints",
+    body: "Connectivity drops off the Monday meeting agenda.",
   },
   {
     step: "02",
-    title: "Your team stops working around it",
-    body: "No scheduling large uploads for the evening.",
+    title: "Work on your own schedule",
+    body: "Large uploads run whenever they are needed.",
   },
   {
     step: "03",
-    title: "You stop being the escalation path",
+    title: "One point of contact",
     body: "One supplier for the line, the router and the calls.",
   },
 ];
@@ -66,15 +66,14 @@ export function BenefitsHero() {
           <h1 className="mt-6 text-4xl leading-[1.04] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
             A business connection
             <span className="block bg-gradient-to-r from-brand-from to-brand-to bg-clip-text text-transparent">
-              your team never has to think about.
+              that simply keeps working.
             </span>
           </h1>
 
           <p className="mt-7 max-w-xl text-lg text-pretty text-muted-foreground">
-            The difference between a business connection and a consumer one
-            shows up in ordinary weeks rather than exceptional ones, in
-            whether the Monday call holds, and in who picks up when it does
-            not.
+            The value of a business connection shows up in everyday work:
+            calls that stay clear, cloud applications that stay fast, and a
+            support team that answers when you need it.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
