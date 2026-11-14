@@ -135,16 +135,6 @@ export function AboutOffices({ offices }: { offices: AboutOffice[] }) {
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
               </motion.div>
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-              <div className="absolute right-4 bottom-4 left-4 rounded-xl border border-border/60 bg-background/80 p-3 backdrop-blur-md">
-                <Badge variant="secondary" className="mb-1 font-mono text-[10px]">
-                  SipLink Communications
-                </Badge>
-                <p className="text-xs font-semibold text-foreground">Three Offices, One Business</p>
-                <p className="text-[11px] text-muted-foreground">
-                  Staffed offices in Chennai, Bangalore, and Hyderabad
-                </p>
-              </div>
             </motion.div>
 
             <motion.div

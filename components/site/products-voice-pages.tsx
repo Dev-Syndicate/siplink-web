@@ -264,7 +264,6 @@ function OnPremisesCapabilities({ product }: { product: ProductDetail }) {
           <Server aria-hidden className="mt-1 size-9 shrink-0 text-primary" />
           <div data-ip-feature><h3 className="text-2xl font-semibold tracking-tight">{control.title}</h3><p className="mt-3 leading-relaxed text-muted-foreground">{control.description}</p></div>
         </div>
-        <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground lg:col-span-3">{product.approach?.body[0]}</p>
       </CardContent>
     </Card>
     <div className="grid gap-x-10 gap-y-9 sm:grid-cols-2 xl:grid-cols-4">

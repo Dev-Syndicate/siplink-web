@@ -100,13 +100,8 @@ export default function PartnersPage() {
               Partnership Models
             </span>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Partner with SipLink
+              Ways to partner with SipLink
             </h2>
-            <p className="mt-4 text-pretty text-muted-foreground">
-              We build long-term relationships with technology vendors, solution
-              providers, resellers, and consultants that share our commitment to
-              simple, reliable business communication.
-            </p>
           </div>
 
           <div className="mt-16 grid gap-8 lg:grid-cols-3">

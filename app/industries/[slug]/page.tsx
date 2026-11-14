@@ -244,7 +244,6 @@ export default async function IndustryDetailPage({
               <Icon className="size-7" aria-hidden />
             </span>
             <h2 className="mt-5 text-2xl font-semibold tracking-tight">{title}</h2>
-            <p className="mt-2 text-sm text-pretty text-muted-foreground">{tagline}</p>
 
             {/* jump nav — echoes a documentation/dossier feel */}
             <nav className="mt-8 hidden border-l border-border lg:block">

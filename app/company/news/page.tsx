@@ -7,7 +7,6 @@ import {
   Cloud,
   Headset,
   PhoneCall,
-  Radio,
 } from "lucide-react";
 
 import { ClosingCta } from "@/components/site/closing-cta";
@@ -15,7 +14,7 @@ import { NewsHero } from "@/components/site/news-hero";
 import { VoiceAiScene, WhatsAppApiScene } from "@/components/site/news-scenes";
 import { TopicRouter, type RouterTopic } from "@/components/site/topic-router";
 import { Button } from "@/components/ui/button";
-import { announcement, site } from "@/lib/site";
+import { site } from "@/lib/site";
 import { PageSchema } from "@/components/site/json-ld";
 import { seoFor } from "@/lib/seo";
 
@@ -66,33 +65,6 @@ export default function NewsPage() {
     <>
       <PageSchema path="/company/news" />
       <NewsHero name={site.name} />
-
-      {/* Featured Company Announcement */}
-      <section className="border-b border-border bg-muted/40 py-8">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-primary/20 bg-background/90 p-5 shadow-sm sm:flex-row sm:items-center">
-            <div className="flex items-center gap-3">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Radio className="size-4 animate-pulse" />
-              </span>
-              <div>
-                <span className="inline-block font-mono text-xs font-semibold tracking-wider text-primary uppercase">
-                  Latest Update
-                </span>
-                <p className="text-sm font-medium text-foreground">
-                  {announcement.message}
-                </p>
-              </div>
-            </div>
-            <Button asChild size="sm" variant="outline" className="shrink-0">
-              <Link href={announcement.href}>
-                {announcement.linkLabel}
-                <ArrowRight className="size-3.5" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
 
       {/* The live announcement, shown working */}
       <VoiceAiScene />
