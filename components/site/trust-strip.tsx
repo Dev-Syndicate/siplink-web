@@ -67,7 +67,7 @@ export function TrustStrip() {
               key={point.label}
               className="group flex flex-col items-center gap-2.5 px-4 text-center max-md:last:col-span-2"
             >
-              {/* Fixed-height slot keeps labels aligned across logos. */}
+              {/* Fixed-height slot keeps the logos aligned. */}
               <span className="flex h-12 items-center">
                 <span
                   className={cn(
@@ -95,7 +95,8 @@ export function TrustStrip() {
                   ))}
                 </span>
               </span>
-              <span className="text-sm font-medium">{point.label}</span>
+              {/* Hidden from sight, kept for screen readers: the logos carry no alt. */}
+              <span className="sr-only">{point.label}</span>
             </li>
           ))}
         </ul>
