@@ -1,5 +1,11 @@
 import Image from "next/image";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
 import { integrationLogos, integrations } from "@/lib/site";
 
 /**
@@ -195,30 +201,45 @@ export function IntegrationWall({
               they sit on one: the Zendesk teal and the black bar under the
               Microsoft mark would otherwise vanish into the section. */}
           <div className="absolute inset-0">
-            {NODES.map(({ name, src, w, h, x, y, fill }) => (
-              <span
-                key={name}
-                // 104 x 72 rather than square. Nine of the ten marks are
-                // wide lockups; on a square plate a 7:1 wordmark covers a
-                // tenth of it and reads as tiny however high the fill goes.
-                // Widening the plate is what actually makes them legible.
-                className="absolute flex aspect-[104/72] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-background px-[1.2%] shadow-lg"
-                style={{
-                  left: pct(x, VIEW.w),
-                  top: pct(y, VIEW.h),
-                  width: pct(104, VIEW.w),
-                }}
-              >
-                <Image
-                  src={src}
-                  alt=""
-                  width={w}
-                  height={h}
-                  sizes="140px"
-                  style={{ width: `${fill}%` }}
-                  className="h-auto object-contain"
-                />
-              </span>
+            {NODES.map(({ name, description, src, w, h, x, y, fill }) => (
+              // Hovering a plate says what the integration does. The card
+              // opens toward the hub, so it never runs off the section edge.
+              <HoverCard key={name} openDelay={80} closeDelay={60}>
+                <HoverCardTrigger asChild>
+                  <span
+                    // 104 x 72 rather than square. Nine of the ten marks are
+                    // wide lockups; on a square plate a 7:1 wordmark covers a
+                    // tenth of it and reads as tiny however high the fill
+                    // goes. Widening the plate is what makes them legible.
+                    className="absolute flex aspect-[104/72] -translate-x-1/2 -translate-y-1/2 cursor-default items-center justify-center rounded-2xl bg-background px-[1.2%] shadow-lg ring-2 ring-transparent transition-[scale,box-shadow] duration-200 hover:scale-105 hover:ring-primary/60"
+                    style={{
+                      left: pct(x, VIEW.w),
+                      top: pct(y, VIEW.h),
+                      width: pct(104, VIEW.w),
+                    }}
+                  >
+                    <Image
+                      src={src}
+                      alt=""
+                      width={w}
+                      height={h}
+                      sizes="140px"
+                      style={{ width: `${fill}%` }}
+                      className="h-auto object-contain"
+                    />
+                  </span>
+                </HoverCardTrigger>
+                <HoverCardContent
+                  side={x < VIEW.w / 2 ? "right" : "left"}
+                  sideOffset={12}
+                  className="p-4"
+                >
+                  <p className="font-semibold">{name}</p>
+                  <p className="mt-1 text-pretty text-muted-foreground">
+                    {description}
+                  </p>
+                </HoverCardContent>
+              </HoverCard>
             ))}
 
             {/* The hub. Bigger, brighter, and the only thing with a halo. */}

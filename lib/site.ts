@@ -1210,6 +1210,8 @@ export const companyVideo = {
 export const integrationLogos = [
   {
     name: "Salesforce",
+    description:
+      "Call from your Salesforce records, with click-to-dial and call logging where supported.",
     src: "/new-integrations/salesforce.png",
     w: 616,
     h: 431,
@@ -1217,22 +1219,44 @@ export const integrationLogos = [
   },
   {
     name: "HubSpot",
+    description:
+      "Dial contacts from HubSpot and keep call activity alongside the deal, where supported.",
     src: "/new-integrations/hubspot.png",
     w: 704,
     h: 201,
     fill: 92,
   },
-  { name: "Zoho", src: "/new-integrations/zoho.png", w: 386, h: 167, fill: 92 },
+  {
+    name: "Zoho",
+    description:
+      "Connect calling to Zoho CRM, so contacts and call history sit together.",
+    src: "/new-integrations/zoho.png",
+    w: 386,
+    h: 167,
+    fill: 92,
+  },
   {
     name: "Bitrix24",
+    description:
+      "Bring business calling into Bitrix24 for your sales and service teams.",
     src: "/new-integrations/bitrix.png",
     w: 408,
     h: 80,
     fill: 92,
   },
-  { name: "Odoo", src: "/new-integrations/odoo.png", w: 451, h: 145, fill: 92 },
+  {
+    name: "Odoo",
+    description:
+      "Link calls to the customers and records your team manages in Odoo.",
+    src: "/new-integrations/odoo.png",
+    w: 451,
+    h: 145,
+    fill: 92,
+  },
   {
     name: "Microsoft 365",
+    description:
+      "Work alongside Microsoft 365, with Teams calling through SBC integration.",
     src: "/new-integrations/microsoft2.png",
     w: 763,
     h: 127,
@@ -1240,6 +1264,8 @@ export const integrationLogos = [
   },
   {
     name: "Google Workspace",
+    description:
+      "Fit calling into the Google Workspace tools your team uses every day.",
     src: "/new-integrations/google2.png",
     w: 481,
     h: 65,
@@ -1247,6 +1273,8 @@ export const integrationLogos = [
   },
   {
     name: "WhatsApp",
+    description:
+      "Make WhatsApp part of the wider customer communication workflow.",
     src: "/new-integrations/whatsapp.png",
     w: 323,
     h: 77,
@@ -1254,6 +1282,8 @@ export const integrationLogos = [
   },
   {
     name: "Zendesk",
+    description:
+      "Connect support calls to Zendesk, with caller details and call logging where supported.",
     src: "/new-integrations/zendesk.png",
     w: 748,
     h: 151,
@@ -1261,6 +1291,8 @@ export const integrationLogos = [
   },
   {
     name: "CEIPAL",
+    description:
+      "Recruiting calls from CEIPAL, built for high-volume outbound hiring teams.",
     src: "/new-integrations/ceipal2.png",
     w: 515,
     h: 170,
