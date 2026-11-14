@@ -16,7 +16,7 @@ export const openGraphDefaults = {
  * characters and descriptions within ~160, the lengths search results show.
  */
 export const seo = {
-  "/": ["VoIP Business Solutions in Chennai | SipLink", "SipLink delivers VoIP business solutions and business communication solutions in Chennai: cloud phone systems, SIP trunking and hosted PBX.", "Home"],
+  "/": ["VoIP Business Solutions in India & USA | SipLink", "SipLink delivers VoIP business solutions across India and the USA: cloud phone systems, SIP trunking, hosted PBX and business communication.", "Home"],
 
   "/products": ["Cloud Phone Systems in Chennai | SipLink", "Cloud phone systems, unified communications and business-grade VoIP for Chennai offices, from one provider and one network.", "Products"],
   "/products/sip-trunking": ["VoIP SIP Trunking Services in Chennai | SipLink", "VoIP SIP trunking services in Chennai: connect your existing PBX to SipLink's IP network for lower call costs and guaranteed call quality.", "SIP Trunking"],
