@@ -123,6 +123,7 @@ export default async function IndustryDetailPage({
     idealFor,
     gain,
     highlightCards,
+    cta,
   } = industry;
 
   // Up to four other industries for the closing strip; the rest live on the
@@ -525,8 +526,8 @@ export default async function IndustryDetailPage({
             Built for {title.toLowerCase()}
           </span>
 
-          <h2 className="font-heading mt-6 max-w-xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
-            Let&rsquo;s map this to your {title.toLowerCase()} workflows
+          <h2 className="font-heading mt-6 max-w-3xl text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+            {cta ?? <>Let&rsquo;s map this to your {title} workflows</>}
           </h2>
 
           <p className="mt-5 max-w-xl text-pretty text-primary-foreground/85 lg:text-lg">

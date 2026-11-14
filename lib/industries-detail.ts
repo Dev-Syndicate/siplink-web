@@ -130,6 +130,8 @@ export type IndustryDetail = {
   gain: { heading: string; body: string };
   /** Highlight cards rendered above the closing CTA. */
   highlightCards?: IndustryHighlightCard[];
+  /** Closing CTA line; pages without one use the generic copy. */
+  cta?: string;
 };
 
 export const industryDetails: IndustryDetail[] = [
@@ -238,6 +240,7 @@ export const industryDetails: IndustryDetail[] = [
     title: "Staffing & Recruitment",
     icon: UsersRound,
     tagline: "Connect recruiters. Engage candidates. Accelerate hiring.",
+    cta: "Connect recruiters, candidates and clients through one business communication platform.",
     intro:
       "Recruitment moves at the speed of communication. SIPLINK brings business voice, candidate SMS, CloudPBX, CRM integrations, and intelligent communication tools together on one platform—helping recruitment teams stay connected from the first interaction through successful placement.",
     parties: ["Candidates", "Recruiters", "Employers", "Hiring Managers"],
@@ -369,6 +372,7 @@ export const industryDetails: IndustryDetail[] = [
     title: "Healthcare & Billing RCM",
     icon: HeartPulse,
     tagline: "Communication designed for healthcare workflows.",
+    cta: "Improve how your billing team handles incoming calls. Discuss your requirements with SipLink.",
     intro:
       "Bring voice, fax, messaging and high-volume communication between patients, providers, insurers and internal teams together on a HIPAA-compliant platform built for how care organisations actually work.",
     parties: ["Patients", "Providers", "Insurers", "Internal teams"],
@@ -929,6 +933,7 @@ export const industryDetails: IndustryDetail[] = [
     title: "IT & SaaS",
     icon: Cloud,
     tagline: "Build communication directly into your technology.",
+    cta: "Give customers a more reliable way to reach your support team.",
     intro:
       "Embed calling and messaging into your own applications with programmable voice, SMS, WhatsApp, WebRTC and SIP, then add communication intelligence on top.",
     parties: ["Developers", "Applications", "End users", "Customers"],
