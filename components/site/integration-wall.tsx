@@ -230,7 +230,7 @@ export function IntegrationWall({
                   </span>
                 </HoverCardTrigger>
                 <HoverCardContent
-                  side={x < VIEW.w / 2 ? "right" : "left"}
+                  side={x < VIEW.w / 2 ? "left" : "right"}
                   sideOffset={12}
                   className="p-4"
                 >
