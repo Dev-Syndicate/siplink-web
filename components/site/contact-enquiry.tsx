@@ -144,7 +144,7 @@ function BrandSide() {
       </div>
 
       <h1 className="mt-9 max-w-xl font-heading text-[clamp(2.25rem,4.1vw,3.75rem)] leading-[1.06] font-semibold tracking-[-0.03em] text-balance lg:mt-11">
-        Let&rsquo;s build a better way to <span className="text-accent">connect.</span>
+        Let&rsquo;s Find the Right Communication Setup <span className="text-accent">for Your Business</span>
       </h1>
       <p className="mt-4 max-w-md text-base text-pretty text-primary-foreground/90 sm:text-lg">
         Tell us what your business needs. We&rsquo;ll help you find the right communication solution.
