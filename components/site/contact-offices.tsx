@@ -182,13 +182,17 @@ function OfficeCard({ office, index }: { office: Office; index: number }) {
           </address>
 
           <div className="mt-auto flex flex-col items-start gap-3">
-            <a
-              href={`tel:${office.phone.replace(/\s/g, "")}`}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/25 px-3.5 py-2.5 text-sm font-medium whitespace-nowrap text-primary transition-all duration-300 outline-none hover:border-transparent hover:bg-gradient-to-r hover:from-brand-to hover:to-brand-from hover:text-primary-foreground hover:shadow-md hover:shadow-primary/30 focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <Phone className="size-4" aria-hidden />
-              {office.phone}
-            </a>
+            {office.phones.map((phone) => (
+              <a
+                key={phone}
+                href={`tel:${phone.replace(/\s/g, "")}`}
+                aria-label={`Call ${office.city} on ${phone}`}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/25 px-3.5 py-2.5 text-sm font-medium whitespace-nowrap text-primary transition-all duration-300 outline-none hover:border-transparent hover:bg-gradient-to-r hover:from-brand-to hover:to-brand-from hover:text-primary-foreground hover:shadow-md hover:shadow-primary/30 focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <Phone className="size-4" aria-hidden />
+                {phone}
+              </a>
+            ))}
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`}
               target="_blank"

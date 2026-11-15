@@ -441,7 +441,8 @@ export type Office = {
   city: string;
   entity: string;
   address: string[];
-  phone: string;
+  /** In order; the first is the office's main line. */
+  phones: string[];
   /** India is where SipLink actually operates; the US entity is registered only. */
   kind: "operating" | "registered";
 };
@@ -460,7 +461,7 @@ export const offices: Office[] = [
       "Gopathi Narayanaswami Chetty Rd, T. Nagar",
       "Chennai, Tamil Nadu 600017",
     ],
-    phone: "+91 44 48636371",
+    phones: ["+91 82172 02075", "+91 44 4863 6371"],
     kind: "operating",
   },
   {
@@ -471,7 +472,7 @@ export const offices: Office[] = [
       "Cessna Business Park, Marathahalli, Outer Ring Rd",
       "Kadubeesanahalli, Bengaluru 560037",
     ],
-    phone: "+91 82172 02075",
+    phones: ["+91 82172 02075"],
     kind: "operating",
   },
   {
@@ -482,14 +483,14 @@ export const offices: Office[] = [
       "Ayyappa Society, VIP Hills, Silicon Valley, Madhapur",
       "Hyderabad, Telangana 500081",
     ],
-    phone: "+91 82172 02075",
+    phones: ["+91 93634 57004"],
     kind: "operating",
   },
   {
     city: "United States",
     entity: "SIPLINK COMMUNICATIONS LLC",
     address: ["30 N Gould St, Ste R", "Sheridan, WY 82801"],
-    phone: "+1 276 695 1464",
+    phones: ["+1 276 695 1464"],
     kind: "registered",
   },
 ];

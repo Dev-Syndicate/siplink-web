@@ -229,13 +229,13 @@ export function SiteFooter() {
                   United States
                 </p>
                 <a
-                  href={`tel:${usOffice.phone.replace(/\s/g, "")}`}
+                  href={`tel:${usOffice.phones[0].replace(/\s/g, "")}`}
                   className="group/contact flex items-center gap-3 font-medium text-foreground outline-none hover:text-primary focus-visible:text-primary"
                 >
                   <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary transition-colors duration-300 group-hover/contact:bg-primary group-hover/contact:text-primary-foreground">
                     <Phone className="size-4" aria-hidden />
                   </span>
-                  {usOffice.phone}
+                  {usOffice.phones[0]}
                 </a>
                 <div className="mt-4 flex items-start gap-3">
                   <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">

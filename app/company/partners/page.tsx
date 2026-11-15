@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import { ClosingCta } from "@/components/site/closing-cta";
-import { IntegrationWall } from "@/components/site/integration-wall";
+import { IntegrationOrbit } from "@/components/site/integration-orbit";
 import { PartnersHero } from "@/components/site/partners-hero";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,18 +27,18 @@ export default function PartnersPage() {
       <PageSchema path="/company/partners" />
       <PartnersHero name={site.name} />
 
-      {/* The wired-hub diagram used on the homepage, carrying the same
-          integrations this page already names — the real signature of a
-          partner page is seeing the wire land, not a logo tile. */}
+      {/* The same integrations as the homepage and CRM page, drawn as an
+          orbit rather than their wired patch panel, so the partners page
+          does not repeat a section the visitor has already seen. */}
       <div id="integrations" className="scroll-mt-24">
-        <IntegrationWall
+        <IntegrationOrbit
           heading="Every integration, one connected ecosystem"
           description="SipLink sits in the middle of the tools your team already runs — CRM, helpdesk, collaboration, and recruiting software — so calls, contacts, and records stay in one place."
         />
       </div>
 
       {/* Integration Categories — a plain list rather than another card grid,
-          since the wall above already carries the visual weight. */}
+          since the orbit above already carries the visual weight. */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
         <div className="mx-auto max-w-2xl text-center">
           <span className="font-mono text-xs font-semibold tracking-widest text-primary uppercase">

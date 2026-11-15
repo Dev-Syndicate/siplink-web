@@ -53,6 +53,10 @@
      brand pink and neutrals, which cannot tell three states apart. */
   --color-info: var(--info);
   --color-success: var(--success);
+  --color-whatsapp: var(--whatsapp);
+  --color-whatsapp-strong: var(--whatsapp-strong);
+  --color-whatsapp-deep: var(--whatsapp-deep);
+  --color-whatsapp-foreground: oklch(1 0 0);
   --font-heading: var(--font-geist-sans);
   --font-accent: var(--font-script);
   --font-sans: var(--font-geist-sans);
@@ -148,6 +152,10 @@
   --chart-5: oklch(0.269 0 0);
   --info: oklch(0.55 0.16 255);
   --success: oklch(0.56 0.13 155);
+  /* WhatsApp brand green for its mark, and a deeper one that carries white text. */
+  --whatsapp: oklch(0.77 0.2 150);
+  --whatsapp-strong: oklch(0.5 0.12 162);
+  --whatsapp-deep: oklch(0.27 0.06 168);
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -188,6 +196,9 @@
   --chart-5: oklch(0.269 0 0);
   --info: oklch(0.72 0.13 255);
   --success: oklch(0.74 0.14 155);
+  --whatsapp: oklch(0.77 0.2 150);
+  --whatsapp-strong: oklch(0.55 0.13 162);
+  --whatsapp-deep: oklch(0.22 0.05 168);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
