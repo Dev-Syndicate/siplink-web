@@ -5,6 +5,7 @@ import type { LucideIcon } from "lucide-react";
 import { ContactEnquiry } from "@/components/site/contact-enquiry";
 import { ContactOffices } from "@/components/site/contact-offices";
 import { GlowCard } from "@/components/site/glow-card";
+import { WhatsAppSupportCard } from "@/components/site/whatsapp-support-card";
 import {
   CardContent,
   CardDescription,
@@ -48,6 +49,9 @@ export default function ContactPage() {
               </GlowCard>
             ))}
           </div>
+
+          {/* The fastest of those channels, with the number to tap. */}
+          <WhatsAppSupportCard className="mt-10" />
         </div>
       </section>
 

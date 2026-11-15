@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Iphone } from "@/components/ui/iphone";
 
 /** The support line on WhatsApp, as dialled and as written. */
-const WHATSAPP = {
+export const WHATSAPP = {
   href: "https://wa.me/918217202075",
   display: "+91 82172 02075",
 } as const;
