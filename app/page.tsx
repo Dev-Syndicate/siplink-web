@@ -13,7 +13,6 @@ import { FeatureCards } from "@/components/site/feature-cards";
 import { FaqSection } from "@/components/site/faq-section";
 import { HowItWorks } from "@/components/site/how-it-works";
 import { IntegrationWall } from "@/components/site/integration-wall";
-import { WhatsAppSupport } from "@/components/site/whatsapp-support";
 import { SectorStage } from "@/components/site/sector-stage";
 import { SwitchingStory } from "@/components/site/switching-story";
 import { TrustStrip } from "@/components/site/trust-strip";
@@ -645,10 +644,6 @@ export default function Home() {
           actually went through with it. The wall of names answers that, and
           it is the last thing read before the closing ask. */}
       <CustomerGlobe />
-
-      {/* Straight after the reviews, which praise the WhatsApp support by
-          name: the visitor reads it, then gets the number. */}
-      <WhatsAppSupport />
 
       <HowItWorks />
 

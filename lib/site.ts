@@ -433,7 +433,7 @@ export const homeFaqs: { question: string; answer: string }[] = [
   {
     question: "What is the minimum number of users or lines?",
     answer:
-      "Our published plans are priced per user per month and require a minimum of 10 lines. SIP trunking, call center and AI voice are priced to your requirements, so contact us for a custom quote.",
+      "There is no minimum. Our published plans are priced per user per month, so you can start with as few lines as you need and add more as you grow. SIP trunking, call center and AI voice are priced to your requirements, so contact us for a custom quote.",
   },
 ];
 
@@ -520,7 +520,7 @@ export const planAssurances: {
     label: "Included in all plans",
     icon: PhoneCall,
   },
-  { value: "Minimum 10 lines", label: "Scale as you grow", icon: UsersRound },
+  { value: "No minimum lines", label: "Scale as you grow", icon: UsersRound },
   {
     value: "No hidden fees",
     label: "Transparent pricing",
@@ -545,7 +545,7 @@ export const planBaseFeatures = [
 ];
 
 /**
- * Prices and the 10-line minimum are as published on siplink.in.
+ * Prices are as published on siplink.in. There is no minimum number of lines.
  * Do not add an uptime SLA, HubSpot, or API access — none are offered.
  * See content.md.
  */
@@ -710,7 +710,7 @@ export const unlimitedPlans = [
 ];
 
 export const planNote =
-  "All plans are priced per user, per month and require a minimum of 10 lines. Taxes and regulatory fees are not included.";
+  "All plans are priced per user, per month, with no minimum number of lines. Taxes and regulatory fees are not included.";
 
 export type Simple = { title: string; description: string; icon: LucideIcon };
 
@@ -828,27 +828,31 @@ export const assurances: Simple[] = [
 ];
 
 /** Support channels from the Support page. */
-export const supportChannels: Simple[] = [
+export const supportChannels: (Simple & { href?: string })[] = [
   {
     title: "Email support",
+    href: `mailto:${site.email}`,
     description:
       "Write to us for product information or the services we provide. Answered around the clock.",
     icon: MessageCircle,
   },
   {
     title: "Live chat",
+    href: "https://tawk.to/chat/5f86f9ada2eb1124c0bce350/1k6ed0su8",
     description:
       "Chat with our team for a quick answer or to arrange the service you need.",
     icon: MessagesSquare,
   },
   {
     title: "Support tickets",
+    href: "https://wa.me/918217202075",
     description:
       "Raise a ticket for your query and our expert team will be in touch.",
     icon: Ticket,
   },
   {
     title: "24x7 call centre",
+    href: `tel:${site.phone.replace(/\s/g, "")}`,
     description:
       "Any issue with the product, or any question about the company, we are a call away.",
     icon: Headset,

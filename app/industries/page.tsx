@@ -90,7 +90,7 @@ export default function IndustriesPage() {
                 <featured.icon className="size-6" aria-hidden />
               </span>
               <span className="rounded-full border border-primary/30 bg-background px-2.5 py-1 font-mono text-[10px] font-semibold tracking-widest text-primary uppercase">
-                HIPAA-Aligned
+                HIPAA-Compliant
               </span>
             </div>
             <h3 className="mt-6 text-2xl font-semibold tracking-tight sm:text-3xl">

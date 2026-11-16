@@ -264,7 +264,7 @@ export function WhySipLinkHero({ name }: { name: string }) {
             <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
               Verified Standards:
             </span>
-            {["DoT Certified", "ISO/IEC 27001", "SOC 2 Type 2", "HIPAA Compliant", "GDPR Aligned"].map((item) => (
+            {["DoT Certified", "ISO/IEC 27001", "SOC 2 Type 2", "HIPAA Compliant", "GDPR Compliant"].map((item) => (
               <Badge
                 key={item}
                 variant="outline"

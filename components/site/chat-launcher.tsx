@@ -24,6 +24,18 @@ declare global {
   }
 }
 
+/** tawk.to's own chat page for this widget: the fallback before the widget loads. */
+export const TAWK_CHAT_URL = "https://tawk.to/chat/5f86f9ada2eb1124c0bce350/1k6ed0su8";
+
+/** Opens the tawk.to chat window. Returns false if tawk.to has not loaded yet. */
+export function openTawkChat() {
+  const tawk = window.Tawk_API;
+  if (!tawk?.maximize) return false;
+  tawk.showWidget?.();
+  tawk.maximize();
+  return true;
+}
+
 /**
  * The live chat's button. tawk.to's own bubble sits in an iframe and cannot be
  * restyled, so it stays hidden and this opens tawk.to's chat window instead,
@@ -54,9 +66,7 @@ export function ChatLauncher() {
   }, []);
 
   const openChat = () => {
-    window.Tawk_API?.showWidget?.();
-    window.Tawk_API?.maximize?.();
-    setOpen(true);
+    if (openTawkChat()) setOpen(true);
   };
 
   return (

@@ -176,7 +176,7 @@ export default function PrivacyPolicyPage() {
 
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">
-              6. Healthcare & HIPAA Alignment
+              6. Healthcare & HIPAA Compliance
             </h2>
             <p>
               For healthcare providers and medical billing organizations handling

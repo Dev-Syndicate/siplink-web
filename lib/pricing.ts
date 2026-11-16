@@ -132,8 +132,8 @@ export const plans: Plan[] = [
     featuresHeading: "Everything in Business Pro, plus",
     features: [
       { title: "Call Monitoring & Supervision", detail: "Whisper, Barge-In, and Spy features where supported.", icon: Headphones },
-      { title: "AI Voice Assistant", detail: "AI-powered voice interaction capabilities, subject to feature availability.", icon: AudioLines },
-      { title: "AI Call Transcription", detail: "Convert supported call recordings into text for review and documentation.", icon: AudioLines },
+      { title: "AI Voice Assistant", detail: "AI-powered voice interaction capabilities, subject to feature availability. Charged based on usage.", icon: AudioLines },
+      { title: "AI Call Transcription", detail: "Convert supported call recordings into text for review and documentation. Charged based on usage.", icon: AudioLines },
       { title: "Microsoft Teams & SBC Integration", detail: "Connect business telephony with compatible Teams and Session Border Controller environments.", icon: Users },
       { title: "CRM, ATS & Custom API Integration", detail: "Integrate supported business applications and communication workflows.", icon: Puzzle },
       { title: "Branded Caller Name (CNAM)", detail: "Registered business-name display on supported outbound calls, subject to provider approval.", icon: CircleCheck },
@@ -146,7 +146,7 @@ export const plans: Plan[] = [
       { title: "Specialized Integrations", detail: "Custom implementation and advanced API workflows.", icon: Spline },
       { title: "Enhanced AI Usage", detail: "Additional transcription or AI usage where applicable.", icon: AudioLines },
     ],
-    note: "Taxes extra, as applicable. Optional add-ons and usage-based charges may apply.",
+    note: "Taxes extra, as applicable. AI Voice Assistant and AI Call Transcription are charged based on usage. Optional add-ons and other usage-based charges may apply.",
   },
 ];
 

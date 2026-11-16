@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 
+import { ChannelLink } from "@/components/site/channel-link";
 import { ContactEnquiry } from "@/components/site/contact-enquiry";
 import { ContactOffices } from "@/components/site/contact-offices";
 import { GlowCard } from "@/components/site/glow-card";
@@ -36,18 +37,27 @@ export default function ContactPage() {
           </div>
 
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {supportChannels.map(({ title, description, icon: Icon }, i) => (
-              <GlowCard key={title} index={i}>
-                <CardHead icon={Icon} label={`Channel ${String(i + 1).padStart(2, "0")}`}>
-                  <CardTitle className="text-lg">{title}</CardTitle>
-                </CardHead>
-                <CardContent className="px-6 pt-5 pb-6">
-                  <CardDescription className="text-sm text-pretty">
-                    {description}
-                  </CardDescription>
-                </CardContent>
-              </GlowCard>
-            ))}
+            {supportChannels.map(({ title, description, icon: Icon, href }, i) => {
+              const card = (
+                <GlowCard key={title} index={i}>
+                  <CardHead icon={Icon} label={`Channel ${String(i + 1).padStart(2, "0")}`}>
+                    <CardTitle className="text-lg">{title}</CardTitle>
+                  </CardHead>
+                  <CardContent className="px-6 pt-5 pb-6">
+                    <CardDescription className="text-sm text-pretty">
+                      {description}
+                    </CardDescription>
+                  </CardContent>
+                </GlowCard>
+              );
+              return href ? (
+                <ChannelLink key={title} href={href}>
+                  {card}
+                </ChannelLink>
+              ) : (
+                card
+              );
+            })}
           </div>
 
           {/* The fastest of those channels, with the number to tap. */}

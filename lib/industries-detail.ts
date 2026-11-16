@@ -369,7 +369,7 @@ export const industryDetails: IndustryDetail[] = [
   },
   {
     slug: "healthcare",
-    title: "Healthcare & Billing RCM",
+    title: "Medical Billing & RCM",
     icon: HeartPulse,
     tagline: "Communication designed for healthcare workflows.",
     cta: "Improve how your billing team handles incoming calls. Discuss your requirements with SipLink.",

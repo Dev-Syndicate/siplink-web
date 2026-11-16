@@ -273,14 +273,14 @@ export const verifiedCertifications: CertificationItem[] = [
   {
     id: "hipaa",
     name: "HIPAA Compliance",
-    shortName: "HIPAA Aligned",
+    shortName: "HIPAA Compliant",
     authority: "U.S. Department of Health and Human Services (HHS)",
     jurisdiction: "United States",
     image: "/images/certifications/hipaa.jpeg",
     summary:
       "Safeguards designed for healthcare providers, medical billing, and RCM companies handling Protected Health Information (PHI).",
     description:
-      "SIPLINK is committed to supporting HIPAA-aligned communication, privacy, and data protection practices for healthcare organizations across the United States. Our communication solutions are designed to help healthcare providers, medical billing companies, RCM organizations, clinics, hospitals, and other healthcare businesses protect sensitive patient and business information while maintaining secure and reliable communication. Security-focused capabilities such as controlled access, user authentication, call recording management, secure communication, activity monitoring, data protection, and administrative controls help organizations establish appropriate safeguards for Protected Health Information (PHI).",
+      "SIPLINK is committed to supporting HIPAA-compliant communication, privacy, and data protection practices for healthcare organizations across the United States. Our communication solutions are designed to help healthcare providers, medical billing companies, RCM organizations, clinics, hospitals, and other healthcare businesses protect sensitive patient and business information while maintaining secure and reliable communication. Security-focused capabilities such as controlled access, user authentication, call recording management, secure communication, activity monitoring, data protection, and administrative controls help organizations establish appropriate safeguards for Protected Health Information (PHI).",
     keyControls: [
       "Configurable call recording retention with restricted replay permissions",
       "Administrative access controls and comprehensive audit trail logging",
@@ -292,14 +292,14 @@ export const verifiedCertifications: CertificationItem[] = [
   {
     id: "gdpr",
     name: "GDPR Compliance",
-    shortName: "GDPR Aligned",
+    shortName: "GDPR Compliant",
     authority: "European Union / EEA Data Protection Authorities",
     jurisdiction: "European Union & EEA",
     image: "/images/certifications/gdpr.jpeg",
     summary:
       "Data protection and privacy practices designed for businesses serving individuals across the EU and EEA.",
     description:
-      "SIPLINK supports GDPR-aligned data protection and privacy practices for businesses operating in or serving customers across the European Union (EU) and European Economic Area (EEA). Our communication solutions are designed to help organizations protect personal data through secure data handling, access controls, privacy-focused processes, and appropriate security measures. SIPLINK's approach supports key GDPR principles such as data privacy, confidentiality, data minimization, controlled access, transparency, and responsible processing of personal information.",
+      "SIPLINK supports GDPR-compliant data protection and privacy practices for businesses operating in or serving customers across the European Union (EU) and European Economic Area (EEA). Our communication solutions are designed to help organizations protect personal data through secure data handling, access controls, privacy-focused processes, and appropriate security measures. SIPLINK's approach supports key GDPR principles such as data privacy, confidentiality, data minimization, controlled access, transparency, and responsible processing of personal information.",
     keyControls: [
       "Principles of data minimization and purpose limitation in communications",
       "Transparent call records, storage duration, and deletion options",

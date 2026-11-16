@@ -17,7 +17,7 @@ export const enquiryServices = [
   "Other",
 ] as const;
 
-/** Team size. Published plans start at 10 lines, but smaller teams still ask. */
+/** Team size. There is no minimum number of lines. */
 export const enquiryUserCounts = [
   "Under 10 users",
   "10–25 users",

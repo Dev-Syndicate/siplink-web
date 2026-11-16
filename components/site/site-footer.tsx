@@ -65,7 +65,7 @@ const CERTIFICATIONS = [
   { src: dotLogo, label: "DoT Licensed" },
   { src: isoLogo, label: "ISO Certified" },
   { src: soc2Logo, label: "SOC 2 Type 2" },
-  { src: hipaaLogo, label: "HIPAA-Aligned" },
+  { src: hipaaLogo, label: "HIPAA-Compliant" },
   { src: gdprLogo, label: "GDPR Compliant" },
 ];
 

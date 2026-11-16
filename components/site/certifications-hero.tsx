@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const PILLS = ["DoT Licensing", "ISO/IEC 27001:2022 ISMS", "SOC 2 Type 2 AICPA", "HIPAA Aligned", "GDPR Aligned"];
+const PILLS = ["DoT Licensing", "ISO/IEC 27001:2022 ISMS", "SOC 2 Type 2 AICPA", "HIPAA Compliant", "GDPR Compliant"];
 
 const STEP_MS = 2500;
 
