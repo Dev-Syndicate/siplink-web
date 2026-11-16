@@ -164,7 +164,7 @@ export default function CertificationsPage() {
                       {cert.summary}
                     </p>
 
-                    <p className="text-sm leading-relaxed text-pretty text-muted-foreground">
+                    <p className="text-sm leading-relaxed text-pretty text-muted-foreground whitespace-pre-line">
                       {cert.description}
                     </p>
 
