@@ -76,7 +76,7 @@ const companySections = [
     description:
       "Rigorous regulatory standards and security frameworks independently audited for carrier-grade trust and enterprise governance.",
     highlights: [
-      "DoT Telecom License",
+      "Department of Telecommunications (DoT)",
       "ISO/IEC 27001:2022 Certified",
       "SOC 2 Type 2, HIPAA & GDPR",
     ],
