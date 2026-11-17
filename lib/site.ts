@@ -431,9 +431,9 @@ export const homeFaqs: { question: string; answer: string }[] = [
       "Healthcare teams use SipLink for communication between patients, providers and billing teams, with business calling, call recording, transcription, SMS and IVR. If you have specific HIPAA requirements, talk to us and we will confirm how SipLink supports them.",
   },
   {
-    question: "What is the minimum number of users or lines?",
+    question: "What is the minimum number of users?",
     answer:
-      "There is no minimum. Our published plans are priced per user per month, so you can start with as few lines as you need and add more as you grow. SIP trunking, call center and AI voice are priced to your requirements, so contact us for a custom quote.",
+      "There is no minimum. Our published plans are priced per user per month, so you can start with as few users as you need and add more as you grow. SIP trunking, call center and AI voice are priced to your requirements, so contact us for a custom quote.",
   },
 ];
 
@@ -1025,21 +1025,21 @@ export const reviews: Review[] = [
     photo: "/images/reviews/excellence-mbs.png",
     rating: 5,
     quote:
-      "Siplink is our backbone. Everything is beyond excellent. I have been using the VOIP services and I have always got the best services and always been a satisfactory experience. Looking forward with more decades together.",
+      "Siplink is our Backbone. Everything is beyond excellent. I have been using the VOIP services and I have always got the best services and always been a satisfactory experience. Looking forward with more decades together.",
   },
   {
     name: "Rohit Yadav",
     photo: "/images/reviews/rohit-yadav.png",
     rating: 5,
     quote:
-      "We've been working with SIPLINK Communications Pvt. Ltd. for over two years, and their services have consistently exceeded our expectations. The VoIP solutions they offer are cutting-edge, and the performance is flawless.",
+      "We’ve been working with SIPLINK Communications Pvt. Ltd. for over two years, and their services have consistently exceeded our expectations. The VoIP solutions they offer are cutting-edge, and the performance is flawless.",
   },
   {
     name: "orange Pandi",
     photo: "/images/reviews/orange-pandi.jpg",
     rating: 5,
     quote:
-      "Sip-Link Service provides excellent call quality and reliable support. Their customer service is very responsive and always available when needed. It's easy to reach out and get assistance anytime. Overall, a great experience and highly recommended.",
+      "Sip-Link Service provides excellent call quality and reliable support. Their customer service is very responsive and always available when needed. It’s easy to reach out and get assistance anytime. Overall, a great experience and highly recommended.",
   },
   {
     name: "Manivannan Deenan",
@@ -1053,14 +1053,14 @@ export const reviews: Review[] = [
     photo: "/images/reviews/kashyap-inabathini.png",
     rating: 5,
     quote:
-      "Siplink gives best service. Any update or issues your team response very quickly and fix the problem ASAP. Excellent service and good communication.",
+      "Hello, siplink gives Best service. Any update or issues your team response very quickly and fix the problem ASAP. Excellent service and good communication.",
   },
   {
     name: "Azure Billing Solutions",
     photo: "/images/reviews/azure-billing-solutions.jpg",
     rating: 5,
     quote:
-      "We are happy with your support and any queries or issues are addressed immediately which helps to deliver the work on time. Great work team.",
+      "We are happy with your support and any queries or issues are addressed immediately which helps to deliver the work on time. Great work team",
   },
   {
     name: "Sarath Kumar",
@@ -2394,7 +2394,7 @@ export const whyPoints: Simple[] = [
   {
     title: "Reliability",
     description:
-      "Two data centres replicating in real time, with provider links either of which carries the whole network. A failed link is not a dropped call.",
+      "Two data centres replicating in real time, with provider links either of which carries the whole network. Built with redundant connectivity to help maintain service continuity.",
     icon: ServerCog,
   },
   {

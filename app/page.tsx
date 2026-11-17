@@ -8,7 +8,7 @@ import { AppsShowcase } from "@/components/site/apps-showcase";
 import { AiMark } from "@/components/site/ai-mark";
 import { AdvantageTable } from "@/components/site/advantage-table";
 import { CtaPanel } from "@/components/site/cta-panel";
-import { CustomerGlobe } from "@/components/site/customer-globe";
+import { CustomerStories } from "@/components/site/customer-stories";
 import { FeatureCards } from "@/components/site/feature-cards";
 import { FaqSection } from "@/components/site/faq-section";
 import { HowItWorks } from "@/components/site/how-it-works";
@@ -382,8 +382,7 @@ export default function Home() {
               Find the Right Communication Solution
             </h2>
             <p className="mt-4 text-pretty text-muted-foreground">
-              Pick the situation closest to yours and we will show you the right
-              solution.
+              Choose the solution that best fits your business.
             </p>
           </div>
 
@@ -643,7 +642,7 @@ export default function Home() {
           and their own tools, so the objection left is whether anyone else
           actually went through with it. The wall of names answers that, and
           it is the last thing read before the closing ask. */}
-      <CustomerGlobe />
+      <CustomerStories />
 
       <HowItWorks />
 

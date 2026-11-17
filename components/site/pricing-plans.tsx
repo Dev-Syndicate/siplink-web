@@ -259,7 +259,7 @@ function PlanCard({
                 <span className="block">{callingAllowance.allowance}</span>
               </span>
               <span className={cn("text-sm", featured ? "text-primary-foreground/80" : "text-muted-foreground")}>
-                /line/month
+                /user/month
               </span>
             </span>
           </div>
@@ -279,7 +279,7 @@ function PlanCard({
             >
               {other}
             </span>
-            per line/month · Taxes extra
+            per user/month · Taxes extra
           </p>
         </div>
       </div>

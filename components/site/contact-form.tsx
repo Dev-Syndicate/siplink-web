@@ -404,7 +404,7 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
 
       <p className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-muted-foreground">
         <Clock className="size-3.5 shrink-0" aria-hidden />
-        Our team will review your requirements and get back to you shortly.
+        Thank you for your inquiry. A representative will contact you shortly.
       </p>
     </form>
   );

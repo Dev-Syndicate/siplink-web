@@ -238,7 +238,7 @@ export function HowItWorks() {
         </ol>
 
         <p className="mt-14 text-center text-sm font-medium lg:mt-16">
-          No complicated migration. No unnecessary downtime.
+          A carefully planned migration designed to minimise disruption.
         </p>
       </div>
     </section>

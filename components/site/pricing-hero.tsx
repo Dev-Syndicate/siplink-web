@@ -35,7 +35,7 @@ const amountOf = (plan: Plan) => Number(plan.inr.replace(/[^\d.]/g, ""));
 
 /** The three facts beside the asks; each is stated elsewhere on the site. */
 const POINTS = [
-  "Priced per line, per month",
+  "Priced per user, per month",
   `${callingAllowance.region} ${callingAllowance.allowance}`,
   "24/7 expert support",
 ];
@@ -454,7 +454,7 @@ function PriceChart({
     <GlassCard className="p-5">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold">Per line, per month</p>
+          <p className="text-sm font-semibold">Per user, per month</p>
           <p className="text-xs text-muted-foreground">Taxes extra, as applicable.</p>
         </div>
         <CurrencySwitch currency={currency} onCurrency={onCurrency} />
@@ -468,7 +468,7 @@ function PriceChart({
               key={plan.name}
               href="#plans"
               className="group/bar flex h-full flex-col justify-end outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              aria-label={`${plan.name}: ${priceOf(plan, currency)} per line per month`}
+              aria-label={`${plan.name}: ${priceOf(plan, currency)} per user per month`}
             >
               <span className="mb-1.5 text-center text-sm font-semibold tabular-nums">
                 {priceOf(plan, currency)}

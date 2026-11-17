@@ -95,7 +95,7 @@ export const seo = {
   "/internet/network-solutions/sd-wan": ["SD-WAN for Multi-Branch Business | SipLink", "Application-aware routing across multiple links, with higher resilience, centralised management and simplified branch deployment from SipLink.", "SD-WAN"],
   "/internet/network-solutions/multi-location-networking": ["Multi-Location Business Networking | SipLink", "One connected network across head office, branches, cloud, data centre and remote users, designed as a single structure from 5 sites to 100.", "Multi-Location Networking"],
 
-  "/pricing": ["Business VoIP Plans in Chennai | SipLink Pricing", "Affordable, scalable business VoIP plans in Chennai: Core, Business Pro and Enterprise Plus, priced per line per month.", "Pricing"],
+  "/pricing": ["Business VoIP Plans in Chennai | SipLink Pricing", "Affordable, scalable business VoIP plans in Chennai: Core, Business Pro and Enterprise Plus, priced per user per month.", "Pricing"],
   "/why-siplink": ["Why Choose SipLink for Business Voice | SipLink", "Why growing businesses and enterprises choose SipLink for business voice, cloud PBX, SIP trunking and unified communications they can rely on.", "Why SipLink"],
   "/about": ["About SipLink: Business VoIP Provider | SipLink", "SipLink Communications builds business voice from Chennai: cloud telephony, SIP trunking and unified communications for growing organizations.", "About"],
   "/company": ["SipLink Communications: Company Overview | SipLink", "SipLink Communications at a glance: our story, differentiators, verified certifications, partner integrations, careers and operating facilities.", "Company"],

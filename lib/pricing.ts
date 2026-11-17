@@ -211,7 +211,7 @@ export const pricingFaqs: { question: string; answer: string }[] = [
 
 /** The `homeFaqs` questions that bear on choosing and paying for a plan. */
 export const pricingHomeFaqQuestions = [
-  "What is the minimum number of users or lines?",
+  "What is the minimum number of users?",
   "Can I keep my existing phone numbers?",
   "Do I need to replace my existing phones?",
   "Can SipLink integrate with Salesforce, HubSpot or Zoho?",

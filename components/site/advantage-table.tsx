@@ -1,7 +1,6 @@
-import { Check, Crown } from "lucide-react";
+import { Check } from "lucide-react";
 
 import { RevealGroup } from "@/components/site/reveal-group";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { site, whyComparison } from "@/lib/site";
 
@@ -34,10 +33,6 @@ function SipLinkHeader({ className }: { className?: string }) {
       <span className="font-heading text-xl font-semibold tracking-tight">
         {site.name}
       </span>
-      <Badge className="h-7 gap-1.5 bg-background px-3 text-primary">
-        <Crown aria-hidden />
-        Most recommended
-      </Badge>
     </div>
   );
 }
