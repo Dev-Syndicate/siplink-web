@@ -192,7 +192,7 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
     }
   };
 
-  if (state.status === "sent") return <Sent name={state.name} email={state.email} onReset={onReset} />;
+  if (state.status === "sent") return <Sent name={state.name} onReset={onReset} />;
 
   const mailto = `mailto:${site.email}?subject=${encodeURIComponent(
     `Website enquiry: ${fields.services.join(", ")}`,
@@ -541,7 +541,7 @@ function Notice({ children }: { children: ReactNode }) {
 }
 
 /** Shown in place of the form once the enquiry is on its way. */
-function Sent({ name, email, onReset }: { name: string; email: string; onReset: () => void }) {
+function Sent({ name, onReset }: { name: string; onReset: () => void }) {
   const first = name.split(/\s+/)[0];
 
   return (
@@ -570,17 +570,11 @@ function Sent({ name, email, onReset }: { name: string; email: string; onReset: 
         </motion.span>
       </span>
       <h3 className="mt-7 text-2xl font-semibold tracking-tight">
-        {first ? `Thanks, ${first}.` : "Thanks."} Your enquiry is with our team.
+        {first ? `Thanks, ${first}.` : "Thank you."}
       </h3>
-      <p className="mt-3 max-w-sm text-pretty text-muted-foreground">
-        {email ? (
-          <>
-            We&rsquo;ll reply to <span className="font-medium text-foreground">{email}</span> as
-            soon as we can.
-          </>
-        ) : (
-          "We'll get back to you as soon as we can."
-        )}
+      <p className="mt-3 max-w-md text-pretty text-muted-foreground">
+        Thank you for your inquiry. Your requirements have been submitted to our solutions
+        architecture team. A representative will contact you shortly.
       </p>
       <Button variant="outline" onClick={onReset} className="mt-8 rounded-full px-5">
         <RotateCcw aria-hidden />

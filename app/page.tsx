@@ -6,13 +6,12 @@ import { ArrowRight, Check, PhoneCall } from "lucide-react";
 import { AiConsole } from "@/components/site/ai-console";
 import { AppsShowcase } from "@/components/site/apps-showcase";
 import { AiMark } from "@/components/site/ai-mark";
-import { AdvantageTable } from "@/components/site/advantage-table";
 import { CtaPanel } from "@/components/site/cta-panel";
 import { CustomerStories } from "@/components/site/customer-stories";
 import { FeatureCards } from "@/components/site/feature-cards";
 import { FaqSection } from "@/components/site/faq-section";
 import { HowItWorks } from "@/components/site/how-it-works";
-import { IntegrationWall } from "@/components/site/integration-wall";
+import { IntegrationOrbit } from "@/components/site/integration-orbit";
 import { SectorStage } from "@/components/site/sector-stage";
 import { SwitchingStory } from "@/components/site/switching-story";
 import { TrustStrip } from "@/components/site/trust-strip";
@@ -603,8 +602,6 @@ export default function Home() {
             </p>
           </div>
 
-          <AdvantageTable />
-
           {/* Below `lg` this is an ordinary spaced grid with no rules at
               all; at `lg` the left borders turn it into the band. Doing it
               with per-cell borders rather than `divide-x` is what keeps the
@@ -635,7 +632,10 @@ export default function Home() {
 
       <SwitchingStory />
 
-      <IntegrationWall />
+      <IntegrationOrbit
+        heading="Every integration, one connected ecosystem"
+        description="SipLink sits in the middle of the tools your team already runs — CRM, helpdesk, collaboration, and recruiting software — so calls, contacts, and records stay in one place."
+      />
 
       {/* The reviews land here, late in the page, on purpose: by this point
           the visitor has seen the products, their own sector, the migration

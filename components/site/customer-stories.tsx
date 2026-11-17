@@ -1,15 +1,13 @@
 import type { CSSProperties } from "react";
-import { ArrowRight, Star } from "lucide-react";
+import { Star } from "lucide-react";
 
 import { BicolorHeading } from "@/components/site/bicolor-heading";
 import { RevealGroup } from "@/components/site/reveal-group";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
   customerStats,
-  googleReviewsUrl,
   reviewStats,
   reviews,
   type Review,
@@ -187,18 +185,6 @@ export function CustomerStories() {
             </div>
           ))}
         </dl>
-
-        <div className="mt-14 flex justify-center">
-          <Button asChild size="lg" className="group">
-            <a href={googleReviewsUrl} target="_blank" rel="noreferrer noopener">
-              See all customer stories
-              <ArrowRight
-                className="transition-transform group-hover:translate-x-0.5"
-                aria-hidden
-              />
-            </a>
-          </Button>
-        </div>
       </div>
     </section>
   );

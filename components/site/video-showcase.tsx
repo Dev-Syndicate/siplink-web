@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 
 import { AutoplayVideo } from "@/components/site/autoplay-video";
+import { DemoDialog } from "@/components/site/demo-dialog";
 import { Button } from "@/components/ui/button";
 import { companyVideo } from "@/lib/site";
 
@@ -56,14 +57,15 @@ export function VideoShowcase() {
                     />
                   </Link>
                 </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full border-foreground/15 bg-transparent hover:bg-card"
-                >
-                  <Link href="/contact">Book A Demo</Link>
-                </Button>
+                <DemoDialog>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="cursor-pointer rounded-full border-foreground/15 bg-transparent hover:bg-card"
+                  >
+                    Book A Demo
+                  </Button>
+                </DemoDialog>
               </div>
             </div>
 

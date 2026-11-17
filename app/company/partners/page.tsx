@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import { ClosingCta } from "@/components/site/closing-cta";
-import { IntegrationOrbit } from "@/components/site/integration-orbit";
+import { IntegrationWall } from "@/components/site/integration-wall";
 import { PartnersHero } from "@/components/site/partners-hero";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,14 +27,8 @@ export default function PartnersPage() {
       <PageSchema path="/company/partners" />
       <PartnersHero name={site.name} />
 
-      {/* The same integrations as the homepage and CRM page, drawn as an
-          orbit rather than their wired patch panel, so the partners page
-          does not repeat a section the visitor has already seen. */}
       <div id="integrations" className="scroll-mt-24">
-        <IntegrationOrbit
-          heading="Every integration, one connected ecosystem"
-          description="SipLink sits in the middle of the tools your team already runs — CRM, helpdesk, collaboration, and recruiting software — so calls, contacts, and records stay in one place."
-        />
+        <IntegrationWall />
       </div>
 
       {/* Integration Categories — a plain list rather than another card grid,
