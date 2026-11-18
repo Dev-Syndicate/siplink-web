@@ -20,6 +20,7 @@ import {
 import { solutionDetails } from "@/lib/solutions";
 import { PageSchema } from "@/components/site/json-ld";
 import { seoFor } from "@/lib/seo";
+import { DemoDialog } from "@/components/site/demo-dialog";
 
 export const metadata: Metadata = seoFor("/solutions");
 
@@ -65,9 +66,11 @@ export default function SolutionsPage() {
               and native to the tools your teams already use.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <Button asChild size="lg">
-                <Link href="/contact">Book a demo</Link>
-              </Button>
+              <DemoDialog>
+                <Button asChild size="lg">
+                  <Link href="/contact">Book a demo</Link>
+                </Button>
+              </DemoDialog>
               <Button asChild size="lg" variant="outline">
                 <Link href="/pricing">View pricing</Link>
               </Button>

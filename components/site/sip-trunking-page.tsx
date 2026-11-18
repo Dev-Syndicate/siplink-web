@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { productDetails, type ProductDetail } from "@/lib/products";
 import { cn } from "@/lib/utils";
+import { DemoDialog } from "@/components/site/demo-dialog";
 
 const migrationIcons = [ClipboardCheck, Network, Phone, Rocket];
 
@@ -120,7 +121,7 @@ export function SipTrunkingPage({ product }: { product: ProductDetail }) {
               <CardDescription className="max-w-2xl text-base leading-relaxed text-primary-foreground/85 sm:text-lg">Tell us about your equipment, numbers and call volumes. We’ll help you design the connection and plan the move.</CardDescription>
             </CardHeader>
             <CardContent className="mt-9 flex flex-col gap-4 px-7 sm:flex-row sm:px-10 lg:px-14">
-              <Button asChild size="lg" className="bg-primary-foreground text-brand-to hover:bg-primary-foreground/90"><Link href="/contact">Book a demo<ArrowRight aria-hidden /></Link></Button>
+              <DemoDialog><Button asChild size="lg" className="bg-primary-foreground text-brand-to hover:bg-primary-foreground/90"><Link href="/contact">Book a demo<ArrowRight aria-hidden /></Link></Button></DemoDialog>
               <Button asChild size="lg" variant="outline" className="border-primary-foreground/25 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground dark:border-primary-foreground/25 dark:bg-primary-foreground/10"><Link href="/pricing">View pricing</Link></Button>
             </CardContent>
           </div>

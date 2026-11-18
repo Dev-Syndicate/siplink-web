@@ -4,6 +4,7 @@ import { PhoneCall } from "lucide-react";
 import { CtaSignal } from "@/components/site/cta-signal";
 import { Button } from "@/components/ui/button";
 import { site } from "@/lib/site";
+import { DemoLink } from "@/components/site/demo-dialog";
 
 /**
  * The closing ask, in one shape.
@@ -72,13 +73,15 @@ export function CtaPanel({
       </p>
 
       <div className="mt-9 flex flex-wrap gap-4">
-        <Button
-          asChild
-          size="lg"
-          className="w-full bg-background text-primary hover:bg-background/90 sm:w-auto"
-        >
-          <Link href={action.href}>{action.label}</Link>
-        </Button>
+        <DemoLink demo={/demo/i.test(action.label)}>
+          <Button
+            asChild
+            size="lg"
+            className="w-full bg-background text-primary hover:bg-background/90 sm:w-auto"
+          >
+            <Link href={action.href}>{action.label}</Link>
+          </Button>
+        </DemoLink>
         <Button
           asChild
           size="lg"

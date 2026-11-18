@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { isNavItemActive, isNavLeafCurrent, nav, site } from "@/lib/site";
+import { DemoDialog } from "@/components/site/demo-dialog";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -203,11 +204,13 @@ export function MobileNav() {
         </nav>
 
         <div className="shrink-0 border-t border-border bg-muted/30 px-4 py-4">
-          <Button asChild className="w-full rounded-full" size="lg">
-            <Link href="/contact" onClick={close}>
-              Book a demo
-            </Link>
-          </Button>
+          <DemoDialog>
+            <Button asChild className="w-full rounded-full" size="lg">
+              <Link href="/contact">
+                Book a demo
+              </Link>
+            </Button>
+          </DemoDialog>
 
           <div className="mt-4 space-y-2.5">
             <a

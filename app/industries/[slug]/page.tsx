@@ -14,6 +14,7 @@ import { FaqSection } from "@/components/site/faq-section";
 import { PageSchema } from "@/components/site/json-ld";
 import { pageFaqs } from "@/lib/page-faqs";
 import { seoFor, type SeoPath } from "@/lib/seo";
+import { DemoDialog } from "@/components/site/demo-dialog";
 
 /**
  * Render a paragraph of prose with product mentions turned into inline links.
@@ -536,13 +537,15 @@ export default async function IndustryDetailPage({
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="bg-background text-primary hover:bg-background/90"
-            >
-              <Link href="/contact">Book a demo</Link>
-            </Button>
+            <DemoDialog>
+              <Button
+                asChild
+                size="lg"
+                className="bg-background text-primary hover:bg-background/90"
+              >
+                <Link href="/contact">Book a demo</Link>
+              </Button>
+            </DemoDialog>
             <Button
               asChild
               size="lg"

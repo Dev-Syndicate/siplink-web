@@ -5,15 +5,14 @@
 
 /** What visitors can ask about, from SipLink's own product lines. */
 export const enquiryServices = [
-  "Business CloudPBX",
-  "USA Unlimited Calling",
+  "UCaaS",
+  "CCaaS",
   "SIP Trunking",
-  "International Numbers & Porting",
-  "Contact Center Solutions",
-  "AI Voice Assistant",
-  "Voice, SMS & WhatsApp APIs",
-  "Microsoft Teams Integration",
-  "Business Internet",
+  "Number Porting",
+  "SMS & 10DLC",
+  "Internet (ILL)",
+  "Integration",
+  "Managed VoIP",
   "Other",
 ] as const;
 
@@ -70,8 +69,8 @@ const PHONE = /^\+?[\d\s().-]{6,}$/;
 
 const oneOf = (options: readonly string[], value: string) => options.includes(value);
 
-/** Every problem with an enquiry, by field; empty when it is fine to send. */
-export function validateEnquiry(fields: EnquiryFields): EnquiryErrors {
+/** Every problem with an enquiry, by field; empty when it is fine to send. `services: false` is for forms that do not ask. */
+export function validateEnquiry(fields: EnquiryFields, { services = true } = {}): EnquiryErrors {
   const errors: EnquiryErrors = {};
   const name = fields.name.trim();
   const email = fields.email.trim();
@@ -94,7 +93,7 @@ export function validateEnquiry(fields: EnquiryFields): EnquiryErrors {
 
   if (fields.users && !oneOf(enquiryUserCounts, fields.users)) errors.users = "Please choose a team size.";
 
-  if (fields.services.length === 0 || !fields.services.every((service) => oneOf(enquiryServices, service)))
+  if (services && (fields.services.length === 0 || !fields.services.every((service) => oneOf(enquiryServices, service))))
     errors.services = "Pick at least one thing you're looking for.";
 
   if (fields.message.trim().length > enquiryLimits.message)
@@ -116,7 +115,7 @@ export function enquiryText(fields: EnquiryFields): string {
     `Phone: ${fields.phone.trim()}`,
     `Country: ${fields.country}`,
     ...(fields.users ? [`Team size: ${fields.users}`] : []),
-    `Looking for: ${fields.services.join(", ")}`,
+    ...(fields.services.length ? [`Looking for: ${fields.services.join(", ")}`] : []),
     ...(message ? ["", message] : []),
   ].join("\n");
 }

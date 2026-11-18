@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ProductDetail } from "@/lib/products";
+import { DemoLink } from "@/components/site/demo-dialog";
 
 const emphasis: Record<string, string> = {
   "sip-trunking": "Connected to more.",
@@ -74,7 +75,7 @@ export function ProductHero({ product, headline, action, secondaryLabel, seconda
             {hasAccent ? <>{headline.slice(0, -accent.length)}<span className="bg-linear-to-r from-brand-from to-brand-to bg-clip-text text-transparent">{accent}</span></> : headline}
           </h1>
           <p className="mt-7 max-w-2xl text-lg leading-relaxed text-pretty text-muted-foreground xl:text-xl">{description ?? product.intro}</p>
-          <div className="mt-9 flex flex-wrap gap-4"><Button asChild size="lg" className="max-w-full whitespace-normal text-left"><Link href="/contact">{action}<ArrowRight aria-hidden /></Link></Button><Button asChild size="lg" variant="outline"><Link href={secondaryHref}>{secondaryLabel}</Link></Button></div>
+          <div className="mt-9 flex flex-wrap gap-4"><DemoLink demo={/demo/i.test(action)}><Button asChild size="lg" className="max-w-full whitespace-normal text-left"><Link href="/contact">{action}<ArrowRight aria-hidden /></Link></Button></DemoLink><Button asChild size="lg" variant="outline"><Link href={secondaryHref}>{secondaryLabel}</Link></Button></div>
         </div>
         <ul aria-label={`${product.title} capabilities`} className="mt-2 flex max-w-3xl flex-wrap gap-2">{product.features.slice(0,3).map(({title}) => <li key={title}><Badge variant="outline" className="h-auto rounded-full bg-background/80 px-3 py-2 text-sm font-normal backdrop-blur-sm">{title}</Badge></li>)}</ul>
       </div>

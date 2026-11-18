@@ -16,6 +16,7 @@ import {
 } from "@/lib/product-story";
 import { seoFor } from "@/lib/seo";
 import { PageSchema } from "@/components/site/json-ld";
+import { DemoDialog } from "@/components/site/demo-dialog";
 
 export const metadata: Metadata = seoFor("/products");
 
@@ -49,9 +50,11 @@ export default function ProductsPage() {
               </p>
 
               <div className="mt-10 flex flex-wrap gap-4">
-                <Button asChild size="lg">
-                  <Link href="/contact">Book a demo</Link>
-                </Button>
+                <DemoDialog>
+                  <Button asChild size="lg">
+                    <Link href="/contact">Book a demo</Link>
+                  </Button>
+                </DemoDialog>
                 <Button asChild size="lg" variant="outline">
                   <Link href="#lifecycle">See how it works</Link>
                 </Button>

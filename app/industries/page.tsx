@@ -9,6 +9,7 @@ import { IndustryIllustration } from "@/components/site/industry-illustration";
 import { industryDetails } from "@/lib/industries-detail";
 import { PageSchema } from "@/components/site/json-ld";
 import { seoFor } from "@/lib/seo";
+import { DemoDialog } from "@/components/site/demo-dialog";
 
 export const metadata: Metadata = seoFor("/industries");
 
@@ -42,9 +43,11 @@ export default function IndustriesPage() {
               The same platform, configured for the demands of each industry, from HIPAA-compliant patient lines to high-volume recruiting desks.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <Button asChild size="lg">
-                <Link href="/contact">Book a demo</Link>
-              </Button>
+              <DemoDialog>
+                <Button asChild size="lg">
+                  <Link href="/contact">Book a demo</Link>
+                </Button>
+              </DemoDialog>
               <Button asChild size="lg" variant="outline">
                 <Link href="/solutions">Browse solutions</Link>
               </Button>

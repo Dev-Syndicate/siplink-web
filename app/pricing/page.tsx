@@ -24,6 +24,7 @@ import { homeFaqs, onboardingSteps } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { seoFor } from "@/lib/seo";
 import { PageSchema } from "@/components/site/json-ld";
+import { DemoDialog } from "@/components/site/demo-dialog";
 
 /**
  * The pricing page. Every plan, price, feature and add-on on it comes from
@@ -291,16 +292,18 @@ export default function PricingPage() {
                 <p className="mt-4 text-pretty text-primary-foreground/85 sm:text-lg">{enterpriseReady.body}</p>
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
-                <Button
-                  asChild
-                  size="lg"
-                  className="pricing-sheen group/cta relative h-12 overflow-hidden rounded-full bg-primary-foreground px-7 text-primary transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-foreground/90"
-                >
-                  <Link href="/contact">
-                    Book a Demo
-                    <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
-                  </Link>
-                </Button>
+                <DemoDialog>
+                  <Button
+                    asChild
+                    size="lg"
+                    className="pricing-sheen group/cta relative h-12 overflow-hidden rounded-full bg-primary-foreground px-7 text-primary transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-foreground/90"
+                  >
+                    <Link href="/contact">
+                      Book a Demo
+                      <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
+                    </Link>
+                  </Button>
+                </DemoDialog>
                 <Button
                   asChild
                   size="lg"

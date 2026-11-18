@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CtaSignal } from "@/components/site/cta-signal";
+import { DemoLink } from "@/components/site/demo-dialog";
 
 /** The inset pink closing panel, with each page's original copy and destinations. */
 export function ClosingCta({ heading, body, eyebrow, action = "Book a demo", href = "/contact", secondary, assurances, children, id = "closing-cta" }: {
@@ -30,7 +31,7 @@ export function ClosingCta({ heading, body, eyebrow, action = "Book a demo", hre
         </CardHeader>
         <CardContent className="mt-9 space-y-7 p-0">
           <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-            <Button asChild size="lg" className="h-auto min-h-12 whitespace-normal bg-primary-foreground py-3 text-center text-brand-to hover:bg-primary-foreground/90"><Link href={href}>{action}<ArrowRight className="shrink-0" aria-hidden /></Link></Button>
+            <DemoLink demo={/demo/i.test(action)}><Button asChild size="lg" className="h-auto min-h-12 whitespace-normal bg-primary-foreground py-3 text-center text-brand-to hover:bg-primary-foreground/90"><Link href={href}>{action}<ArrowRight className="shrink-0" aria-hidden /></Link></Button></DemoLink>
             {secondary && <Button asChild size="lg" variant="outline" className="h-auto min-h-12 whitespace-normal border-primary-foreground/25 bg-primary-foreground/10 py-3 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground dark:border-primary-foreground/25 dark:bg-primary-foreground/10"><Link href={secondary.href}>{secondary.label}</Link></Button>}
           </div>
           {assurances && assurances.length > 0 && (

@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import {
+  ArrowRightLeft,
   Building2,
   Cable,
   Check,
@@ -25,12 +26,11 @@ import {
   MessageSquareMore,
   Phone,
   PhoneCall,
+  Puzzle,
   RotateCcw,
   Send,
-  Sparkles,
   User,
   Users,
-  UsersRound,
   Wifi,
   type LucideIcon,
 } from "lucide-react";
@@ -80,7 +80,7 @@ async function sendEnquiry(fields: EnquiryFields): Promise<boolean> {
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify({
       access_key: WEB3FORMS_ACCESS_KEY,
-      subject: `Website enquiry: ${fields.services.join(", ")} — ${name}`,
+      subject: `Website enquiry: ${fields.services.join(", ") || "Demo request"} — ${name}`,
       from_name: "SipLink website",
       name,
       email: fields.email.trim(),
@@ -88,7 +88,7 @@ async function sendEnquiry(fields: EnquiryFields): Promise<boolean> {
       Phone: fields.phone.trim(),
       Country: fields.country,
       "Team size": fields.users || undefined,
-      "Looking for": fields.services.join(", "),
+      "Looking for": fields.services.join(", ") || undefined,
       Message: fields.message.trim() || undefined,
     }),
     signal: AbortSignal.timeout(15_000),
@@ -115,15 +115,14 @@ const EMPTY: EnquiryFields = {
 const ORDER: (keyof EnquiryFields)[] = ["name", "email", "company", "phone", "country", "users", "services", "message", "consent"];
 
 const SERVICE_ICONS: Record<(typeof enquiryServices)[number], LucideIcon> = {
-  "Business CloudPBX": Cloud,
-  "USA Unlimited Calling": PhoneCall,
+  UCaaS: Cloud,
+  CCaaS: Headset,
   "SIP Trunking": Cable,
-  "International Numbers & Porting": Globe,
-  "Contact Center Solutions": Headset,
-  "AI Voice Assistant": Sparkles,
-  "Voice, SMS & WhatsApp APIs": MessageSquareMore,
-  "Microsoft Teams Integration": UsersRound,
-  "Business Internet": Wifi,
+  "Number Porting": ArrowRightLeft,
+  "SMS & 10DLC": MessageSquareMore,
+  "Internet (ILL)": Wifi,
+  Integration: Puzzle,
+  "Managed VoIP": PhoneCall,
   Other: Ellipsis,
 };
 
@@ -135,12 +134,13 @@ const box =
  * The contact form. Each "Send another" mounts a fresh form, which clears the
  * fields and the submission state together.
  */
-export function ContactForm() {
+/** `askServices={false}` drops the "What are you looking for?" question, as in the demo dialog. */
+export function ContactForm({ askServices = true }: { askServices?: boolean }) {
   const [round, setRound] = useState(0);
-  return <EnquiryForm key={round} onReset={() => setRound((n) => n + 1)} />;
+  return <EnquiryForm key={round} askServices={askServices} onReset={() => setRound((n) => n + 1)} />;
 }
 
-function EnquiryForm({ onReset }: { onReset: () => void }) {
+function EnquiryForm({ askServices, onReset }: { askServices: boolean; onReset: () => void }) {
   const [fields, setFields] = useState<EnquiryFields>(EMPTY);
   const [checked, setChecked] = useState(false);
   const [state, setState] = useState<EnquiryState>({ status: "idle" });
@@ -154,7 +154,7 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
   }, []);
 
   // Errors appear once someone has tried to send, then follow their edits.
-  const errors = checked ? validateEnquiry(fields) : {};
+  const errors = checked ? validateEnquiry(fields, { services: askServices }) : {};
 
   const set = <K extends keyof EnquiryFields>(key: K, value: EnquiryFields[K]) =>
     setFields((current) => ({ ...current, [key]: value }));
@@ -164,7 +164,7 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
     if (pending) return;
     setChecked(true);
 
-    const problems = validateEnquiry(fields);
+    const problems = validateEnquiry(fields, { services: askServices });
     const first = ORDER.find((key) => problems[key]);
     if (first) {
       form.current?.querySelector<HTMLElement>(`[data-field="${first}"]`)?.focus();
@@ -195,7 +195,7 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
   if (state.status === "sent") return <Sent name={state.name} onReset={onReset} />;
 
   const mailto = `mailto:${site.email}?subject=${encodeURIComponent(
-    `Website enquiry: ${fields.services.join(", ")}`,
+    `Website enquiry: ${fields.services.join(", ") || "Demo request"}`,
   )}&body=${encodeURIComponent(enquiryText(fields))}`;
 
   return (
@@ -273,65 +273,66 @@ function EnquiryForm({ onReset }: { onReset: () => void }) {
       </div>
 
       {/* What they're looking for: as many as apply. */}
-      <fieldset className="mt-6" aria-describedby={errors.services ? "services-error" : undefined}>
-        <div className="flex items-center gap-3">
-          <legend className="float-left text-sm font-semibold whitespace-nowrap">
-            What are you looking for?
-            <span aria-hidden className="ml-0.5 text-primary">*</span>
-          </legend>
-          <span aria-hidden className="h-px flex-1 bg-border" />
-        </div>
-        <ToggleGroup
-          type="multiple"
-          variant="outline"
-          spacing={2}
-          value={fields.services}
-          onValueChange={(value) => set("services", value)}
-          aria-label="What are you looking for?"
-          className="mt-3 grid w-full grid-cols-2 gap-2.5 sm:grid-cols-3"
-        >
-          {enquiryServices.map((service, i) => {
-            const Icon = SERVICE_ICONS[service];
-            const on = fields.services.includes(service);
-            return (
-              <ToggleGroupItem
-                key={service}
-                value={service}
-                data-field={i === 0 ? "services" : undefined}
-                aria-invalid={Boolean(errors.services)}
-                className={cn(
-                  "group/service relative h-auto min-h-16 w-full justify-start gap-2.5 rounded-2xl border-border bg-card px-3 py-2.5 text-left text-xs font-medium whitespace-normal text-foreground/85 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent/40 hover:text-foreground hover:shadow-md hover:shadow-primary/10 aria-invalid:border-destructive/50 data-[state=on]:border-primary/60 data-[state=on]:bg-accent data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=on]:shadow-primary/15",
-                  service === "Other" && "sm:col-span-3 sm:min-h-12",
-                )}
-              >
-                <Icon
+      {askServices ? (
+        <fieldset className="mt-6" aria-describedby={errors.services ? "services-error" : undefined}>
+          <div className="flex items-center gap-3">
+            <legend className="float-left text-sm font-semibold whitespace-nowrap">
+              What are you looking for?
+              <span aria-hidden className="ml-0.5 text-primary">*</span>
+            </legend>
+            <span aria-hidden className="h-px flex-1 bg-border" />
+          </div>
+          <ToggleGroup
+            type="multiple"
+            variant="outline"
+            spacing={2}
+            value={fields.services}
+            onValueChange={(value) => set("services", value)}
+            aria-label="What are you looking for?"
+            className="mt-3 grid w-full grid-cols-2 gap-2.5 sm:grid-cols-3"
+          >
+            {enquiryServices.map((service, i) => {
+              const Icon = SERVICE_ICONS[service];
+              const on = fields.services.includes(service);
+              return (
+                <ToggleGroupItem
+                  key={service}
+                  value={service}
+                  data-field={i === 0 ? "services" : undefined}
+                  aria-invalid={Boolean(errors.services)}
                   className={cn(
-                    "size-5! shrink-0 transition-transform duration-300 group-hover/service:scale-110",
-                    on ? "text-primary" : "text-foreground/70",
+                    "group/service relative h-auto min-h-16 w-full justify-start gap-2.5 rounded-2xl border-border bg-card px-3 py-2.5 text-left text-xs font-medium whitespace-normal text-foreground/85 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent/40 hover:text-foreground hover:shadow-md hover:shadow-primary/10 aria-invalid:border-destructive/50 data-[state=on]:border-primary/60 data-[state=on]:bg-accent data-[state=on]:text-foreground data-[state=on]:shadow-md data-[state=on]:shadow-primary/15",
                   )}
-                  strokeWidth={1.75}
-                  aria-hidden
-                />
-                <span className="min-w-0 leading-snug text-pretty">{service}</span>
-                <AnimatePresence initial={false}>
-                  {on ? (
-                    <motion.span
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      exit={{ scale: 0 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 26 }}
-                      className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-gradient-to-br from-brand-to to-brand-from text-primary-foreground shadow-sm shadow-primary/40"
-                    >
-                      <Check className="size-3!" strokeWidth={3} aria-hidden />
-                    </motion.span>
-                  ) : null}
-                </AnimatePresence>
-              </ToggleGroupItem>
-            );
-          })}
-        </ToggleGroup>
-        <FieldError id="services" error={errors.services} />
-      </fieldset>
+                >
+                  <Icon
+                    className={cn(
+                      "size-5! shrink-0 transition-transform duration-300 group-hover/service:scale-110",
+                      on ? "text-primary" : "text-foreground/70",
+                    )}
+                    strokeWidth={1.75}
+                    aria-hidden
+                  />
+                  <span className="min-w-0 leading-snug text-pretty">{service}</span>
+                  <AnimatePresence initial={false}>
+                    {on ? (
+                      <motion.span
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 26 }}
+                        className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-gradient-to-br from-brand-to to-brand-from text-primary-foreground shadow-sm shadow-primary/40"
+                      >
+                        <Check className="size-3!" strokeWidth={3} aria-hidden />
+                      </motion.span>
+                    ) : null}
+                  </AnimatePresence>
+                </ToggleGroupItem>
+              );
+            })}
+          </ToggleGroup>
+          <FieldError id="services" error={errors.services} />
+        </fieldset>
+      ) : null}
 
       <div className="mt-5">
         <Label htmlFor="message" className="text-sm font-semibold">

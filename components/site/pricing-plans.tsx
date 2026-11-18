@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { callingAllowance, paygPlan, plans, pricingDisclaimer, type Plan } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
+import { DemoDialog } from "@/components/site/demo-dialog";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -335,22 +336,24 @@ function PlanCard({
         )}
       >
         <p className="text-xs text-pretty text-muted-foreground">{plan.note}</p>
-        <Button
-          asChild
-          size="lg"
-          variant={featured ? "default" : "outline"}
-          className={cn(
-            "pricing-sheen group/cta relative mt-4 h-11 w-full overflow-hidden rounded-full transition-all duration-300",
-            featured
-              ? "border-0 bg-gradient-to-r from-brand-to to-brand-from shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
-              : "border-primary/30 bg-card text-primary hover:border-0 hover:bg-gradient-to-r hover:from-brand-to hover:to-brand-from hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/30",
-          )}
-        >
-          <Link href="/contact">
-            {wide ? "Talk to Sales" : "Book a Demo"}
-            <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
-          </Link>
-        </Button>
+        <DemoDialog>
+          <Button
+            asChild
+            size="lg"
+            variant={featured ? "default" : "outline"}
+            className={cn(
+              "pricing-sheen group/cta relative mt-4 h-11 w-full overflow-hidden rounded-full transition-all duration-300",
+              featured
+                ? "border-0 bg-gradient-to-r from-brand-to to-brand-from shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
+                : "border-primary/30 bg-card text-primary hover:border-0 hover:bg-gradient-to-r hover:from-brand-to hover:to-brand-from hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/30",
+            )}
+          >
+            <Link href="/contact">
+              {wide ? "Talk to Sales" : "Book a Demo"}
+              <ArrowRight className="transition-transform duration-300 group-hover/cta:translate-x-0.5" aria-hidden />
+            </Link>
+          </Button>
+        </DemoDialog>
       </div>
     </Card>
   );
