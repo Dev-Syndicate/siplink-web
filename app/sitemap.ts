@@ -28,6 +28,7 @@ const staticRoutes = [
   "/company/partners",
   "/contact",
   "/privacy",
+  "/terms",
 ];
 
 /** Built from each route's own static params, so it lists exactly the pages that exist. */

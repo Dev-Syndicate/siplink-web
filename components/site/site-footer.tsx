@@ -293,6 +293,11 @@ export function SiteFooter() {
             </Link>
           </li>
           <li>
+            <Link href="/terms" className="footer-link pb-0.5 outline-none hover:text-primary focus-visible:text-primary">
+              Terms and Conditions
+            </Link>
+          </li>
+          <li>
             <Link href="/contact" className="footer-link pb-0.5 outline-none hover:text-primary focus-visible:text-primary">
               Contact Us
             </Link>

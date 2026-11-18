@@ -16,7 +16,6 @@ import {
   Cable,
   Check,
   CircleAlert,
-  Clock,
   Cloud,
   Ellipsis,
   Globe,
@@ -402,11 +401,6 @@ function EnquiryForm({ askServices, onReset }: { askServices: boolean; onReset: 
         )}
         {pending ? "Sending…" : "Submit enquiry"}
       </Button>
-
-      <p className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-muted-foreground">
-        <Clock className="size-3.5 shrink-0" aria-hidden />
-        Thank you for your inquiry. A representative will contact you shortly.
-      </p>
     </form>
   );
 }

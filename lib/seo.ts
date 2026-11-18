@@ -106,6 +106,7 @@ export const seo = {
   "/company/partners": ["Partner Program & Integrations | SipLink", "Join the SipLink partner ecosystem and integrate business voice and cloud telephony with CRM, productivity and contact center platforms.", "Partners"],
   "/contact": ["Contact SipLink: Chennai VoIP Provider | SipLink", "Talk to SipLink about cloud telephony, SIP trunking and call centre solutions. Offices in Chennai, Bangalore and Hyderabad. Call +91 82172 02075.", "Contact"],
   "/blog": ["Business VoIP and Internet Blog | SipLink", "Practical guides to business VoIP, cloud telephony, SIP trunking and business internet from the SipLink team in Chennai.", "Blog"],
+  "/terms": ["Terms and Conditions | SipLink Communications", "The terms that govern use of SipLink websites, SIPLINK-UC apps, cloud telephony, SIP trunking, AI voice and related services.", "Terms and Conditions"],
   "/privacy": ["Privacy Policy | SipLink Communications", "How SipLink Communications collects, protects and handles customer data, in line with telecom regulations and international data protection standards.", "Privacy Policy"],
 } as const satisfies Record<string, readonly [string, string, string]>;
 

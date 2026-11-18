@@ -43,7 +43,7 @@ export function DemoDialog({ children }: { children: ReactNode }) {
         <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain p-5 [scrollbar-width:none] sm:p-7 [&::-webkit-scrollbar]:hidden">
           <DialogHeader className="mb-5 text-center sm:text-center">
             <DialogTitle className="text-2xl font-semibold tracking-tight text-balance">
-              Tell us about your requirements
+              Schedule a Meeting
             </DialogTitle>
             <DialogDescription>Get a free demo and personalised quote.</DialogDescription>
           </DialogHeader>
