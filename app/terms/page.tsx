@@ -49,7 +49,7 @@ export default function TermsPage() {
               <p className="font-semibold text-foreground">{privacyLegalName}</p>
               <p className="mt-2">Registered/business address:</p>
               <p>
-                1st Floor, No. 88, Anmol Palani Complex,
+                3rd Floor, No. 88, Anmol Palani Complex,
                 <br />
                 Gopathy Narayana Road, T. Nagar,
                 <br />
@@ -59,12 +59,6 @@ export default function TermsPage() {
                 General Email:{" "}
                 <a href={`mailto:${site.email}`} className="text-primary hover:underline">
                   {site.email}
-                </a>
-              </p>
-              <p>
-                SIPLINK-UC Support:{" "}
-                <a href="mailto:ucpbx@siplink.in" className="text-primary hover:underline">
-                  ucpbx@siplink.in
                 </a>
               </p>
               <p>
