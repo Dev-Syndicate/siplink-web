@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/card";
 import { homeFeatures, site, type HomeFeature } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { DemoDialog } from "@/components/site/demo-dialog";
 
 /**
  * The miniature product screens drawn in each card.
@@ -526,9 +527,11 @@ export function FeatureCards() {
           </div>
 
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <Button asChild size="lg">
-              <Link href="/contact">Book a Free Consultation</Link>
-            </Button>
+            <DemoDialog>
+              <Button asChild size="lg">
+                <Link href="/contact">Book a demo</Link>
+              </Button>
+            </DemoDialog>
             {/* No side padding, so it lines up with the copy once it wraps. */}
             <Button asChild variant="link" size="lg" className="px-0">
               <Link href="/products">See all products</Link>

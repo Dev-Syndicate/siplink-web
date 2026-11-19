@@ -1,10 +1,7 @@
+import { Sparkles } from "lucide-react";
+
 /**
- * The AI lettermark.
- *
- * A lettermark rather than the usual sparkle: the brief is that AI should be
- * named, not hinted at, and two letters on the brand gradient say it plainly
- * where a wand or a star asks the reader to infer it. It also survives being
- * shrunk into the console's header row, which an icon at this size does not.
+ * The AI mark: a sparkle on the brand gradient.
  *
  * The sheen is the site's AI signature: it marks every place AI appears —
  * the hero, the AI Voice product card, the AI section — and nowhere else, so
@@ -16,9 +13,7 @@ export function AiMark() {
     // it always sits beside text that already says "AI".
     <span aria-hidden className="relative inline-flex size-6 shrink-0 items-center justify-center">
       <span className="relative inline-flex size-6 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-brand-from to-brand-to">
-        <span className="font-mono text-[10px] leading-none font-semibold tracking-tight text-primary-foreground">
-          AI
-        </span>
+        <Sparkles className="size-3.5 text-primary-foreground" strokeWidth={2.25} />
         <span aria-hidden className="ai-sheen absolute inset-0" />
       </span>
     </span>

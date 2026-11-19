@@ -79,7 +79,7 @@ export const plans: Plan[] = [
     summary:
       "Essential calling, CloudPBX, business phone number, softphone access and call management.",
     description:
-      "Reliable cloud-based business communication for individuals and small businesses.",
+      "Reliable cloud communications for individuals and growing businesses.",
     featuresHeading: "Features included",
     features: [
       { title: "Business Calling", detail: "Inbound and outbound calling", icon: PhoneCall },
@@ -170,7 +170,7 @@ export const paygPlan = {
   ],
   vault: {
     title: "Pay only for what you use",
-    body: "No plan limits to hit. Each call is paid from your prepaid vault at the rate for where you called, so your spend follows your actual usage.",
+    body: "Flexible prepaid calling with no fixed monthly calling bundle. Each call is paid from your prepaid vault at the rate for where you called, so your spend follows your actual usage.",
     steps: [
       { title: "Fund your vault", detail: "Your prepaid calling balance", icon: Wallet },
       { title: "Call without plan limits", detail: "Any supported destination", icon: PhoneOutgoing },

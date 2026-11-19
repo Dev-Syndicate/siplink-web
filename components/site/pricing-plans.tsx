@@ -595,7 +595,7 @@ function AddOns({ plan }: { plan: Plan }) {
           </p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight">Add-ons, charged separately</h2>
           <p className="mt-2 text-sm text-pretty text-muted-foreground">
-            For add-ons, contact us and we&rsquo;ll share the details for your plan.
+            Contact our team for add-on availability and pricing.
           </p>
           <Link
             href="/contact"

@@ -59,8 +59,8 @@ export default async function BlogPage() {
             <CtaPanel
               heading="Ready to Upgrade Your Business Communications?"
               body="Replace outdated PBX systems, improve call handling and give your team one reliable communications platform."
-              action={{ label: "Book a Free Consultation", href: "/contact" }}
-              note="No obligation · Free consultation · Migration guidance included"
+              action={{ label: "Book a demo", href: "/contact" }}
+              note="No obligation · Free demo · Migration guidance included"
             />
           </div>
         </RevealGroup>

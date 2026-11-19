@@ -117,16 +117,16 @@ export function PricingHero({
 
           <Rise delay={0.08}>
             <h1 className="mt-6 font-heading text-[clamp(2.6rem,min(4.6vw,8.5svh),4.25rem)] leading-[1.02] font-semibold tracking-[-0.04em] text-balance">
-              Simple plans for{" "}
-              <span className="pricing-text-flow lg:block lg:whitespace-nowrap">bigger possibilities</span>
+              Business communication plans{" "}
+              <span className="pricing-text-flow lg:block lg:whitespace-nowrap">that grow with you</span>
             </h1>
           </Rise>
 
           <Rise delay={0.16}>
             <p className="mt-5 max-w-xl text-base text-pretty text-muted-foreground sm:text-lg lg:[@media(max-height:760px)]:hidden">
               Choose the plan that fits your team, from essential business
-              calling to AI and enterprise integrations. Everything a plan
-              includes is listed on its card.
+              calling to AI and enterprise integrations. Each plan clearly
+              lists its included features and services.
             </p>
           </Rise>
 

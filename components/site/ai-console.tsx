@@ -158,13 +158,14 @@ export function AiConsole() {
               of this heading argued the benefit and left the word out, which
               buried the thing the section exists to sell. */}
           <h2 className="font-heading mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            AI on every call, from hello to follow-up
+            AI-powered intelligence for every stage of the call
           </h2>
 
           <p className="mt-4 text-pretty text-muted-foreground">
-            AI turns speech into text, text into a summary, and, where you
-            enable it, answers the call itself. Nobody has to replay a
-            recording to find out what was agreed.
+            Turn business conversations into searchable transcripts, useful
+            summaries and intelligent call handling. Choose the AI capabilities
+            that fit your workflow, with availability and pricing based on
+            your plan and usage.
           </p>
         </div>
 

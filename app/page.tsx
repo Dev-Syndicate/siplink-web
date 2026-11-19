@@ -32,6 +32,7 @@ import {
   whyPoints,
 } from "@/lib/site";
 import { seoFor } from "@/lib/seo";
+import { DemoDialog } from "@/components/site/demo-dialog";
 
 export const metadata: Metadata = seoFor("/");
 
@@ -52,7 +53,7 @@ export const metadata: Metadata = seoFor("/");
  * 5. What next? — how it works, FAQ, apps, talk to us (CTA).
  *
  * AI is the client's lead differentiator, so it is named in the hero and
- * demonstrated straight after it. The AI lettermark (`AiMark`) marks every
+ * demonstrated straight after it. The AI mark (`AiMark`) marks every
  * place AI appears and nowhere else — follow it down the page.
  *
  * Price is not argued here any more, only quoted once in the hero. The plan
@@ -191,9 +192,11 @@ export default function Home() {
               </p>
 
               <div className="mt-7 flex flex-wrap items-center gap-4 short:mt-5">
-                <Button asChild size="lg">
-                  <Link href="/contact">Book a Free Consultation</Link>
-                </Button>
+                <DemoDialog>
+                  <Button asChild size="lg">
+                    <Link href="/contact">Book a demo</Link>
+                  </Button>
+                </DemoDialog>
                 <Button asChild size="lg" variant="outline" className="group">
                   <Link href="/solutions">
                     Explore Solutions
@@ -662,8 +665,8 @@ export default function Home() {
         <CtaPanel
           heading="Ready to Upgrade Your Business Communications?"
           body="Replace outdated PBX systems, improve call handling and give your team one reliable communications platform."
-          action={{ label: "Book a Free Consultation", href: "/contact" }}
-          note="No obligation &middot; Free consultation &middot; Migration guidance included"
+          action={{ label: "Book a demo", href: "/contact" }}
+          note="No obligation &middot; Free demo &middot; Migration guidance included"
         />
       </section>
     </>
