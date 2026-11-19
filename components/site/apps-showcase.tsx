@@ -240,7 +240,7 @@ function LaptopMockup() {
               />
               <span className="leading-tight">
                 <span className="block font-semibold">John Doe</span>
-                <span className="flex items-center gap-1 text-[7px] text-success">
+                <span className="flex items-center gap-1 text-[7px] text-muted-foreground">
                   <span className="size-1 rounded-full bg-success" />
                   Available
                 </span>

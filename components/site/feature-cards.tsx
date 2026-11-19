@@ -434,19 +434,19 @@ const NUMBERS = [
     country: "US",
     value: "+1 212 ••• ••••",
     label: "Direct dial",
-    tone: "bg-primary/10 text-primary",
+    tone: "bg-primary/10 text-foreground",
   },
   {
     country: "US",
     value: "+1 800 ••• ••••",
     label: "Toll free",
-    tone: "bg-info/10 text-info",
+    tone: "bg-info/15 text-foreground",
   },
   {
     country: "US",
     value: "+1 307 ••• ••••",
     label: "Ported in",
-    tone: "bg-success/10 text-success",
+    tone: "bg-success/15 text-foreground",
   },
 ];
 

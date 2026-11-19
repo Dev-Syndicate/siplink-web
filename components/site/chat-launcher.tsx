@@ -75,7 +75,6 @@ export function ChatLauncher() {
       <Script
         src="https://embed.tawk.to/5f86f9ada2eb1124c0bce350/1k6ed0su8"
         strategy="lazyOnload"
-        crossOrigin="anonymous"
       />
 
       <div

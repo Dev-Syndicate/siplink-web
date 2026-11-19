@@ -173,7 +173,7 @@ export function AiConsole() {
           {/* The rail. Each stage is a control; the chosen one opens to show
               what it covers, so five items under "Answers" never have to line
               up against three under "Listens". */}
-          <div role="tablist" aria-label="AI stages" onKeyDown={onRailKey}>
+          <div role="group" aria-label="AI stages" onKeyDown={onRailKey}>
             {aiStages.map(({ stage, gloss, items }, index) => {
               const current = index === active;
 
@@ -206,10 +206,8 @@ export function AiConsole() {
                       tabs.current[index] = node;
                     }}
                     type="button"
-                    role="tab"
-                    aria-selected={current}
+                    aria-expanded={current}
                     aria-controls={`ai-panel-${index}`}
-                    tabIndex={current ? 0 : -1}
                     onClick={() => choose(index)}
                     className={cn(
                       "block w-full py-4 text-left transition-colors focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
@@ -225,8 +223,6 @@ export function AiConsole() {
 
                   <div
                     id={`ai-panel-${index}`}
-                    role="tabpanel"
-                    aria-labelledby={`ai-tab-${index}`}
                     hidden={!current}
                     className="pb-6"
                   >

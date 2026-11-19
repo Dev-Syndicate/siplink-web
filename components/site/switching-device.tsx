@@ -174,7 +174,7 @@ function LiveCallsWidget() {
   return (
     <Card
       size="sm"
-      className="w-[9.5rem] gap-2 bg-card/85 px-3 py-2.5 shadow-xl ring-foreground/10 backdrop-blur-md"
+      className="w-[9.5rem] gap-2 bg-card px-3 py-2.5 shadow-xl ring-foreground/10"
     >
       <div className="flex items-center gap-1.5">
         <span className="relative flex size-1.5">
@@ -212,7 +212,7 @@ function PortedWidget() {
   return (
     <Card
       size="sm"
-      className="w-[10.5rem] gap-1.5 bg-card/85 px-3 py-2.5 shadow-xl ring-foreground/10 backdrop-blur-md"
+      className="w-[10.5rem] gap-1.5 bg-card px-3 py-2.5 shadow-xl ring-foreground/10"
     >
       <div className="flex items-center gap-2">
         <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
@@ -240,7 +240,7 @@ function QualityWidget() {
   return (
     <Card
       size="sm"
-      className="w-[8.5rem] gap-1.5 bg-card/85 px-3 py-2.5 shadow-xl ring-foreground/10 backdrop-blur-md"
+      className="w-[8.5rem] gap-1.5 bg-card px-3 py-2.5 shadow-xl ring-foreground/10"
     >
       <div className="flex items-center gap-1.5">
         <Waves className="size-3 shrink-0 text-primary" aria-hidden />

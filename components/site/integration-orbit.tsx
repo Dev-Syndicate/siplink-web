@@ -72,32 +72,31 @@ export function IntegrationOrbit({
           {/* The key to the picture, and the list a screen reader gets. */}
           <dl className="mt-10 space-y-6">
             {RINGS.map((ring, index) => (
-              <div key={ring.title} className="flex gap-4">
-                <span
-                  aria-hidden
-                  className="mt-1 grid size-9 shrink-0 place-items-center rounded-full border-2 border-dashed border-primary/40"
-                >
+              // A <dl> group may hold only <dt>/<dd>, so the icon lives in the <dt>, pinned into the left gutter.
+              <div key={ring.title} className="relative pl-13">
+                <dt className="font-semibold">
                   <span
-                    className={
-                      index === 0
-                        ? "size-3 rounded-full bg-primary"
-                        : "size-3 rounded-full border-2 border-primary"
-                    }
-                  />
-                </span>
-                <div>
-                  <dt className="font-semibold">
-                    {ring.title}
-                    <span className="font-normal text-muted-foreground"> · {ring.caption}</span>
-                  </dt>
-                  <dd className="mt-2 flex flex-wrap gap-1.5">
-                    {ring.names.map((name) => (
-                      <Badge key={name} variant="secondary">
-                        {name}
-                      </Badge>
-                    ))}
-                  </dd>
-                </div>
+                    aria-hidden
+                    className="absolute top-1 left-0 grid size-9 place-items-center rounded-full border-2 border-dashed border-primary/40"
+                  >
+                    <span
+                      className={
+                        index === 0
+                          ? "size-3 rounded-full bg-primary"
+                          : "size-3 rounded-full border-2 border-primary"
+                      }
+                    />
+                  </span>
+                  {ring.title}
+                  <span className="font-normal text-muted-foreground"> · {ring.caption}</span>
+                </dt>
+                <dd className="mt-2 flex flex-wrap gap-1.5">
+                  {ring.names.map((name) => (
+                    <Badge key={name} variant="secondary">
+                      {name}
+                    </Badge>
+                  ))}
+                </dd>
               </div>
             ))}
           </dl>
