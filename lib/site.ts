@@ -315,17 +315,6 @@ export const industries: Industry[] = [
     },
   },
   {
-    title: "IT & Software",
-    description:
-      "Support technical teams with efficient communication tools for customer support, troubleshooting and internal collaboration.",
-    icon: Code2,
-    href: "/industries/it-software",
-    image: {
-      src: "/images/industry-it-software.webp",
-      alt: "A laptop on a desk showing source code in an editor",
-    },
-  },
-  {
     title: "Marketing & Sales",
     description:
       "Boost campaign outreach, lead generation and customer engagement with scalable communication solutions.",
