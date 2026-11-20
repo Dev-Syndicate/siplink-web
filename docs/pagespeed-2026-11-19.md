@@ -80,7 +80,11 @@ but are worth adding.
 
 ## Status
 
-Fixed on 19 Nov 2026 (not yet re-measured on PageSpeed):
+Re-measured after deploy (run 9w5d5u98m2): mobile 99 / 100 / 96 / 100, desktop
+99 / 100 / 96 / 100 (Perf / A11y / BP / SEO). Best Practices stays 96 because tawk.to
+answers Lighthouse's headless browser with a 403. The chat loads fine in a normal browser.
+
+Fixed on 19 Nov 2026:
 - 1: `crossOrigin` removed. Confirmed in dev: tawk.to loads and the chat button shows.
 - 2a: the rail is now disclosure buttons (`role="group"`, `aria-expanded`), with no tab roles.
 - 2b: the icon moved into the `<dt>`. The group is `relative pl-13` and the icon is absolute.
