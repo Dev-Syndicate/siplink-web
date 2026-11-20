@@ -69,7 +69,7 @@ const offices = [
       "30 N Gould St, Ste R",
       "Sheridan, WY 82801, United States",
     ],
-    phone: "+1 276 695 1464",
+    phone: "+1 855 465 2835",
   },
 ];
 
